@@ -5,17 +5,13 @@
   
 
   
-  <title>apache出现no input file specified.的完美解决方案 | Hexo</title>
+  <title>Archives: 2019/12 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="启用rewrite的伪静态功能的时候，首页可以访问，而访问内页的时候，就提示：“No input file specified.”原因在于使用的PHP是fast_cgi模式，而在某些情况下，不能正确识别path_info所造成的错误，Wordpress的伪静态也有一样的问题。">
-<meta name="keywords" content="nginx">
-<meta property="og:type" content="article">
-<meta property="og:title" content="apache出现no input file specified.的完美解决方案">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;11&#x2F;10&#x2F;apache%E5%87%BA%E7%8E%B0no-input-file-specified-%E7%9A%84%E5%AE%8C%E7%BE%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88&#x2F;index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;archives&#x2F;2019&#x2F;12&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="启用rewrite的伪静态功能的时候，首页可以访问，而访问内页的时候，就提示：“No input file specified.”原因在于使用的PHP是fast_cgi模式，而在某些情况下，不能正确识别path_info所造成的错误，Wordpress的伪静态也有一样的问题。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-10T14:54:20.000Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -63,69 +59,40 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-apache出现no-input-file-specified-的完美解决方案" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/11/10/apache%E5%87%BA%E7%8E%B0no-input-file-specified-%E7%9A%84%E5%AE%8C%E7%BE%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" class="article-date">
-  <time datetime="2017-11-10T14:53:58.000Z" itemprop="datePublished">2017-11-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+        <section id="main">
   
-    <h1 class="article-title" itemprop="name">
-      apache出现no input file specified.的完美解决方案
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2019" class="archive-year">2019</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2019/12/04/%E8%BF%85%E6%90%9C-xunsearch-%E5%A4%9A%E5%80%BC%E5%B1%9E%E6%80%A7%E7%9A%84%E5%A4%84%E7%90%86/" class="archive-article-date">
+  <time datetime="2019-12-04T15:18:36.000Z" itemprop="datePublished">Dec 4</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2019/12/04/%E8%BF%85%E6%90%9C-xunsearch-%E5%A4%9A%E5%80%BC%E5%B1%9E%E6%80%A7%E7%9A%84%E5%A4%84%E7%90%86/">迅搜(xunsearch) 多值属性的处理</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>启用rewrite的伪静态功能的时候，首页可以访问，而访问内页的时候，就提示：“No input file specified.”<br>原因在于使用的PHP是fast_cgi模式，而在某些情况下，不能正确识别path_info所造成的错误，Wordpress的伪静态也有一样的问题。</p>
-<a id="more"></a>
-<p>Wordpress程序默认的.htaccess里面的规则：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">RewriteEngine On</span><br><span class="line">RewriteBase /</span><br><span class="line">RewriteCond %&#123;REQUEST_FILENAME&#125; !-f</span><br><span class="line">RewriteCond %&#123;REQUEST_FILENAME&#125; !-d</span><br><span class="line">RewriteRule ^(.*)$ /index.php/$1 [L]</span><br></pre></td></tr></table></figure>
-<p>其实“No input file specified.”，是没有得到有效的文件路径造成的。修改伪静态规则，如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">RewriteEngine On</span><br><span class="line">RewriteBase /</span><br><span class="line">RewriteCond %&#123;REQUEST_FILENAME&#125; !-f</span><br><span class="line">RewriteCond %&#123;REQUEST_FILENAME&#125; !-d</span><br><span class="line">RewriteRule ^(.*)$ /index.php?/$1 [L]</span><br></pre></td></tr></table></figure>
-<p>有没有发现不同？<br>其实就是在正则结果“/$1”前面多加了一个“?”号，问题也就随之解决了。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/10/apache%E5%87%BA%E7%8E%B0no-input-file-specified-%E7%9A%84%E5%AE%8C%E7%BE%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" data-id="ck2ukofii0005ep0q1la622yb" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li></ul>
-
-    </footer>
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2017/11/10/Linux%E6%96%87%E4%BB%B6%E6%97%B6%E9%97%B4%E8%AF%A6%E8%A7%A3-ctime%E3%80%81mtime%E5%92%8Catime/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Linux文件时间详解 ctime、mtime和atime
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/11/10/git-pull%E6%93%8D%E4%BD%9C%E5%A4%B1%E8%B4%A5%E7%9A%84%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">git pull操作失败的问题</div>
-    </a>
-  
-</nav>
-
-  
 </article>
+  
+  
+    </div></section>
+  
+
 
 </section>
         
