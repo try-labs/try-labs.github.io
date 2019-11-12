@@ -5,16 +5,13 @@
   
 
   
-  <title>git pull操作失败的问题 | Hexo</title>
+  <title>Tag: spring cloud config | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="使用git版本控制，提交代码到测试环境，发现代码没有更新，直接在服务器上用命令行操作的时候出现下面的错误： 123456789101112www@iZ23oqentptZ:~&#x2F;develop.dameiweb.com&#x2F;webroot$ git pullerror: Cannot update the ref &amp;apos;refs&#x2F;remotes&#x2F;origin&#x2F;develop&amp;apos;: unable to appe">
-<meta property="og:type" content="article">
-<meta property="og:title" content="git pull操作失败的问题">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;11&#x2F;10&#x2F;git-pull%E6%93%8D%E4%BD%9C%E5%A4%B1%E8%B4%A5%E7%9A%84%E9%97%AE%E9%A2%98&#x2F;index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;tags&#x2F;spring-cloud-config&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="使用git版本控制，提交代码到测试环境，发现代码没有更新，直接在服务器上用命令行操作的时候出现下面的错误： 123456789101112www@iZ23oqentptZ:~&#x2F;develop.dameiweb.com&#x2F;webroot$ git pullerror: Cannot update the ref &amp;apos;refs&#x2F;remotes&#x2F;origin&#x2F;develop&amp;apos;: unable to appe">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-10T14:53:31.000Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -62,66 +59,40 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-git-pull操作失败的问题" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/11/10/git-pull%E6%93%8D%E4%BD%9C%E5%A4%B1%E8%B4%A5%E7%9A%84%E9%97%AE%E9%A2%98/" class="article-date">
-  <time datetime="2017-11-10T14:53:13.000Z" itemprop="datePublished">2017-11-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+        <section id="main">
   
-    <h1 class="article-title" itemprop="name">
-      git pull操作失败的问题
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2018" class="archive-year">2018</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/09/15/Spring-Cloud-Config%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8A%A5%E9%94%99Could-not-locate-PropertySource-I-O-error-on-GET-request-xxx/" class="archive-article-date">
+  <time datetime="2018-09-15T15:46:48.000Z" itemprop="datePublished">Sep 15</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2018/09/15/Spring-Cloud-Config%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8A%A5%E9%94%99Could-not-locate-PropertySource-I-O-error-on-GET-request-xxx/">Spring Cloud Config客户端报错Could not locate PropertySource: I/O error on GET request xxx</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>使用git版本控制，提交代码到测试环境，发现代码没有更新，直接在服务器上用命令行操作的时候出现下面的错误：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">www@iZ23oqentptZ:~/develop.dameiweb.com/webroot$ git pull</span><br><span class="line">error: Cannot update the ref 'refs/remotes/origin/develop': </span><br><span class="line">unable to append to .git/logs/refs/remotes/origin/develop: </span><br><span class="line">Permission denied</span><br><span class="line">From git.dameiweb.com:dm/www.dameiweb.com</span><br><span class="line"> ! 3fa3fb3..297aa33 develop -&gt; origin/develop  </span><br><span class="line">(unable to update local ref)</span><br><span class="line">error: Cannot update the ref 'refs/remotes/origin/master': </span><br><span class="line">unable to append to .git/logs/refs/remotes/origin/master:</span><br><span class="line"> Permission denied</span><br><span class="line"> ! 0eadc3f..d8ad757  master -&gt; origin/master  </span><br><span class="line">(unable to update local ref)</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>通过查看文件的权限，发现.git文件夹下文件的权限不对，有的文件不属于git账号（git的用户是www），出现这个情况可能是用不同的账号去执行git命令，譬如我们这就是使用root账号操作过。<br>  解决办法就是用root账户修改.git文件的权限,.git文件的所有者和所属组都是www,于是执行命令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">文件的所有者和所属组修改成www</span></span><br><span class="line">chown -R www:www .git</span><br></pre></td></tr></table></figure>
-<p>执行完命令之后，查看文件的权限修改成功后，再切换成www用户，执行git pull，更新成功！<br>  大家切记，linux下权限很重要，不用乱用不用的用户，这样会导致文件的所有者和所属组发生改变！</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/10/git-pull%E6%93%8D%E4%BD%9C%E5%A4%B1%E8%B4%A5%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ck2w14ls1002m470qgg939c3h" class="article-share-link">Share</a>
-      
-      
-    </footer>
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2017/11/10/apache%E5%87%BA%E7%8E%B0no-input-file-specified-%E7%9A%84%E5%AE%8C%E7%BE%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          apache出现no input file specified.的完美解决方案
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/11/10/git%E7%9A%84-gitignore%E8%A7%84%E5%88%99%E4%B8%8D%E7%94%9F%E6%95%88%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">git的.gitignore规则不生效的解决办法</div>
-    </a>
-  
-</nav>
-
-  
 </article>
+  
+  
+    </div></section>
+  
+
 
 </section>
         

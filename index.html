@@ -100,7 +100,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/10/hello-world/" data-id="ck2w0zllm002o390qdnxk2hzx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/11/10/hello-world/" data-id="ck2w14ls5002r470q9958b1hu" class="article-share-link">Share</a>
       
       
     </footer>
@@ -143,10 +143,56 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/09/30/Feign%E8%B0%83%E7%94%A8%E8%BF%94%E5%9B%9E%E5%A4%8D%E6%9D%82%E5%AF%B9%E8%B1%A1%E6%97%B6%E6%8A%A5%E9%94%99java-lang-ClassCastException-java-util-LinkedHashMap-cannot-be-cast-to-xxx/" data-id="ck2w0zljw000c390q1swwagwf" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/09/30/Feign%E8%B0%83%E7%94%A8%E8%BF%94%E5%9B%9E%E5%A4%8D%E6%9D%82%E5%AF%B9%E8%B1%A1%E6%97%B6%E6%8A%A5%E9%94%99java-lang-ClassCastException-java-util-LinkedHashMap-cannot-be-cast-to-xxx/" data-id="ck2w14lq4000f470qehxx8fao" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/feign/" rel="tag">feign</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Spring-Cloud-Config客户端报错Could-not-locate-PropertySource-I-O-error-on-GET-request-xxx" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/09/15/Spring-Cloud-Config%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8A%A5%E9%94%99Could-not-locate-PropertySource-I-O-error-on-GET-request-xxx/" class="article-date">
+  <time datetime="2018-09-15T15:46:48.000Z" itemprop="datePublished">2018-09-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/15/Spring-Cloud-Config%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8A%A5%E9%94%99Could-not-locate-PropertySource-I-O-error-on-GET-request-xxx/">Spring Cloud Config客户端报错Could not locate PropertySource: I/O error on GET request xxx</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天在研究Spring Cloud Config配置中心，出了一个很让人恼火的问题，我先贴一下我的相关配置信息：</p>
+<p>客户端的bootstrap.yml配置：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">9009</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">admin-server</span></span><br><span class="line">    <span class="attr">profiles:</span></span><br><span class="line">      <span class="attr">active:</span> <span class="string">dev</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">config:</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">admin-server-config</span></span><br><span class="line">      <span class="attr">label:</span> <span class="string">master</span></span><br><span class="line">      <span class="attr">profile:</span> <span class="string">dev</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">        <span class="attr">service-id:</span> <span class="string">config-server</span></span><br><span class="line"></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line">  <span class="attr">client:</span></span><br><span class="line">    <span class="attr">service-url:</span></span><br><span class="line">      <span class="attr">defaultZone:</span> <span class="string">http://Eurexxxr:xxxx-12xxx56@accp.xxx.net:8786/eureka/</span></span><br></pre></td></tr></table></figure>
+<p>出现的问题如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Could not locate PropertySource: I/O error on GET request <span class="keyword">for</span> <span class="string">"http://config-server:9008/admin-server-config/dev/master"</span>: Connection refused; nested exception is java.net.ConnectException: Connection refused</span><br></pre></td></tr></table></figure>
+<p>大致的意思是说”<a href="http://config-server:9008/admin-server-config/dev/master&quot;这个链接不能够访问，可我试着访问一下，却是可以访问的，这就让我百思不得其解！于是乎百度google走起，在stackoverflow上倒是找到几条相关的问题，但是问题的解答方案都不是很靠谱！于是乎放弃答案的寻找，我就去菜市场买菜，毕竟晚饭还是要吃的!酒足饭饱之后我又来研究这个问题。按理说提示这种链接不能访问，就是hosts文件映射的问题（ps：配置中心config-server我部署在我阿里云博客上），可是那个链接确实可以直接访问的…………………………………………我就试着看看我的hosts文件，第一次我还没有看出问题，我不死心的又看第二次，总算让我发现了问题的所在，下面是当时hosts文件的内容：" target="_blank" rel="noopener">http://config-server:9008/admin-server-config/dev/master&quot;这个链接不能够访问，可我试着访问一下，却是可以访问的，这就让我百思不得其解！于是乎百度google走起，在stackoverflow上倒是找到几条相关的问题，但是问题的解答方案都不是很靠谱！于是乎放弃答案的寻找，我就去菜市场买菜，毕竟晚饭还是要吃的!酒足饭饱之后我又来研究这个问题。按理说提示这种链接不能访问，就是hosts文件映射的问题（ps：配置中心config-server我部署在我阿里云博客上），可是那个链接确实可以直接访问的…………………………………………我就试着看看我的hosts文件，第一次我还没有看出问题，我不死心的又看第二次，总算让我发现了问题的所在，下面是当时hosts文件的内容：</a></p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Host Database</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># localhost is used to configure the loopback interface</span></span><br><span class="line"><span class="comment"># when the system is booting.  Do not change this entry.</span></span><br><span class="line"><span class="comment">##</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>       <span class="string">localhost</span></span><br><span class="line"><span class="string">xx.78.xx.12</span>     <span class="string">config-server</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>       <span class="string">dev</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>       <span class="string">search-provider</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>       <span class="string">config-server</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>       <span class="string">work.ydstudios.com</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>       <span class="string">work.damei.com</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>       <span class="string">work.gx.com</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>       <span class="string">work.phpcms.com</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>       <span class="string">work.typecho.com</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>       <span class="string">work.seacms.com</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>       <span class="string">work.dy360.net</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>       <span class="string">work.btsearch.com</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>       <span class="string">work.search.com</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>       <span class="string">work.mm.com</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>       <span class="string">work.duowan.com</span></span><br></pre></td></tr></table></figure>
+<p>不知道大家看出来没有？有两个ip指向了config-server，而且我发现这种配置，不同时候起作用的配置还不一样！<br>直接访问url地址的时候，第一个配置生效，程序里确实第二个配置生效，尴尬…………</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/09/15/Spring-Cloud-Config%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8A%A5%E9%94%99Could-not-locate-PropertySource-I-O-error-on-GET-request-xxx/" data-id="ck2w14lrp002a470q5ez82c4u" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-cloud/" rel="tag">spring cloud</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-cloud-config/" rel="tag">spring cloud config</a></li></ul>
 
     </footer>
   </div>
@@ -190,7 +236,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/09/09/Spring-Cloud%E6%95%B4%E5%90%88%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83Eureka%E4%B8%AD%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%8A%B6%E6%80%81%E6%98%BE%E7%A4%BAUNKOWN/" data-id="ck2w0zllc002a390qh2c0gbya" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/09/09/Spring-Cloud%E6%95%B4%E5%90%88%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83Eureka%E4%B8%AD%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%8A%B6%E6%80%81%E6%98%BE%E7%A4%BAUNKOWN/" data-id="ck2w14lrv002f470q73jifwlg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/eureka/" rel="tag">eureka</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-cloud/" rel="tag">spring cloud</a></li></ul>
@@ -245,7 +291,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/30/Elastic-Search%E6%90%9C%E7%B4%A2%E6%95%B0%E6%8D%AETerms%E8%81%9A%E5%90%88%E8%BF%94%E5%9B%9E%E7%9A%84%E4%B8%8D%E6%AD%A3%E7%A1%AE%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ck2w0zlju000a390qamfcd8a6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/30/Elastic-Search%E6%90%9C%E7%B4%A2%E6%95%B0%E6%8D%AETerms%E8%81%9A%E5%90%88%E8%BF%94%E5%9B%9E%E7%9A%84%E4%B8%8D%E6%AD%A3%E7%A1%AE%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ck2w14lq0000a470qcsu26hin" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -285,7 +331,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/28/IntelliJ-Idea-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE%E5%88%97%E8%A1%A8/" data-id="ck2w0zljy000f390q0rl13box" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/28/IntelliJ-Idea-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE%E5%88%97%E8%A1%A8/" data-id="ck2w14lq2000c470q2f6jbjt2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ide/" rel="tag">ide</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -332,7 +378,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/24/BigDecimal%E8%BF%90%E7%AE%97%E5%87%BA%E7%8E%B0Non-terminating-decimal-expansion-no-exact-representable-decimal-result/" data-id="ck2w0zlj90000390qhpy256tj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/24/BigDecimal%E8%BF%90%E7%AE%97%E5%87%BA%E7%8E%B0Non-terminating-decimal-expansion-no-exact-representable-decimal-result/" data-id="ck2w14lph0000470q67f66iou" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BigDecimal/" rel="tag">BigDecimal</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -398,7 +444,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/07/Nginx%E5%AE%9E%E7%8E%B0%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-Node-js/" data-id="ck2w0zlkz001q390q1b3n24ro" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/07/Nginx%E5%AE%9E%E7%8E%B0%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-Node-js/" data-id="ck2w14lrc001q470q98gq6h43" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/proxy/" rel="tag">proxy</a></li></ul>
@@ -577,7 +623,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/04/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B9%9D%E7%AF%87%EF%BC%9AJava%E4%B8%AD%E6%B3%9B%E5%9E%8B%E7%9A%84%E5%AD%A6%E4%B9%A0/" data-id="ck2w0zlk8000p390qg74ybd9e" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/04/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B9%9D%E7%AF%87%EF%BC%9AJava%E4%B8%AD%E6%B3%9B%E5%9E%8B%E7%9A%84%E5%AD%A6%E4%B9%A0/" data-id="ck2w14lqh000p470qgfs23gsq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -644,55 +690,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/03/Centos-6-x-%E5%AE%89%E8%A3%85git/" data-id="ck2w0zljm0004390qhtrigdht" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/03/Centos-6-x-%E5%AE%89%E8%A3%85git/" data-id="ck2w14lpt0004470qg1p29m7w" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Maven跳过单元测试-Dmaven-test-skip和skipTests的区别" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/08/01/Maven%E8%B7%B3%E8%BF%87%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Dmaven-test-skip%E5%92%8CskipTests%E7%9A%84%E5%8C%BA%E5%88%AB/" class="article-date">
-  <time datetime="2018-08-01T14:46:25.000Z" itemprop="datePublished">2018-08-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/08/01/Maven%E8%B7%B3%E8%BF%87%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Dmaven-test-skip%E5%92%8CskipTests%E7%9A%84%E5%8C%BA%E5%88%AB/">Maven跳过单元测试-Dmaven.test.skip和skipTests的区别</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Maven中有两种方式跳过单元测试，其实这两种方式是有一点不同的，其具体不同如下：</p>
-<p>-DskipTests，不执行测试用例，但编译测试用例类生成相应的class文件至target/test-classes下。<br>-Dmaven.test.skip=true，不执行测试用例，也不编译测试用例类。</p>
-<ol>
-<li>使用Dmaven.test.skip，不但跳过单元测试的运行，也跳过测试代码的编译。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn package -Dmaven.test.skip=true</span><br></pre></td></tr></table></figure>
-也可以在pom.xml文件中修改<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugin<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">skip</span>&gt;</span>true<span class="tag">&lt;/<span class="name">skip</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-surefire-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">skip</span>&gt;</span>true<span class="tag">&lt;/<span class="name">skip</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li>使用 mvn package -DskipTests 跳过单元测试，但是会继续编译；如果没时间修改单元测试的bug，或者单元测试编译错误。使用上面的，不要用这个。<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-surefire-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">skipTests</span>&gt;</span>true<span class="tag">&lt;/<span class="name">skipTests</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/01/Maven%E8%B7%B3%E8%BF%87%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Dmaven-test-skip%E5%92%8CskipTests%E7%9A%84%E5%8C%BA%E5%88%AB/" data-id="ck2w0zlkp001d390q3x830qy5" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/" rel="tag">maven</a></li></ul>
 
     </footer>
   </div>
@@ -719,7 +720,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BigDecimal/" rel="tag">BigDecimal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eureka/" rel="tag">eureka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exception/" rel="tag">exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/feign/" rel="tag">feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ide/" rel="tag">ide</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oop/" rel="tag">oop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/proxy/" rel="tag">proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud/" rel="tag">spring cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BigDecimal/" rel="tag">BigDecimal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eureka/" rel="tag">eureka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exception/" rel="tag">exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/feign/" rel="tag">feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ide/" rel="tag">ide</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oop/" rel="tag">oop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/proxy/" rel="tag">proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud/" rel="tag">spring cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud-config/" rel="tag">spring cloud config</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -729,7 +730,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/BigDecimal/" style="font-size: 10px;">BigDecimal</a> <a href="/tags/String/" style="font-size: 13.33px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 11.67px;">elasticSearch</a> <a href="/tags/eureka/" style="font-size: 10px;">eureka</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/feign/" style="font-size: 10px;">feign</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/ide/" style="font-size: 10px;">ide</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18.33px;">linux</a> <a href="/tags/maven/" style="font-size: 15px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 15px;">mysql</a> <a href="/tags/nginx/" style="font-size: 16.67px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 16.67px;">php</a> <a href="/tags/proxy/" style="font-size: 10px;">proxy</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16.67px;">spring boot</a> <a href="/tags/spring-cloud/" style="font-size: 10px;">spring cloud</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/BigDecimal/" style="font-size: 10px;">BigDecimal</a> <a href="/tags/String/" style="font-size: 13.33px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 11.67px;">elasticSearch</a> <a href="/tags/eureka/" style="font-size: 10px;">eureka</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/feign/" style="font-size: 10px;">feign</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/ide/" style="font-size: 10px;">ide</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18.33px;">linux</a> <a href="/tags/maven/" style="font-size: 15px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 15px;">mysql</a> <a href="/tags/nginx/" style="font-size: 16.67px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 16.67px;">php</a> <a href="/tags/proxy/" style="font-size: 10px;">proxy</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16.67px;">spring boot</a> <a href="/tags/spring-cloud/" style="font-size: 11.67px;">spring cloud</a> <a href="/tags/spring-cloud-config/" style="font-size: 10px;">spring cloud config</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -759,15 +760,15 @@
           </li>
         
           <li>
+            <a href="/2018/09/15/Spring-Cloud-Config%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8A%A5%E9%94%99Could-not-locate-PropertySource-I-O-error-on-GET-request-xxx/">Spring Cloud Config客户端报错Could not locate PropertySource: I/O error on GET request xxx</a>
+          </li>
+        
+          <li>
             <a href="/2018/09/09/Spring-Cloud%E6%95%B4%E5%90%88%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83Eureka%E4%B8%AD%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%8A%B6%E6%80%81%E6%98%BE%E7%A4%BAUNKOWN/">Spring Cloud整合配置中心Eureka中的服务状态显示UNKOWN</a>
           </li>
         
           <li>
             <a href="/2018/08/30/Elastic-Search%E6%90%9C%E7%B4%A2%E6%95%B0%E6%8D%AETerms%E8%81%9A%E5%90%88%E8%BF%94%E5%9B%9E%E7%9A%84%E4%B8%8D%E6%AD%A3%E7%A1%AE%E7%9A%84%E9%97%AE%E9%A2%98/">Elastic Search搜索数据Terms聚合返回的不正确的问题</a>
-          </li>
-        
-          <li>
-            <a href="/2018/08/28/IntelliJ-Idea-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE%E5%88%97%E8%A1%A8/">IntelliJ Idea 常用快捷键列表</a>
           </li>
         
       </ul>
