@@ -61,70 +61,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Java学习系列文章第四篇：说说Java的三大特性" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%9B%9B%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4Java%E7%9A%84%E4%B8%89%E5%A4%A7%E7%89%B9%E6%80%A7/" class="article-date">
-  <time datetime="2018-06-29T13:58:31.000Z" itemprop="datePublished">2018-06-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%9B%9B%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4Java%E7%9A%84%E4%B8%89%E5%A4%A7%E7%89%B9%E6%80%A7/">Java学习系列文章第四篇：说说Java的三大特性</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Java语言提供类、接口和继承等面向对象的特性，为了简单起见，只支持类之间的单继承，但支持接口之间的多继承，并支持类与接口之间的实现机制（关键字为implements）。Java语言全面支持动态绑定，而C++语言只对虚函数使用动态绑定。总之，Java语言是一个纯的面向对象程序设计语言。</p>
-<p>说到面向对象编程，那就不得不提面向对象编程的三大特性：继承、封装和多态。那下面我们先来说一说封装。</p>
-<p>封装隐藏了类的内部实现机制，可以在不想影响使用的情况下改变类的内部结构，同时也保护了数据。对外界也可以隐藏内部的细节，只暴露给外界访问的方法。</p>
-<p>继承可以复用父类的代码。两个类之间若存在is-a的关系，就可以使用继承，从而达到代码的复用，同时也给多态的实现做了铺垫。</p>
-<p>下面我们只要说说面向对象编程中的多态。所谓的多态就是指程序中定义的引用变量所指向的具体类型和通过该引用变量发出的方法调用在编程时并不确定，而是在程序的运行期间才确定，即一个引用变量到底会指向哪个类的实例对象，该引用变量发出的方法调用到底是哪个类中实现的方法，必须在程序运行期间才能确定，这就是所谓的动态绑定（dynamic binding）。</p>
-<p>既然多态那么重要，那么多态到底有什么好处呢？</p>
-<ol>
-<li>可替换性</li>
-<li>消除类型之间的耦合关系</li>
-<li>可扩充性</li>
-<li>接口性</li>
-<li>灵活性</li>
-<li>简化性</li>
-</ol>
-<p><strong>Java实现多态有三个必要的条件：继承、重写、向上转型</strong></p>
-<ol>
-<li>继承：在多态中必须存在有继承关系的子类和父类。</li>
-<li>重写：子类对父类中某些方法进行重写定义，在调用这些方法时就会调用子类的方法。</li>
-<li>向上转型：在多态中需要将父类的引用指向子类，只有这样该引用才能够具备调用父类和子类的方法。</li>
-</ol>
-<p>多态的实现方式</p>
-<h4 id="1-继承重写"><a href="#1-继承重写" class="headerlink" title="1. 继承重写"></a>1. 继承重写</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Cat</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"吃鱼"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"抓老鼠"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dog</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"吃骨头"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"看家"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        Animal a = <span class="keyword">new</span> Cat();  <span class="comment">// 向上转型</span></span><br><span class="line">        a.eat();               <span class="comment">// 调用的是 Cat 的 eat</span></span><br><span class="line"></span><br><span class="line">        Animal b = <span class="keyword">new</span> Dog();  <span class="comment">// 向上转型</span></span><br><span class="line">        b.eat();               <span class="comment">// 调用的是 Dog 的 eat</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>所以基于继承实现的多态可以总结如下：对于引用子类的父类类型，在处理该引用时，它适用于继承该父类的所有子类，子类对象的不同，对方法的实现也就不同，执行相同动作产生的行为也就不同。<br>如果父类是抽象类，那么子类必须要实现父类中所有的抽象方法，这样该父类所有的子类一定存在统一的对外接口，但其内部的具体实现可以各异。这样我们就可以使用顶层类提供的统一接口来处理该层次的方法。</p>
-<h4 id="2-基于接口实现多态"><a href="#2-基于接口实现多态" class="headerlink" title="2.基于接口实现多态"></a>2.基于接口实现多态</h4><p>继承是通过重写父类的同一方法的几个不同子类来体现的，那么就可就是通过实现接口并覆盖接口中同一方法的几不同的类体现的。</p>
-<p>在接口的多态中，指向接口的引用必须是指定这实现了该接口的一个类的实例程序，在运行时，根据对象引用的实际类型来执行对应的方法。</p>
-<p>继承都是单继承，只能为一组相关的类提供一致的服务接口。但是接口可以是多继承多实现，它能够利用一组相关或者不相关的接口进行组合与扩充，能够对外提供一致的服务接口。所以它相对于继承来说有更好的灵活性。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%9B%9B%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4Java%E7%9A%84%E4%B8%89%E5%A4%A7%E7%89%B9%E6%80%A7/" data-id="ck2vyytbz000otr0qhirhcu42" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/oop/" rel="tag">oop</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-Java学习系列文章第三篇：说说equals和" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%89%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4equals%E5%92%8C/" class="article-date">
@@ -176,7 +112,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%89%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4equals%E5%92%8C/" data-id="ck2vyytbo000ftr0q1am8bijs" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%89%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4equals%E5%92%8C/" data-id="ck2vz4xfv000cv50q8evx871w" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -291,7 +227,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%80%E7%AF%87%EF%BC%9A%E5%9F%BA%E6%9C%AC%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B/" data-id="ck2vyytbl000atr0q4zv35x94" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%80%E7%AF%87%EF%BC%9A%E5%9F%BA%E6%9C%AC%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B/" data-id="ck2vz4xfq0008v50qcm0hhi3i" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -398,51 +334,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%BA%8C%E7%AF%87%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2/" data-id="ck2vyytbq000gtr0q5ep9edrd" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%BA%8C%E7%AF%87%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2/" data-id="ck2vz4xfx000fv50qgdb3eyqw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Java学习系列文章前序" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E5%89%8D%E5%BA%8F/" class="article-date">
-  <time datetime="2018-06-29T13:42:53.000Z" itemprop="datePublished">2018-06-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E5%89%8D%E5%BA%8F/">Java学习系列文章前序</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本人是自学PHP出身，本科学的是计算机科学与技术专业，也算是科班出身。从事了3年的PHP开发。由于某些原因，开始从PHP转向Java，为了记录自己学习的过程和加深对Java的理解，于是乎有了此系列文章。</p>
-<p>因为自己已经有了些编程经验，所以在写文章的时候，不会按照有些书籍上那样按部就班的叙述。我会按照我自己的学习进度，直接跳过一些章节，例如，在本系列文章中我不会详细的叙述，如何搭建Java的开发环境、Java的运算符、循环和分支结构。因为我觉得你要学习某种语言，必先要搭建开发环境，而现在这种教程百度一下就会有很多，我就不在此重复。后面的那些运算符、分支循环结构之类的大多和PHP类似，我也就不在此系列文章中赘述。其中偶尔会穿插着PHP和Java的比较，叙述两者的不同。文章中的Java是以JDK8为准。</p>
-<p>总之，这系列的文章应该是为有些编程基础的人准备的。小白们阅读的话，可能会有点糊涂。不过先去网上找些基础教程看看之后，再来阅读次系列文章可能会更好一点。最后，由于本人的能力有限，肯定会有些错误，请大家指出！</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E5%89%8D%E5%BA%8F/" data-id="ck2vyytbi0008tr0q1wa4c6mp" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
 
     </footer>
   </div>
@@ -492,7 +387,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/23/CentOS-6-x-%E4%B8%8B%E5%AE%89%E8%A3%85Zookeeper/" data-id="ck2vyytb70001tr0qfcy692vt" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/23/CentOS-6-x-%E4%B8%8B%E5%AE%89%E8%A3%85Zookeeper/" data-id="ck2vz4xfh0003v50q3j940ef6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
@@ -543,7 +438,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/22/CentOS-6-x-%E4%B8%8Byum%E5%AE%89%E8%A3%85Tomcat8/" data-id="ck2vyytb20000tr0q352s10ci" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/22/CentOS-6-x-%E4%B8%8Byum%E5%AE%89%E8%A3%85Tomcat8/" data-id="ck2vz4xf40000v50q9m35133y" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li></ul>
@@ -605,7 +500,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/13/Spring-Boot-1-x%E9%9B%86%E6%88%90spring-boot-devtools%E5%BC%80%E5%8F%91%E6%97%B6%E5%AE%9E%E7%8E%B0%E7%83%AD%E9%83%A8%E7%BD%B2/" data-id="ck2vyytcs001rtr0q2970ds9v" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/13/Spring-Boot-1-x%E9%9B%86%E6%88%90spring-boot-devtools%E5%BC%80%E5%8F%91%E6%97%B6%E5%AE%9E%E7%8E%B0%E7%83%AD%E9%83%A8%E7%BD%B2/" data-id="ck2vz4xhd001pv50qfhdi6e4n" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li></ul>
@@ -649,7 +544,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/09/Maven%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0%E2%80%9C%E8%AF%B7%E4%BD%BF%E7%94%A8-source-8-%E6%88%96%E6%9B%B4%E9%AB%98%E7%89%88%E6%9C%AC%E4%BB%A5%E5%90%AF%E7%94%A8-lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E2%80%9D/" data-id="ck2vyytca0012tr0q2bmjhpzv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/09/Maven%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0%E2%80%9C%E8%AF%B7%E4%BD%BF%E7%94%A8-source-8-%E6%88%96%E6%9B%B4%E9%AB%98%E7%89%88%E6%9C%AC%E4%BB%A5%E5%90%AF%E7%94%A8-lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E2%80%9D/" data-id="ck2vz4xgn000yv50q1e5k9itu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/" rel="tag">maven</a></li></ul>
@@ -704,10 +599,119 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/07/Spring-Boot-1-x-%E6%95%B4%E5%90%88mybatis-%E5%B9%B6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90mapper%E5%92%8C%E5%AE%9E%E4%BD%93/" data-id="ck2vyytcq001ptr0qel1t04ed" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/07/Spring-Boot-1-x-%E6%95%B4%E5%90%88mybatis-%E5%B9%B6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90mapper%E5%92%8C%E5%AE%9E%E4%BD%93/" data-id="ck2vz4xha001mv50qcon57qmj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Spring-Boot框架中读取配置的几种方式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/05/04/Spring-Boot%E6%A1%86%E6%9E%B6%E4%B8%AD%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/" class="article-date">
+  <time datetime="2018-05-04T13:33:18.000Z" itemprop="datePublished">2018-05-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/04/Spring-Boot%E6%A1%86%E6%9E%B6%E4%B8%AD%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/">Spring Boot框架中读取配置的几种方式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>现在开发的主力语言已经从PHP转向Java，目前参与或负责公司的几个项目都是使用Spring Boot框架。用了Java之后，对比PHP就一个感觉：繁琐，Java比PHP繁琐的很！由于自己平时也在努力学习Java中，今天趁着有空闲来总结一下Spring Boot中读取配置的几种方式，加深一下自己的印象。</p>
+<p><strong>读取application文件</strong><br>在application.yml或者properties文件中添加：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">info.address=RPC</span><br><span class="line">info.company=Spring</span><br><span class="line">info.degree=high</span><br></pre></td></tr></table></figure>
+
+<p> 1.@Value注解读取方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InfoConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;info.address&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String address;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;info.company&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String company;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;info.degree&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String degree;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getAddress</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> address;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAddress</span><span class="params">(String address)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.address = address;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getCompany</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> company;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCompany</span><span class="params">(String company)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.company = company;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDegree</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> degree;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDegree</span><span class="params">(String degree)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.degree = degree;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 2.@ConfigurationProperties注解读取方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"info"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InfoConfig</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String address;</span><br><span class="line">    <span class="keyword">private</span> String company;</span><br><span class="line">    <span class="keyword">private</span> String degree;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getAddress</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> address;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAddress</span><span class="params">(String address)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.address = address;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getCompany</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> company;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCompany</span><span class="params">(String company)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.company = company;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDegree</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> degree;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDegree</span><span class="params">(String degree)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.degree = degree;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>读取指定文件</strong><br>资源目录下建立config/db-config.properties:</p>
+<p>db.username=root<br>db.password=123456</p>
+<ol>
+<li><p>@PropertySource+@Value注解读取方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@PropertySource</span>(value =  &#123;</span><br><span class="line">    <span class="string">"config/db-config.properties"</span>&#125;</span><br><span class="line">)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DBConfig1</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;db.username&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;db.password&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUsername</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.username = username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPassword</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPassword</span><span class="params">(String password)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.password = password;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>注意：@PropertySource不支持yml文件读取。</em></p>
+</li>
+<li><p>@PropertySource+@ConfigurationProperties注解读取方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"db"</span>)</span><br><span class="line"><span class="meta">@PropertySource</span>(value = &#123;<span class="string">"config/db-config.properties"</span>&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DBConfig2</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUsername</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.username = username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPassword</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPassword</span><span class="params">(String password)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.password = password;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Environment读取方式 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> Environment environment;</span><br><span class="line"></span><br><span class="line">environment.getProperty(<span class="string">"info.degree"</span>);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>从以上示例来看，Spring Boot可以通过@PropertySource,@Value,@Environment,@ConfigurationProperties的相互配合来读取配置文件的内容，读取单个的配置Environment无疑是最霸道的方法。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/05/04/Spring-Boot%E6%A1%86%E6%9E%B6%E4%B8%AD%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/" data-id="ck2vz4xhf001rv50q9kpkbrrb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-解决Java异常java-security-InvalidKeyException-Illegal-key-size" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/" class="article-date">
+  <time datetime="2018-04-26T15:41:54.000Z" itemprop="datePublished">2018-04-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/">解决Java异常java.security.InvalidKeyException: Illegal key size</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近公司准备对接马蜂窝的接口，今天在开发的过程中出现了下面的问题：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.security.InvalidKeyException: Illegal key size</span><br></pre></td></tr></table></figure>
+<p>通过仔细阅读马蜂窝的demo时发现，他们在demo里写了下面一段话：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">说明：异常java.security.InvalidKeyException:illegal Key Size的解决方案</span><br><span class="line">在官方网站下载JCE无限制权限策略文件（JDK7的下载地址：</span><br><span class="line">  http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html</span><br><span class="line">下载后解压，可以看到local_policy.jar和US_export_policy.jar以及readme.txt</span><br><span class="line">如果安装了JRE，将两个jar文件放到%JRE_HOME%\lib\security目录下覆盖原来的文件</span><br><span class="line">如果安装了JDK，将两个jar文件放到%JDK_HOME%\jre\lib\security目录下覆盖原来文件</span><br></pre></td></tr></table></figure>
+<p>后来百度得知这里面还有其他原因：<br>如果密钥大于128, 会抛出java.security.InvalidKeyException: Illegal key size 异常. 因为密钥长度是受限制的, java运行时环境读到的是受限的policy文件. 文件位于${java_home}/jre/lib/security, 这种限制是因为美国对软件出口的控制.</p>
+<p>由于现在我用的是Java8，所以我把解决办法整理如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在官方网站下载JCE无限制权限策略文件</span><br><span class="line">JDK7的下载地址: http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html</span><br><span class="line">JDK8的下载地址: http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html</span><br></pre></td></tr></table></figure>
+<p>下载后解压，可以看到local_policy.jar和US_export_policy.jar以及readme.txt<br>如果安装了JRE，将两个jar文件放到%JRE_HOME%\lib\security目录下覆盖原来的文件<br>如果安装了JDK，还要将两个jar文件也放到%JDK_HOME%\jre\lib\security目录下覆盖原来文件</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/" data-id="ck2vz4xi6002ov50qd71mck5d" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
 
     </footer>
   </div>
@@ -720,7 +724,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -766,10 +770,6 @@
       <ul>
         
           <li>
-            <a href="/2019/11/12/%E6%9C%AC%E4%BA%BA%E6%98%AF%E8%87%AA%E5%AD%A6PHP%E5%87%BA%E8%BA%AB%EF%BC%8C%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%9A%84%E6%98%AF%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF%E4%B8%93%E4%B8%9A%EF%BC%8C%E4%B9%9F%E7%AE%97%E6%98%AF%E7%A7%91%E7%8F%AD%E5%87%BA%E8%BA%AB%E3%80%82%E4%BB%8E%E4%BA%8B%E4%BA%863%E5%B9%B4%E7%9A%84PHP%E5%BC%80%E5%8F%91%E3%80%82%E7%94%B1%E4%BA%8E%E6%9F%90%E4%BA%9B%E5%8E%9F%E5%9B%A0%EF%BC%8C%E5%BC%80%E5%A7%8B%E4%BB%8EPHP%E8%BD%AC%E5%90%91Java%EF%BC%8C%E4%B8%BA%E4%BA%86%E8%AE%B0%E5%BD%95%E8%87%AA%E5%B7%B1%E5%AD%A6%E4%B9%A0%E7%9A%84%E8%BF%87%E7%A8%8B%E5%92%8C%E5%8A%A0%E6%B7%B1%E5%AF%B9Java%E7%9A%84%E7%90%86%E8%A7%A3%EF%BC%8C%E4%BA%8E%E6%98%AF%E4%B9%8E%E6%9C%89%E4%BA%86%E6%AD%A4%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E3%80%82/">本人是自学PHP出身，本科学的是计算机科学与技术专业，也算是科班出身。从事了3年的PHP开发。由于某些原因，开始从PHP转向Java，为了记录自己学习的过程和加深对Java的理解，于是乎有了此系列文章。</a>
-          </li>
-        
-          <li>
             <a href="/2019/11/10/hello-world/">Hello World</a>
           </li>
         
@@ -783,6 +783,10 @@
         
           <li>
             <a href="/2018/07/30/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%83%E7%AF%87%EF%BC%9AJava8%E4%B8%AD%E6%8E%A5%E5%8F%A3%E7%9A%84%E9%BB%98%E8%AE%A4%E6%96%B9%E6%B3%95%E4%B8%8E%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95/">Java学习系列文章第七篇：Java8中接口的默认方法与静态方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/28/Maven%E4%B8%AD%E7%9A%84dependencyManagement%E5%92%8Cdependencies/">Maven中的dependencyManagement和dependencies</a>
           </li>
         
       </ul>

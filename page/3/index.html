@@ -61,115 +61,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Spring-Boot框架中读取配置的几种方式" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/05/04/Spring-Boot%E6%A1%86%E6%9E%B6%E4%B8%AD%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/" class="article-date">
-  <time datetime="2018-05-04T13:33:18.000Z" itemprop="datePublished">2018-05-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/04/Spring-Boot%E6%A1%86%E6%9E%B6%E4%B8%AD%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/">Spring Boot框架中读取配置的几种方式</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>现在开发的主力语言已经从PHP转向Java，目前参与或负责公司的几个项目都是使用Spring Boot框架。用了Java之后，对比PHP就一个感觉：繁琐，Java比PHP繁琐的很！由于自己平时也在努力学习Java中，今天趁着有空闲来总结一下Spring Boot中读取配置的几种方式，加深一下自己的印象。</p>
-<p><strong>读取application文件</strong><br>在application.yml或者properties文件中添加：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">info.address=RPC</span><br><span class="line">info.company=Spring</span><br><span class="line">info.degree=high</span><br></pre></td></tr></table></figure>
-
-<p> 1.@Value注解读取方式</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InfoConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;info.address&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String address;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;info.company&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String company;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;info.degree&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String degree;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getAddress</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> address;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAddress</span><span class="params">(String address)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.address = address;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getCompany</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> company;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCompany</span><span class="params">(String company)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.company = company;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDegree</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> degree;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDegree</span><span class="params">(String degree)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.degree = degree;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p> 2.@ConfigurationProperties注解读取方式</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"info"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InfoConfig</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String address;</span><br><span class="line">    <span class="keyword">private</span> String company;</span><br><span class="line">    <span class="keyword">private</span> String degree;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getAddress</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> address;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAddress</span><span class="params">(String address)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.address = address;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getCompany</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> company;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCompany</span><span class="params">(String company)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.company = company;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDegree</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> degree;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDegree</span><span class="params">(String degree)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.degree = degree;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>读取指定文件</strong><br>资源目录下建立config/db-config.properties:</p>
-<p>db.username=root<br>db.password=123456</p>
-<ol>
-<li><p>@PropertySource+@Value注解读取方式</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@PropertySource</span>(value =  &#123;</span><br><span class="line">    <span class="string">"config/db-config.properties"</span>&#125;</span><br><span class="line">)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DBConfig1</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;db.username&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;db.password&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUsername</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.username = username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPassword</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPassword</span><span class="params">(String password)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.password = password;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><em>注意：@PropertySource不支持yml文件读取。</em></p>
-</li>
-<li><p>@PropertySource+@ConfigurationProperties注解读取方式</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"db"</span>)</span><br><span class="line"><span class="meta">@PropertySource</span>(value = &#123;<span class="string">"config/db-config.properties"</span>&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DBConfig2</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUsername</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.username = username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPassword</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPassword</span><span class="params">(String password)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.password = password;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Environment读取方式 </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> Environment environment;</span><br><span class="line"></span><br><span class="line">environment.getProperty(<span class="string">"info.degree"</span>);</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<p>从以上示例来看，Spring Boot可以通过@PropertySource,@Value,@Environment,@ConfigurationProperties的相互配合来读取配置文件的内容，读取单个的配置Environment无疑是最霸道的方法。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/04/Spring-Boot%E6%A1%86%E6%9E%B6%E4%B8%AD%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/" data-id="ck2vyytcu001utr0qd9036exx" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-解决Java异常java-security-InvalidKeyException-Illegal-key-size" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/" class="article-date">
-  <time datetime="2018-04-26T15:41:54.000Z" itemprop="datePublished">2018-04-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/">解决Java异常java.security.InvalidKeyException: Illegal key size</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近公司准备对接马蜂窝的接口，今天在开发的过程中出现了下面的问题：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.security.InvalidKeyException: Illegal key size</span><br></pre></td></tr></table></figure>
-<p>通过仔细阅读马蜂窝的demo时发现，他们在demo里写了下面一段话：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">说明：异常java.security.InvalidKeyException:illegal Key Size的解决方案</span><br><span class="line">在官方网站下载JCE无限制权限策略文件（JDK7的下载地址：</span><br><span class="line">  http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html</span><br><span class="line">下载后解压，可以看到local_policy.jar和US_export_policy.jar以及readme.txt</span><br><span class="line">如果安装了JRE，将两个jar文件放到%JRE_HOME%\lib\security目录下覆盖原来的文件</span><br><span class="line">如果安装了JDK，将两个jar文件放到%JDK_HOME%\jre\lib\security目录下覆盖原来文件</span><br></pre></td></tr></table></figure>
-<p>后来百度得知这里面还有其他原因：<br>如果密钥大于128, 会抛出java.security.InvalidKeyException: Illegal key size 异常. 因为密钥长度是受限制的, java运行时环境读到的是受限的policy文件. 文件位于${java_home}/jre/lib/security, 这种限制是因为美国对软件出口的控制.</p>
-<p>由于现在我用的是Java8，所以我把解决办法整理如下：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在官方网站下载JCE无限制权限策略文件</span><br><span class="line">JDK7的下载地址: http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html</span><br><span class="line">JDK8的下载地址: http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html</span><br></pre></td></tr></table></figure>
-<p>下载后解压，可以看到local_policy.jar和US_export_policy.jar以及readme.txt<br>如果安装了JRE，将两个jar文件放到%JRE_HOME%\lib\security目录下覆盖原来的文件<br>如果安装了JDK，还要将两个jar文件也放到%JDK_HOME%\jre\lib\security目录下覆盖原来文件</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/" data-id="ck2vyytdk002ttr0qf189f8yf" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-什么是缓存雪崩和缓存穿透" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/03/13/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E5%92%8C%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" class="article-date">
@@ -212,7 +103,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/13/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E5%92%8C%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" data-id="ck2vyytd6002btr0q9rwlfcr8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/13/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E5%92%8C%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" data-id="ck2vz4xhu0029v50q20dy4db6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
@@ -275,7 +166,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/02/22/MySQL%E4%B8%AD%E7%9C%9F%E6%AD%A3%E6%84%8F%E4%B9%89%E4%B8%8A%E7%9A%84UTF8%E7%BC%96%E7%A0%81/" data-id="ck2vyytcb0014tr0q4g0fflqm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/02/22/MySQL%E4%B8%AD%E7%9C%9F%E6%AD%A3%E6%84%8F%E4%B9%89%E4%B8%8A%E7%9A%84UTF8%E7%BC%96%E7%A0%81/" data-id="ck2vz4xgo0010v50q93mwd77n" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
@@ -325,7 +216,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/02/09/PHP%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E5%BC%80%E5%90%AFOpcache%E6%9D%A5%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD/" data-id="ck2vyytcl001htr0q47tt7huh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/02/09/PHP%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E5%BC%80%E5%90%AFOpcache%E6%9D%A5%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD/" data-id="ck2vz4xh3001fv50q4cmdes7p" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
@@ -369,7 +260,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/19/Spring-Boot%E7%9A%84%E4%B8%89%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F/" data-id="ck2vyytcv001wtr0qasr3gtps" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/01/19/Spring-Boot%E7%9A%84%E4%B8%89%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F/" data-id="ck2vz4xhi001uv50q910bacd2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
@@ -423,7 +314,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/09/Java%E9%87%8C%E6%9C%89%E5%93%AA%E4%BA%9B%E8%AF%AD%E6%B3%95%E7%B3%96/" data-id="ck2vyytc1000qtr0qeehe3dxe" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/01/09/Java%E9%87%8C%E6%9C%89%E5%93%AA%E4%BA%9B%E8%AF%AD%E6%B3%95%E7%B3%96/" data-id="ck2vz4xga000mv50q99mq7tvo" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -467,7 +358,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/05/Java%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFImplicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor/" data-id="ck2vyytbg0007tr0q2jetens2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/01/05/Java%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFImplicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor/" data-id="ck2vz4xfo0007v50qdc5c8sk9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -511,7 +402,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/01/%E4%BD%BF%E7%94%A8java%E5%92%8Cjavac%E5%91%BD%E4%BB%A4%E6%9D%A5%E7%BC%96%E8%AF%91%E8%BF%90%E8%A1%8CJava/" data-id="ck2vyytd7002etr0q9v25et8n" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/01/01/%E4%BD%BF%E7%94%A8java%E5%92%8Cjavac%E5%91%BD%E4%BB%A4%E6%9D%A5%E7%BC%96%E8%AF%91%E8%BF%90%E8%A1%8CJava/" data-id="ck2vz4xhw002bv50q6c5mfcni" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -572,10 +463,107 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/" data-id="ck2vyytbb0003tr0qey3ufn7f" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/" data-id="ck2vz4xfj0004v50qalv892gx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Centos6安装Mongodb" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/" class="article-date">
+  <time datetime="2017-12-06T15:27:40.000Z" itemprop="datePublished">2017-12-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/">Centos6安装Mongodb</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.运行下面命令查看服务器中是否存在Mongodb的源</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum info mongo-10gen</span><br></pre></td></tr></table></figure>
+<p>结果提示没有相关匹配的信息 ，说明系统中的yum源不包含MongoDB的相关资源，所以要在使用yum命令安装MongoDB前需要增加yum源。<br>2.配置包管理系统（yum）<br>创建一个/etc/yum.repos.d/mongodb-org-3.6.repo文件，以便您可以直接使用安装MongoDB yum。写入一下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[mongodb-org-3.6]</span><br><span class="line">name=MongoDB Repository</span><br><span class="line">baseurl=https://repo.mongodb.org/yum/redhat/<span class="variable">$releasever</span>/mongodb-org/3.6/x86_64/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=1</span><br><span class="line">gpgkey=https://www.mongodb.org/static/pgp/server-3.6.asc</span><br></pre></td></tr></table></figure>
+<p>3.安装MongoDB包<br>要安装最新的稳定版本的MongoDB，请发出以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y mongodb-org</span><br></pre></td></tr></table></figure>
+<p>要安装特定版本的MongoDB，请分别指定每个组件包，并将版本号附加到包名称，如下例所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y mongodb-org-3.6.0 mongodb-org-server-3.6.0 mongodb-org-shell-3.6.0 mongodb-org-mongos-3.6.0 mongodb-org-tools-3.6.0</span><br></pre></td></tr></table></figure>
+<p>4.在阿里云上安全组添加一条规则,并在Centos中的iptables添加一条记录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#阿里云安全组规则</span></span><br><span class="line">允许 自定义 TCP 27017/27017	地址段访问  0.0.0.0/0</span><br><span class="line"></span><br><span class="line"><span class="comment">#iptables</span></span><br><span class="line">-A INPUT -p tcp -m tcp --dport 27017 -j ACCEPT </span><br><span class="line"></span><br><span class="line"><span class="comment">#重启iptables</span></span><br><span class="line">/etc/init.d/iptables restart</span><br></pre></td></tr></table></figure>
+<p>5.开机自启动,执行下面命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig mongod on</span><br></pre></td></tr></table></figure>
+<p>6.Mongodb启动、关闭和重启命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#启动</span></span><br><span class="line">service mongod start</span><br><span class="line"><span class="comment">#关闭</span></span><br><span class="line">service mongod stop</span><br><span class="line"><span class="comment">#restart</span></span><br><span class="line">service mongod restart</span><br></pre></td></tr></table></figure>
+<p><em>END Mongodb安装结束</em></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/" data-id="ck2vz4xfl0005v50qckxmgl5w" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Nginx出现The-plain-HTTP-request-was-sent-to-HTTPS-port" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/05/Nginx%E5%87%BA%E7%8E%B0The-plain-HTTP-request-was-sent-to-HTTPS-port/" class="article-date">
+  <time datetime="2017-12-05T15:26:28.000Z" itemprop="datePublished">2017-12-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/05/Nginx%E5%87%BA%E7%8E%B0The-plain-HTTP-request-was-sent-to-HTTPS-port/">Nginx出现The plain HTTP request was sent to HTTPS port</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Nginx突然出现了下面的问题：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The plain HTTP request was sent to HTTPS port</span><br></pre></td></tr></table></figure>
+<p>在博客配置ssl证书的时候，博客的https地址和http地址是都能访问，不过，今天突然发现博客访问出现上面的问题，经过百度找到了问题的解决办法，在此记录一下。</p>
+<p>解决办法：</p>
+<p>删掉ssl on; 并在 listen 443; 443后加上ssl即可。<br>Nginx最新配置文件内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen     80;</span><br><span class="line">    listen     443 ssl; </span><br><span class="line">    </span><br><span class="line">    server_name  www.ydstudio.net  ydstudio.net;</span><br><span class="line">    <span class="built_in">set</span> <span class="variable">$my_server_name</span> <span class="variable">$scheme</span>://<span class="variable">$server_name</span>;</span><br><span class="line">    root  html;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$host</span> = <span class="string">'ydstudio.net'</span>) &#123;</span><br><span class="line">      rewrite ^ https://www.ydstudio.net<span class="variable">$request_uri</span>? permanent;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">#防止ip访问，如http://xxx.xxx.xxx.xxx或者https://xxx.xxx.xxx.xxx</span></span><br><span class="line">    <span class="keyword">if</span> ( <span class="variable">$host</span> ~* <span class="string">"\d+\.\d+\.\d+\.\d+"</span> ) &#123;</span><br><span class="line">        rewrite ^ https://<span class="variable">$server_name</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> ( <span class="variable">$my_server_name</span> != https://<span class="variable">$server_name</span> ) &#123;</span><br><span class="line">       <span class="built_in">return</span>      301 https://<span class="variable">$server_name</span><span class="variable">$request_uri</span>;</span><br><span class="line">       <span class="comment">#rewrite ^ https://$server_name$request_uri? permanent;</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    location / &#123;</span><br><span class="line">       try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.php<span class="variable">$is_args</span><span class="variable">$args</span>;</span><br><span class="line">       index index.php  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">#error_page  404              /404.html;</span></span><br><span class="line">    <span class="comment"># redirect server error pages to the static page /50x.html</span></span><br><span class="line">    error_page   500 502 503 504  /50x.html;</span><br><span class="line">    location = /50x.html &#123;</span><br><span class="line">        root   /usr/share/nginx/html;</span><br><span class="line">    &#125; </span><br><span class="line"></span><br><span class="line">    <span class="comment"># pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span></span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">       <span class="comment">#root           html;</span></span><br><span class="line">       fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">       fastcgi_index  index.php;</span><br><span class="line">       fastcgi_param  SCRIPT_FILENAME  html/typecho/<span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">       include        fastcgi_params;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$ &#123;</span><br><span class="line">        <span class="comment">#expires指令设置浏览器缓存过期时间</span></span><br><span class="line">        <span class="comment">#可以在http、server、location三个作用域中设置</span></span><br><span class="line">        <span class="comment">#缓存图片或视频30天</span></span><br><span class="line">        expires 30d;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ .*\.(js|css)?$ &#123;</span><br><span class="line">        <span class="comment">#缓存js/css 1小时</span></span><br><span class="line">        expires 1h;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">#ssl on;</span></span><br><span class="line">    ssl_certificate   cert/214353452860792.pem;</span><br><span class="line">    ssl_certificate_key  cert/214353452860792.key;</span><br><span class="line">    ssl_session_timeout 5m;</span><br><span class="line">    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/05/Nginx%E5%87%BA%E7%8E%B0The-plain-HTTP-request-was-sent-to-HTTPS-port/" data-id="ck2vz4xgu0018v50q13vc74a3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li></ul>
 
     </footer>
   </div>
@@ -588,7 +576,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -634,10 +622,6 @@
       <ul>
         
           <li>
-            <a href="/2019/11/12/%E6%9C%AC%E4%BA%BA%E6%98%AF%E8%87%AA%E5%AD%A6PHP%E5%87%BA%E8%BA%AB%EF%BC%8C%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%9A%84%E6%98%AF%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF%E4%B8%93%E4%B8%9A%EF%BC%8C%E4%B9%9F%E7%AE%97%E6%98%AF%E7%A7%91%E7%8F%AD%E5%87%BA%E8%BA%AB%E3%80%82%E4%BB%8E%E4%BA%8B%E4%BA%863%E5%B9%B4%E7%9A%84PHP%E5%BC%80%E5%8F%91%E3%80%82%E7%94%B1%E4%BA%8E%E6%9F%90%E4%BA%9B%E5%8E%9F%E5%9B%A0%EF%BC%8C%E5%BC%80%E5%A7%8B%E4%BB%8EPHP%E8%BD%AC%E5%90%91Java%EF%BC%8C%E4%B8%BA%E4%BA%86%E8%AE%B0%E5%BD%95%E8%87%AA%E5%B7%B1%E5%AD%A6%E4%B9%A0%E7%9A%84%E8%BF%87%E7%A8%8B%E5%92%8C%E5%8A%A0%E6%B7%B1%E5%AF%B9Java%E7%9A%84%E7%90%86%E8%A7%A3%EF%BC%8C%E4%BA%8E%E6%98%AF%E4%B9%8E%E6%9C%89%E4%BA%86%E6%AD%A4%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E3%80%82/">本人是自学PHP出身，本科学的是计算机科学与技术专业，也算是科班出身。从事了3年的PHP开发。由于某些原因，开始从PHP转向Java，为了记录自己学习的过程和加深对Java的理解，于是乎有了此系列文章。</a>
-          </li>
-        
-          <li>
             <a href="/2019/11/10/hello-world/">Hello World</a>
           </li>
         
@@ -651,6 +635,10 @@
         
           <li>
             <a href="/2018/07/30/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%83%E7%AF%87%EF%BC%9AJava8%E4%B8%AD%E6%8E%A5%E5%8F%A3%E7%9A%84%E9%BB%98%E8%AE%A4%E6%96%B9%E6%B3%95%E4%B8%8E%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95/">Java学习系列文章第七篇：Java8中接口的默认方法与静态方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/28/Maven%E4%B8%AD%E7%9A%84dependencyManagement%E5%92%8Cdependencies/">Maven中的dependencyManagement和dependencies</a>
           </li>
         
       </ul>
