@@ -61,10 +61,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-tar-分卷压缩和解压" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-解决Java异常java-security-InvalidKeyException-Illegal-key-size" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/11/27/tar-%E5%88%86%E5%8D%B7%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B/" class="article-date">
-  <time datetime="2017-11-27T15:16:14.000Z" itemprop="datePublished">2017-11-27</time>
+    <a href="/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/" class="article-date">
+  <time datetime="2018-04-26T15:41:54.000Z" itemprop="datePublished">2018-04-26</time>
 </a>
     
   </div>
@@ -75,7 +75,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/27/tar-%E5%88%86%E5%8D%B7%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B/">tar 分卷压缩和解压</a>
+      <a class="article-title" href="/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/">解决Java异常java.security.InvalidKeyException: Illegal key size</a>
     </h1>
   
 
@@ -83,18 +83,22 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>tar 本身为一个打包工具，可以把目录打包成一个文件，它的好处是它把所有文件整合成一个大文件整体，方便拷贝或者移动。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">语法：tar [-zjxcvfpP] filename,tar命令有多个选项，其中不常用的做了标注。</span><br><span class="line"></span><br><span class="line">“-z” : 同时用gzip压缩</span><br><span class="line"></span><br><span class="line">“-j” : 同时用bzip2压缩</span><br><span class="line"></span><br><span class="line">“-x” : 解包或者解压缩</span><br><span class="line"></span><br><span class="line">“-t” : 查看tar包里面的文件</span><br><span class="line"></span><br><span class="line">“-c” : 建立一个tar包或者压缩文件包</span><br><span class="line"></span><br><span class="line">“-v” : 可视化</span><br><span class="line"></span><br><span class="line">“-f” : 后面跟文件名，压缩时跟 “-f 文件名”，意思是压缩后的文件名为filename, 解压时跟 “-f 文件名”，意思是解压filename. 请注意，如果是多个参数组合的情况下带有 “-f”，请把 “-f” 写到最后面。</span><br><span class="line"></span><br><span class="line">“-p” : 使用原文件的属性，压缩前什么属性压缩后还什么属性。（不常用）</span><br><span class="line"></span><br><span class="line">“-P” : 可以使用绝对路径。（不常用）</span><br><span class="line"></span><br><span class="line">--exclude filename : 在打包或者压缩时，不要将filename文件包括在内。（不常用）</span><br></pre></td></tr></table></figure>
-<p>那如何分卷解压缩呢？</p>
-<p>假如要将目录logs打包压缩并分割成多个1M的文件，可以用下面的命令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">tar cjf - logs/ |split -b 1m - logs.tar.bz2</span><br><span class="line">完成后会产生下列文件：</span><br><span class="line">logs.tar.bz2.aa, logs.tar.bz2.ab, logs.tar.bz2.ac</span><br><span class="line">要解压的时候只要执行下面的命令就可以了：</span><br><span class="line">cat logs.tar.bz2.a* | tar xj</span><br><span class="line"></span><br><span class="line">再举例：</span><br><span class="line">要将文件test.pdf分包压缩成500 bytes的文件：</span><br><span class="line">tar czf - test.pdf | split -b 500 - test.tar.gz</span><br><span class="line">最后要提醒但是那两个"-"不要漏了，那是tar的ouput和split的input的参数。</span><br><span class="line"></span><br><span class="line">tar cjf - logs/ |split -b 1m - logs.tar.bz2.</span><br><span class="line">完成后会产生下列文件：</span><br><span class="line">logs.tar.bz2.aa, logs.tar.bz2.ab, logs.tar.bz2.ac</span><br><span class="line">要解压的时候只要执行下面的命令就可以了：</span><br><span class="line">cat logs.tar.bz2.a* | tar xj</span><br></pre></td></tr></table></figure>
+        <p>最近公司准备对接马蜂窝的接口，今天在开发的过程中出现了下面的问题：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.security.InvalidKeyException: Illegal key size</span><br></pre></td></tr></table></figure>
+<p>通过仔细阅读马蜂窝的demo时发现，他们在demo里写了下面一段话：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">说明：异常java.security.InvalidKeyException:illegal Key Size的解决方案</span><br><span class="line">在官方网站下载JCE无限制权限策略文件（JDK7的下载地址：</span><br><span class="line">  http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html</span><br><span class="line">下载后解压，可以看到local_policy.jar和US_export_policy.jar以及readme.txt</span><br><span class="line">如果安装了JRE，将两个jar文件放到%JRE_HOME%\lib\security目录下覆盖原来的文件</span><br><span class="line">如果安装了JDK，将两个jar文件放到%JDK_HOME%\jre\lib\security目录下覆盖原来文件</span><br></pre></td></tr></table></figure>
+<p>后来百度得知这里面还有其他原因：<br>如果密钥大于128, 会抛出java.security.InvalidKeyException: Illegal key size 异常. 因为密钥长度是受限制的, java运行时环境读到的是受限的policy文件. 文件位于${java_home}/jre/lib/security, 这种限制是因为美国对软件出口的控制.</p>
+<p>由于现在我用的是Java8，所以我把解决办法整理如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在官方网站下载JCE无限制权限策略文件</span><br><span class="line">JDK7的下载地址: http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html</span><br><span class="line">JDK8的下载地址: http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html</span><br></pre></td></tr></table></figure>
+<p>下载后解压，可以看到local_policy.jar和US_export_policy.jar以及readme.txt<br>如果安装了JRE，将两个jar文件放到%JRE_HOME%\lib\security目录下覆盖原来的文件<br>如果安装了JDK，还要将两个jar文件也放到%JDK_HOME%\jre\lib\security目录下覆盖原来文件</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/27/tar-%E5%88%86%E5%8D%B7%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B/" data-id="ck2ulod260019iv0qgaajetu4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/" data-id="ck2vy1e8g002ro50q9u0phkec" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
 
     </footer>
   </div>
@@ -103,10 +107,10 @@
 
 
   
-    <article id="post-如何强制全站https访问" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-什么是缓存雪崩和缓存穿透" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/11/23/%E5%A6%82%E4%BD%95%E5%BC%BA%E5%88%B6%E5%85%A8%E7%AB%99https%E8%AE%BF%E9%97%AE/" class="article-date">
-  <time datetime="2017-11-23T15:12:52.000Z" itemprop="datePublished">2017-11-23</time>
+    <a href="/2018/03/13/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E5%92%8C%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" class="article-date">
+  <time datetime="2018-03-13T15:39:32.000Z" itemprop="datePublished">2018-03-13</time>
 </a>
     
   </div>
@@ -117,7 +121,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/23/%E5%A6%82%E4%BD%95%E5%BC%BA%E5%88%B6%E5%85%A8%E7%AB%99https%E8%AE%BF%E9%97%AE/">如何强制全站https访问</a>
+      <a class="article-title" href="/2018/03/13/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E5%92%8C%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/">什么是缓存雪崩和缓存穿透</a>
     </h1>
   
 
@@ -125,123 +129,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>今天在阿里云上搞了一个免费的https证书，于是就在自己的服务器上安装了一下，配置好证书之后，如何强制全站https访问呢？其实方法有很多，这里只给出两个比较简单的方法：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">在自己的虚拟主机配置server节点中添加下面的代码，使用其一即可。</span></span><br><span class="line"><span class="meta">#</span><span class="bash">方法一</span></span><br><span class="line">rewrite ^ https://$server_name$request_uri? permanent;</span><br><span class="line"><span class="meta">#</span><span class="bash">方法二</span></span><br><span class="line">return 301 https://$server_name$request_uri;</span><br></pre></td></tr></table></figure>
-<p>我用的是第一个方法，大家可以根据自己的喜好，来决定使用哪中方法。下面贴出我自己网站的配置：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen     443;</span><br><span class="line">    listen     80;</span><br><span class="line">    </span><br><span class="line">    server_name  www.ydstudio.net;</span><br><span class="line">    set $my_server_name $scheme://$server_name;</span><br><span class="line">    </span><br><span class="line">    #防止ip访问，如http://xxx.xxx.xxx.xxx或者https://xxx.xxx.xxx.xxx</span><br><span class="line">    if ( $host ~* "\d+\.\d+\.\d+\.\d+" ) &#123;</span><br><span class="line">        rewrite ^ https://$server_name;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if ( $my_server_name != https://$server_name ) &#123;</span><br><span class="line">       rewrite ^ https://$server_name$request_uri? permanent;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    location / &#123;</span><br><span class="line">       root   /usr/share/nginx/html/typecho/;</span><br><span class="line">       try_files $uri $uri/ /index.php$is_args$args;</span><br><span class="line">       index index.php  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    #error_page  404              /404.html;</span><br><span class="line">    # redirect server error pages to the static page /50x.html</span><br><span class="line">    error_page   500 502 503 504  /50x.html;</span><br><span class="line">    location = /50x.html &#123;</span><br><span class="line">        root   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">    # proxy the PHP scripts to Apache listening on 127.0.0.1:80</span><br><span class="line">    #location ~ \.php$ &#123;</span><br><span class="line">    #    proxy_pass   http://127.0.0.1;</span><br><span class="line">    #&#125;</span><br><span class="line">    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">       #root           html;</span><br><span class="line">       fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">       fastcgi_index  index.php;</span><br><span class="line">       fastcgi_param  SCRIPT_FILENAME  /usr/share/nginx/html/typecho/$fastcgi_script_name;</span><br><span class="line">       include        fastcgi_params;</span><br><span class="line">    &#125;</span><br><span class="line">    # deny access to .htaccess files, if Apache's document root</span><br><span class="line">    # concurs with nginx's one</span><br><span class="line">    #location ~ /\.ht &#123;</span><br><span class="line">    #    deny  all;</span><br><span class="line">    #&#125;</span><br><span class="line">    ssl on;</span><br><span class="line">    ssl_certificate   /etc/nginx/cert/214353452860792.pem;</span><br><span class="line">    ssl_certificate_key  /etc/nginx/cert/214353452860792.key;</span><br><span class="line">    ssl_session_timeout 5m;</span><br><span class="line">    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/23/%E5%A6%82%E4%BD%95%E5%BC%BA%E5%88%B6%E5%85%A8%E7%AB%99https%E8%AE%BF%E9%97%AE/" data-id="ck2ulod2f001jiv0q7tryaf1b" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Linux下chkconfig命令详解" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/11/19/Linux%E4%B8%8Bchkconfig%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/" class="article-date">
-  <time datetime="2017-11-19T15:11:31.000Z" itemprop="datePublished">2017-11-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/19/Linux%E4%B8%8Bchkconfig%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/">Linux下chkconfig命令详解</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>chkconfig命令检查、设置系统的各种服务。这是Red Hat公司遵循GPL规则所开发的程序，它可查询操作系统在每一个执行等级中会执行哪些系统服务，其中包括各类常驻服务。谨记chkconfig不是立即自动禁止或激活一个服务，它只是简单的改变了符号连接。</p>
-<h4 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ ~]# chkconfig --help</span><br><span class="line">chkconfig version 1.3.49.5 - Copyright (C) 1997-2000 Red Hat, Inc.</span><br><span class="line">This may be freely redistributed under the terms of the GNU Public License.</span><br><span class="line"></span><br><span class="line">usage:   chkconfig [--list] [--type &lt;type&gt;] [name]</span><br><span class="line">         chkconfig --add &lt;name&gt;</span><br><span class="line">         chkconfig --del &lt;name&gt;</span><br><span class="line">         chkconfig --override &lt;name&gt;</span><br><span class="line">         chkconfig [--level &lt;levels&gt;] [--type &lt;type&gt;] &lt;name&gt; &lt;on|off|reset|resetpriorities&gt;</span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ ~]# </span><br><span class="line"></span><br><span class="line">--add：增加所指定的系统服务，让chkconfig指令得以管理它，并同时在系统启动的叙述文件内增加相关数据； </span><br><span class="line">--del：删除所指定的系统服务，不再由chkconfig指令管理，并同时在系统启动的叙述文件内删除相关数据； </span><br><span class="line">--level&lt;等级代号&gt;：指定读系统服务要在哪一个执行等级中开启或关毕。</span><br></pre></td></tr></table></figure>
-<p>level等级代号解释如下：</p>
+        <p> <strong>1. 缓存雪崩</strong></p>
+<p>如果缓存集中在一段时间内失效，发生大量的缓存穿透，所有的查询都落在数据库上，造成了缓存雪崩。这个没有完美解决办法，但可以分析用户行为，尽量让失效时间点均匀分布。大多数系统设计者考虑用加锁或者队列的方式保证缓存的单线程（进程）写，从而避免失效时大量的并发请求落到底层存储系统上。</p>
+<p>解决办法</p>
 <ul>
-<li>等级0表示：表示关机 </li>
-<li>等级1表示：单用户模式 </li>
-<li>等级2表示：无网络连接的多用户命令行模式 </li>
-<li>等级3表示：有网络连接的多用户命令行模式 </li>
-<li>等级4表示：不可用 </li>
-<li>等级5表示：带图形界面的多用户模式 </li>
-<li>等级6表示：重新启动</li>
+<li>在缓存失效后，通过加锁或者队列来控制读数据库写缓存的线程数量。比如对某个key只允许一个线程查询数据和写缓存，其他线程等待。</li>
+<li>可以通过缓存reload机制，预先去更新缓存，再即将发生大并发访问前手动触发加载缓存。</li>
+<li>不同的key，设置不同的过期时间，让缓存失效的时间点尽量均匀。</li>
+<li>做二级缓存，或者双缓存策略。A1为原始缓存，A2为拷贝缓存，A1失效时，可以访问A2，A1缓存失效时间设置为短期，A2设置为长期。</li>
 </ul>
-<p>需要说明的是，level选项可以指定要查看的运行级而不一定是当前运行级。对于每个运行级，只能有一个启动脚本或者停止脚本。当切换运行级时，init不会重新启动已经启动的服务，也不会再次去停止已经停止的服务。</p>
-<p>运行级文件：<br>每个被chkconfig管理的服务需要在对应的init.d下的脚本加上两行或者更多行的注释。第一行告诉chkconfig缺省启动的运行级以及启动和停止的优先级。如果某服务缺省不在任何运行级启动，那么使用-代替运行级。第二行对服务进行描述，可以用\跨行注释。如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># chkconfig: 2345 20 80</span><br><span class="line"># description: Saves and restores system entropy pool for \</span><br><span class="line"># higher quality random number generation.</span><br></pre></td></tr></table></figure>
-<p>实例：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">chkconfig --list #列出所有的系统服务。 </span><br><span class="line">chkconfig --add httpd #增加httpd服务。 </span><br><span class="line">chkconfig --del httpd #删除httpd服务。 </span><br><span class="line">chkconfig --level httpd 2345 on #设置httpd在运行级别为2、3、4、5的情况下都是on（开启）的状态。 </span><br><span class="line">chkconfig --list #列出系统所有的服务启动情况。 </span><br><span class="line">chkconfig --list mysqld #列出mysqld服务设置情况。 </span><br><span class="line">chkconfig --level 35 mysqld on #设定mysqld在等级3和5为开机运行服务，--level 35表示操作只在等级3和5执行，on表示启动，off表示关闭。 </span><br><span class="line">chkconfig mysqld on #设定mysqld在各等级为on，“各等级”包括2、3、4、5等级。</span><br></pre></td></tr></table></figure>
-<p>如何增加一个服务：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">服务脚本必须存放在/etc/ini.d/目录下；</span><br><span class="line">chkconfig --add servicename在chkconfig工具服务列表中增加此服务，此时服务会被在/etc/rc.d/rcN.d中赋予K/S入口了；</span><br><span class="line">chkconfig --level 35 mysqld on修改服务的默认启动等级。</span><br></pre></td></tr></table></figure>
-<p><em>注意</em> 此命令只能在Centos7以下使用，因为Centos7中已由systemctl替代chkconfig命令</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/19/Linux%E4%B8%8Bchkconfig%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/" data-id="ck2ulod1c000civ0qchb8fagt" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-实现MySQL主从复制" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/11/17/%E5%AE%9E%E7%8E%B0MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" class="article-date">
-  <time datetime="2017-11-17T14:28:06.000Z" itemprop="datePublished">2017-11-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/17/%E5%AE%9E%E7%8E%B0MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/">实现MySQL主从复制</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="实验准备："><a href="#实验准备：" class="headerlink" title="实验准备："></a>实验准备：</h3><p>在Pc上安装两个MySQL，分别监听3307和3308端口，在centos7上也安装一个MySQL，这样我们就有三个slave！首先我们要保证4个MySQL上的数据一致，并且配置好各个的日志，这样即使出错了，也容易找出错误。</p>
+<p> <strong>2. 缓存穿透</strong></p>
+<p>缓存穿透是指查询一个一定不存在的数据，由于缓存是不命中时需要从数据库查询，查不到数据则不写入缓存，这将导致这个不存在的数据每次请求都要到数据库去查询，造成缓存穿透。</p>
+<p>解决办法</p>
 <ul>
-<li>Slave1：MySQL3307</li>
-<li>Slave2：MySQL3308</li>
-<li>Slave3：Centos7上的MySQL</li>
-<li>Master: 运行在3306端口的MySQL
-        
-          <p class="article-more-link">
-            <a href="/2017/11/17/%E5%AE%9E%E7%8E%B0MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/#more">Read More</a>
-          </p>
-        
+<li>对所有可能查询的参数以hash形式存储，在控制层先进行校验，不符合则丢弃。还有最常见的则是采用布隆过滤器，将所有可能存在的数据哈希到一个足够大的bitmap中，一个一定不存在的数据会被这个bitmap拦截掉，从而避免了对底层存储系统的查询压力。</li>
+<li>也可以采用一个更为简单粗暴的方法，如果一个查询返回的数据为空（不管是数据不存在，还是系统故障），我们仍然把这个空结果进行缓存，但它的过期时间会很短，最长不超过五分钟。</li>
+</ul>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/17/%E5%AE%9E%E7%8E%B0MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" data-id="ck2ulod2j001oiv0q72h05479" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/13/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E5%92%8C%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" data-id="ck2vy1e84002ao50q666a0yld" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
 
     </footer>
   </div>
@@ -250,10 +161,10 @@
 
 
   
-    <article id="post-Linux-Crontab-安装使用详细说明" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-MySQL中真正意义上的UTF8编码" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/11/15/Linux-Crontab-%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/" class="article-date">
-  <time datetime="2017-11-15T15:28:38.000Z" itemprop="datePublished">2017-11-15</time>
+    <a href="/2018/02/22/MySQL%E4%B8%AD%E7%9C%9F%E6%AD%A3%E6%84%8F%E4%B9%89%E4%B8%8A%E7%9A%84UTF8%E7%BC%96%E7%A0%81/" class="article-date">
+  <time datetime="2018-02-22T15:37:26.000Z" itemprop="datePublished">2018-02-22</time>
 </a>
     
   </div>
@@ -264,7 +175,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/15/Linux-Crontab-%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/">Linux Crontab 安装使用详细说明</a>
+      <a class="article-title" href="/2018/02/22/MySQL%E4%B8%AD%E7%9C%9F%E6%AD%A3%E6%84%8F%E4%B9%89%E4%B8%8A%E7%9A%84UTF8%E7%BC%96%E7%A0%81/">MySQL中真正意义上的UTF8编码</a>
     </h1>
   
 
@@ -272,74 +183,39 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>crontab命令常见于Unix和Linux的操作系统之中，用于设置周期性被执行的指令。该命令从标准输入设备读取指令，并将其存放于“crontab”文件中，以供之后读取和执行。通常，crontab储存的指令被守护进程激活。crond 常常在后台运行，每一分钟检查是否有预定的作业需要执行。这类作业一般称为cron jobs。</p>
+        <p>总所周知，目前的软件体系中运用最广泛的是Unicode字符集，而其中运用最多的编码规则就是UTF-8。用UTF-8有什么好处呢？简单的来说有一下几种好处：</p>
 <ol>
-<li>安装<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum -y install vixie-cron</span><br><span class="line">yum -y install crontabs</span><br></pre></td></tr></table></figure>
-说明：<br>vixie-cron 软件包是 cron 的主程序；<br>crontabs 软件包是用来安装、卸装、或列举用来驱动 cron 守护进程的表格的程序。</li>
-<li>配置<br>cron是linux的内置服务，但它不自动起来，可以用以下的方法启动、关闭这个服务：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">service crond start     //启动服务</span><br><span class="line">service crond stop      //关闭服务</span><br><span class="line">service crond restart   //重启服务</span><br><span class="line">service crond reload    //重新载入配置</span><br><span class="line">service crond status    //查看crontab服务状态</span><br></pre></td></tr></table></figure></li>
-<li>在CentOS系统中加入开机自动启动:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig --level 345 crond on</span><br></pre></td></tr></table></figure></li>
-<li>crontab 命令</li>
+<li>乱码不会扩散, GB2312在丢失一字节等情况下会造成后续所有文字变成乱码。</li>
+<li>不会产生错误的搜索结果, GB2312在搜索的时候相邻两个中文会拼出一个新的字符，导致出现错误的搜索结果。</li>
+<li>更大的字符集。</li>
+<li>很多语言直接支持 UTF-8，部分语言存储字符串到内存时直接使用UTF-8编码。</li>
+<li>与 GB2312/GB18030相比, UTF-8是一个通用解决方案。</li>
+<li>Unicode 一直有人维护，而 GB18030 下一次更新不知道会是什么时候了。另对于中文, UTF-8和GB2312在gzip压缩后都差不多，所以用来做网页对带宽影响很小。</li>
 </ol>
-<p>功能：设置计时器。</p>
-<p>语法：crontab[-u &lt;用户名称&gt;][配置文件] 或 crontab [-u &lt;用户名称&gt;][-elr]<br>解释：cron 是一个常驻服务，它提供计时器的功能，让用户在特定的时间得以执行预设的指令或程序。只要用户会编辑计时器的配置文件，就可以使 用计时器的功能。其配置文件格式如下：Minute Hour Day Month DayOFWeek Command</p>
-<p>参数：<br>-e　编辑该用户的计时器设置。<br>-l　列出该用户的计时器设置。<br>-r　删除该用户的计时器设置。<br>-u&lt;用户名称&gt; 　指定要设定计时器的用户名称。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">格式:</span><br><span class="line">*   *　 *　 *　 *　　<span class="built_in">command</span></span><br><span class="line">分　时　日　月　周　 命令</span><br><span class="line"></span><br><span class="line">第1列表示分钟1～59 每分钟用*或者 */1表示</span><br><span class="line">第2列表示小时1～23（0表示0点）</span><br><span class="line">第3列表示日期1～31</span><br><span class="line">第4列表示月份1～12</span><br><span class="line">第5列标识号星期0～6（0表示星期天）</span><br><span class="line">第6列要运行的命令</span><br><span class="line"></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">例子：</span><br><span class="line">```bash</span><br><span class="line">*/5 * * * * root ab -n 2000 http://60.217.229.252/250k.jpg</span><br><span class="line"></span><br><span class="line">上面例子表示每5分钟模拟用户访问http://60.217.229.252/250k.jpg 2000次</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">30 21 * * * /usr/<span class="built_in">local</span>/etc/rc.d/lighttpd restart</span><br><span class="line">上面的例子表示每晚的21:30重启apache。</span><br><span class="line"></span><br><span class="line">45 4 1,10,22 * * /usr/<span class="built_in">local</span>/etc/rc.d/lighttpd restart</span><br><span class="line">上面的例子表示每月1、10、22日的4 : 45重启apache。</span><br><span class="line"></span><br><span class="line">10 1 * * 6,0 /usr/<span class="built_in">local</span>/etc/rc.d/lighttpd restart</span><br><span class="line">上面的例子表示每周六、周日的1 : 10重启apache。</span><br><span class="line"></span><br><span class="line">0,30 18-23 * * * /usr/<span class="built_in">local</span>/etc/rc.d/lighttpd restart</span><br><span class="line">上面的例子表示在每天18 : 00至23 : 00之间每隔30分钟重启apache。</span><br><span class="line"></span><br><span class="line">0 23 * * 6 /usr/<span class="built_in">local</span>/etc/rc.d/lighttpd restart</span><br><span class="line">上面的例子表示每星期六的11 : 00 pm重启apache。</span><br><span class="line"></span><br><span class="line">* */1 * * * /usr/<span class="built_in">local</span>/etc/rc.d/lighttpd restart</span><br><span class="line">每一小时重启apache</span><br><span class="line"></span><br><span class="line">* 23-7/1 * * * /usr/<span class="built_in">local</span>/etc/rc.d/lighttpd restart</span><br><span class="line">晚上11点到早上7点之间，每隔一小时重启apache</span><br><span class="line"></span><br><span class="line">0 11 4 * mon-wed /usr/<span class="built_in">local</span>/etc/rc.d/lighttpd restart</span><br><span class="line">每月的4号与每周一到周三的11点重启apache</span><br><span class="line"></span><br><span class="line">0 4 1 jan * /usr/<span class="built_in">local</span>/etc/rc.d/lighttpd restart</span><br><span class="line">一月一号的4点重启apache</span><br><span class="line"></span><br><span class="line">*/30 * * * * /usr/sbin/ntpdate 210.72.145.44</span><br><span class="line">每半小时同步一下时间</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/15/Linux-Crontab-%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/" data-id="ck2ulod1a000aiv0q6uat9lbg" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-PHP目前比较常见的五大运行模式" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/11/15/PHP%E7%9B%AE%E5%89%8D%E6%AF%94%E8%BE%83%E5%B8%B8%E8%A7%81%E7%9A%84%E4%BA%94%E5%A4%A7%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F/" class="article-date">
-  <time datetime="2017-11-15T15:10:03.000Z" itemprop="datePublished">2017-11-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/15/PHP%E7%9B%AE%E5%89%8D%E6%AF%94%E8%BE%83%E5%B8%B8%E8%A7%81%E7%9A%84%E4%BA%94%E5%A4%A7%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F/">PHP目前比较常见的五大运行模式</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>关于PHP目前比较常见的五大运行模式：</p>
+<p>MySQL中也有UTF-8编码，他还有另外一个称呼叫做utf8mb3，该字符集每个字符最多使用三个字节。三个字节的UTF-8最大能编码的 Unicode字符是0xffff，也就是Unicode中的基本多文种平面（BMP）。也就是说，任何不在基本多文本平面的 Unicode字符，都无法使用MySQL的UTF-8编码存储。包括Emoji表情（Emoji是一种特殊的Unicode 编码，常见于ios和 android手机上），和很多不常用的汉字，以及任何新增的 Unicode字符等等。这样的话就会出现一些特殊字符无法保存到MySQL中。接下来我们就来解决这个编码的问题！</p>
+<p>随着Unicode的字符集的规范确定，以及他的广泛应用，MySQL官方自己也发现了这个问题，于是乎官方在MySQL5.5.3的时候推出了utf8mb4编码，（他才是真正意义上的UTF-8编码）mb4就是most bytes 4的意思，专门用来兼容四字节的unicode。utf8mb4是utf8的超集，除了将编码改为utf8mb4外不需要做其他转换。</p>
+<p>对于新增的utf8mb4编码官方有个小建议如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Tip: To save space with utf8mb4, use VARCHAR instead of CHAR. Otherwise, MySQL must reserve four bytes <span class="keyword">for</span> each character <span class="keyword">in</span> a CHAR CHARACTER SET utf8mb4 column because that is the maximum possible length. For example, MySQL must reserve 40 bytes <span class="keyword">for</span> a CHAR(10) CHARACTER SET utf8mb4 column.</span><br><span class="line">大意如下：</span><br><span class="line">为了节省空间 utf8mb4，请使用 VARCHAR而不是CHAR。否则，MySQL必须为CHAR CHARACTER SET utf8mb4列中的每个字符保留四个字节，因为这是最大可能的长度。例如，MySQL必须为一CHAR(10) CHARACTER SET utf8mb4 列保留40个字节。</span><br></pre></td></tr></table></figure>
+<p>那如何设置MySQL的编码呢？</p>
 <ol>
-<li>CGI（通用网关接口 / Common Gateway Interface）</li>
-<li>FastCGI（常驻型CGI / Long-Live CGI）</li>
-<li>CLI（命令行运行 / Command Line Interface）</li>
-<li>Web模块模式（Apache等Web服务器运行的模式）</li>
-<li>ISAPI（Internet Server Application Program Interface）
-        
-          <p class="article-more-link">
-            <a href="/2017/11/15/PHP%E7%9B%AE%E5%89%8D%E6%AF%94%E8%BE%83%E5%B8%B8%E8%A7%81%E7%9A%84%E4%BA%94%E5%A4%A7%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F/#more">Read More</a>
-          </p>
-        
+<li><p>查看数据库服务器的版本，低于5.5.3则不支持utf8mb4。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">select VERSION();</span><br><span class="line"></span><br><span class="line">+-----------+</span><br><span class="line">| VERSION() |</span><br><span class="line">+-----------+</span><br><span class="line">| 5.5.53    |</span><br><span class="line">+-----------+</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看数据库的编码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like &apos;character%&apos;;</span><br><span class="line"></span><br><span class="line">+--------------------------+-----------------------------------+</span><br><span class="line">| Variable_name            | Value                             |</span><br><span class="line">+--------------------------+-----------------------------------+</span><br><span class="line">| character_set_client     | utf8                              |</span><br><span class="line">| character_set_connection | utf8                              |</span><br><span class="line">| character_set_database   | utf8                              |</span><br><span class="line">| character_set_filesystem | binary                            |</span><br><span class="line">| character_set_results    | utf8                              |</span><br><span class="line">| character_set_server     | utf8                              |</span><br><span class="line">| character_set_system     | utf8                              |</span><br><span class="line">| character_sets_dir       | C:\phpStudy\MySQL\share\charsets\ |</span><br><span class="line">+--------------------------+-----------------------------------+</span><br></pre></td></tr></table></figure>
+<p>将上述utf8全部修改成utf8mb4，编辑mysql的配置文件/etc/my.cnf（具体还可以参照文章<a href="https://www.ydstudio.net/archives/25.html" target="_blank" rel="noopener">Centos6.9上搭建lnmp环境</a>）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/my.cnf</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line">character-set-server=utf8mb4 </span><br><span class="line">collation-server=utf8_general_ci </span><br><span class="line">sql_mode=<span class="string">'NO_ENGINE_SUBSTITUTION'</span></span><br><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line"></span><br><span class="line">[mysql.server]</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line"></span><br><span class="line">[mysqld_safe]</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line"></span><br><span class="line">[client]</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line"></span><br><span class="line"><span class="comment">#重启mysql</span></span><br><span class="line">service mysqld restart</span><br><span class="line"></span><br><span class="line"><span class="comment">#再次查看</span></span><br><span class="line">mysql&gt; show variables like <span class="string">'character%'</span>;</span><br><span class="line">+--------------------------+-----------------------------------+</span><br><span class="line">| Variable_name            | Value                             |</span><br><span class="line">+--------------------------+-----------------------------------+</span><br><span class="line">| character_set_client     | utf8mb4                           |</span><br><span class="line">| character_set_connection | utf8mb4                           |</span><br><span class="line">| character_set_database   | utf8mb4                           |</span><br><span class="line">| character_set_filesystem | binary                            |</span><br><span class="line">| character_set_results    | utf8mb4                           |</span><br><span class="line">| character_set_server     | utf8mb4                           |</span><br><span class="line">| character_set_system     | utf8mb4                           |</span><br><span class="line">| character_sets_dir       | C:\phpStudy\MySQL\share\charsets\ |</span><br><span class="line">+--------------------------+-----------------------------------+</span><br></pre></td></tr></table></figure>
+<p>这样我们的数据库就编码就全都设置成了utf8mb4,一些特殊的中文字符和Emoji表情符就可以成功的保存在数据库中了</p>
+</li>
+</ol>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/15/PHP%E7%9B%AE%E5%89%8D%E6%AF%94%E8%BE%83%E5%B8%B8%E8%A7%81%E7%9A%84%E4%BA%94%E5%A4%A7%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F/" data-id="ck2ulod1x0010iv0qedmhdzcb" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/02/22/MySQL%E4%B8%AD%E7%9C%9F%E6%AD%A3%E6%84%8F%E4%B9%89%E4%B8%8A%E7%9A%84UTF8%E7%BC%96%E7%A0%81/" data-id="ck2vy1e780013o50qhtxd52k0" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
 
     </footer>
   </div>
@@ -348,10 +224,10 @@
 
 
   
-    <article id="post-解决git默认不区分文件名大小写的问题" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-PHP如何通过开启Opcache来提高性能" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/11/13/%E8%A7%A3%E5%86%B3git%E9%BB%98%E8%AE%A4%E4%B8%8D%E5%8C%BA%E5%88%86%E6%96%87%E4%BB%B6%E5%90%8D%E5%A4%A7%E5%B0%8F%E5%86%99%E7%9A%84%E9%97%AE%E9%A2%98/" class="article-date">
-  <time datetime="2017-11-13T14:46:50.000Z" itemprop="datePublished">2017-11-13</time>
+    <a href="/2018/02/09/PHP%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E5%BC%80%E5%90%AFOpcache%E6%9D%A5%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD/" class="article-date">
+  <time datetime="2018-02-09T15:35:09.000Z" itemprop="datePublished">2018-02-09</time>
 </a>
     
   </div>
@@ -362,7 +238,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/13/%E8%A7%A3%E5%86%B3git%E9%BB%98%E8%AE%A4%E4%B8%8D%E5%8C%BA%E5%88%86%E6%96%87%E4%BB%B6%E5%90%8D%E5%A4%A7%E5%B0%8F%E5%86%99%E7%9A%84%E9%97%AE%E9%A2%98/">解决git默认不区分文件名大小写的问题</a>
+      <a class="article-title" href="/2018/02/09/PHP%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E5%BC%80%E5%90%AFOpcache%E6%9D%A5%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD/">PHP如何通过开启Opcache来提高性能</a>
     </h1>
   
 
@@ -370,25 +246,27 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>当你创建一个文件后,叫 readme.md 写入内容后 提交到线上代码仓库.<br>然后你在本地修改文件名为 Readme.md 接着你去提交,发现代码没有变化.</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
-<p>你会无任何提示信息,其实 git 默认对于文件名大小写是不敏感的,所以上面你修改了首字母大写,但是git 并没有发现代码任何改动.那么如何才能让 git 识别文件名大小写变化.</p>
-<p>一  配置git 使其对文件名大小写敏感</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config core.ignorecase false</span><br></pre></td></tr></table></figure>
-<p>二 从git 本地仓库删除此文件,然后添加再提交<br>(1) 删除</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm readme.md</span><br></pre></td></tr></table></figure>
-<p>(2) 重新添加</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add Readme.md</span><br></pre></td></tr></table></figure>
-<p>(3)提交</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m 'Readme.md'</span><br></pre></td></tr></table></figure>
-<p>这样git不区分文件名大小写的问题就解决了！</p>
-
+        <p>在开启Opcache之前，我们先了解一下什么是Opcache:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">OPcache 通过将 PHP 脚本预编译的字节码存储到共享内存中来提升 PHP 的性能， 存储预编译字节码的好处就是 省去了每次加载和解析 PHP 脚本的开销。</span><br><span class="line">PHP 5.5.0 及后续版本中已经绑定了 OPcache 扩展。 对于 PHP 5.2，5.3 和 5.4 版本可以使用 » PECL 扩展中的 OPcache 库。</span><br></pre></td></tr></table></figure>
+<p>下面来说说如何安装Opcache,不同的PHP版本安装的方法稍有不同：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">OPcache 只能编译为共享扩展。 如果你使用 --<span class="built_in">disable</span>-all 参数 禁用了默认扩展的构建， 那么必须使用 --<span class="built_in">enable</span>-opcache 选项来开启 OPcache。</span><br><span class="line">编译之后，就可以使用 zend_extension 指令来将 OPcache 扩展加载到 PHP 中。在非 Windows 平台使用 zend_extension=/full/path/to/opcache.so，</span><br><span class="line">Windows平台使用 zend_extension=C:\path\to\php_opcache.dll</span><br><span class="line"></span><br><span class="line">PHP 5.2,5.3和 5.4版本中没有和PHP捆绑，需要自行安装，这里不做说明。</span><br></pre></td></tr></table></figure>
+<p>官方出了一个推荐配置如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">使用下列推荐设置来获得较好的 性能：</span><br><span class="line"></span><br><span class="line">opcache.memory_consumption=128</span><br><span class="line">opcache.interned_strings_buffer=8</span><br><span class="line">opcache.max_accelerated_files=4000</span><br><span class="line">opcache.revalidate_freq=60</span><br><span class="line">opcache.fast_shutdown=1</span><br><span class="line">opcache.enable_cli=1</span><br><span class="line">你也可以禁用 opcache.save_comments 并且启用 opcache.enable_file_override。 需要提醒的是，在生产环境中使用上述配置之前，必须经过严格测试。 因为上述配置存在一个已知问题，它会引发一些框架和应用的异常， 尤其是在存在文档使用了备注注解的时候。</span><br></pre></td></tr></table></figure>
+<p><strong>配置扩展的时候注意以下问题</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在php.ini中增加opcache时需要使用zend_extension，而不是extension，不然会得到以下WARNING</span><br><span class="line"></span><br><span class="line">PHP Warning: PHP Startup: Invalid library (appears to be a Zend Extension, try loading using zend_extension=opcache.so from php.ini) <span class="keyword">in</span> Unknown on line 0</span><br></pre></td></tr></table></figure>
+<p>由于我自己的服务器安装的PHP7，已经安装了Opcache，所以我只需在php.ini文件中配置以下内容</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">zend_extension=/usr/local/php/lib/php/extensions/no-debug-non-zts-20151012/opcache.so</span><br><span class="line"></span><br><span class="line">[opcache]</span><br><span class="line"></span><br><span class="line">;开关打开</span><br><span class="line">opcache.enable=1</span><br><span class="line">;设置共享内存大小, 单位为：Mb</span><br><span class="line">opcache.memory_consumption=128</span><br><span class="line">opcache.interned_strings_buffer=8</span><br><span class="line">opcache.max_accelerated_files=4000</span><br><span class="line">opcache.revalidate_freq=60</span><br><span class="line">opcache.fast_shutdown=1</span><br><span class="line">opcache.enable_cli=1</span><br><span class="line"></span><br><span class="line">本次涉及到的有两个参数</span><br><span class="line"></span><br><span class="line">revalidate_freq，默认2</span><br><span class="line">检查脚本时间戳是否有更新的周期，以秒为单位。 设置为 0 会导致针对每个请求， OPcache 都会检查脚本更新</span><br><span class="line"></span><br><span class="line">validate_timestamps，默认1</span><br><span class="line">如果启用，那么 OPcache 会每隔 opcache.revalidate_freq 设定的秒数 检查脚本是否更新。 如果禁用此选项，你必须使用 opcache_reset() 或者 opcache_invalidate() 函数来手动重置 OPcache，也可以 通过重启 Web 服务器来使文件系统更改生效。</span><br></pre></td></tr></table></figure>
+<p><strong>最后重启Nginx和PHP即可</strong></p>
+<p>下面是OPcache 可用的配置指令完整列表：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><span class="line">; Determines <span class="keyword">if</span> Zend OPCache is enabled</span><br><span class="line">;opcache.enable=0</span><br><span class="line"></span><br><span class="line">; Determines <span class="keyword">if</span> Zend OPCache is enabled <span class="keyword">for</span> the CLI version of PHP</span><br><span class="line">;opcache.enable_cli=0</span><br><span class="line"></span><br><span class="line">; The OPcache shared memory storage size.</span><br><span class="line">;opcache.memory_consumption=64</span><br><span class="line"></span><br><span class="line">; The amount of memory <span class="keyword">for</span> interned strings <span class="keyword">in</span> Mbytes.</span><br><span class="line">;opcache.interned_strings_buffer=4</span><br><span class="line"></span><br><span class="line">; The maximum number of keys (scripts) <span class="keyword">in</span> the OPcache <span class="built_in">hash</span> table.</span><br><span class="line">; Only numbers between 200 and 1000000 are allowed.</span><br><span class="line">;opcache.max_accelerated_files=2000</span><br><span class="line"></span><br><span class="line">; The maximum percentage of <span class="string">"wasted"</span> memory until a restart is scheduled.</span><br><span class="line">;opcache.max_wasted_percentage=5</span><br><span class="line"></span><br><span class="line">; When this directive is enabled, the OPcache appends the current working</span><br><span class="line">; directory to the script key, thus eliminating possible collisions between</span><br><span class="line">; files with the same name (basename). Disabling the directive improves</span><br><span class="line">; performance, but may <span class="built_in">break</span> existing applications.</span><br><span class="line">;opcache.use_cwd=1</span><br><span class="line"></span><br><span class="line">; When disabled, you must reset the OPcache manually or restart the</span><br><span class="line">; webserver <span class="keyword">for</span> changes to the filesystem to take effect.</span><br><span class="line">;opcache.validate_timestamps=1</span><br><span class="line"></span><br><span class="line">; How often (<span class="keyword">in</span> seconds) to check file timestamps <span class="keyword">for</span> changes to the shared</span><br><span class="line">; memory storage allocation. (<span class="string">"1"</span> means validate once per second, but only</span><br><span class="line">; once per request. <span class="string">"0"</span> means always validate)</span><br><span class="line">;opcache.revalidate_freq=2</span><br><span class="line"></span><br><span class="line">; Enables or disables file search <span class="keyword">in</span> include_path optimization</span><br><span class="line">;opcache.revalidate_path=0</span><br><span class="line"></span><br><span class="line">; If disabled, all PHPDoc comments are dropped from the code to reduce the</span><br><span class="line">; size of the optimized code.</span><br><span class="line">;opcache.save_comments=1</span><br><span class="line"></span><br><span class="line">; If enabled, a fast shutdown sequence is used <span class="keyword">for</span> the accelerated code</span><br><span class="line">; Depending on the used Memory Manager this may cause some incompatibilities.</span><br><span class="line">;opcache.fast_shutdown=0</span><br><span class="line"></span><br><span class="line">; Allow file existence override (file_exists, etc.) performance feature.</span><br><span class="line">;opcache.enable_file_override=0</span><br><span class="line"></span><br><span class="line">; A bitmask, <span class="built_in">where</span> each bit enables or disables the appropriate OPcache</span><br><span class="line">; passes</span><br><span class="line">;opcache.optimization_level=0xffffffff</span><br><span class="line"></span><br><span class="line">;opcache.inherited_hack=1</span><br><span class="line">;opcache.dups_fix=0</span><br><span class="line"></span><br><span class="line">; The location of the OPcache blacklist file (wildcards allowed).</span><br><span class="line">; Each OPcache blacklist file is a text file that holds the names of files</span><br><span class="line">; that should not be accelerated. The file format is to add each filename</span><br><span class="line">; to a new line. The filename may be a full path or just a file prefix</span><br><span class="line">; (i.e., /var/www/x  blacklists all the files and directories <span class="keyword">in</span> /var/www</span><br><span class="line">; that start with <span class="string">'x'</span>). Line starting with a ; are ignored (comments).</span><br><span class="line">;opcache.blacklist_filename=</span><br><span class="line"></span><br><span class="line">; Allows exclusion of large files from being cached. By default all files</span><br><span class="line">; are cached.</span><br><span class="line">;opcache.max_file_size=0</span><br><span class="line"></span><br><span class="line">; Check the cache checksum each N requests.</span><br><span class="line">; The default value of <span class="string">"0"</span> means that the checks are disabled.</span><br><span class="line">;opcache.consistency_checks=0</span><br><span class="line"></span><br><span class="line">; How long to <span class="built_in">wait</span> (<span class="keyword">in</span> seconds) <span class="keyword">for</span> a scheduled restart to begin <span class="keyword">if</span> the cache</span><br><span class="line">; is not being accessed.</span><br><span class="line">;opcache.force_restart_timeout=180</span><br><span class="line"></span><br><span class="line">; OPcache error_log file name. Empty string assumes <span class="string">"stderr"</span>.</span><br><span class="line">;opcache.error_log=</span><br><span class="line"></span><br><span class="line">; All OPcache errors go to the Web server <span class="built_in">log</span>.</span><br><span class="line">; By default, only fatal errors (level 0) or errors (level 1) are logged.</span><br><span class="line">; You can also <span class="built_in">enable</span> warnings (level 2), info messages (level 3) or</span><br><span class="line">; debug messages (level 4).</span><br><span class="line">;opcache.log_verbosity_level=1</span><br><span class="line"></span><br><span class="line">; Preferred Shared Memory back-end. Leave empty and <span class="built_in">let</span> the system decide.</span><br><span class="line">;opcache.preferred_memory_model=</span><br><span class="line"></span><br><span class="line">; Protect the shared memory from unexpected writing during script execution.</span><br><span class="line">; Useful <span class="keyword">for</span> internal debugging only.</span><br><span class="line">;opcache.protect_memory=0</span><br><span class="line"></span><br><span class="line">; Allows calling OPcache API <span class="built_in">functions</span> only from PHP scripts <span class="built_in">which</span> path is</span><br><span class="line">; started from specified string. The default <span class="string">""</span> means no restriction</span><br><span class="line">;opcache.restrict_api=</span><br><span class="line"></span><br><span class="line">; Mapping base of shared memory segments (<span class="keyword">for</span> Windows only). All the PHP</span><br><span class="line">; processes have to map shared memory into the same address space. This</span><br><span class="line">; directive allows to manually fix the <span class="string">"Unable to reattach to base address"</span></span><br><span class="line">; errors.</span><br><span class="line">;opcache.mmap_base=</span><br><span class="line"></span><br><span class="line">; Enables and sets the second level cache directory.</span><br><span class="line">; It should improve performance when SHM memory is full, at server restart or</span><br><span class="line">; SHM reset. The default <span class="string">""</span> disables file based caching.</span><br><span class="line">;opcache.file_cache=</span><br><span class="line"></span><br><span class="line">; Enables or disables opcode caching <span class="keyword">in</span> shared memory.</span><br><span class="line">;opcache.file_cache_only=0</span><br><span class="line"></span><br><span class="line">; Enables or disables checksum validation when script loaded from file cache.</span><br><span class="line">;opcache.file_cache_consistency_checks=1</span><br><span class="line"></span><br><span class="line">; Implies opcache.file_cache_only=1 <span class="keyword">for</span> a certain process that failed to</span><br><span class="line">; reattach to the shared memory (<span class="keyword">for</span> Windows only). Explicitly enabled file</span><br><span class="line">; cache is required.</span><br><span class="line">;opcache.file_cache_fallback=1</span><br><span class="line"></span><br><span class="line">; Enables or disables copying of PHP code (text segment) into HUGE PAGES.</span><br><span class="line">; This should improve performance, but requires appropriate OS configuration.</span><br><span class="line">;opcache.huge_code_pages=0</span><br><span class="line"></span><br><span class="line">; Validate cached file permissions.</span><br><span class="line">; opcache.validate_permission=0</span><br><span class="line"></span><br><span class="line">; Prevent name collisions <span class="keyword">in</span> chroot<span class="string">'ed environment.</span></span><br><span class="line"><span class="string">; opcache.validate_root=0</span></span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/13/%E8%A7%A3%E5%86%B3git%E9%BB%98%E8%AE%A4%E4%B8%8D%E5%8C%BA%E5%88%86%E6%96%87%E4%BB%B6%E5%90%8D%E5%A4%A7%E5%B0%8F%E5%86%99%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ck2ulod2m001siv0q46xaau00" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/02/09/PHP%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E5%BC%80%E5%90%AFOpcache%E6%9D%A5%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD/" data-id="ck2vy1e7j001go50qbqw76udh" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
+
     </footer>
   </div>
   
@@ -396,10 +274,10 @@
 
 
   
-    <article id="post-隐藏Nginx或Apache以及PHP的版本号" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Spring-Boot的三种启动方式" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/11/13/%E9%9A%90%E8%97%8FNginx%E6%88%96Apache%E4%BB%A5%E5%8F%8APHP%E7%9A%84%E7%89%88%E6%9C%AC%E5%8F%B7/" class="article-date">
-  <time datetime="2017-11-13T14:40:48.000Z" itemprop="datePublished">2017-11-13</time>
+    <a href="/2018/01/19/Spring-Boot%E7%9A%84%E4%B8%89%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F/" class="article-date">
+  <time datetime="2018-01-19T15:33:49.000Z" itemprop="datePublished">2018-01-19</time>
 </a>
     
   </div>
@@ -410,7 +288,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/13/%E9%9A%90%E8%97%8FNginx%E6%88%96Apache%E4%BB%A5%E5%8F%8APHP%E7%9A%84%E7%89%88%E6%9C%AC%E5%8F%B7/">隐藏Nginx或Apache以及PHP的版本号</a>
+      <a class="article-title" href="/2018/01/19/Spring-Boot%E7%9A%84%E4%B8%89%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F/">Spring Boot的三种启动方式</a>
     </h1>
   
 
@@ -418,18 +296,21 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>  当你配置完一台服务器后，并不是就可以高枕无忧了，由于软件难免会有漏洞，防止因为漏洞导致一些损失，所以说经常关注安全公告并及时升级服务器也是必要的。一般来说，黑客攻击服务器的首要步骤就是收集信息，比如说你的软件版本，这些将成为下一步有针对性攻击的依据。所以说一定程度的隐藏这些信息就显得非常有必要了，本文将简单介绍如何在网络上隐藏Nginx版本号以及PHP的版本号。</p>
-        
-          <p class="article-more-link">
-            <a href="/2017/11/13/%E9%9A%90%E8%97%8FNginx%E6%88%96Apache%E4%BB%A5%E5%8F%8APHP%E7%9A%84%E7%89%88%E6%9C%AC%E5%8F%B7/#more">Read More</a>
-          </p>
-        
+        <p>Spring Boot有以下三种启动方式，最后一种我们可以很好的设置不同环境使用不同的配置文件。</p>
+<p>1.IDE 运行Application这个类的main方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">package com.dameiweb.girl;</span><br><span class="line"></span><br><span class="line">import org.springframework.boot.SpringApplication;</span><br><span class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"></span><br><span class="line">@SpringBootApplication</span><br><span class="line">public class GirlApplication &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		SpringApplication.run(GirlApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.在springboot的应用的根目录下运行mvn spring-boot:run</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">$ mvn spring-boot:run</span><br><span class="line">[INFO] Scanning <span class="keyword">for</span> projects...</span><br><span class="line">Downloading: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.pom</span><br><span class="line">Downloaded: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.pom (0 B at 0 B/s)</span><br><span class="line">Downloading: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.jar</span><br><span class="line">Downloaded: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.jar (0 B at 0 B/s)</span><br><span class="line">Downloading: http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/codehaus-parent/3/codehaus-parent-3.pom</span><br><span class="line">Downloaded: http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/codehaus-parent/3/codehaus-parent-3.pom (0 B at 0 B/s)</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] Building girl 0.0.1-SNAPSHOT</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] &gt;&gt;&gt; spring-boot-maven-plugin:1.5.9.RELEASE:run (default-cli) &gt; <span class="built_in">test</span>-compile @ girl &gt;&gt;&gt;</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ girl ---</span><br><span class="line">[INFO] Using <span class="string">'UTF-8'</span> encoding to copy filtered resources.</span><br><span class="line">[INFO] Copying 3 resources</span><br><span class="line">[INFO] Copying 0 resource</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ girl ---</span><br><span class="line">[INFO] Nothing to compile - all classes are up to date</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ girl ---</span><br><span class="line">[INFO] Using <span class="string">'UTF-8'</span> encoding to copy filtered resources.</span><br><span class="line">[INFO] skip non existing resourceDirectory D:\work\girl\src\<span class="built_in">test</span>\resources</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ girl ---</span><br><span class="line">[INFO] Nothing to compile - all classes are up to date</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] &lt;&lt;&lt; spring-boot-maven-plugin:1.5.9.RELEASE:run (default-cli) &lt; <span class="built_in">test</span>-compile @ girl &lt;&lt;&lt;</span><br><span class="line">[INFO]</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- spring-boot-maven-plugin:1.5.9.RELEASE:run (default-cli) @ girl ---</span><br></pre></td></tr></table></figure>
+<p>3.在springboot的应用的根目录下 mvn install 生成jar后运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">先执行 mvn install</span><br><span class="line">再执行 java -jar target/girl-0.0.1-SNAPSHOT.jar --spring.profile.active=prod</span><br><span class="line"></span><br><span class="line">java -jar target/girl-0.0.1-SNAPSHOT.jar --spring.profile.active=prod</span><br><span class="line"></span><br><span class="line">  .   ____          _            __ _ _</span><br><span class="line"> /\\ / ___<span class="string">'_ __ _ _(_)_ __  __ _ \ \ \ \</span></span><br><span class="line"><span class="string">( ( )\___ | '</span>_ | <span class="string">'_| | '</span>_ \/ _` | \ \ \ \</span><br><span class="line"> \\/  ___)| |_)| | | | | || (_| |  ) ) ) )</span><br><span class="line">  <span class="string">'  |____| .__|_| |_|_| |_\__, | / / / /</span></span><br><span class="line"><span class="string"> =========|_|==============|___/=/_/_/_/</span></span><br><span class="line"><span class="string"> :: Spring Boot ::        (v1.5.9.RELEASE)</span></span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/13/%E9%9A%90%E8%97%8FNginx%E6%88%96Apache%E4%BB%A5%E5%8F%8APHP%E7%9A%84%E7%89%88%E6%9C%AC%E5%8F%B7/" data-id="ck2ulod2q001xiv0qbkyz1eez" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/01/19/Spring-Boot%E7%9A%84%E4%B8%89%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F/" data-id="ck2vy1e7t001vo50q4su88b48" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
+
     </footer>
   </div>
   
@@ -437,10 +318,10 @@
 
 
   
-    <article id="post-如何正确的修改Python的pip自带的源" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Java里有哪些语法糖" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/11/13/%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%AE%E6%94%B9Python%E7%9A%84pip%E8%87%AA%E5%B8%A6%E7%9A%84%E6%BA%90/" class="article-date">
-  <time datetime="2017-11-13T14:06:56.000Z" itemprop="datePublished">2017-11-13</time>
+    <a href="/2018/01/09/Java%E9%87%8C%E6%9C%89%E5%93%AA%E4%BA%9B%E8%AF%AD%E6%B3%95%E7%B3%96/" class="article-date">
+  <time datetime="2018-01-09T15:36:33.000Z" itemprop="datePublished">2018-01-09</time>
 </a>
     
   </div>
@@ -451,7 +332,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/13/%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%AE%E6%94%B9Python%E7%9A%84pip%E8%87%AA%E5%B8%A6%E7%9A%84%E6%BA%90/">如何正确的修改Python的pip自带的源</a>
+      <a class="article-title" href="/2018/01/09/Java%E9%87%8C%E6%9C%89%E5%93%AA%E4%BA%9B%E8%AF%AD%E6%B3%95%E7%B3%96/">Java里有哪些语法糖</a>
     </h1>
   
 
@@ -459,19 +340,31 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>  Python中的pip安装依赖包时默认访问<a href="https://pypi.python.org/simple/，但是经常出现不稳定以及访问速度非常慢的情况，国内厂商提供的pipy镜像目前可用的有：" target="_blank" rel="noopener">https://pypi.python.org/simple/，但是经常出现不稳定以及访问速度非常慢的情况，国内厂商提供的pipy镜像目前可用的有：</a></p>
-<h4 id="1-http-pypi-douban-com-豆瓣"><a href="#1-http-pypi-douban-com-豆瓣" class="headerlink" title="1.http://pypi.douban.com/ 豆瓣"></a>1.<a href="http://pypi.douban.com/" target="_blank" rel="noopener">http://pypi.douban.com/</a> 豆瓣</h4><h4 id="2-http-pypi-mirrors-ustc-edu-cn-simple-中国科学技术大学"><a href="#2-http-pypi-mirrors-ustc-edu-cn-simple-中国科学技术大学" class="headerlink" title="2.http://pypi.mirrors.ustc.edu.cn/simple/ 中国科学技术大学"></a>2.<a href="http://pypi.mirrors.ustc.edu.cn/simple/" target="_blank" rel="noopener">http://pypi.mirrors.ustc.edu.cn/simple/</a> 中国科学技术大学</h4>
-        
-          <p class="article-more-link">
-            <a href="/2017/11/13/%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%AE%E6%94%B9Python%E7%9A%84pip%E8%87%AA%E5%B8%A6%E7%9A%84%E6%BA%90/#more">Read More</a>
-          </p>
-        
+        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">语法糖（Syntactic Sugar），也称糖衣语法，指在计算机语言中添加的某种语法，这种语法对语言本身功能来说没有什么影响，只是为了方便程序员的开发，提高开发效率。说白了，语法糖就是对现有语法的一个封装。</span><br></pre></td></tr></table></figure>
+<p>Java作为一种与平台无关的高级语言，当然也含有语法糖，这些语法糖并不被虚拟机所支持，在编译成字节码阶段就自动转换成简单常用语法。<br>语法糖的大概有三个特性：</p>
+<ol>
+<li>提高程序开发效率</li>
+<li>程序性能不受影响</li>
+<li>规避coder可能因手误而出现的错误</li>
+</ol>
+<p>那Java有哪些语法糖呢？Java大概有如下6个语法糖：</p>
+<ol>
+<li>泛型与类型擦除</li>
+<li>自动装箱与拆箱</li>
+<li>变长参数</li>
+<li>增强for循环</li>
+<li>内部类</li>
+<li>枚举类</li>
+</ol>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/13/%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%AE%E6%94%B9Python%E7%9A%84pip%E8%87%AA%E5%B8%A6%E7%9A%84%E6%BA%90/" data-id="ck2ulod2h001liv0q3a7wgjb2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/01/09/Java%E9%87%8C%E6%9C%89%E5%93%AA%E4%BA%9B%E8%AF%AD%E6%B3%95%E7%B3%96/" data-id="ck2vy1e6y000qo50qc3pxbmpv" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+
     </footer>
   </div>
   
@@ -479,10 +372,10 @@
 
 
   
-    <article id="post-Linux文件时间详解-ctime、mtime和atime" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Java出现错误Implicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/11/10/Linux%E6%96%87%E4%BB%B6%E6%97%B6%E9%97%B4%E8%AF%A6%E8%A7%A3-ctime%E3%80%81mtime%E5%92%8Catime/" class="article-date">
-  <time datetime="2017-11-10T15:01:09.000Z" itemprop="datePublished">2017-11-10</time>
+    <a href="/2018/01/04/Java%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFImplicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor/" class="article-date">
+  <time datetime="2018-01-04T15:32:03.000Z" itemprop="datePublished">2018-01-04</time>
 </a>
     
   </div>
@@ -493,7 +386,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/10/Linux%E6%96%87%E4%BB%B6%E6%97%B6%E9%97%B4%E8%AF%A6%E8%A7%A3-ctime%E3%80%81mtime%E5%92%8Catime/">Linux文件时间详解 ctime、mtime和atime</a>
+      <a class="article-title" href="/2018/01/04/Java%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFImplicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor/">Java出现错误Implicit super constructor  **  is undefined for default constructor. Must define an explicit constructor</a>
     </h1>
   
 
@@ -501,19 +394,178 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Linux系统文件有三个主要的时间属性，分别是 ctime(change time), atime(access time), mtime(modify time)。这三个时间很容易混淆，准备深入了解Linux的童鞋请区分这三者的区别。</p>
-        
-          <p class="article-more-link">
-            <a href="/2017/11/10/Linux%E6%96%87%E4%BB%B6%E6%97%B6%E9%97%B4%E8%AF%A6%E8%A7%A3-ctime%E3%80%81mtime%E5%92%8Catime/#more">Read More</a>
-          </p>
-        
+        <p>公司开展新的项目，要求使用Java，给一个月的学习时间。(<strong><strong>南京一些比较大的公司也开始转向Java，语言环境发了改变，学习Java也是大势所趋。2018年1月26日修改</strong></strong>)，只好开始学习Java！说好有系统的培训，结果我现在在自学！在学习java的时候，遇到了下面的问题：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Implicit <span class="keyword">super</span> constructor <span class="title">People</span><span class="params">()</span> is undefined <span class="keyword">for</span> <span class="keyword">default</span> constructor. Must define an explicit constructor</span></span><br></pre></td></tr></table></figure>
+<p>大致的意思是父类没有定义默认的无参数的构造方法，父类必须定义一个无参的构造方法。经过一番研究得知，Java中有一下的规则： 因为你的父类已经定义了一个有参的构造函数并且父类中没有默认的无参构造方法，此时编译器不会为你调用默认的构造函数， 当子类继承时，必须在自己的构造函数显式调用父类的构造函数，自己才能确保子类在初始化前父类会被实例化， 如果你父类中有无参的构造函数，子类就不会强制要求调用，即你写的那个就可以通过， 编译器会默认帮你调用父类的构造函数。</p>
+<p>修改后的代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//父类</span></span><br><span class="line"><span class="keyword">package</span> dmw;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">People</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> String name;</span><br><span class="line">	<span class="keyword">protected</span> <span class="keyword">int</span> age;</span><br><span class="line">	<span class="keyword">protected</span> String gender;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">People</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">People</span><span class="params">(<span class="keyword">int</span> age,String name,String gender)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.age = age;</span><br><span class="line">		<span class="keyword">this</span>.name =name;</span><br><span class="line">		<span class="keyword">this</span>.gender=gender;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	 <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span></span>&#123;</span><br><span class="line">		 <span class="keyword">return</span> <span class="keyword">this</span>.age;</span><br><span class="line">	 &#125;</span><br><span class="line">	 </span><br><span class="line">	 <span class="function"><span class="keyword">public</span> String <span class="title">getGender</span><span class="params">()</span></span>&#123;</span><br><span class="line">		 <span class="keyword">return</span> <span class="keyword">this</span>.gender;</span><br><span class="line">	 &#125;</span><br><span class="line">	 </span><br><span class="line">	 <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span></span>;</span><br><span class="line">	 </span><br><span class="line">	 </span><br><span class="line">	 <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">setGender</span><span class="params">(String gender)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//子类</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> dmw;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">extends</span> <span class="title">People</span> </span>&#123; </span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">(<span class="keyword">int</span> age, String name, String gender)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>(age, name, gender);</span><br><span class="line">		<span class="comment">// TODO Auto-generated constructor stub</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.age = age;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">setGender</span><span class="params">(String gender)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.gender = gender;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="http://blog.csdn.net/children_of_light/article/details/54985869" target="_blank" rel="noopener">eclipse的maven配置</a></p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/10/Linux%E6%96%87%E4%BB%B6%E6%97%B6%E9%97%B4%E8%AF%A6%E8%A7%A3-ctime%E3%80%81mtime%E5%92%8Catime/" data-id="ck2ulod1e000fiv0qgfei06vq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/01/04/Java%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFImplicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor/" data-id="ck2vy1e6g000ao50qfrt825wg" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-使用java和javac命令来编译运行Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/01/%E4%BD%BF%E7%94%A8java%E5%92%8Cjavac%E5%91%BD%E4%BB%A4%E6%9D%A5%E7%BC%96%E8%AF%91%E8%BF%90%E8%A1%8CJava/" class="article-date">
+  <time datetime="2018-01-01T15:31:03.000Z" itemprop="datePublished">2018-01-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/01/%E4%BD%BF%E7%94%A8java%E5%92%8Cjavac%E5%91%BD%E4%BB%A4%E6%9D%A5%E7%BC%96%E8%AF%91%E8%BF%90%E8%A1%8CJava/">使用java和javac命令来编译运行Java</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>废话不多说，直奔主题!</p>
+<p> 1.先创建一个Test.java的文件，里面保存的内容如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> void main(String[] args)&#123;</span><br><span class="line">        System.out.println(<span class="string">"hello world!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">`</span><br></pre></td></tr></table></figure>
+<p> 2.使用javac编译Test.java文件，编译通过会生成一个Test.class的文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">C:\Users\nick\Desktop&gt;javac Test.java</span><br><span class="line"></span><br><span class="line">C:\Users\nick\Desktop&gt;</span><br></pre></td></tr></table></figure>
+<p> 3.使用java Test命令执行Test.class文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\nick\Desktop&gt;java Test</span><br><span class="line">hello world!</span><br><span class="line"></span><br><span class="line">C:\Users\nick\Desktop&gt;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/01/01/%E4%BD%BF%E7%94%A8java%E5%92%8Cjavac%E5%91%BD%E4%BB%A4%E6%9D%A5%E7%BC%96%E8%AF%91%E8%BF%90%E8%A1%8CJava/" data-id="ck2vy1e85002co50qgn4behqt" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Centos6-9安装ElasticSearch2-x" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/" class="article-date">
+  <time datetime="2017-12-25T15:29:35.000Z" itemprop="datePublished">2017-12-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/">Centos6.9安装ElasticSearch2.x</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我这里安装的是ElasticSearch2.x系列。<br><a href="https://www.elastic.co/guide/en/elasticsearch/reference/2.4/setup-repositories.html" target="_blank" rel="noopener">ElasticSearch官方文档</a><br>1.检查系统是否已经安装了jdk</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list installed |grep java</span><br></pre></td></tr></table></figure>
+<p>若有自带安装的JDK，如何卸载CentOS系统自带Java环境?</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">卸载JDK相关文件输入：yum -y remove java-1.7.0-openjdk*</span><br><span class="line">卸载tzdata-java输入：yum -y remove tzdata-java.noarch</span><br></pre></td></tr></table></figure>
+<p><em>注</em>：“*”表示卸载掉java 1.7.0的所有openjdk相关文件<br>2.查看yum库中的Java安装包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">yum -y list java*</span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ ~]<span class="comment"># yum -y list java*</span></span><br><span class="line">Loaded plugins: security</span><br><span class="line">Installed Packages</span><br><span class="line">java-1.8.0-openjdk.x86_64                                                                        1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-debug.x86_64                                                                  1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-demo.x86_64                                                                   1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-demo-debug.x86_64                                                             1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-devel.x86_64                                                                  1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-devel-debug.x86_64                                                            1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-headless.x86_64                                                               1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-headless-debug.x86_64                                                         1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-javadoc.noarch                                                                1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-javadoc-debug.noarch                                                          1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-src.x86_64                                                                    1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-src-debug.x86_64                                                              1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">Available Packages</span><br><span class="line">java-1.5.0-gcj.x86_64                                                                            1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.5.0-gcj-devel.x86_64                                                                      1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.5.0-gcj-javadoc.x86_64                                                                    1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.5.0-gcj-src.x86_64                                                                        1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.6.0-openjdk.x86_64                                                                        1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-demo.x86_64                                                                   1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-devel.x86_64                                                                  1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-javadoc.x86_64                                                                1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-src.x86_64                                                                    1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.7.0-openjdk.x86_64                                                                        1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-demo.x86_64                                                                   1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-devel.x86_64                                                                  1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-javadoc.noarch                                                                1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-src.x86_64                                                                    1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-clearsilver.i686                                                                            0.10.5-16.el6                                                                       epel    </span><br><span class="line">java-dirq.noarch                                                                                 1.4-1.el6                                                                           epel    </span><br><span class="line">java-dirq-javadoc.noarch                                                                         1.4-1.el6                                                                           epel    </span><br><span class="line">java-service-wrapper.x86_64                                                                      3.2.5-23.el6                                                                        epel    </span><br><span class="line">java-service-wrapper-javadoc.noarch                                                              3.2.5-23.el6                                                                        epel    </span><br><span class="line">java-sleep.noarch                                                                                2.1-6.el6                                                                           epel    </span><br><span class="line">java-sleep-javadoc.noarch                                                                        2.1-6.el6                                                                           epel    </span><br><span class="line">java_cup.x86_64                                                                                  1:0.10k-5.el6                                                                       base    </span><br><span class="line">java_cup-javadoc.x86_64                                                                          1:0.10k-5.el6                                                                       base    </span><br><span class="line">java_cup-manual.x86_64                                                                           1:0.10k-5.el6                                                                       base    </span><br><span class="line">javacc.x86_64                                                                                    4.1-0.5.el6                                                                         base    </span><br><span class="line">javacc-demo.x86_64                                                                               4.1-0.5.el6                                                                         base    </span><br><span class="line">javacc-manual.x86_64                                                                             4.1-0.5.el6                                                                         base    </span><br><span class="line">javassist.noarch                                                                                 3.9.0-6.el6                                                                         base    </span><br><span class="line">javassist-javadoc.noarch                                                                         3.9.0-6.el6                                                                         base    </span><br><span class="line">javastroke.x86_64                                                                                0.5.1-33.el6                                                                        epel    </span><br><span class="line">javatar.noarch                                                                                   2.5-5.el6                                                                           epel    </span><br><span class="line">javatar-javadoc.noarch</span><br></pre></td></tr></table></figure>
+<p>以yum库中的java-1.8为例，将java-1.8.0的所有相关Java程序都安装上。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install java-1.8.0-openjdk*</span><br></pre></td></tr></table></figure>
+<p>3.查看刚安装的Java版本信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java -version 可查看Java版本</span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ ~]<span class="comment"># java -version</span></span><br><span class="line">openjdk version <span class="string">"1.8.0_151"</span></span><br><span class="line">OpenJDK Runtime Environment (build 1.8.0_151-b12)</span><br><span class="line">OpenJDK 64-Bit Server VM (build 25.151-b12, mixed mode)</span><br></pre></td></tr></table></figure>
+<p>4.通过rpm安装ElasticSearch</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">先下载并安装公共签名密钥</span><br><span class="line">rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch</span><br><span class="line">再安装rpm的repository</span><br><span class="line">[elasticsearch-2.x]</span><br><span class="line">name=Elasticsearch repository <span class="keyword">for</span> 2.x packages</span><br><span class="line">baseurl=https://packages.elastic.co/elasticsearch/2.x/centos</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=https://packages.elastic.co/GPG-KEY-elasticsearch</span><br><span class="line">enabled=1</span><br></pre></td></tr></table></figure>
+<p>安装ElasticSearch</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install elasticsearch  </span><br><span class="line">sudo dnf install elasticsearch </span><br><span class="line">sudo zypper install elasticsearch</span><br><span class="line"></span><br><span class="line">使用yum在CentOS和旧的基于Red Hat分发</span><br><span class="line">使用dnf的Fedora和其他新的Red Hat分发</span><br><span class="line">使用zypper基于分布的OpenSUSE</span><br><span class="line"></span><br><span class="line">如果你嫌麻烦可以之前使用下面的方法安装：</span><br><span class="line">wget https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/rpm/elasticsearch/2.4.2/elasticsearch-2.4.2.rpm</span><br><span class="line"></span><br><span class="line">sha1sum elasticsearch-5.6.5.rpm</span><br><span class="line">sudo rpm --install elasticsearch-5.6.5.rpm</span><br></pre></td></tr></table></figure>
+<p>5.使用chkconfig命令将Elasticsearch配置为在系统启动时自动启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo chkconfig --add elasticsearch</span><br><span class="line"></span><br><span class="line">下面的命令启动或者关闭elasticsearch服务</span><br><span class="line"></span><br><span class="line">sudo -i service elasticsearch start</span><br><span class="line">sudo -i service elasticsearch stop</span><br></pre></td></tr></table></figure>
+<p>6.启动elasticsearch服务报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ src]<span class="comment"># service elasticsearch start</span></span><br><span class="line">Starting elasticsearch: OpenJDK 64-Bit Server VM warning: If the number of processors is expected to increase from one, <span class="keyword">then</span> you should configure the number of parallel GC threads appropriately using -XX:ParallelGCThreads=N</span><br><span class="line">OpenJDK 64-Bit Server VM warning: INFO: os::commit_memory(0x0000000085330000, 2060255232, 0) failed; error=<span class="string">'Cannot allocate memory'</span> (errno=12)</span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># There is insufficient memory for the Java Runtime Environment to continue.</span></span><br><span class="line"><span class="comment"># Native memory allocation (mmap) failed to map 2060255232 bytes for committing reserved memory.</span></span><br><span class="line"><span class="comment"># An error report file with more information is saved as:</span></span><br><span class="line"><span class="comment"># /tmp/hs_err_pid23700.log</span></span><br><span class="line">                                                           [FAILED]</span><br></pre></td></tr></table></figure>
+<p>这是因为机器的内存不足，可用内存少于1G,解决方法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vim  /etc/elasticsearch/jvm.options </span><br><span class="line"><span class="comment">##启用如下两项</span></span><br><span class="line"> -Xms4g                   </span><br><span class="line"> -Xmx4g</span><br><span class="line"><span class="comment">##关闭如下两项</span></span><br><span class="line"><span class="comment">##-Xms2g                    </span></span><br><span class="line"><span class="comment">##-Xmx2g</span></span><br></pre></td></tr></table></figure>
+<p>7.配置外网可用访问</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">修改配置文件</span><br><span class="line">vim/etc/elasticsearch/elasticsearch.yml</span><br><span class="line">修改成：network.host: 0.0.0.0</span><br></pre></td></tr></table></figure>
+<p>至此，elasticsearch的基本配置完成！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/" data-id="ck2vy1e6a0007o50qc0us7k59" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Centos6安装Mongodb" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/" class="article-date">
+  <time datetime="2017-12-06T15:27:40.000Z" itemprop="datePublished">2017-12-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/">Centos6安装Mongodb</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.运行下面命令查看服务器中是否存在Mongodb的源</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum info mongo-10gen</span><br></pre></td></tr></table></figure>
+<p>结果提示没有相关匹配的信息 ，说明系统中的yum源不包含MongoDB的相关资源，所以要在使用yum命令安装MongoDB前需要增加yum源。<br>2.配置包管理系统（yum）<br>创建一个/etc/yum.repos.d/mongodb-org-3.6.repo文件，以便您可以直接使用安装MongoDB yum。写入一下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[mongodb-org-3.6]</span><br><span class="line">name=MongoDB Repository</span><br><span class="line">baseurl=https://repo.mongodb.org/yum/redhat/<span class="variable">$releasever</span>/mongodb-org/3.6/x86_64/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=1</span><br><span class="line">gpgkey=https://www.mongodb.org/static/pgp/server-3.6.asc</span><br></pre></td></tr></table></figure>
+<p>3.安装MongoDB包<br>要安装最新的稳定版本的MongoDB，请发出以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y mongodb-org</span><br></pre></td></tr></table></figure>
+<p>要安装特定版本的MongoDB，请分别指定每个组件包，并将版本号附加到包名称，如下例所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y mongodb-org-3.6.0 mongodb-org-server-3.6.0 mongodb-org-shell-3.6.0 mongodb-org-mongos-3.6.0 mongodb-org-tools-3.6.0</span><br></pre></td></tr></table></figure>
+<p>4.在阿里云上安全组添加一条规则,并在Centos中的iptables添加一条记录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#阿里云安全组规则</span></span><br><span class="line">允许 自定义 TCP 27017/27017	地址段访问  0.0.0.0/0</span><br><span class="line"></span><br><span class="line"><span class="comment">#iptables</span></span><br><span class="line">-A INPUT -p tcp -m tcp --dport 27017 -j ACCEPT </span><br><span class="line"></span><br><span class="line"><span class="comment">#重启iptables</span></span><br><span class="line">/etc/init.d/iptables restart</span><br></pre></td></tr></table></figure>
+<p>5.开机自启动,执行下面命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig mongod on</span><br></pre></td></tr></table></figure>
+<p>6.Mongodb启动、关闭和重启命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#启动</span></span><br><span class="line">service mongod start</span><br><span class="line"><span class="comment">#关闭</span></span><br><span class="line">service mongod stop</span><br><span class="line"><span class="comment">#restart</span></span><br><span class="line">service mongod restart</span><br></pre></td></tr></table></figure>
+<p><em>END Mongodb安装结束</em></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/" data-id="ck2vy1e6q000io50q36854k9c" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li></ul>
 
     </footer>
   </div>
@@ -526,7 +578,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -540,7 +592,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/annotation/" rel="tag">annotation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exception/" rel="tag">exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oop/" rel="tag">oop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -550,7 +602,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/annotation/" style="font-size: 10px;">annotation</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 10px;">elasticSearch</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/java/" style="font-size: 17.5px;">java</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 12.5px;">mysql</a> <a href="/tags/nginx/" style="font-size: 12.5px;">nginx</a> <a href="/tags/php/" style="font-size: 15px;">php</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring boot</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a>
+      <a href="/tags/String/" style="font-size: 12px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 10px;">elasticSearch</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18px;">linux</a> <a href="/tags/maven/" style="font-size: 12px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 14px;">mysql</a> <a href="/tags/nginx/" style="font-size: 14px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 16px;">php</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16px;">spring boot</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -559,7 +611,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
     </div>
   </div>
 
@@ -572,23 +624,23 @@
       <ul>
         
           <li>
+            <a href="/2019/11/12/%E6%9C%AC%E4%BA%BA%E6%98%AF%E8%87%AA%E5%AD%A6PHP%E5%87%BA%E8%BA%AB%EF%BC%8C%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%9A%84%E6%98%AF%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF%E4%B8%93%E4%B8%9A%EF%BC%8C%E4%B9%9F%E7%AE%97%E6%98%AF%E7%A7%91%E7%8F%AD%E5%87%BA%E8%BA%AB%E3%80%82%E4%BB%8E%E4%BA%8B%E4%BA%863%E5%B9%B4%E7%9A%84PHP%E5%BC%80%E5%8F%91%E3%80%82%E7%94%B1%E4%BA%8E%E6%9F%90%E4%BA%9B%E5%8E%9F%E5%9B%A0%EF%BC%8C%E5%BC%80%E5%A7%8B%E4%BB%8EPHP%E8%BD%AC%E5%90%91Java%EF%BC%8C%E4%B8%BA%E4%BA%86%E8%AE%B0%E5%BD%95%E8%87%AA%E5%B7%B1%E5%AD%A6%E4%B9%A0%E7%9A%84%E8%BF%87%E7%A8%8B%E5%92%8C%E5%8A%A0%E6%B7%B1%E5%AF%B9Java%E7%9A%84%E7%90%86%E8%A7%A3%EF%BC%8C%E4%BA%8E%E6%98%AF%E4%B9%8E%E6%9C%89%E4%BA%86%E6%AD%A4%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E3%80%82/">本人是自学PHP出身，本科学的是计算机科学与技术专业，也算是科班出身。从事了3年的PHP开发。由于某些原因，开始从PHP转向Java，为了记录自己学习的过程和加深对Java的理解，于是乎有了此系列文章。</a>
+          </li>
+        
+          <li>
             <a href="/2019/11/10/hello-world/">Hello World</a>
           </li>
         
           <li>
-            <a href="/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/">解决Java异常java.security.InvalidKeyException: Illegal key size</a>
+            <a href="/2019/05/07/Spring-Boot-1-x-%E6%95%B4%E5%90%88mybatis-%E5%B9%B6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90mapper%E5%92%8C%E5%AE%9E%E4%BD%93/">Spring Boot 1.x 整合mybatis,并自动生成mapper和实体</a>
           </li>
         
           <li>
-            <a href="/2018/04/15/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%BA%8C%E7%AF%87%EF%BC%9AJava%E4%B8%AD%E6%B3%A8%E8%A7%A3%E7%9A%84%E7%94%A8%E6%B3%95/">Java学习系列文章第二篇：Java中注解的用法</a>
+            <a href="/2018/07/30/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%85%AB%E7%AF%87%EF%BC%9AJava8%E4%B8%AD%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8/">Java学习系列文章第八篇：Java8中方法引用</a>
           </li>
         
           <li>
-            <a href="/2018/03/13/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E5%92%8C%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/">什么是缓存雪崩和缓存穿透</a>
-          </li>
-        
-          <li>
-            <a href="/2018/02/26/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%80%E7%AF%87%EF%BC%9AJava%E4%B8%ADSynchronized%E7%9A%84%E7%94%A8%E6%B3%95/">Java学习系列文章第一篇：Java中Synchronized的用法</a>
+            <a href="/2018/07/30/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%83%E7%AF%87%EF%BC%9AJava8%E4%B8%AD%E6%8E%A5%E5%8F%A3%E7%9A%84%E9%BB%98%E8%AE%A4%E6%96%B9%E6%B3%95%E4%B8%8E%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95/">Java学习系列文章第七篇：Java8中接口的默认方法与静态方法</a>
           </li>
         
       </ul>

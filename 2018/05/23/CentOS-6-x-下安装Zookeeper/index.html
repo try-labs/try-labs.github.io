@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>CentOS 6.x 下安装Zookeeper | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="目前在研究dubbo这个国内流行的RPC框架，实现去中心话的微服务需要用到Zookeeper,所以今天来说说如何安装Zookeeper。Zookeeper的官方下载地址 查看Centos版本： 12345cat &#x2F;etc&#x2F;issue[root@iZwz99xkrnh5xy0cqp8aofZ tomcat]# cat &#x2F;etc&#x2F;issueCentOS release 6.9 (Final)Kerne">
+<meta name="keywords" content="linux,zookeeper">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS 6.x 下安装Zookeeper">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2018&#x2F;05&#x2F;23&#x2F;CentOS-6-x-%E4%B8%8B%E5%AE%89%E8%A3%85Zookeeper&#x2F;index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="目前在研究dubbo这个国内流行的RPC框架，实现去中心话的微服务需要用到Zookeeper,所以今天来说说如何安装Zookeeper。Zookeeper的官方下载地址 查看Centos版本： 12345cat &#x2F;etc&#x2F;issue[root@iZwz99xkrnh5xy0cqp8aofZ tomcat]# cat &#x2F;etc&#x2F;issueCentOS release 6.9 (Final)Kerne">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-11-12T13:41:57.000Z">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-CentOS-6-x-下安装Zookeeper" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/05/23/CentOS-6-x-%E4%B8%8B%E5%AE%89%E8%A3%85Zookeeper/" class="article-date">
+  <time datetime="2018-05-23T13:41:18.000Z" itemprop="datePublished">2018-05-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CentOS 6.x 下安装Zookeeper
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>目前在研究dubbo这个国内流行的RPC框架，实现去中心话的微服务需要用到Zookeeper,所以今天来说说如何安装Zookeeper。<br>Zookeeper的<a href="https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/" target="_blank" rel="noopener">官方下载地址</a></p>
+<p>查看Centos版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/issue</span><br><span class="line"></span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ tomcat]<span class="comment"># cat /etc/issue</span></span><br><span class="line">CentOS release 6.9 (Final)</span><br><span class="line">Kernel \r on an \m</span><br></pre></td></tr></table></figure>
+<p> 1.下载安装包到/usr/local/src/目录下，并创建安装目录/usr/local/zookeeper。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src/</span><br><span class="line"><span class="comment">#这里使用3.4.10，没有使用较高的版本</span></span><br><span class="line">wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.10/zookeeper-3.4.10.tar.gz</span><br><span class="line">mkdir /usr/<span class="built_in">local</span>/zookeeper</span><br></pre></td></tr></table></figure>
+<p> 2.解压安装包,并将解压后的文件拷贝到/usr/local/zookeeper</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf zookeeper-3.4.10.tar.gz</span><br><span class="line">cp -R /usr/<span class="built_in">local</span>/zookeeper/zookeeper-3.4.10/*  /usr/<span class="built_in">local</span>/zookeeper</span><br></pre></td></tr></table></figure>
+<p>3.添加系统变量到/etc/profile</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> ZOOKEEPER_HOME=/usr/<span class="built_in">local</span>/zookeeper</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$ZOOKEEPER_HOME</span>/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="built_in">export</span> PATH</span><br></pre></td></tr></table></figure>
+<p>执行命令 source /etc/profile使配置文件立即生效</p>
+<p>4.创建zookeeper配置文件,并作相应的配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>  /usr/<span class="built_in">local</span>/zookeeper/conf/</span><br><span class="line">cp zoo_sample.cfg zoo.cfg</span><br><span class="line"></span><br><span class="line"><span class="comment">#配置zookeeper</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#服务器与客户端之间交互的基本时间单元（ms）</span></span><br><span class="line"></span><br><span class="line">tickTime=2000</span><br><span class="line"></span><br><span class="line"><span class="comment">#配置保存数据文件夹</span></span><br><span class="line"></span><br><span class="line">dataDir=/usr/<span class="built_in">local</span>/zookeeper/data</span><br><span class="line"></span><br><span class="line"><span class="comment">#配置保存日志文件夹，当此配置不存在时默认路径与dataDir一致</span></span><br><span class="line"></span><br><span class="line">dataLogDir=/var/<span class="built_in">log</span>/zookeeper</span><br><span class="line"></span><br><span class="line"><span class="comment">#客户端访问zookeeper的端口号</span></span><br><span class="line"></span><br><span class="line">clientPort=2181</span><br></pre></td></tr></table></figure>
+<p>5.zookeeper相关命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">启动服务：zkServer.sh start</span><br><span class="line">查看状态：zkServer.sh status</span><br><span class="line">关闭服务：zkServer.sh stop</span><br><span class="line">重启服务：zkServer.sh restart</span><br></pre></td></tr></table></figure>
+<p>至此，zookeeper安装完成</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/05/23/CentOS-6-x-%E4%B8%8B%E5%AE%89%E8%A3%85Zookeeper/" data-id="ck2vy1e600001o50q7vyifolm" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E5%89%8D%E5%BA%8F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Java学习系列文章前序
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/22/CentOS-6-x-%E4%B8%8Byum%E5%AE%89%E8%A3%85Tomcat8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">CentOS 6.x 下yum安装Tomcat8</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exception/" rel="tag">exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oop/" rel="tag">oop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/String/" style="font-size: 12px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 10px;">elasticSearch</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18px;">linux</a> <a href="/tags/maven/" style="font-size: 12px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 14px;">mysql</a> <a href="/tags/nginx/" style="font-size: 14px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 16px;">php</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16px;">spring boot</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/11/12/%E6%9C%AC%E4%BA%BA%E6%98%AF%E8%87%AA%E5%AD%A6PHP%E5%87%BA%E8%BA%AB%EF%BC%8C%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%9A%84%E6%98%AF%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF%E4%B8%93%E4%B8%9A%EF%BC%8C%E4%B9%9F%E7%AE%97%E6%98%AF%E7%A7%91%E7%8F%AD%E5%87%BA%E8%BA%AB%E3%80%82%E4%BB%8E%E4%BA%8B%E4%BA%863%E5%B9%B4%E7%9A%84PHP%E5%BC%80%E5%8F%91%E3%80%82%E7%94%B1%E4%BA%8E%E6%9F%90%E4%BA%9B%E5%8E%9F%E5%9B%A0%EF%BC%8C%E5%BC%80%E5%A7%8B%E4%BB%8EPHP%E8%BD%AC%E5%90%91Java%EF%BC%8C%E4%B8%BA%E4%BA%86%E8%AE%B0%E5%BD%95%E8%87%AA%E5%B7%B1%E5%AD%A6%E4%B9%A0%E7%9A%84%E8%BF%87%E7%A8%8B%E5%92%8C%E5%8A%A0%E6%B7%B1%E5%AF%B9Java%E7%9A%84%E7%90%86%E8%A7%A3%EF%BC%8C%E4%BA%8E%E6%98%AF%E4%B9%8E%E6%9C%89%E4%BA%86%E6%AD%A4%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E3%80%82/">本人是自学PHP出身，本科学的是计算机科学与技术专业，也算是科班出身。从事了3年的PHP开发。由于某些原因，开始从PHP转向Java，为了记录自己学习的过程和加深对Java的理解，于是乎有了此系列文章。</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/10/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/07/Spring-Boot-1-x-%E6%95%B4%E5%90%88mybatis-%E5%B9%B6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90mapper%E5%92%8C%E5%AE%9E%E4%BD%93/">Spring Boot 1.x 整合mybatis,并自动生成mapper和实体</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/30/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%85%AB%E7%AF%87%EF%BC%9AJava8%E4%B8%AD%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8/">Java学习系列文章第八篇：Java8中方法引用</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/30/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%83%E7%AF%87%EF%BC%9AJava8%E4%B8%AD%E6%8E%A5%E5%8F%A3%E7%9A%84%E9%BB%98%E8%AE%A4%E6%96%B9%E6%B3%95%E4%B8%8E%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95/">Java学习系列文章第七篇：Java8中接口的默认方法与静态方法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
