@@ -61,6 +61,49 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-迅搜-xunsearch-多值属性的处理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/04/%E8%BF%85%E6%90%9C-xunsearch-%E5%A4%9A%E5%80%BC%E5%B1%9E%E6%80%A7%E7%9A%84%E5%A4%84%E7%90%86/" class="article-date">
+  <time datetime="2017-12-04T15:18:36.000Z" itemprop="datePublished">2017-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/04/%E8%BF%85%E6%90%9C-xunsearch-%E5%A4%9A%E5%80%BC%E5%B1%9E%E6%80%A7%E7%9A%84%E5%A4%84%E7%90%86/">迅搜(xunsearch) 多值属性的处理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我之前使用Yii2框架做了一个电影网站<a href="http://www.dy360.net" target="_blank" rel="noopener">dy360.net</a>,网站的搜索是通过MySQL的like实现，搜索的条件很多，担心以后数据越来越多，会拖垮网站的速度，于是想通过搜索引擎来解决！ 开始准备使用sphinx，研究发现不太好使。后发现迅搜(xunsearch)，文档比较清楚，上手比较简单，并且有Yii2的composer包，于是决定使用迅搜。<br>使用的过程中遇到这样一个问题：一部电影有多个演员，出品国家或地区，其实就是文档的多值属性的新建、搜索的问题。我研究了一下，最终结局方案如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#项目的配置文件</span></span><br><span class="line"></span><br><span class="line">project.name = yddy</span><br><span class="line">project.default_charset = utf-8</span><br><span class="line">server.index = 8383</span><br><span class="line">server.search = 8384</span><br><span class="line"></span><br><span class="line">[id]</span><br><span class="line"><span class="built_in">type</span> = id</span><br><span class="line">phrase = yes</span><br><span class="line"></span><br><span class="line">[summary]</span><br><span class="line"><span class="built_in">type</span> = body</span><br><span class="line">cutlen=900</span><br><span class="line"></span><br><span class="line">[year]</span><br><span class="line"><span class="built_in">type</span> = numeric</span><br><span class="line">phrase = yes</span><br><span class="line">index = self</span><br><span class="line"> </span><br><span class="line">[actors_text]</span><br><span class="line"><span class="built_in">type</span> = string</span><br><span class="line">index = self</span><br><span class="line">tokenizer = split(/)</span><br><span class="line"></span><br><span class="line">[category_id]</span><br><span class="line"><span class="built_in">type</span> = string</span><br><span class="line">index = self</span><br><span class="line">tokenizer = split(,)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[country_id]</span><br><span class="line"><span class="built_in">type</span> = string</span><br><span class="line">index = self</span><br><span class="line">tokenizer = split(,)</span><br><span class="line">phrase = yes</span><br></pre></td></tr></table></figure>
+<p>其实就是使用迅搜的tokenizer分词器，文档上具体的语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">tokenizer 分词器</span><br><span class="line"></span><br><span class="line">默认为 default 采用内置的功能强大的 scws 分词，适合绝大多数字符串字段。也可以指定自定义分词器， 格式为 name 或 name(arg) 两种形式，其中 name 是分词器名称，arg 则是传递给分词器构造函数的参数。 自定义分词器需要在 lib/ 目录下编写名为 XSTokenizerName 的分词类并实现接口 XSTokenizer， 内置支持的分词器有以下几种：</span><br><span class="line"></span><br><span class="line">full 表示本字段的值整体作为一个检索词，像各种 ID 都适合这种情况</span><br><span class="line">none 表示本字段没有任何词汇用于索引</span><br><span class="line">split([ ]) 表示根据参数分割内容，默认参数为空格，若参数以 / 开头并以 / 结尾则 内部调用 preg_split(arg, ..) 来分割取词，以支持正则或其它特殊字符分割</span><br><span class="line">xlen([2]) 表示根据指定参数长度分段取词，如 ABCDEF =&gt; AB + CD + EF</span><br><span class="line">xstep([2]) 表示根据指定参数步长逐段取词，如 ABCDEF =&gt; AB + ABCD + ABCDEF</span><br><span class="line">scws([3]) 表示采用指定参数为复合等级的 scws 分词，（若无特殊复合需求，无需指定）</span><br><span class="line">tokenizer = default</span><br></pre></td></tr></table></figure>
+<p>然后，根据不同情况使用不同的分割参数，譬如，有的使用’/‘，有的使用’,’。<br>最后，搜索代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public static <span class="keyword">function</span> search(<span class="variable">$params</span>)&#123;</span><br><span class="line">        <span class="variable">$db</span> = Yii::<span class="variable">$app</span>-&gt;xunsearch-&gt;getDatabase(<span class="string">'yddy'</span>);</span><br><span class="line">        <span class="variable">$xs</span> = <span class="variable">$db</span>-&gt;xs;</span><br><span class="line"></span><br><span class="line">        <span class="variable">$search</span> = <span class="variable">$xs</span>-&gt;getSearch();</span><br><span class="line"></span><br><span class="line">        <span class="variable">$keywords</span> = <span class="variable">$params</span>[<span class="string">'word'</span>];</span><br><span class="line">        <span class="keyword">if</span>(empty(<span class="variable">$keywords</span>))&#123;</span><br><span class="line">            <span class="variable">$keywords</span> =<span class="string">''</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$search</span> = <span class="variable">$search</span>-&gt;setQuery(<span class="variable">$keywords</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$category</span>=<span class="variable">$params</span>[<span class="string">'category'</span>])&#123;</span><br><span class="line">            <span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'category_id'</span>,<span class="variable">$category</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$country</span>=<span class="variable">$params</span>[<span class="string">'country'</span>])&#123;</span><br><span class="line">            <span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'country_id'</span>,<span class="variable">$country</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>( (empty(<span class="variable">$params</span>[<span class="string">'other'</span>]) ) &amp;&amp; (<span class="variable">$year</span> = intval(<span class="variable">$params</span>[<span class="string">'year'</span>])) &amp;&amp; is_numeric(<span class="variable">$params</span>[<span class="string">'year'</span>]))&#123;</span><br><span class="line">            <span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'year'</span>,<span class="variable">$year</span>);</span><br><span class="line"></span><br><span class="line">        &#125;elseif((<span class="variable">$params</span>[<span class="string">'other'</span>] == <span class="string">'ago'</span>) &amp;&amp; (<span class="variable">$year</span> = intval(<span class="variable">$params</span>[<span class="string">'year'</span>])) )&#123;</span><br><span class="line">            //<span class="variable">$search</span>-&gt;addRange(<span class="string">'year'</span>,1900,1978);</span><br><span class="line">            <span class="variable">$search</span>-&gt;addRange(<span class="string">'year'</span>,1900,<span class="variable">$year</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>( <span class="variable">$rating</span>=intval(<span class="variable">$params</span>[<span class="string">'rating'</span>]))&#123;</span><br><span class="line">            <span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'rate'</span>, <span class="variable">$rating</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'subtype'</span>,<span class="variable">$params</span>[<span class="string">'subtype'</span>]);</span><br><span class="line">        //<span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'status'</span>,1);</span><br><span class="line">        //<span class="built_in">echo</span> <span class="variable">$search</span>-&gt;getQuery();</span><br><span class="line">        <span class="built_in">return</span> <span class="variable">$search</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/04/%E8%BF%85%E6%90%9C-xunsearch-%E5%A4%9A%E5%80%BC%E5%B1%9E%E6%80%A7%E7%9A%84%E5%A4%84%E7%90%86/" data-id="ck2w0tgyg0037220qa5243xjv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Centos6-9上搭建lnmp环境" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/11/29/Centos6-9%E4%B8%8A%E6%90%AD%E5%BB%BAlnmp%E7%8E%AF%E5%A2%83/" class="article-date">
@@ -183,7 +226,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/29/Centos6-9%E4%B8%8A%E6%90%AD%E5%BB%BAlnmp%E7%8E%AF%E5%A2%83/" data-id="ck2w0ozqi0005140qelthgaxd" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/29/Centos6-9%E4%B8%8A%E6%90%AD%E5%BB%BAlnmp%E7%8E%AF%E5%A2%83/" data-id="ck2w0tgvr0005220qgb2fewi8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
@@ -225,7 +268,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/27/tar-%E5%88%86%E5%8D%B7%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B/" data-id="ck2w0ozse002h140qe1r9eoj9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/27/tar-%E5%88%86%E5%8D%B7%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B/" data-id="ck2w0tgxv002l220qfymof4n6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
@@ -266,7 +309,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/23/%E5%A6%82%E4%BD%95%E5%BC%BA%E5%88%B6%E5%85%A8%E7%AB%99https%E8%AE%BF%E9%97%AE/" data-id="ck2w0ozsn002t140q67rc08qx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/23/%E5%A6%82%E4%BD%95%E5%BC%BA%E5%88%B6%E5%85%A8%E7%AB%99https%E8%AE%BF%E9%97%AE/" data-id="ck2w0tgy6002x220qd5msbker" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li></ul>
@@ -324,7 +367,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/19/Linux%E4%B8%8Bchkconfig%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/" data-id="ck2w0ozrd0013140qfxqmc2lu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/19/Linux%E4%B8%8Bchkconfig%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/" data-id="ck2w0tgwo0015220qdudc7gdz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
@@ -372,7 +415,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/17/%E5%AE%9E%E7%8E%B0MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" data-id="ck2w0ozsr002y140qcgnihjqv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/17/%E5%AE%9E%E7%8E%B0MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" data-id="ck2w0tgya0030220q4fpz7nw5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
@@ -421,7 +464,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/15/Linux-Crontab-%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/" data-id="ck2w0ozrb0010140q23eje7ua" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/15/Linux-Crontab-%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/" data-id="ck2w0tgwm0013220qd2l8eewf" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
@@ -470,7 +513,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/15/PHP%E7%9B%AE%E5%89%8D%E6%AF%94%E8%BE%83%E5%B8%B8%E8%A7%81%E7%9A%84%E4%BA%94%E5%A4%A7%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F/" data-id="ck2w0ozry001v140q8cv0f94e" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/15/PHP%E7%9B%AE%E5%89%8D%E6%AF%94%E8%BE%83%E5%B8%B8%E8%A7%81%E7%9A%84%E4%BA%94%E5%A4%A7%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F/" data-id="ck2w0tgxf001z220q9rvn6gjx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
@@ -520,7 +563,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/13/%E8%A7%A3%E5%86%B3git%E9%BB%98%E8%AE%A4%E4%B8%8D%E5%8C%BA%E5%88%86%E6%96%87%E4%BB%B6%E5%90%8D%E5%A4%A7%E5%B0%8F%E5%86%99%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ck2w0ozsu0033140qb5436olk" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/13/%E8%A7%A3%E5%86%B3git%E9%BB%98%E8%AE%A4%E4%B8%8D%E5%8C%BA%E5%88%86%E6%96%87%E4%BB%B6%E5%90%8D%E5%A4%A7%E5%B0%8F%E5%86%99%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ck2w0tgyc0032220q540n9t63" class="article-share-link">Share</a>
       
       
     </footer>
@@ -561,49 +604,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/13/%E9%9A%90%E8%97%8FNginx%E6%88%96Apache%E4%BB%A5%E5%8F%8APHP%E7%9A%84%E7%89%88%E6%9C%AC%E5%8F%B7/" data-id="ck2w0ozsz0038140qcgazbsa8" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-如何正确的修改Python的pip自带的源" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/11/13/%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%AE%E6%94%B9Python%E7%9A%84pip%E8%87%AA%E5%B8%A6%E7%9A%84%E6%BA%90/" class="article-date">
-  <time datetime="2017-11-13T14:06:56.000Z" itemprop="datePublished">2017-11-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/13/%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%AE%E6%94%B9Python%E7%9A%84pip%E8%87%AA%E5%B8%A6%E7%9A%84%E6%BA%90/">如何正确的修改Python的pip自带的源</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>  Python中的pip安装依赖包时默认访问<a href="https://pypi.python.org/simple/，但是经常出现不稳定以及访问速度非常慢的情况，国内厂商提供的pipy镜像目前可用的有：" target="_blank" rel="noopener">https://pypi.python.org/simple/，但是经常出现不稳定以及访问速度非常慢的情况，国内厂商提供的pipy镜像目前可用的有：</a></p>
-<h4 id="1-http-pypi-douban-com-豆瓣"><a href="#1-http-pypi-douban-com-豆瓣" class="headerlink" title="1.http://pypi.douban.com/ 豆瓣"></a>1.<a href="http://pypi.douban.com/" target="_blank" rel="noopener">http://pypi.douban.com/</a> 豆瓣</h4><h4 id="2-http-pypi-mirrors-ustc-edu-cn-simple-中国科学技术大学"><a href="#2-http-pypi-mirrors-ustc-edu-cn-simple-中国科学技术大学" class="headerlink" title="2.http://pypi.mirrors.ustc.edu.cn/simple/ 中国科学技术大学"></a>2.<a href="http://pypi.mirrors.ustc.edu.cn/simple/" target="_blank" rel="noopener">http://pypi.mirrors.ustc.edu.cn/simple/</a> 中国科学技术大学</h4>
-        
-          <p class="article-more-link">
-            <a href="/2017/11/13/%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%AE%E6%94%B9Python%E7%9A%84pip%E8%87%AA%E5%B8%A6%E7%9A%84%E6%BA%90/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/13/%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%AE%E6%94%B9Python%E7%9A%84pip%E8%87%AA%E5%B8%A6%E7%9A%84%E6%BA%90/" data-id="ck2w0ozsp002w140q24uie71f" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/13/%E9%9A%90%E8%97%8FNginx%E6%88%96Apache%E4%BB%A5%E5%8F%8APHP%E7%9A%84%E7%89%88%E6%9C%AC%E5%8F%B7/" data-id="ck2w0tgyj003a220qchr90hpj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -641,7 +642,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/BigDecimal/" style="font-size: 10px;">BigDecimal</a> <a href="/tags/String/" style="font-size: 13.33px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 10px;">elasticSearch</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/ide/" style="font-size: 10px;">ide</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18.33px;">linux</a> <a href="/tags/maven/" style="font-size: 15px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 15px;">mysql</a> <a href="/tags/nginx/" style="font-size: 16.67px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 16.67px;">php</a> <a href="/tags/proxy/" style="font-size: 10px;">proxy</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16.67px;">spring boot</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/BigDecimal/" style="font-size: 10px;">BigDecimal</a> <a href="/tags/String/" style="font-size: 13.33px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 11.67px;">elasticSearch</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/ide/" style="font-size: 10px;">ide</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18.33px;">linux</a> <a href="/tags/maven/" style="font-size: 15px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 15px;">mysql</a> <a href="/tags/nginx/" style="font-size: 16.67px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 16.67px;">php</a> <a href="/tags/proxy/" style="font-size: 10px;">proxy</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16.67px;">spring boot</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -667,6 +668,10 @@
           </li>
         
           <li>
+            <a href="/2018/08/30/Elastic-Search%E6%90%9C%E7%B4%A2%E6%95%B0%E6%8D%AETerms%E8%81%9A%E5%90%88%E8%BF%94%E5%9B%9E%E7%9A%84%E4%B8%8D%E6%AD%A3%E7%A1%AE%E7%9A%84%E9%97%AE%E9%A2%98/">Elastic Search搜索数据Terms聚合返回的不正确的问题</a>
+          </li>
+        
+          <li>
             <a href="/2018/08/28/IntelliJ-Idea-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE%E5%88%97%E8%A1%A8/">IntelliJ Idea 常用快捷键列表</a>
           </li>
         
@@ -676,10 +681,6 @@
         
           <li>
             <a href="/2018/08/07/Nginx%E5%AE%9E%E7%8E%B0%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-Node-js/">Nginx实现反向代理 Node.js</a>
-          </li>
-        
-          <li>
-            <a href="/2018/08/04/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B9%9D%E7%AF%87%EF%BC%9AJava%E4%B8%AD%E6%B3%9B%E5%9E%8B%E7%9A%84%E5%AD%A6%E4%B9%A0/">Java学习系列文章第九篇：Java中泛型的学习</a>
           </li>
         
       </ul>
