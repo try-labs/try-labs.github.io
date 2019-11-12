@@ -61,420 +61,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-什么是缓存雪崩和缓存穿透" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/03/13/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E5%92%8C%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" class="article-date">
-  <time datetime="2018-03-13T15:39:32.000Z" itemprop="datePublished">2018-03-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/13/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E5%92%8C%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/">什么是缓存雪崩和缓存穿透</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p> <strong>1. 缓存雪崩</strong></p>
-<p>如果缓存集中在一段时间内失效，发生大量的缓存穿透，所有的查询都落在数据库上，造成了缓存雪崩。这个没有完美解决办法，但可以分析用户行为，尽量让失效时间点均匀分布。大多数系统设计者考虑用加锁或者队列的方式保证缓存的单线程（进程）写，从而避免失效时大量的并发请求落到底层存储系统上。</p>
-<p>解决办法</p>
-<ul>
-<li>在缓存失效后，通过加锁或者队列来控制读数据库写缓存的线程数量。比如对某个key只允许一个线程查询数据和写缓存，其他线程等待。</li>
-<li>可以通过缓存reload机制，预先去更新缓存，再即将发生大并发访问前手动触发加载缓存。</li>
-<li>不同的key，设置不同的过期时间，让缓存失效的时间点尽量均匀。</li>
-<li>做二级缓存，或者双缓存策略。A1为原始缓存，A2为拷贝缓存，A1失效时，可以访问A2，A1缓存失效时间设置为短期，A2设置为长期。</li>
-</ul>
-<p> <strong>2. 缓存穿透</strong></p>
-<p>缓存穿透是指查询一个一定不存在的数据，由于缓存是不命中时需要从数据库查询，查不到数据则不写入缓存，这将导致这个不存在的数据每次请求都要到数据库去查询，造成缓存穿透。</p>
-<p>解决办法</p>
-<ul>
-<li>对所有可能查询的参数以hash形式存储，在控制层先进行校验，不符合则丢弃。还有最常见的则是采用布隆过滤器，将所有可能存在的数据哈希到一个足够大的bitmap中，一个一定不存在的数据会被这个bitmap拦截掉，从而避免了对底层存储系统的查询压力。</li>
-<li>也可以采用一个更为简单粗暴的方法，如果一个查询返回的数据为空（不管是数据不存在，还是系统故障），我们仍然把这个空结果进行缓存，但它的过期时间会很短，最长不超过五分钟。</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/13/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E5%92%8C%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" data-id="ck2vz4xhu0029v50q20dy4db6" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-MySQL中真正意义上的UTF8编码" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/02/22/MySQL%E4%B8%AD%E7%9C%9F%E6%AD%A3%E6%84%8F%E4%B9%89%E4%B8%8A%E7%9A%84UTF8%E7%BC%96%E7%A0%81/" class="article-date">
-  <time datetime="2018-02-22T15:37:26.000Z" itemprop="datePublished">2018-02-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/02/22/MySQL%E4%B8%AD%E7%9C%9F%E6%AD%A3%E6%84%8F%E4%B9%89%E4%B8%8A%E7%9A%84UTF8%E7%BC%96%E7%A0%81/">MySQL中真正意义上的UTF8编码</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>总所周知，目前的软件体系中运用最广泛的是Unicode字符集，而其中运用最多的编码规则就是UTF-8。用UTF-8有什么好处呢？简单的来说有一下几种好处：</p>
-<ol>
-<li>乱码不会扩散, GB2312在丢失一字节等情况下会造成后续所有文字变成乱码。</li>
-<li>不会产生错误的搜索结果, GB2312在搜索的时候相邻两个中文会拼出一个新的字符，导致出现错误的搜索结果。</li>
-<li>更大的字符集。</li>
-<li>很多语言直接支持 UTF-8，部分语言存储字符串到内存时直接使用UTF-8编码。</li>
-<li>与 GB2312/GB18030相比, UTF-8是一个通用解决方案。</li>
-<li>Unicode 一直有人维护，而 GB18030 下一次更新不知道会是什么时候了。另对于中文, UTF-8和GB2312在gzip压缩后都差不多，所以用来做网页对带宽影响很小。</li>
-</ol>
-<p>MySQL中也有UTF-8编码，他还有另外一个称呼叫做utf8mb3，该字符集每个字符最多使用三个字节。三个字节的UTF-8最大能编码的 Unicode字符是0xffff，也就是Unicode中的基本多文种平面（BMP）。也就是说，任何不在基本多文本平面的 Unicode字符，都无法使用MySQL的UTF-8编码存储。包括Emoji表情（Emoji是一种特殊的Unicode 编码，常见于ios和 android手机上），和很多不常用的汉字，以及任何新增的 Unicode字符等等。这样的话就会出现一些特殊字符无法保存到MySQL中。接下来我们就来解决这个编码的问题！</p>
-<p>随着Unicode的字符集的规范确定，以及他的广泛应用，MySQL官方自己也发现了这个问题，于是乎官方在MySQL5.5.3的时候推出了utf8mb4编码，（他才是真正意义上的UTF-8编码）mb4就是most bytes 4的意思，专门用来兼容四字节的unicode。utf8mb4是utf8的超集，除了将编码改为utf8mb4外不需要做其他转换。</p>
-<p>对于新增的utf8mb4编码官方有个小建议如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Tip: To save space with utf8mb4, use VARCHAR instead of CHAR. Otherwise, MySQL must reserve four bytes <span class="keyword">for</span> each character <span class="keyword">in</span> a CHAR CHARACTER SET utf8mb4 column because that is the maximum possible length. For example, MySQL must reserve 40 bytes <span class="keyword">for</span> a CHAR(10) CHARACTER SET utf8mb4 column.</span><br><span class="line">大意如下：</span><br><span class="line">为了节省空间 utf8mb4，请使用 VARCHAR而不是CHAR。否则，MySQL必须为CHAR CHARACTER SET utf8mb4列中的每个字符保留四个字节，因为这是最大可能的长度。例如，MySQL必须为一CHAR(10) CHARACTER SET utf8mb4 列保留40个字节。</span><br></pre></td></tr></table></figure>
-<p>那如何设置MySQL的编码呢？</p>
-<ol>
-<li><p>查看数据库服务器的版本，低于5.5.3则不支持utf8mb4。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">select VERSION();</span><br><span class="line"></span><br><span class="line">+-----------+</span><br><span class="line">| VERSION() |</span><br><span class="line">+-----------+</span><br><span class="line">| 5.5.53    |</span><br><span class="line">+-----------+</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看数据库的编码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like &apos;character%&apos;;</span><br><span class="line"></span><br><span class="line">+--------------------------+-----------------------------------+</span><br><span class="line">| Variable_name            | Value                             |</span><br><span class="line">+--------------------------+-----------------------------------+</span><br><span class="line">| character_set_client     | utf8                              |</span><br><span class="line">| character_set_connection | utf8                              |</span><br><span class="line">| character_set_database   | utf8                              |</span><br><span class="line">| character_set_filesystem | binary                            |</span><br><span class="line">| character_set_results    | utf8                              |</span><br><span class="line">| character_set_server     | utf8                              |</span><br><span class="line">| character_set_system     | utf8                              |</span><br><span class="line">| character_sets_dir       | C:\phpStudy\MySQL\share\charsets\ |</span><br><span class="line">+--------------------------+-----------------------------------+</span><br></pre></td></tr></table></figure>
-<p>将上述utf8全部修改成utf8mb4，编辑mysql的配置文件/etc/my.cnf（具体还可以参照文章<a href="https://www.ydstudio.net/archives/25.html" target="_blank" rel="noopener">Centos6.9上搭建lnmp环境</a>）</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/my.cnf</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line">character-set-server=utf8mb4 </span><br><span class="line">collation-server=utf8_general_ci </span><br><span class="line">sql_mode=<span class="string">'NO_ENGINE_SUBSTITUTION'</span></span><br><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line"></span><br><span class="line">[mysql.server]</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line"></span><br><span class="line">[mysqld_safe]</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line"></span><br><span class="line">[client]</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line"></span><br><span class="line"><span class="comment">#重启mysql</span></span><br><span class="line">service mysqld restart</span><br><span class="line"></span><br><span class="line"><span class="comment">#再次查看</span></span><br><span class="line">mysql&gt; show variables like <span class="string">'character%'</span>;</span><br><span class="line">+--------------------------+-----------------------------------+</span><br><span class="line">| Variable_name            | Value                             |</span><br><span class="line">+--------------------------+-----------------------------------+</span><br><span class="line">| character_set_client     | utf8mb4                           |</span><br><span class="line">| character_set_connection | utf8mb4                           |</span><br><span class="line">| character_set_database   | utf8mb4                           |</span><br><span class="line">| character_set_filesystem | binary                            |</span><br><span class="line">| character_set_results    | utf8mb4                           |</span><br><span class="line">| character_set_server     | utf8mb4                           |</span><br><span class="line">| character_set_system     | utf8mb4                           |</span><br><span class="line">| character_sets_dir       | C:\phpStudy\MySQL\share\charsets\ |</span><br><span class="line">+--------------------------+-----------------------------------+</span><br></pre></td></tr></table></figure>
-<p>这样我们的数据库就编码就全都设置成了utf8mb4,一些特殊的中文字符和Emoji表情符就可以成功的保存在数据库中了</p>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/02/22/MySQL%E4%B8%AD%E7%9C%9F%E6%AD%A3%E6%84%8F%E4%B9%89%E4%B8%8A%E7%9A%84UTF8%E7%BC%96%E7%A0%81/" data-id="ck2vz4xgo0010v50q93mwd77n" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-PHP如何通过开启Opcache来提高性能" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/02/09/PHP%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E5%BC%80%E5%90%AFOpcache%E6%9D%A5%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD/" class="article-date">
-  <time datetime="2018-02-09T15:35:09.000Z" itemprop="datePublished">2018-02-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/02/09/PHP%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E5%BC%80%E5%90%AFOpcache%E6%9D%A5%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD/">PHP如何通过开启Opcache来提高性能</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在开启Opcache之前，我们先了解一下什么是Opcache:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">OPcache 通过将 PHP 脚本预编译的字节码存储到共享内存中来提升 PHP 的性能， 存储预编译字节码的好处就是 省去了每次加载和解析 PHP 脚本的开销。</span><br><span class="line">PHP 5.5.0 及后续版本中已经绑定了 OPcache 扩展。 对于 PHP 5.2，5.3 和 5.4 版本可以使用 » PECL 扩展中的 OPcache 库。</span><br></pre></td></tr></table></figure>
-<p>下面来说说如何安装Opcache,不同的PHP版本安装的方法稍有不同：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">OPcache 只能编译为共享扩展。 如果你使用 --<span class="built_in">disable</span>-all 参数 禁用了默认扩展的构建， 那么必须使用 --<span class="built_in">enable</span>-opcache 选项来开启 OPcache。</span><br><span class="line">编译之后，就可以使用 zend_extension 指令来将 OPcache 扩展加载到 PHP 中。在非 Windows 平台使用 zend_extension=/full/path/to/opcache.so，</span><br><span class="line">Windows平台使用 zend_extension=C:\path\to\php_opcache.dll</span><br><span class="line"></span><br><span class="line">PHP 5.2,5.3和 5.4版本中没有和PHP捆绑，需要自行安装，这里不做说明。</span><br></pre></td></tr></table></figure>
-<p>官方出了一个推荐配置如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">使用下列推荐设置来获得较好的 性能：</span><br><span class="line"></span><br><span class="line">opcache.memory_consumption=128</span><br><span class="line">opcache.interned_strings_buffer=8</span><br><span class="line">opcache.max_accelerated_files=4000</span><br><span class="line">opcache.revalidate_freq=60</span><br><span class="line">opcache.fast_shutdown=1</span><br><span class="line">opcache.enable_cli=1</span><br><span class="line">你也可以禁用 opcache.save_comments 并且启用 opcache.enable_file_override。 需要提醒的是，在生产环境中使用上述配置之前，必须经过严格测试。 因为上述配置存在一个已知问题，它会引发一些框架和应用的异常， 尤其是在存在文档使用了备注注解的时候。</span><br></pre></td></tr></table></figure>
-<p><strong>配置扩展的时候注意以下问题</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在php.ini中增加opcache时需要使用zend_extension，而不是extension，不然会得到以下WARNING</span><br><span class="line"></span><br><span class="line">PHP Warning: PHP Startup: Invalid library (appears to be a Zend Extension, try loading using zend_extension=opcache.so from php.ini) <span class="keyword">in</span> Unknown on line 0</span><br></pre></td></tr></table></figure>
-<p>由于我自己的服务器安装的PHP7，已经安装了Opcache，所以我只需在php.ini文件中配置以下内容</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">zend_extension=/usr/local/php/lib/php/extensions/no-debug-non-zts-20151012/opcache.so</span><br><span class="line"></span><br><span class="line">[opcache]</span><br><span class="line"></span><br><span class="line">;开关打开</span><br><span class="line">opcache.enable=1</span><br><span class="line">;设置共享内存大小, 单位为：Mb</span><br><span class="line">opcache.memory_consumption=128</span><br><span class="line">opcache.interned_strings_buffer=8</span><br><span class="line">opcache.max_accelerated_files=4000</span><br><span class="line">opcache.revalidate_freq=60</span><br><span class="line">opcache.fast_shutdown=1</span><br><span class="line">opcache.enable_cli=1</span><br><span class="line"></span><br><span class="line">本次涉及到的有两个参数</span><br><span class="line"></span><br><span class="line">revalidate_freq，默认2</span><br><span class="line">检查脚本时间戳是否有更新的周期，以秒为单位。 设置为 0 会导致针对每个请求， OPcache 都会检查脚本更新</span><br><span class="line"></span><br><span class="line">validate_timestamps，默认1</span><br><span class="line">如果启用，那么 OPcache 会每隔 opcache.revalidate_freq 设定的秒数 检查脚本是否更新。 如果禁用此选项，你必须使用 opcache_reset() 或者 opcache_invalidate() 函数来手动重置 OPcache，也可以 通过重启 Web 服务器来使文件系统更改生效。</span><br></pre></td></tr></table></figure>
-<p><strong>最后重启Nginx和PHP即可</strong></p>
-<p>下面是OPcache 可用的配置指令完整列表：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><span class="line">; Determines <span class="keyword">if</span> Zend OPCache is enabled</span><br><span class="line">;opcache.enable=0</span><br><span class="line"></span><br><span class="line">; Determines <span class="keyword">if</span> Zend OPCache is enabled <span class="keyword">for</span> the CLI version of PHP</span><br><span class="line">;opcache.enable_cli=0</span><br><span class="line"></span><br><span class="line">; The OPcache shared memory storage size.</span><br><span class="line">;opcache.memory_consumption=64</span><br><span class="line"></span><br><span class="line">; The amount of memory <span class="keyword">for</span> interned strings <span class="keyword">in</span> Mbytes.</span><br><span class="line">;opcache.interned_strings_buffer=4</span><br><span class="line"></span><br><span class="line">; The maximum number of keys (scripts) <span class="keyword">in</span> the OPcache <span class="built_in">hash</span> table.</span><br><span class="line">; Only numbers between 200 and 1000000 are allowed.</span><br><span class="line">;opcache.max_accelerated_files=2000</span><br><span class="line"></span><br><span class="line">; The maximum percentage of <span class="string">"wasted"</span> memory until a restart is scheduled.</span><br><span class="line">;opcache.max_wasted_percentage=5</span><br><span class="line"></span><br><span class="line">; When this directive is enabled, the OPcache appends the current working</span><br><span class="line">; directory to the script key, thus eliminating possible collisions between</span><br><span class="line">; files with the same name (basename). Disabling the directive improves</span><br><span class="line">; performance, but may <span class="built_in">break</span> existing applications.</span><br><span class="line">;opcache.use_cwd=1</span><br><span class="line"></span><br><span class="line">; When disabled, you must reset the OPcache manually or restart the</span><br><span class="line">; webserver <span class="keyword">for</span> changes to the filesystem to take effect.</span><br><span class="line">;opcache.validate_timestamps=1</span><br><span class="line"></span><br><span class="line">; How often (<span class="keyword">in</span> seconds) to check file timestamps <span class="keyword">for</span> changes to the shared</span><br><span class="line">; memory storage allocation. (<span class="string">"1"</span> means validate once per second, but only</span><br><span class="line">; once per request. <span class="string">"0"</span> means always validate)</span><br><span class="line">;opcache.revalidate_freq=2</span><br><span class="line"></span><br><span class="line">; Enables or disables file search <span class="keyword">in</span> include_path optimization</span><br><span class="line">;opcache.revalidate_path=0</span><br><span class="line"></span><br><span class="line">; If disabled, all PHPDoc comments are dropped from the code to reduce the</span><br><span class="line">; size of the optimized code.</span><br><span class="line">;opcache.save_comments=1</span><br><span class="line"></span><br><span class="line">; If enabled, a fast shutdown sequence is used <span class="keyword">for</span> the accelerated code</span><br><span class="line">; Depending on the used Memory Manager this may cause some incompatibilities.</span><br><span class="line">;opcache.fast_shutdown=0</span><br><span class="line"></span><br><span class="line">; Allow file existence override (file_exists, etc.) performance feature.</span><br><span class="line">;opcache.enable_file_override=0</span><br><span class="line"></span><br><span class="line">; A bitmask, <span class="built_in">where</span> each bit enables or disables the appropriate OPcache</span><br><span class="line">; passes</span><br><span class="line">;opcache.optimization_level=0xffffffff</span><br><span class="line"></span><br><span class="line">;opcache.inherited_hack=1</span><br><span class="line">;opcache.dups_fix=0</span><br><span class="line"></span><br><span class="line">; The location of the OPcache blacklist file (wildcards allowed).</span><br><span class="line">; Each OPcache blacklist file is a text file that holds the names of files</span><br><span class="line">; that should not be accelerated. The file format is to add each filename</span><br><span class="line">; to a new line. The filename may be a full path or just a file prefix</span><br><span class="line">; (i.e., /var/www/x  blacklists all the files and directories <span class="keyword">in</span> /var/www</span><br><span class="line">; that start with <span class="string">'x'</span>). Line starting with a ; are ignored (comments).</span><br><span class="line">;opcache.blacklist_filename=</span><br><span class="line"></span><br><span class="line">; Allows exclusion of large files from being cached. By default all files</span><br><span class="line">; are cached.</span><br><span class="line">;opcache.max_file_size=0</span><br><span class="line"></span><br><span class="line">; Check the cache checksum each N requests.</span><br><span class="line">; The default value of <span class="string">"0"</span> means that the checks are disabled.</span><br><span class="line">;opcache.consistency_checks=0</span><br><span class="line"></span><br><span class="line">; How long to <span class="built_in">wait</span> (<span class="keyword">in</span> seconds) <span class="keyword">for</span> a scheduled restart to begin <span class="keyword">if</span> the cache</span><br><span class="line">; is not being accessed.</span><br><span class="line">;opcache.force_restart_timeout=180</span><br><span class="line"></span><br><span class="line">; OPcache error_log file name. Empty string assumes <span class="string">"stderr"</span>.</span><br><span class="line">;opcache.error_log=</span><br><span class="line"></span><br><span class="line">; All OPcache errors go to the Web server <span class="built_in">log</span>.</span><br><span class="line">; By default, only fatal errors (level 0) or errors (level 1) are logged.</span><br><span class="line">; You can also <span class="built_in">enable</span> warnings (level 2), info messages (level 3) or</span><br><span class="line">; debug messages (level 4).</span><br><span class="line">;opcache.log_verbosity_level=1</span><br><span class="line"></span><br><span class="line">; Preferred Shared Memory back-end. Leave empty and <span class="built_in">let</span> the system decide.</span><br><span class="line">;opcache.preferred_memory_model=</span><br><span class="line"></span><br><span class="line">; Protect the shared memory from unexpected writing during script execution.</span><br><span class="line">; Useful <span class="keyword">for</span> internal debugging only.</span><br><span class="line">;opcache.protect_memory=0</span><br><span class="line"></span><br><span class="line">; Allows calling OPcache API <span class="built_in">functions</span> only from PHP scripts <span class="built_in">which</span> path is</span><br><span class="line">; started from specified string. The default <span class="string">""</span> means no restriction</span><br><span class="line">;opcache.restrict_api=</span><br><span class="line"></span><br><span class="line">; Mapping base of shared memory segments (<span class="keyword">for</span> Windows only). All the PHP</span><br><span class="line">; processes have to map shared memory into the same address space. This</span><br><span class="line">; directive allows to manually fix the <span class="string">"Unable to reattach to base address"</span></span><br><span class="line">; errors.</span><br><span class="line">;opcache.mmap_base=</span><br><span class="line"></span><br><span class="line">; Enables and sets the second level cache directory.</span><br><span class="line">; It should improve performance when SHM memory is full, at server restart or</span><br><span class="line">; SHM reset. The default <span class="string">""</span> disables file based caching.</span><br><span class="line">;opcache.file_cache=</span><br><span class="line"></span><br><span class="line">; Enables or disables opcode caching <span class="keyword">in</span> shared memory.</span><br><span class="line">;opcache.file_cache_only=0</span><br><span class="line"></span><br><span class="line">; Enables or disables checksum validation when script loaded from file cache.</span><br><span class="line">;opcache.file_cache_consistency_checks=1</span><br><span class="line"></span><br><span class="line">; Implies opcache.file_cache_only=1 <span class="keyword">for</span> a certain process that failed to</span><br><span class="line">; reattach to the shared memory (<span class="keyword">for</span> Windows only). Explicitly enabled file</span><br><span class="line">; cache is required.</span><br><span class="line">;opcache.file_cache_fallback=1</span><br><span class="line"></span><br><span class="line">; Enables or disables copying of PHP code (text segment) into HUGE PAGES.</span><br><span class="line">; This should improve performance, but requires appropriate OS configuration.</span><br><span class="line">;opcache.huge_code_pages=0</span><br><span class="line"></span><br><span class="line">; Validate cached file permissions.</span><br><span class="line">; opcache.validate_permission=0</span><br><span class="line"></span><br><span class="line">; Prevent name collisions <span class="keyword">in</span> chroot<span class="string">'ed environment.</span></span><br><span class="line"><span class="string">; opcache.validate_root=0</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/02/09/PHP%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E5%BC%80%E5%90%AFOpcache%E6%9D%A5%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD/" data-id="ck2vz4xh3001fv50q4cmdes7p" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Spring-Boot的三种启动方式" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/01/19/Spring-Boot%E7%9A%84%E4%B8%89%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F/" class="article-date">
-  <time datetime="2018-01-19T15:33:49.000Z" itemprop="datePublished">2018-01-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/19/Spring-Boot%E7%9A%84%E4%B8%89%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F/">Spring Boot的三种启动方式</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Spring Boot有以下三种启动方式，最后一种我们可以很好的设置不同环境使用不同的配置文件。</p>
-<p>1.IDE 运行Application这个类的main方法</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">package com.dameiweb.girl;</span><br><span class="line"></span><br><span class="line">import org.springframework.boot.SpringApplication;</span><br><span class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"></span><br><span class="line">@SpringBootApplication</span><br><span class="line">public class GirlApplication &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		SpringApplication.run(GirlApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2.在springboot的应用的根目录下运行mvn spring-boot:run</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">$ mvn spring-boot:run</span><br><span class="line">[INFO] Scanning <span class="keyword">for</span> projects...</span><br><span class="line">Downloading: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.pom</span><br><span class="line">Downloaded: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.pom (0 B at 0 B/s)</span><br><span class="line">Downloading: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.jar</span><br><span class="line">Downloaded: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.jar (0 B at 0 B/s)</span><br><span class="line">Downloading: http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/codehaus-parent/3/codehaus-parent-3.pom</span><br><span class="line">Downloaded: http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/codehaus-parent/3/codehaus-parent-3.pom (0 B at 0 B/s)</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] Building girl 0.0.1-SNAPSHOT</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] &gt;&gt;&gt; spring-boot-maven-plugin:1.5.9.RELEASE:run (default-cli) &gt; <span class="built_in">test</span>-compile @ girl &gt;&gt;&gt;</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ girl ---</span><br><span class="line">[INFO] Using <span class="string">'UTF-8'</span> encoding to copy filtered resources.</span><br><span class="line">[INFO] Copying 3 resources</span><br><span class="line">[INFO] Copying 0 resource</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ girl ---</span><br><span class="line">[INFO] Nothing to compile - all classes are up to date</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ girl ---</span><br><span class="line">[INFO] Using <span class="string">'UTF-8'</span> encoding to copy filtered resources.</span><br><span class="line">[INFO] skip non existing resourceDirectory D:\work\girl\src\<span class="built_in">test</span>\resources</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ girl ---</span><br><span class="line">[INFO] Nothing to compile - all classes are up to date</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] &lt;&lt;&lt; spring-boot-maven-plugin:1.5.9.RELEASE:run (default-cli) &lt; <span class="built_in">test</span>-compile @ girl &lt;&lt;&lt;</span><br><span class="line">[INFO]</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- spring-boot-maven-plugin:1.5.9.RELEASE:run (default-cli) @ girl ---</span><br></pre></td></tr></table></figure>
-<p>3.在springboot的应用的根目录下 mvn install 生成jar后运行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">先执行 mvn install</span><br><span class="line">再执行 java -jar target/girl-0.0.1-SNAPSHOT.jar --spring.profile.active=prod</span><br><span class="line"></span><br><span class="line">java -jar target/girl-0.0.1-SNAPSHOT.jar --spring.profile.active=prod</span><br><span class="line"></span><br><span class="line">  .   ____          _            __ _ _</span><br><span class="line"> /\\ / ___<span class="string">'_ __ _ _(_)_ __  __ _ \ \ \ \</span></span><br><span class="line"><span class="string">( ( )\___ | '</span>_ | <span class="string">'_| | '</span>_ \/ _` | \ \ \ \</span><br><span class="line"> \\/  ___)| |_)| | | | | || (_| |  ) ) ) )</span><br><span class="line">  <span class="string">'  |____| .__|_| |_|_| |_\__, | / / / /</span></span><br><span class="line"><span class="string"> =========|_|==============|___/=/_/_/_/</span></span><br><span class="line"><span class="string"> :: Spring Boot ::        (v1.5.9.RELEASE)</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/19/Spring-Boot%E7%9A%84%E4%B8%89%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F/" data-id="ck2vz4xhi001uv50q910bacd2" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Java里有哪些语法糖" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/01/09/Java%E9%87%8C%E6%9C%89%E5%93%AA%E4%BA%9B%E8%AF%AD%E6%B3%95%E7%B3%96/" class="article-date">
-  <time datetime="2018-01-09T15:36:33.000Z" itemprop="datePublished">2018-01-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/09/Java%E9%87%8C%E6%9C%89%E5%93%AA%E4%BA%9B%E8%AF%AD%E6%B3%95%E7%B3%96/">Java里有哪些语法糖</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">语法糖（Syntactic Sugar），也称糖衣语法，指在计算机语言中添加的某种语法，这种语法对语言本身功能来说没有什么影响，只是为了方便程序员的开发，提高开发效率。说白了，语法糖就是对现有语法的一个封装。</span><br></pre></td></tr></table></figure>
-<p>Java作为一种与平台无关的高级语言，当然也含有语法糖，这些语法糖并不被虚拟机所支持，在编译成字节码阶段就自动转换成简单常用语法。<br>语法糖的大概有三个特性：</p>
-<ol>
-<li>提高程序开发效率</li>
-<li>程序性能不受影响</li>
-<li>规避coder可能因手误而出现的错误</li>
-</ol>
-<p>那Java有哪些语法糖呢？Java大概有如下6个语法糖：</p>
-<ol>
-<li>泛型与类型擦除</li>
-<li>自动装箱与拆箱</li>
-<li>变长参数</li>
-<li>增强for循环</li>
-<li>内部类</li>
-<li>枚举类</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/09/Java%E9%87%8C%E6%9C%89%E5%93%AA%E4%BA%9B%E8%AF%AD%E6%B3%95%E7%B3%96/" data-id="ck2vz4xga000mv50q99mq7tvo" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Java出现错误Implicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/01/05/Java%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFImplicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor/" class="article-date">
-  <time datetime="2018-01-05T15:32:03.000Z" itemprop="datePublished">2018-01-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/05/Java%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFImplicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor/">Java出现错误Implicit super constructor  **  is undefined for default constructor. Must define an explicit constructor</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>公司开展新的项目，要求使用Java，给一个月的学习时间。(<strong><strong>南京一些比较大的公司也开始转向Java，语言环境发了改变，学习Java也是大势所趋。2018年1月26日修改</strong></strong>)，只好开始学习Java！说好有系统的培训，结果我现在在自学！在学习java的时候，遇到了下面的问题：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Implicit <span class="keyword">super</span> constructor <span class="title">People</span><span class="params">()</span> is undefined <span class="keyword">for</span> <span class="keyword">default</span> constructor. Must define an explicit constructor</span></span><br></pre></td></tr></table></figure>
-<p>大致的意思是父类没有定义默认的无参数的构造方法，父类必须定义一个无参的构造方法。经过一番研究得知，Java中有一下的规则： 因为你的父类已经定义了一个有参的构造函数并且父类中没有默认的无参构造方法，此时编译器不会为你调用默认的构造函数， 当子类继承时，必须在自己的构造函数显式调用父类的构造函数，自己才能确保子类在初始化前父类会被实例化， 如果你父类中有无参的构造函数，子类就不会强制要求调用，即你写的那个就可以通过， 编译器会默认帮你调用父类的构造函数。</p>
-<p>修改后的代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//父类</span></span><br><span class="line"><span class="keyword">package</span> dmw;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">People</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> String name;</span><br><span class="line">	<span class="keyword">protected</span> <span class="keyword">int</span> age;</span><br><span class="line">	<span class="keyword">protected</span> String gender;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">People</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">People</span><span class="params">(<span class="keyword">int</span> age,String name,String gender)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.age = age;</span><br><span class="line">		<span class="keyword">this</span>.name =name;</span><br><span class="line">		<span class="keyword">this</span>.gender=gender;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	 <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span></span>&#123;</span><br><span class="line">		 <span class="keyword">return</span> <span class="keyword">this</span>.age;</span><br><span class="line">	 &#125;</span><br><span class="line">	 </span><br><span class="line">	 <span class="function"><span class="keyword">public</span> String <span class="title">getGender</span><span class="params">()</span></span>&#123;</span><br><span class="line">		 <span class="keyword">return</span> <span class="keyword">this</span>.gender;</span><br><span class="line">	 &#125;</span><br><span class="line">	 </span><br><span class="line">	 <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span></span>;</span><br><span class="line">	 </span><br><span class="line">	 </span><br><span class="line">	 <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">setGender</span><span class="params">(String gender)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//子类</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> dmw;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">extends</span> <span class="title">People</span> </span>&#123; </span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">(<span class="keyword">int</span> age, String name, String gender)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>(age, name, gender);</span><br><span class="line">		<span class="comment">// TODO Auto-generated constructor stub</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.age = age;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">setGender</span><span class="params">(String gender)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.gender = gender;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><a href="http://blog.csdn.net/children_of_light/article/details/54985869" target="_blank" rel="noopener">eclipse的maven配置</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/05/Java%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFImplicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor/" data-id="ck2vz4xfo0007v50qdc5c8sk9" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-使用java和javac命令来编译运行Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/01/01/%E4%BD%BF%E7%94%A8java%E5%92%8Cjavac%E5%91%BD%E4%BB%A4%E6%9D%A5%E7%BC%96%E8%AF%91%E8%BF%90%E8%A1%8CJava/" class="article-date">
-  <time datetime="2018-01-01T15:31:03.000Z" itemprop="datePublished">2018-01-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/01/%E4%BD%BF%E7%94%A8java%E5%92%8Cjavac%E5%91%BD%E4%BB%A4%E6%9D%A5%E7%BC%96%E8%AF%91%E8%BF%90%E8%A1%8CJava/">使用java和javac命令来编译运行Java</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>废话不多说，直奔主题!</p>
-<p> 1.先创建一个Test.java的文件，里面保存的内容如下：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> void main(String[] args)&#123;</span><br><span class="line">        System.out.println(<span class="string">"hello world!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">`</span><br></pre></td></tr></table></figure>
-<p> 2.使用javac编译Test.java文件，编译通过会生成一个Test.class的文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">C:\Users\nick\Desktop&gt;javac Test.java</span><br><span class="line"></span><br><span class="line">C:\Users\nick\Desktop&gt;</span><br></pre></td></tr></table></figure>
-<p> 3.使用java Test命令执行Test.class文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\nick\Desktop&gt;java Test</span><br><span class="line">hello world!</span><br><span class="line"></span><br><span class="line">C:\Users\nick\Desktop&gt;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/01/%E4%BD%BF%E7%94%A8java%E5%92%8Cjavac%E5%91%BD%E4%BB%A4%E6%9D%A5%E7%BC%96%E8%AF%91%E8%BF%90%E8%A1%8CJava/" data-id="ck2vz4xhw002bv50q6c5mfcni" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Centos6-9安装ElasticSearch2-x" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/" class="article-date">
-  <time datetime="2017-12-25T15:29:35.000Z" itemprop="datePublished">2017-12-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/">Centos6.9安装ElasticSearch2.x</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我这里安装的是ElasticSearch2.x系列。<br><a href="https://www.elastic.co/guide/en/elasticsearch/reference/2.4/setup-repositories.html" target="_blank" rel="noopener">ElasticSearch官方文档</a><br>1.检查系统是否已经安装了jdk</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list installed |grep java</span><br></pre></td></tr></table></figure>
-<p>若有自带安装的JDK，如何卸载CentOS系统自带Java环境?</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">卸载JDK相关文件输入：yum -y remove java-1.7.0-openjdk*</span><br><span class="line">卸载tzdata-java输入：yum -y remove tzdata-java.noarch</span><br></pre></td></tr></table></figure>
-<p><em>注</em>：“*”表示卸载掉java 1.7.0的所有openjdk相关文件<br>2.查看yum库中的Java安装包</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">yum -y list java*</span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ ~]<span class="comment"># yum -y list java*</span></span><br><span class="line">Loaded plugins: security</span><br><span class="line">Installed Packages</span><br><span class="line">java-1.8.0-openjdk.x86_64                                                                        1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-debug.x86_64                                                                  1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-demo.x86_64                                                                   1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-demo-debug.x86_64                                                             1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-devel.x86_64                                                                  1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-devel-debug.x86_64                                                            1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-headless.x86_64                                                               1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-headless-debug.x86_64                                                         1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-javadoc.noarch                                                                1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-javadoc-debug.noarch                                                          1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-src.x86_64                                                                    1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-src-debug.x86_64                                                              1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">Available Packages</span><br><span class="line">java-1.5.0-gcj.x86_64                                                                            1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.5.0-gcj-devel.x86_64                                                                      1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.5.0-gcj-javadoc.x86_64                                                                    1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.5.0-gcj-src.x86_64                                                                        1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.6.0-openjdk.x86_64                                                                        1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-demo.x86_64                                                                   1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-devel.x86_64                                                                  1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-javadoc.x86_64                                                                1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-src.x86_64                                                                    1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.7.0-openjdk.x86_64                                                                        1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-demo.x86_64                                                                   1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-devel.x86_64                                                                  1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-javadoc.noarch                                                                1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-src.x86_64                                                                    1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-clearsilver.i686                                                                            0.10.5-16.el6                                                                       epel    </span><br><span class="line">java-dirq.noarch                                                                                 1.4-1.el6                                                                           epel    </span><br><span class="line">java-dirq-javadoc.noarch                                                                         1.4-1.el6                                                                           epel    </span><br><span class="line">java-service-wrapper.x86_64                                                                      3.2.5-23.el6                                                                        epel    </span><br><span class="line">java-service-wrapper-javadoc.noarch                                                              3.2.5-23.el6                                                                        epel    </span><br><span class="line">java-sleep.noarch                                                                                2.1-6.el6                                                                           epel    </span><br><span class="line">java-sleep-javadoc.noarch                                                                        2.1-6.el6                                                                           epel    </span><br><span class="line">java_cup.x86_64                                                                                  1:0.10k-5.el6                                                                       base    </span><br><span class="line">java_cup-javadoc.x86_64                                                                          1:0.10k-5.el6                                                                       base    </span><br><span class="line">java_cup-manual.x86_64                                                                           1:0.10k-5.el6                                                                       base    </span><br><span class="line">javacc.x86_64                                                                                    4.1-0.5.el6                                                                         base    </span><br><span class="line">javacc-demo.x86_64                                                                               4.1-0.5.el6                                                                         base    </span><br><span class="line">javacc-manual.x86_64                                                                             4.1-0.5.el6                                                                         base    </span><br><span class="line">javassist.noarch                                                                                 3.9.0-6.el6                                                                         base    </span><br><span class="line">javassist-javadoc.noarch                                                                         3.9.0-6.el6                                                                         base    </span><br><span class="line">javastroke.x86_64                                                                                0.5.1-33.el6                                                                        epel    </span><br><span class="line">javatar.noarch                                                                                   2.5-5.el6                                                                           epel    </span><br><span class="line">javatar-javadoc.noarch</span><br></pre></td></tr></table></figure>
-<p>以yum库中的java-1.8为例，将java-1.8.0的所有相关Java程序都安装上。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install java-1.8.0-openjdk*</span><br></pre></td></tr></table></figure>
-<p>3.查看刚安装的Java版本信息</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java -version 可查看Java版本</span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ ~]<span class="comment"># java -version</span></span><br><span class="line">openjdk version <span class="string">"1.8.0_151"</span></span><br><span class="line">OpenJDK Runtime Environment (build 1.8.0_151-b12)</span><br><span class="line">OpenJDK 64-Bit Server VM (build 25.151-b12, mixed mode)</span><br></pre></td></tr></table></figure>
-<p>4.通过rpm安装ElasticSearch</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">先下载并安装公共签名密钥</span><br><span class="line">rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch</span><br><span class="line">再安装rpm的repository</span><br><span class="line">[elasticsearch-2.x]</span><br><span class="line">name=Elasticsearch repository <span class="keyword">for</span> 2.x packages</span><br><span class="line">baseurl=https://packages.elastic.co/elasticsearch/2.x/centos</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=https://packages.elastic.co/GPG-KEY-elasticsearch</span><br><span class="line">enabled=1</span><br></pre></td></tr></table></figure>
-<p>安装ElasticSearch</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install elasticsearch  </span><br><span class="line">sudo dnf install elasticsearch </span><br><span class="line">sudo zypper install elasticsearch</span><br><span class="line"></span><br><span class="line">使用yum在CentOS和旧的基于Red Hat分发</span><br><span class="line">使用dnf的Fedora和其他新的Red Hat分发</span><br><span class="line">使用zypper基于分布的OpenSUSE</span><br><span class="line"></span><br><span class="line">如果你嫌麻烦可以之前使用下面的方法安装：</span><br><span class="line">wget https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/rpm/elasticsearch/2.4.2/elasticsearch-2.4.2.rpm</span><br><span class="line"></span><br><span class="line">sha1sum elasticsearch-5.6.5.rpm</span><br><span class="line">sudo rpm --install elasticsearch-5.6.5.rpm</span><br></pre></td></tr></table></figure>
-<p>5.使用chkconfig命令将Elasticsearch配置为在系统启动时自动启动</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo chkconfig --add elasticsearch</span><br><span class="line"></span><br><span class="line">下面的命令启动或者关闭elasticsearch服务</span><br><span class="line"></span><br><span class="line">sudo -i service elasticsearch start</span><br><span class="line">sudo -i service elasticsearch stop</span><br></pre></td></tr></table></figure>
-<p>6.启动elasticsearch服务报错</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ src]<span class="comment"># service elasticsearch start</span></span><br><span class="line">Starting elasticsearch: OpenJDK 64-Bit Server VM warning: If the number of processors is expected to increase from one, <span class="keyword">then</span> you should configure the number of parallel GC threads appropriately using -XX:ParallelGCThreads=N</span><br><span class="line">OpenJDK 64-Bit Server VM warning: INFO: os::commit_memory(0x0000000085330000, 2060255232, 0) failed; error=<span class="string">'Cannot allocate memory'</span> (errno=12)</span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># There is insufficient memory for the Java Runtime Environment to continue.</span></span><br><span class="line"><span class="comment"># Native memory allocation (mmap) failed to map 2060255232 bytes for committing reserved memory.</span></span><br><span class="line"><span class="comment"># An error report file with more information is saved as:</span></span><br><span class="line"><span class="comment"># /tmp/hs_err_pid23700.log</span></span><br><span class="line">                                                           [FAILED]</span><br></pre></td></tr></table></figure>
-<p>这是因为机器的内存不足，可用内存少于1G,解决方法如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vim  /etc/elasticsearch/jvm.options </span><br><span class="line"><span class="comment">##启用如下两项</span></span><br><span class="line"> -Xms4g                   </span><br><span class="line"> -Xmx4g</span><br><span class="line"><span class="comment">##关闭如下两项</span></span><br><span class="line"><span class="comment">##-Xms2g                    </span></span><br><span class="line"><span class="comment">##-Xmx2g</span></span><br></pre></td></tr></table></figure>
-<p>7.配置外网可用访问</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">修改配置文件</span><br><span class="line">vim/etc/elasticsearch/elasticsearch.yml</span><br><span class="line">修改成：network.host: 0.0.0.0</span><br></pre></td></tr></table></figure>
-<p>至此，elasticsearch的基本配置完成！</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/" data-id="ck2vz4xfj0004v50qalv892gx" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-Centos6安装Mongodb" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/" class="article-date">
@@ -516,7 +102,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/" data-id="ck2vz4xfl0005v50qckxmgl5w" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/" data-id="ck2vz9ebu0005vw0q6rfdaq3h" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li></ul>
@@ -560,7 +146,451 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/05/Nginx%E5%87%BA%E7%8E%B0The-plain-HTTP-request-was-sent-to-HTTPS-port/" data-id="ck2vz4xgu0018v50q13vc74a3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/05/Nginx%E5%87%BA%E7%8E%B0The-plain-HTTP-request-was-sent-to-HTTPS-port/" data-id="ck2vz9eck000tvw0qdiow8w36" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-PHP出现Deprecated-Automatically-populating-is-deprecated-and-will-be-removed-in-a-future-version" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/05/PHP%E5%87%BA%E7%8E%B0Deprecated-Automatically-populating-is-deprecated-and-will-be-removed-in-a-future-version/" class="article-date">
+  <time datetime="2017-12-05T15:24:30.000Z" itemprop="datePublished">2017-12-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/05/PHP%E5%87%BA%E7%8E%B0Deprecated-Automatically-populating-is-deprecated-and-will-be-removed-in-a-future-version/">PHP出现Deprecated Automatically populating  is deprecated and will be removed in a future version</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本地新搭建的PHP环境，出现下面的问题：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Deprecated:  Automatically populating <span class="variable">$HTTP_RAW_POST_DATA</span> is deprecated and will be removed <span class="keyword">in</span> a future version. To avoid this warning <span class="built_in">set</span> <span class="string">'always_populate_raw_post_data'</span> to <span class="string">'-1'</span> <span class="keyword">in</span> php.ini and use the php://input stream instead. <span class="keyword">in</span> Unknown on line 0</span><br><span class="line">Warning: Cannot modify header information - headers already sent <span class="keyword">in</span> Unknown on line 0</span><br></pre></td></tr></table></figure>
+<p>这个问题和PHP版本有关系，PHP 5.6已经废弃了$HTTP_RAW_POST_DATA。<br>解决方法：<br>修改php.ini</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">always_populate_raw_post_data = -1</span><br></pre></td></tr></table></figure>
+<p>重启PHP即可</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/05/PHP%E5%87%BA%E7%8E%B0Deprecated-Automatically-populating-is-deprecated-and-will-be-removed-in-a-future-version/" data-id="ck2vz9ecl000uvw0q92in73q5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-PHP出现以下错误Cannot-find-module-IP-MIB" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/05/PHP%E5%87%BA%E7%8E%B0%E4%BB%A5%E4%B8%8B%E9%94%99%E8%AF%AFCannot-find-module-IP-MIB/" class="article-date">
+  <time datetime="2017-12-05T15:22:45.000Z" itemprop="datePublished">2017-12-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/05/PHP%E5%87%BA%E7%8E%B0%E4%BB%A5%E4%B8%8B%E9%94%99%E8%AF%AFCannot-find-module-IP-MIB/">PHP出现以下错误Cannot find module (IP-MIB)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>查看PHP版本的时候出现下面的问题：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">php -v</span><br><span class="line"></span><br><span class="line">MIB search path: c:/usr/share/snmp/mibs</span><br><span class="line">Cannot find module (IP-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (IF-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (TCP-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (UDP-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (HOST-RESOURCES-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMPv2-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMPv2-SMI): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (NOTIFICATION-LOG-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (UCD-SNMP-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (UCD-DEMO-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMP-TARGET-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (NET-SNMP-AGENT-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (DISMAN-EVENT-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMP-VIEW-BASED-ACM-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMP-COMMUNITY-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMP-FRAMEWORK-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMP-MPD-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMP-USER-BASED-SM-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMP-NOTIFICATION-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMPv2-TM): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">PHP 7.0.12 (cli) (built: Oct 13 2016 11:04:07) ( NTS )</span><br><span class="line">Copyright (c) 1997-2016 The PHP Group</span><br><span class="line">Zend Engine v3.0.0, Copyright (c) 1998-2016 Zend Technologies</span><br></pre></td></tr></table></figure>
+<p>解决办法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#关掉snmp扩展</span></span><br><span class="line"><span class="comment">#windows</span></span><br><span class="line">注释掉 extension=php_snmp.dll</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/05/PHP%E5%87%BA%E7%8E%B0%E4%BB%A5%E4%B8%8B%E9%94%99%E8%AF%AFCannot-find-module-IP-MIB/" data-id="ck2vz9ecn000xvw0q4d3e56ax" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-MySQL出现1267的错误" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/04/MySQL%E5%87%BA%E7%8E%B01267%E7%9A%84%E9%94%99%E8%AF%AF/" class="article-date">
+  <time datetime="2017-12-04T15:21:47.000Z" itemprop="datePublished">2017-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/04/MySQL%E5%87%BA%E7%8E%B01267%E7%9A%84%E9%94%99%E8%AF%AF/">MySQL出现1267的错误</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>执行SQL的时候，MySQL出现了下面的1267的错误，提示与字符集有关系。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1267 - Illegal mix of collations (utf8_unicode_ci,IMPLICIT) and (utf8_general_ci,IMPLICIT) <span class="keyword">for</span> operation <span class="string">'='</span></span><br></pre></td></tr></table></figure>
+<p>查找问题的时候，发现有一张表是从其他地方拷贝过来的，这个表和我们目前项目中的表，稍微有点不同。数据表中字符串类型的字段，不仅有字符集这个属性，还有一个排序规则的属性。拷贝过来的表的字符串类型的字段的排序规则是utf8_unicode_ci，而我们的项目中的是utf8_general_ci，修改之后再次执行上述的SQL，就没有出现上面的错误！<br>下面是问题的简单总结：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ci(caseinsensitive大小写不敏感)</span><br><span class="line">utf8_unicode_ci和utf8_general_ci对中、英文来说没有实质的差别。</span><br><span class="line">utf8_general_ci校对速度快，但准确度稍差。</span><br><span class="line">utf8_unicode_ci准确度高，但校对速度稍慢。</span><br></pre></td></tr></table></figure>
+<p>如果你的应用有德语、法语或者俄语，请一定使用utf8_unicode_ci。一般用utf8_general_ci就够了，到现在也没发现问题。。。</p>
+<p>详细总结：</p>
+<p>1、对于一种语言仅当使用utf8_unicode_ci排序做的不好时，才执行与具体语言相关的utf8字符集校对规则。例如，对于德语和法语，utf8_unicode_ci工作的很好，因此不再需要为这两种语言创建特殊的utf8校对规则。<br>2、utf8_general_ci也适用与德语和法语，除了‘?’等于‘s’，而不是‘ss’之外。如果你的应用能够接受这些，那么应该使用 utf8_general_ci，因为它速度快。否则，使用utf8_unicode_ci，因为它比较准确。<br>用一句话概况上面这段话：utf8_unicode_ci比较准确，utf8_general_ci速度比较快。通常情况下 utf8_general_ci的准确性就够我们用的了，在我看过很多程序源码后，发现它们大多数也用的是utf8_general_ci，所以新建数据 库时一般选用utf8_general_ci就可以了。</p>
+<h4 id="如何在MySQL5-0中使用UTF8"><a href="#如何在MySQL5-0中使用UTF8" class="headerlink" title="如何在MySQL5.0中使用UTF8"></a>如何在MySQL5.0中使用UTF8</h4><p>在 my.cnf中增加下列参数<br>复制代码代码如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">init_connect=<span class="string">'SET NAMES utf8'</span></span><br><span class="line">default-character-set=utf8</span><br><span class="line">default-collation = utf8_general_ci</span><br></pre></td></tr></table></figure>
+<p>执行查询 mysql&gt; show variables; 相关如下:  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">character_set_client | utf8 </span><br><span class="line">character_set_connection | utf8 </span><br><span class="line">character_set_database | utf8 </span><br><span class="line">character_set_results | utf8 </span><br><span class="line">character_set_server | utf8 </span><br><span class="line">character_set_system | utf8</span><br><span class="line">collation_connection | utf8_general_ci </span><br><span class="line">collation_database | utf8_general_ci </span><br><span class="line">collation_server | utf8_general_ci</span><br></pre></td></tr></table></figure>
+<p>个人见解，对于数据库的使用，utf8_general 已经足够的准确，并且相较与  utf8_unicode速度上有优势，固可放心采用之</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/04/MySQL%E5%87%BA%E7%8E%B01267%E7%9A%84%E9%94%99%E8%AF%AF/" data-id="ck2vz9ech000qvw0qf1ovcrov" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-修改ssh的默认22端口" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/04/%E4%BF%AE%E6%94%B9ssh%E7%9A%84%E9%BB%98%E8%AE%A422%E7%AB%AF%E5%8F%A3/" class="article-date">
+  <time datetime="2017-12-04T15:20:41.000Z" itemprop="datePublished">2017-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/04/%E4%BF%AE%E6%94%B9ssh%E7%9A%84%E9%BB%98%E8%AE%A422%E7%AB%AF%E5%8F%A3/">修改ssh的默认22端口</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在国外买的vps防止别人扫描端口，于是我把ssh默认的22端口修改一下。<br>1.修改配置文件：/etc/ssh/sshd_config ，找到</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#port 22</span></span><br></pre></td></tr></table></figure>
+<p>2.先将Port 22 前面的 # 号去掉，并另起一行。如定义SSH端口号为33322，则输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Port 33322</span><br></pre></td></tr></table></figure>
+<p>自定义端口选择建议在万位的端口（如：10000-65535之间）<br>也许您会问为什么要先把port 22前面的 # 去掉呢？因为在配置文件中，# 是Linux的注释字符。注释字符后的代码程序是不会执行的。SSH默认的（即非手动指定）端口为22，所以配置文件在默认的情况下以注释字符出现。当需要指定其它端口或多端口同时访问时，就要删掉注释符号，告知程序按照您的意愿来执行响应操作。<br>以上操作，手动指定SSH端口为22和33322（双端口号），保留22是为了防止个别防火墙屏蔽了其它端口导致无法连接VPS（如没单独指定22，新指定的33322端口防火墙也没放行，那么可能无法通过SSH连接VPS或服务器）。为了防止不必要问题的产生，所以要给自己保留条“后路”。<br>3、修改完毕后，重启SSH服务，并退出当前连接的SSH端口。（如图）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service sshd restart</span><br></pre></td></tr></table></figure>
+<p>CentOS下SSH默认端口22修改成其他端口<br>4.重启完毕，尝试使用新端口登陆<br>连接成功，需要重新添加SSH-RSA验证，点击是（或Yes）即可。<br>5.若能正常访问，返回第一步，根据第二步的操作将原port 22整段注释或删掉，再按第三步重启SSH即可。<br>以上步骤重启后使用默认22号端口无法进入SSH，达到目的。<br>【请注意】：<br>如果您启用了防火墙iptables，那么必须先添加新开的33322端口<br>补充：iptables开放端口端示例<br>为了方便举例说明，就直接拿来一段我的现有服务器上运行的防火墙iptables内容。</p>
+<p>请注意：后面的注释说明文字：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysconfig/iptables</span><br><span class="line"></span><br><span class="line"><span class="comment"># Firewall configuration written by system-config-firewall</span></span><br><span class="line"><span class="comment"># Manual customization of this file is not recommended.</span></span><br><span class="line">*filter</span><br><span class="line">:INPUT ACCEPT [0:0]</span><br><span class="line">:FORWARD ACCEPT [0:0]</span><br><span class="line">:OUTPUT ACCEPT [0:0]</span><br><span class="line">-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT</span><br><span class="line">-A INPUT -p icmp -j ACCEPT</span><br><span class="line">-A INPUT -i lo -j ACCEPT</span><br><span class="line">-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT <span class="comment"># （ssh端口）</span></span><br><span class="line">-A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT <span class="comment"># （web端口）</span></span><br><span class="line">-A INPUT -m state --state NEW -m tcp -p tcp --dport 21 -j ACCEPT <span class="comment"># （ftp端口）</span></span><br><span class="line">-A INPUT -j REJECT --reject-with icmp-host-prohibited</span><br><span class="line">-A FORWARD -j REJECT --reject-with icmp-host-prohibited</span><br><span class="line">COMMIT</span><br></pre></td></tr></table></figure>
+<p>修改完防火墙iptables后，需要重新启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/iptables restart</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">service iptables restart</span><br></pre></td></tr></table></figure>
+<p>注意：iptables配置文件存放位置是：/etc/sysconfig/iptables<br>保存命令：service iptables save<br>使用命令：iptables -L -n 可以查看当前iptables的开放端口情况。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/04/%E4%BF%AE%E6%94%B9ssh%E7%9A%84%E9%BB%98%E8%AE%A422%E7%AB%AF%E5%8F%A3/" data-id="ck2vz9edf001yvw0q4q7w1ij2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-迅搜-xunsearch-多值属性的处理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/04/%E8%BF%85%E6%90%9C-xunsearch-%E5%A4%9A%E5%80%BC%E5%B1%9E%E6%80%A7%E7%9A%84%E5%A4%84%E7%90%86/" class="article-date">
+  <time datetime="2017-12-04T15:18:36.000Z" itemprop="datePublished">2017-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/04/%E8%BF%85%E6%90%9C-xunsearch-%E5%A4%9A%E5%80%BC%E5%B1%9E%E6%80%A7%E7%9A%84%E5%A4%84%E7%90%86/">迅搜(xunsearch) 多值属性的处理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我之前使用Yii2框架做了一个电影网站<a href="http://www.dy360.net" target="_blank" rel="noopener">dy360.net</a>,网站的搜索是通过MySQL的like实现，搜索的条件很多，担心以后数据越来越多，会拖垮网站的速度，于是想通过搜索引擎来解决！ 开始准备使用sphinx，研究发现不太好使。后发现迅搜(xunsearch)，文档比较清楚，上手比较简单，并且有Yii2的composer包，于是决定使用迅搜。<br>使用的过程中遇到这样一个问题：一部电影有多个演员，出品国家或地区，其实就是文档的多值属性的新建、搜索的问题。我研究了一下，最终结局方案如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#项目的配置文件</span></span><br><span class="line"></span><br><span class="line">project.name = yddy</span><br><span class="line">project.default_charset = utf-8</span><br><span class="line">server.index = 8383</span><br><span class="line">server.search = 8384</span><br><span class="line"></span><br><span class="line">[id]</span><br><span class="line"><span class="built_in">type</span> = id</span><br><span class="line">phrase = yes</span><br><span class="line"></span><br><span class="line">[summary]</span><br><span class="line"><span class="built_in">type</span> = body</span><br><span class="line">cutlen=900</span><br><span class="line"></span><br><span class="line">[year]</span><br><span class="line"><span class="built_in">type</span> = numeric</span><br><span class="line">phrase = yes</span><br><span class="line">index = self</span><br><span class="line"> </span><br><span class="line">[actors_text]</span><br><span class="line"><span class="built_in">type</span> = string</span><br><span class="line">index = self</span><br><span class="line">tokenizer = split(/)</span><br><span class="line"></span><br><span class="line">[category_id]</span><br><span class="line"><span class="built_in">type</span> = string</span><br><span class="line">index = self</span><br><span class="line">tokenizer = split(,)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[country_id]</span><br><span class="line"><span class="built_in">type</span> = string</span><br><span class="line">index = self</span><br><span class="line">tokenizer = split(,)</span><br><span class="line">phrase = yes</span><br></pre></td></tr></table></figure>
+<p>其实就是使用迅搜的tokenizer分词器，文档上具体的语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">tokenizer 分词器</span><br><span class="line"></span><br><span class="line">默认为 default 采用内置的功能强大的 scws 分词，适合绝大多数字符串字段。也可以指定自定义分词器， 格式为 name 或 name(arg) 两种形式，其中 name 是分词器名称，arg 则是传递给分词器构造函数的参数。 自定义分词器需要在 lib/ 目录下编写名为 XSTokenizerName 的分词类并实现接口 XSTokenizer， 内置支持的分词器有以下几种：</span><br><span class="line"></span><br><span class="line">full 表示本字段的值整体作为一个检索词，像各种 ID 都适合这种情况</span><br><span class="line">none 表示本字段没有任何词汇用于索引</span><br><span class="line">split([ ]) 表示根据参数分割内容，默认参数为空格，若参数以 / 开头并以 / 结尾则 内部调用 preg_split(arg, ..) 来分割取词，以支持正则或其它特殊字符分割</span><br><span class="line">xlen([2]) 表示根据指定参数长度分段取词，如 ABCDEF =&gt; AB + CD + EF</span><br><span class="line">xstep([2]) 表示根据指定参数步长逐段取词，如 ABCDEF =&gt; AB + ABCD + ABCDEF</span><br><span class="line">scws([3]) 表示采用指定参数为复合等级的 scws 分词，（若无特殊复合需求，无需指定）</span><br><span class="line">tokenizer = default</span><br></pre></td></tr></table></figure>
+<p>然后，根据不同情况使用不同的分割参数，譬如，有的使用’/‘，有的使用’,’。<br>最后，搜索代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public static <span class="keyword">function</span> search(<span class="variable">$params</span>)&#123;</span><br><span class="line">        <span class="variable">$db</span> = Yii::<span class="variable">$app</span>-&gt;xunsearch-&gt;getDatabase(<span class="string">'yddy'</span>);</span><br><span class="line">        <span class="variable">$xs</span> = <span class="variable">$db</span>-&gt;xs;</span><br><span class="line"></span><br><span class="line">        <span class="variable">$search</span> = <span class="variable">$xs</span>-&gt;getSearch();</span><br><span class="line"></span><br><span class="line">        <span class="variable">$keywords</span> = <span class="variable">$params</span>[<span class="string">'word'</span>];</span><br><span class="line">        <span class="keyword">if</span>(empty(<span class="variable">$keywords</span>))&#123;</span><br><span class="line">            <span class="variable">$keywords</span> =<span class="string">''</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$search</span> = <span class="variable">$search</span>-&gt;setQuery(<span class="variable">$keywords</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$category</span>=<span class="variable">$params</span>[<span class="string">'category'</span>])&#123;</span><br><span class="line">            <span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'category_id'</span>,<span class="variable">$category</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$country</span>=<span class="variable">$params</span>[<span class="string">'country'</span>])&#123;</span><br><span class="line">            <span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'country_id'</span>,<span class="variable">$country</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>( (empty(<span class="variable">$params</span>[<span class="string">'other'</span>]) ) &amp;&amp; (<span class="variable">$year</span> = intval(<span class="variable">$params</span>[<span class="string">'year'</span>])) &amp;&amp; is_numeric(<span class="variable">$params</span>[<span class="string">'year'</span>]))&#123;</span><br><span class="line">            <span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'year'</span>,<span class="variable">$year</span>);</span><br><span class="line"></span><br><span class="line">        &#125;elseif((<span class="variable">$params</span>[<span class="string">'other'</span>] == <span class="string">'ago'</span>) &amp;&amp; (<span class="variable">$year</span> = intval(<span class="variable">$params</span>[<span class="string">'year'</span>])) )&#123;</span><br><span class="line">            //<span class="variable">$search</span>-&gt;addRange(<span class="string">'year'</span>,1900,1978);</span><br><span class="line">            <span class="variable">$search</span>-&gt;addRange(<span class="string">'year'</span>,1900,<span class="variable">$year</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>( <span class="variable">$rating</span>=intval(<span class="variable">$params</span>[<span class="string">'rating'</span>]))&#123;</span><br><span class="line">            <span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'rate'</span>, <span class="variable">$rating</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'subtype'</span>,<span class="variable">$params</span>[<span class="string">'subtype'</span>]);</span><br><span class="line">        //<span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'status'</span>,1);</span><br><span class="line">        //<span class="built_in">echo</span> <span class="variable">$search</span>-&gt;getQuery();</span><br><span class="line">        <span class="built_in">return</span> <span class="variable">$search</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/04/%E8%BF%85%E6%90%9C-xunsearch-%E5%A4%9A%E5%80%BC%E5%B1%9E%E6%80%A7%E7%9A%84%E5%A4%84%E7%90%86/" data-id="ck2vz9edq002dvw0qesvx078n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Centos6-9上搭建lnmp环境" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/29/Centos6-9%E4%B8%8A%E6%90%AD%E5%BB%BAlnmp%E7%8E%AF%E5%A2%83/" class="article-date">
+  <time datetime="2017-11-29T15:17:13.000Z" itemprop="datePublished">2017-11-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/29/Centos6-9%E4%B8%8A%E6%90%AD%E5%BB%BAlnmp%E7%8E%AF%E5%A2%83/">Centos6.9上搭建lnmp环境</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我准备把之前做的<a href="http://www.dy360.net" target="_blank" rel="noopener">www.dy360.net</a>重新搞起来，就在vultr上买了vps，于是乎有了下面这篇文章。<br>在vps上系统是Centos6.9，至于为什么使用Centos，那是因为我个人比较熟悉Centos！</p>
+<h4 id="yum安装Nginx"><a href="#yum安装Nginx" class="headerlink" title="yum安装Nginx"></a>yum安装Nginx</h4><p>1.执行下面的yum命令安装Nginx</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install nginx</span><br></pre></td></tr></table></figure>
+<p>如果上面命令没有执行成功，说明系统中yum源中没有Nginx的源，因此我们需要手动添加Nginx的源，步骤如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/yum.repos.d/nginx.repo</span><br><span class="line">输入一下内容：</span><br><span class="line"></span><br><span class="line">[nginx]</span><br><span class="line">name=nginx repo</span><br><span class="line">baseurl=http://nginx.org/packages/mainline/centos/6/<span class="variable">$basearch</span>/</span><br><span class="line">gpgcheck=0</span><br><span class="line">enabled=1</span><br><span class="line"></span><br><span class="line">保存之后执行下面的命令更新源</span><br><span class="line">yum clean all</span><br><span class="line">yum update</span><br></pre></td></tr></table></figure>
+<p>2.启动Nginx</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service nginx start</span><br></pre></td></tr></table></figure>
+<p>现在Nginx已经启动了，直接访问服务器就能看到Nginx欢迎页面了的。如果还无法访问，则需配置一下Linux防火墙。<br>3.配置防火墙,开放80端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysconfig/iptables</span><br><span class="line"></span><br><span class="line">-A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT</span><br><span class="line"><span class="comment">#复制上面一行，将22改成80,保存即可</span></span><br><span class="line">-A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT</span><br><span class="line"></span><br><span class="line"><span class="comment">#最好重启一下防火墙</span></span><br><span class="line">service iptables restart</span><br></pre></td></tr></table></figure>
+<p><em>注意：如果是阿里云的ecs,你可能需要在阿里云的主机管理后台，添加安全组规则，方可开启80端口</em><br>4.设置开机启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chkconfig --list | grep nginx</span><br><span class="line">chkconfig nginx  on</span><br></pre></td></tr></table></figure>
+<p><em>END：Nginx安装配置完成</em></p>
+<hr>
+<h4 id="yum-安装MySQL5-6"><a href="#yum-安装MySQL5-6" class="headerlink" title="yum 安装MySQL5.6"></a>yum 安装MySQL5.6</h4><p><em>参考:</em></p>
+<p><a href="https://www.cnblogs.com/007sx/p/7083143.html" target="_blank" rel="noopener">https://www.cnblogs.com/007sx/p/7083143.html</a><br>1.检查系统是否安装其他版本的MYSQL数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum list installed | grep mysql</span><br><span class="line">yum -y remove mysql-libs.x86_64</span><br></pre></td></tr></table></figure>
+<p>2.配置MySQL源</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget http://repo.mysql.com/mysql-community-release-el6-5.noarch.rpm</span><br><span class="line">rpm -ivh mysql-community-release-el6-5.noarch.rpm</span><br><span class="line">yum repolist all | grep mysql</span><br></pre></td></tr></table></figure>
+
+<p>3.安装MYSQL数据库<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install mysql-community-server -y</span><br></pre></td></tr></table></figure></p>
+<p>4.设置为开机启动(2、3、4都是on代表开机自动启动)<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chkconfig --list | grep mysqld</span><br><span class="line">chkconfig mysqld on</span><br></pre></td></tr></table></figure><br>5.启动mysql<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"> service mysqld start</span><br><span class="line"> </span><br><span class="line"> <span class="comment"># 显示如图（部分）</span></span><br><span class="line"> </span><br><span class="line"> PLEASE REMEMBER TO SET A PASSWORD FOR THE MySQL root USER !</span><br><span class="line">To <span class="keyword">do</span> so, start the server, <span class="keyword">then</span> issue the following commands:</span><br><span class="line"></span><br><span class="line">  /usr/bin/mysqladmin -u root password <span class="string">'new-password'</span></span><br><span class="line">  /usr/bin/mysqladmin -u root -h vultr password <span class="string">'new-password'</span></span><br><span class="line"></span><br><span class="line">Alternatively you can run:</span><br><span class="line"></span><br><span class="line">  /usr/bin/mysql_secure_installation</span><br><span class="line"></span><br><span class="line"><span class="built_in">which</span> will also give you the option of removing the <span class="built_in">test</span></span><br><span class="line">databases and anonymous user created by default.  This is</span><br><span class="line">strongly recommended <span class="keyword">for</span> production servers.</span><br><span class="line"></span><br><span class="line">See the manual <span class="keyword">for</span> more instructions.</span><br><span class="line"></span><br><span class="line">Please report any problems at http://bugs.mysql.com/</span><br><span class="line"></span><br><span class="line">The latest information about MySQL is available on the web at</span><br><span class="line"></span><br><span class="line">  http://www.mysql.com</span><br><span class="line"></span><br><span class="line">Support MySQL by buying support/licenses at http://shop.mysql.com</span><br><span class="line"></span><br><span class="line">Note: new default config file not created.</span><br><span class="line">Please make sure your config file is current</span><br><span class="line"></span><br><span class="line">WARNING: Default config file /etc/my.cnf exists on the system</span><br><span class="line">This file will be <span class="built_in">read</span> by default by the MySQL server</span><br><span class="line">If you <span class="keyword">do</span> not want to use this, either remove it, or use the</span><br><span class="line">--defaults-file argument to mysqld_safe when starting the server</span><br><span class="line"></span><br><span class="line">                                                           [  OK  ]</span><br><span class="line">Starting mysqld:                                           [  OK  ]</span><br></pre></td></tr></table></figure><br>6.设置mysql密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/mysqladmin -u root password <span class="string">'xxxxx'</span></span><br></pre></td></tr></table></figure>
+<p>安全处理,看不懂英文直接一路yes就行<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/mysql_secure_installation</span><br></pre></td></tr></table></figure><br>[注意]2017/12/24更新：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">今日安装MySQL执行上面的命令的时候出现下面的话</span><br><span class="line">In order to <span class="built_in">log</span> into MySQL to secure it, we<span class="string">'ll need the current</span></span><br><span class="line"><span class="string">password for the root user.  If you'</span>ve just installed MySQL, and</span><br><span class="line">you haven<span class="string">'t set the root password yet, the password will be blank,</span></span><br><span class="line"><span class="string">so you should just press enter here.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Enter current password for root (enter for none): </span></span><br><span class="line"><span class="string">OK, successfully used password, moving on...</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Setting the root password ensures that nobody can log into the MySQL</span></span><br><span class="line"><span class="string">root user without the proper authorisation.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">You already have a root password set, so you can safely answer '</span>n<span class="string">'.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Change the root password? [Y/n] Y</span></span><br><span class="line"><span class="string">New password: </span></span><br><span class="line"><span class="string">Re-enter new password: </span></span><br><span class="line"><span class="string">Password updated successfully!</span></span><br><span class="line"><span class="string">Reloading privilege tables..</span></span><br><span class="line"><span class="string"> ... Success!</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">意思是root用户设置密码，之前我们已经设置过了，这个地方输入“no”即可，不然你还要重新设置root用户密码。</span></span><br></pre></td></tr></table></figure>
+<p>7.设置utf-8编码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">查看mysql原本编码：</span><br><span class="line">mysql&gt; show variables like <span class="string">'character%'</span>;</span><br><span class="line">+--------------------------+----------------------------+</span><br><span class="line">| Variable_name            | Value                      |</span><br><span class="line">+--------------------------+----------------------------+</span><br><span class="line">| character_set_client     | utf8                       |</span><br><span class="line">| character_set_connection | utf8                       |</span><br><span class="line">| character_set_database   | latin1                     |</span><br><span class="line">| character_set_filesystem | binary                     |</span><br><span class="line">| character_set_results    | utf8                       |</span><br><span class="line">| character_set_server     | latin1                     |</span><br><span class="line">| character_set_system     | utf8                       |</span><br><span class="line">| character_sets_dir       | /usr/share/mysql/charsets/ |</span><br><span class="line">+--------------------------+----------------------------+</span><br></pre></td></tr></table></figure>
+<p>编辑mysql的配置文件/etc/my.cnf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/my.cnf</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line">character-set-server=utf8 </span><br><span class="line">collation-server=utf8_general_ci </span><br><span class="line">sql_mode=<span class="string">'NO_ENGINE_SUBSTITUTION'</span></span><br><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line">default-character-set = utf8</span><br><span class="line"></span><br><span class="line">[mysql.server]</span><br><span class="line">default-character-set = utf8</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[mysqld_safe]</span><br><span class="line">default-character-set = utf8</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[client]</span><br><span class="line">default-character-set = utf8</span><br><span class="line"></span><br><span class="line"><span class="comment">#重启mysql</span></span><br><span class="line">service mysqld restart</span><br><span class="line"></span><br><span class="line"><span class="comment">#再次查看</span></span><br><span class="line"></span><br><span class="line">mysql&gt; show variables like <span class="string">'character%'</span>;</span><br><span class="line">+--------------------------+----------------------------+</span><br><span class="line">| Variable_name            | Value                      |</span><br><span class="line">+--------------------------+----------------------------+</span><br><span class="line">| character_set_client     | utf8                       |</span><br><span class="line">| character_set_connection | utf8                       |</span><br><span class="line">| character_set_database   | utf8                       |</span><br><span class="line">| character_set_filesystem | binary                     |</span><br><span class="line">| character_set_results    | utf8                       |</span><br><span class="line">| character_set_server     | utf8                       |</span><br><span class="line">| character_set_system     | utf8                       |</span><br><span class="line">| character_sets_dir       | /usr/share/mysql/charsets/ |</span><br><span class="line">+--------------------------+----------------------------+</span><br></pre></td></tr></table></figure>
+<p><em>END:到此MySQL安装配置成功</em></p>
+<hr>
+<h4 id="编译安装PHP7-0-26"><a href="#编译安装PHP7-0-26" class="headerlink" title="编译安装PHP7.0.26"></a>编译安装PHP7.0.26</h4><p><em>参考：</em></p>
+<ol>
+<li><p><a href="https://segmentfault.com/a/1190000005005068" target="_blank" rel="noopener">https://segmentfault.com/a/1190000005005068</a></p>
+</li>
+<li><p><a href="http://blog.csdn.net/tomspcc/article/details/71080991" target="_blank" rel="noopener">http://blog.csdn.net/tomspcc/article/details/71080991</a></p>
+</li>
+</ol>
+<p>1.安装PHP支持库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install gcc gcc-c++ libmcrypt-devel mhash-devel libxslt-devel libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel  libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel php-mcrypt</span><br></pre></td></tr></table></figure>
+
+<p>####<br>2.下载PHP7.0.26源码包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget  http://sg2.php.net/distributions/php-7.0.26.tar.gz</span><br></pre></td></tr></table></figure>
+<p>3.编译安装PHP</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">./configure \</span><br><span class="line">--prefix=/usr/<span class="built_in">local</span>/php \</span><br><span class="line">--<span class="built_in">exec</span>-prefix=/usr/<span class="built_in">local</span>/php \</span><br><span class="line">--bindir=/usr/<span class="built_in">local</span>/php/bin \</span><br><span class="line">--with-fpm-user=www \</span><br><span class="line">--with-fpm-group=www \</span><br><span class="line">--sbindir=/usr/<span class="built_in">local</span>/php/sbin \</span><br><span class="line">--includedir=/usr/<span class="built_in">local</span>/php/include \</span><br><span class="line">--libdir=/usr/<span class="built_in">local</span>/php/lib/php \</span><br><span class="line">--mandir=/usr/<span class="built_in">local</span>/php/php/man \</span><br><span class="line">--with-config-file-path=/usr/<span class="built_in">local</span>/php/etc \</span><br><span class="line">--with-mcrypt=/usr/include \</span><br><span class="line">--with-mhash \</span><br><span class="line">--with-openssl \</span><br><span class="line">--with-mysqli=shared,mysqlnd \</span><br><span class="line">--with-pdo-mysql=shared,mysqlnd \</span><br><span class="line">--with-gd \</span><br><span class="line">--with-iconv \</span><br><span class="line">--with-zlib \</span><br><span class="line">--<span class="built_in">enable</span>-zip \</span><br><span class="line">--<span class="built_in">enable</span>-inline-optimization \</span><br><span class="line">--<span class="built_in">disable</span>-debug \</span><br><span class="line">--<span class="built_in">disable</span>-rpath \</span><br><span class="line">--<span class="built_in">enable</span>-shared \</span><br><span class="line">--<span class="built_in">enable</span>-xml \</span><br><span class="line">--<span class="built_in">enable</span>-bcmath \</span><br><span class="line">--<span class="built_in">enable</span>-shmop \</span><br><span class="line">--<span class="built_in">enable</span>-sysvsem \</span><br><span class="line">--<span class="built_in">enable</span>-mbregex \</span><br><span class="line">--<span class="built_in">enable</span>-mbstring \</span><br><span class="line">--<span class="built_in">enable</span>-ftp \</span><br><span class="line">--<span class="built_in">enable</span>-gd-native-ttf \</span><br><span class="line">--<span class="built_in">enable</span>-pcntl \</span><br><span class="line">--<span class="built_in">enable</span>-sockets \</span><br><span class="line">--with-xmlrpc \</span><br><span class="line">--<span class="built_in">enable</span>-soap \</span><br><span class="line">--without-pear \</span><br><span class="line">--with-gettext \</span><br><span class="line">--<span class="built_in">enable</span>-session \</span><br><span class="line">--with-curl \</span><br><span class="line">--with-jpeg-dir \</span><br><span class="line">--with-freetype-dir \</span><br><span class="line">--<span class="built_in">enable</span>-opcache \</span><br><span class="line">--<span class="built_in">enable</span>-fpm \</span><br><span class="line">--without-gdbm \</span><br><span class="line">--<span class="built_in">disable</span>-fileinfo</span><br></pre></td></tr></table></figure>
+
+<p>编译报下面的错误</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">checking <span class="keyword">for</span> stdarg.h... (cached) yes</span><br><span class="line">checking <span class="keyword">for</span> mcrypt support... yes</span><br><span class="line">configure: error: mcrypt.h not found. Please reinstall libmcrypt.</span><br></pre></td></tr></table></figure>
+
+<p>执行下面的命令安装libmcrypet</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install libmcrypt-devel -y</span><br></pre></td></tr></table></figure>
+<p>若上面的方法解决不了，可以编译安装libmcrypet</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src</span><br><span class="line">wget http://softlayer.dl.sourceforge.net/sourceforge/mcrypt/libmcrypt-2.5.8.tar.gz</span><br><span class="line">tar -zxvf libmcrypt-2.5.8.tar.gz</span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src/libmcrypt-2.5.8</span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span></span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>上面的方法要是还是不行，那用下面的方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">安装第三方yum源</span><br><span class="line">wget http://www.atomicorp.com/installers/atomic</span><br><span class="line">sh ./atomic</span><br><span class="line"></span><br><span class="line">yum install libmcrypt-devel -y</span><br></pre></td></tr></table></figure>
+<p>4.最后执行下面的命令，完成PHP的安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make </span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<p>5.配置PHP-FPM</p>
+<ul>
+<li><p>增加用户&amp;用户组</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">groupadd www</span><br><span class="line">useradd -g www www</span><br></pre></td></tr></table></figure></li>
+<li><p>拷贝php-fpm.conf文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/<span class="built_in">local</span>/php/etc/php-fpm.conf.default /usr/<span class="built_in">local</span>/php/etc/php-fpm.conf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拷贝php-fpm include文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp usr/<span class="built_in">local</span>/php/etc/php-fpm.d/www.conf.default  www.conf</span><br></pre></td></tr></table></figure></li>
+<li><p>从源码包里拷贝php.ini</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/<span class="built_in">local</span>/src/php-7.0.26/php.ini-production /usr/<span class="built_in">local</span>/php/etc/php.ini</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>6.将PHP加入环境变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/usr/<span class="built_in">local</span>/php/bin</span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure>
+<p>7.php-fpm自启动</p>
+<ul>
+<li>从源码包里拷贝启动脚本<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm</span><br></pre></td></tr></table></figure></li>
+<li>加入系统启动项<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig php-fpm on</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>8.重启PHP</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service php-fpm restart</span><br></pre></td></tr></table></figure>
+<p><em>END:PHP安装配置完成</em></p>
+<hr>
+<h4 id="编译安装git"><a href="#编译安装git" class="headerlink" title="编译安装git"></a>编译安装git</h4><p><em>参考:</em><br><a href="http://www.cnblogs.com/fazo/p/5578644.html" target="_blank" rel="noopener">http://www.cnblogs.com/fazo/p/5578644.html</a></p>
+<p>1.安装依赖的包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel gcc perl-ExtUtils-MakeMaker</span><br></pre></td></tr></table></figure>
+<p>2.下载源码包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/git/git/archive/v2.9.0.zip</span><br><span class="line">unzip v2.9.0.zip</span><br><span class="line"><span class="built_in">cd</span> git-2.9.0</span><br></pre></td></tr></table></figure>
+<p>3.编译安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make prefix=/usr/<span class="built_in">local</span>/git all</span><br><span class="line">make prefix=/usr/<span class="built_in">local</span>/git install</span><br></pre></td></tr></table></figure>
+<p>4.加入系统变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile  </span><br><span class="line"><span class="built_in">export</span> PATH=/usr/<span class="built_in">local</span>/git/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+<p>5.配置git</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">'vultr'</span></span><br><span class="line">git config --global user.email <span class="string">'vultr@dy360.net'</span> <span class="string">'vultr@dy360.net'</span></span><br><span class="line">git config --global credential.helper store <span class="comment">#保存密码</span></span><br></pre></td></tr></table></figure>
+<p>6.生成ssh密钥,执行下面的命令，一路回车即可，即可用密钥克隆项目。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">'vultr@dy360.net'</span></span><br></pre></td></tr></table></figure>
+<p><em>END:git安装配置成功</em></p>
+<hr>
+<p>最后，终于环境搭建好了！自己搭建lnmp环境少说也有十几次了，可是每次都有新感觉！因为每次出现的问题，都不太一样！最近两次都出现了Nginx安装后，通过ip不能访问的问题，结果发现都是防火墙的问题，没有开启80端口。坑的要命！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/11/29/Centos6-9%E4%B8%8A%E6%90%AD%E5%BB%BAlnmp%E7%8E%AF%E5%A2%83/" data-id="ck2vz9ebq0003vw0qfdric235" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-tar-分卷压缩和解压" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/27/tar-%E5%88%86%E5%8D%B7%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B/" class="article-date">
+  <time datetime="2017-11-27T15:16:14.000Z" itemprop="datePublished">2017-11-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/27/tar-%E5%88%86%E5%8D%B7%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B/">tar 分卷压缩和解压</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>tar 本身为一个打包工具，可以把目录打包成一个文件，它的好处是它把所有文件整合成一个大文件整体，方便拷贝或者移动。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">语法：tar [-zjxcvfpP] filename,tar命令有多个选项，其中不常用的做了标注。</span><br><span class="line"></span><br><span class="line">“-z” : 同时用gzip压缩</span><br><span class="line"></span><br><span class="line">“-j” : 同时用bzip2压缩</span><br><span class="line"></span><br><span class="line">“-x” : 解包或者解压缩</span><br><span class="line"></span><br><span class="line">“-t” : 查看tar包里面的文件</span><br><span class="line"></span><br><span class="line">“-c” : 建立一个tar包或者压缩文件包</span><br><span class="line"></span><br><span class="line">“-v” : 可视化</span><br><span class="line"></span><br><span class="line">“-f” : 后面跟文件名，压缩时跟 “-f 文件名”，意思是压缩后的文件名为filename, 解压时跟 “-f 文件名”，意思是解压filename. 请注意，如果是多个参数组合的情况下带有 “-f”，请把 “-f” 写到最后面。</span><br><span class="line"></span><br><span class="line">“-p” : 使用原文件的属性，压缩前什么属性压缩后还什么属性。（不常用）</span><br><span class="line"></span><br><span class="line">“-P” : 可以使用绝对路径。（不常用）</span><br><span class="line"></span><br><span class="line">--exclude filename : 在打包或者压缩时，不要将filename文件包括在内。（不常用）</span><br></pre></td></tr></table></figure>
+<p>那如何分卷解压缩呢？</p>
+<p>假如要将目录logs打包压缩并分割成多个1M的文件，可以用下面的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">tar cjf - logs/ |split -b 1m - logs.tar.bz2</span><br><span class="line">完成后会产生下列文件：</span><br><span class="line">logs.tar.bz2.aa, logs.tar.bz2.ab, logs.tar.bz2.ac</span><br><span class="line">要解压的时候只要执行下面的命令就可以了：</span><br><span class="line">cat logs.tar.bz2.a* | tar xj</span><br><span class="line"></span><br><span class="line">再举例：</span><br><span class="line">要将文件test.pdf分包压缩成500 bytes的文件：</span><br><span class="line">tar czf - test.pdf | split -b 500 - test.tar.gz</span><br><span class="line">最后要提醒但是那两个"-"不要漏了，那是tar的ouput和split的input的参数。</span><br><span class="line"></span><br><span class="line">tar cjf - logs/ |split -b 1m - logs.tar.bz2.</span><br><span class="line">完成后会产生下列文件：</span><br><span class="line">logs.tar.bz2.aa, logs.tar.bz2.ab, logs.tar.bz2.ac</span><br><span class="line">要解压的时候只要执行下面的命令就可以了：</span><br><span class="line">cat logs.tar.bz2.a* | tar xj</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/11/27/tar-%E5%88%86%E5%8D%B7%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B/" data-id="ck2vz9ed9001qvw0q50dj6t0o" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-如何强制全站https访问" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/23/%E5%A6%82%E4%BD%95%E5%BC%BA%E5%88%B6%E5%85%A8%E7%AB%99https%E8%AE%BF%E9%97%AE/" class="article-date">
+  <time datetime="2017-11-23T15:12:52.000Z" itemprop="datePublished">2017-11-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/23/%E5%A6%82%E4%BD%95%E5%BC%BA%E5%88%B6%E5%85%A8%E7%AB%99https%E8%AE%BF%E9%97%AE/">如何强制全站https访问</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天在阿里云上搞了一个免费的https证书，于是就在自己的服务器上安装了一下，配置好证书之后，如何强制全站https访问呢？其实方法有很多，这里只给出两个比较简单的方法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">在自己的虚拟主机配置server节点中添加下面的代码，使用其一即可。</span></span><br><span class="line"><span class="meta">#</span><span class="bash">方法一</span></span><br><span class="line">rewrite ^ https://$server_name$request_uri? permanent;</span><br><span class="line"><span class="meta">#</span><span class="bash">方法二</span></span><br><span class="line">return 301 https://$server_name$request_uri;</span><br></pre></td></tr></table></figure>
+<p>我用的是第一个方法，大家可以根据自己的喜好，来决定使用哪中方法。下面贴出我自己网站的配置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen     443;</span><br><span class="line">    listen     80;</span><br><span class="line">    </span><br><span class="line">    server_name  www.ydstudio.net;</span><br><span class="line">    set $my_server_name $scheme://$server_name;</span><br><span class="line">    </span><br><span class="line">    #防止ip访问，如http://xxx.xxx.xxx.xxx或者https://xxx.xxx.xxx.xxx</span><br><span class="line">    if ( $host ~* "\d+\.\d+\.\d+\.\d+" ) &#123;</span><br><span class="line">        rewrite ^ https://$server_name;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if ( $my_server_name != https://$server_name ) &#123;</span><br><span class="line">       rewrite ^ https://$server_name$request_uri? permanent;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    location / &#123;</span><br><span class="line">       root   /usr/share/nginx/html/typecho/;</span><br><span class="line">       try_files $uri $uri/ /index.php$is_args$args;</span><br><span class="line">       index index.php  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    #error_page  404              /404.html;</span><br><span class="line">    # redirect server error pages to the static page /50x.html</span><br><span class="line">    error_page   500 502 503 504  /50x.html;</span><br><span class="line">    location = /50x.html &#123;</span><br><span class="line">        root   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">    # proxy the PHP scripts to Apache listening on 127.0.0.1:80</span><br><span class="line">    #location ~ \.php$ &#123;</span><br><span class="line">    #    proxy_pass   http://127.0.0.1;</span><br><span class="line">    #&#125;</span><br><span class="line">    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">       #root           html;</span><br><span class="line">       fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">       fastcgi_index  index.php;</span><br><span class="line">       fastcgi_param  SCRIPT_FILENAME  /usr/share/nginx/html/typecho/$fastcgi_script_name;</span><br><span class="line">       include        fastcgi_params;</span><br><span class="line">    &#125;</span><br><span class="line">    # deny access to .htaccess files, if Apache's document root</span><br><span class="line">    # concurs with nginx's one</span><br><span class="line">    #location ~ /\.ht &#123;</span><br><span class="line">    #    deny  all;</span><br><span class="line">    #&#125;</span><br><span class="line">    ssl on;</span><br><span class="line">    ssl_certificate   /etc/nginx/cert/214353452860792.pem;</span><br><span class="line">    ssl_certificate_key  /etc/nginx/cert/214353452860792.key;</span><br><span class="line">    ssl_session_timeout 5m;</span><br><span class="line">    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/11/23/%E5%A6%82%E4%BD%95%E5%BC%BA%E5%88%B6%E5%85%A8%E7%AB%99https%E8%AE%BF%E9%97%AE/" data-id="ck2vz9edg0020vw0qd1g438ff" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li></ul>
@@ -590,7 +620,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exception/" rel="tag">exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oop/" rel="tag">oop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -600,7 +630,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/String/" style="font-size: 12px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 10px;">elasticSearch</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18px;">linux</a> <a href="/tags/maven/" style="font-size: 14px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 14px;">mysql</a> <a href="/tags/nginx/" style="font-size: 14px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 16px;">php</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16px;">spring boot</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 10px;">elasticSearch</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/java/" style="font-size: 18px;">java</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/maven/" style="font-size: 12px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 14px;">mysql</a> <a href="/tags/nginx/" style="font-size: 14px;">nginx</a> <a href="/tags/php/" style="font-size: 16px;">php</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16px;">spring boot</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -609,7 +639,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
     </div>
   </div>
 
@@ -630,15 +660,15 @@
           </li>
         
           <li>
-            <a href="/2018/07/30/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%85%AB%E7%AF%87%EF%BC%9AJava8%E4%B8%AD%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8/">Java学习系列文章第八篇：Java8中方法引用</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/30/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%83%E7%AF%87%EF%BC%9AJava8%E4%B8%AD%E6%8E%A5%E5%8F%A3%E7%9A%84%E9%BB%98%E8%AE%A4%E6%96%B9%E6%B3%95%E4%B8%8E%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95/">Java学习系列文章第七篇：Java8中接口的默认方法与静态方法</a>
-          </li>
-        
-          <li>
             <a href="/2018/07/28/Maven%E4%B8%AD%E7%9A%84dependencyManagement%E5%92%8Cdependencies/">Maven中的dependencyManagement和dependencies</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/18/Spring-Boot-1-x-%E4%BD%BF%E7%94%A8Value%E6%B3%A8%E8%A7%A3%E7%BB%99%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F%E8%B5%8B%E5%80%BC/">Spring Boot 1.x 使用Value注解给静态变量赋值</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/01/Mybatis%E6%96%B9%E6%B3%95%E4%BC%A0%E5%A4%9A%E4%B8%AA%E5%8F%82%E6%95%B0%EF%BC%88%E4%B8%89%E7%A7%8D%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%89/">Mybatis方法传多个参数（三种解决方案）</a>
           </li>
         
       </ul>
