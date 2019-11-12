@@ -112,122 +112,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%89%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4equals%E5%92%8C/" data-id="ck2vzcwrm000fwg0qavbchac1" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Java学习系列文章第一篇-基本变量类型" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%80%E7%AF%87-%E5%9F%BA%E6%9C%AC%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B/" class="article-date">
-  <time datetime="2018-06-29T13:48:24.000Z" itemprop="datePublished">2018-06-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%80%E7%AF%87-%E5%9F%BA%E6%9C%AC%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B/">Java学习系列文章第一篇-基本变量类型</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Java有着丰富的变量类型，有8种基本数据类型，以及他们对应的包装类型，还有数组集合等众多变量类型。相比之下PHP的数据类型就相对少多了，PHP只有布尔类型（Boolean）、整型（Integer）、浮点型（Float）、数组（Array）、字符串（String）、对象（Object）、资源类型（Resource）和NULL。本文我们先以基本数据类型为主，其他的类型为辅。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">type identifier [ = value][, identifier [= value] ...] ;</span><br><span class="line">格式说明：type为Java数据类型。identifier是变量名。可以使用逗号隔开来声明多个同类型变量。</span><br></pre></td></tr></table></figure>
-<p>下面我就简单的举几个变量声明的例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">byte</span> a,b,c;</span><br><span class="line"><span class="keyword">short</span> e = g = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> f = <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">boolean</span> h = <span class="keyword">false</span>;</span><br><span class="line"><span class="keyword">char</span> i = <span class="string">'a'</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="Java的两大数据类型："><a href="#Java的两大数据类型：" class="headerlink" title="Java的两大数据类型："></a>Java的两大数据类型：</h3><ol>
-<li>内置数据类型</li>
-<li>引用数据类型<h3 id="内置数据类型"><a href="#内置数据类型" class="headerlink" title="内置数据类型"></a>内置数据类型</h3>Java语言提供了八种基本数据类型。六种数字类型（四个整数型，两个浮点型），一种字符类型，还有一种是布尔型。Java中的数字类型都是无符号（unsigned）的，不像C语言和C++那样还提供有符号的类型。在后续的MySQL学习中，你会发现MySQL中字段的类型里面会有无符号这个属性，这样就会出现MySQL的字段映射成Java变量时，会有取值范围不同的问题。<h4 id="byte"><a href="#byte" class="headerlink" title="byte"></a>byte</h4></li>
-</ol>
-<ul>
-<li>byte 占用一个字节的内存；</li>
-<li>最小值是-128（-2^7)， 最大值是127（2^7-1）；</li>
-<li>默认值是0，对应的包装类型是Byte,包装类型的默认值是null；</li>
-<li>例子：byte a = 10；</li>
-</ul>
-<h4 id="short"><a href="#short" class="headerlink" title="short"></a>short</h4><ul>
-<li>short 占用两个字节的内存；</li>
-<li>最小值是-32768（-2^15）， 最大值是32767（2^15-1）</li>
-<li>默认值是0，对应的包装类型是Short,默认值是null；</li>
-<li>例子：short a = 1200；</li>
-</ul>
-<h4 id="char"><a href="#char" class="headerlink" title="char"></a>char</h4><ul>
-<li>char 占用两个字节的内存，采用 Unicode 编码；</li>
-<li>最小值是 \u0000（即为0）；</li>
-<li>最大值是 \uffff（即为65,535）；</li>
-<li>char 可以储存任何字符（部分生僻的中文字符可能不行）；</li>
-<li>例子：char letter = ‘A’;。</li>
-</ul>
-<h4 id="int"><a href="#int" class="headerlink" title="int"></a>int</h4><ul>
-<li>int 占用四个字节的内存；</li>
-<li>最小值是-2,147,483,648（-2^31）， 最大值是2,147,483,6478（2^31-1）</li>
-<li>默认值是0，对应的包装类型是 Integer，默认值是null；</li>
-<li>一般的整型变量默认为 int 类型</li>
-<li>例子：int a = -10020；</li>
-</ul>
-<h4 id="long"><a href="#long" class="headerlink" title="long"></a>long</h4><ul>
-<li>long 占用八个字节的内存；</li>
-<li>最小值是 -9,223,372,036,854,775,808（-2^63），最大值是 9,223,372,036,854,775,807（2^63-1），这种类型主要使用在需要比较大整数的系统上；</li>
-<li>默认值是 0L，对应的包装类型是 Long，默认值是null；</li>
-<li>例子：long a = 100000L，Long b = -200000L。<br>“L”理论上不分大小写，但是若写成”l”容易与数字”1”混淆，不容易分辩。所以最好大写。</li>
-</ul>
-<h4 id="float"><a href="#float" class="headerlink" title="float"></a>float</h4><ul>
-<li>float 占用四个字节的内存；</li>
-<li>默认值是 0.0f；浮点数不能用来表示精确的值，如货币，存储货币推荐使用 BigDecimal；对应的包装类型是Float，默认值是null；</li>
-<li>例子：float f1 = 234.58f；</li>
-</ul>
-<h4 id="double"><a href="#double" class="headerlink" title="double"></a>double</h4><ul>
-<li>double 占用八个字节的内存；</li>
-<li>默认值是 0.0d；double不能用来表示精确的值，如货币，存储货币推荐使用BigDecimal；对应的包装类型是Double，默认值是null；</li>
-<li>例子：double d1 = 234.05d；double d2 = 467.90;<br>注意：不带任何标志的浮点型数据，系统默认是double类型。</li>
-</ul>
-<h4 id="boolean"><a href="#boolean" class="headerlink" title="boolean"></a>boolean</h4><ul>
-<li>boolean(JVM规范没有明确规定其所占的空间大小；</li>
-<li>只有两个取值，true和false;</li>
-<li>默认值false,对应的包装类型是Boolean，默认值是null；</li>
-<li>例子： boolean b = false;</li>
-</ul>
-<h4 id="void"><a href="#void" class="headerlink" title="void"></a>void</h4><ul>
-<li>对应包装类型Void，不常用</li>
-</ul>
-<p>byte、int、long和short还可以使用16进制和8进制的方式标识，默认都是使用10进制。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> decimal = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">int</span> octal = <span class="number">0144</span>;</span><br><span class="line"><span class="keyword">int</span> hexa =  <span class="number">0x64</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="自动类型转换"><a href="#自动类型转换" class="headerlink" title="自动类型转换"></a>自动类型转换</h3><p>整型和字符型数据可以混合运算，不同的类型的数据先转化成同一类型，然后进行计算。</p>
-<p>低———————————&gt;高</p>
-<p>byte-&gt;short,char—&gt; int —&gt;float —&gt; long—&gt; double </p>
-<p>数据类型转换必须满足下面的规则：</p>
-<ul>
-<li>不能对boolean类型进行类型转换</li>
-<li>不能把对象类型转换成不相干类的对象</li>
-<li>把类型范围大的转换成类型范围小的时候必须使用强制类型转换</li>
-<li>强制转换的过程中会出现溢出或损失精度</li>
-</ul>
-<h3 id="引用类型"><a href="#引用类型" class="headerlink" title="引用类型"></a>引用类型</h3><ul>
-<li>在Java中引用类型变量指向一个对象，这种变量在定义的时候，被声明成特定的类型，比如 Man、Student等。变量类型一但确定之后类型就不能改变。这一点和动态脚本语言PHP有着很大的不同，PHP中的变量定义后仍能保存其他类型的变量；</li>
-<li>所用引用类型的默认值都是null；</li>
-</ul>
-<p>写于：2018-06-06 14:56</p>
-<p>修改：2018-06-06 22:56</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%80%E7%AF%87-%E5%9F%BA%E6%9C%AC%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B/" data-id="ck2vzcwre0008wg0q31ok74uu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%89%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4equals%E5%92%8C/" data-id="ck2vzffft000cx90qe34h47dh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -342,7 +227,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%80%E7%AF%87%EF%BC%9A%E5%9F%BA%E6%9C%AC%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B/" data-id="ck2vzcwri000awg0qhucdd7s3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%80%E7%AF%87%EF%BC%9A%E5%9F%BA%E6%9C%AC%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B/" data-id="ck2vzfffo0008x90q3yp7031s" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -449,7 +334,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%BA%8C%E7%AF%87%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2/" data-id="ck2vzcwrn000gwg0q1y0xcp5f" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%BA%8C%E7%AF%87%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2/" data-id="ck2vzfffw000fx90qfwef8ka3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -502,7 +387,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/23/CentOS-6-x-%E4%B8%8B%E5%AE%89%E8%A3%85Zookeeper/" data-id="ck2vzcwr10001wg0q9hhe7dfn" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/23/CentOS-6-x-%E4%B8%8B%E5%AE%89%E8%A3%85Zookeeper/" data-id="ck2vzfffb0001x90q3hrd36gg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
@@ -553,7 +438,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/22/CentOS-6-x-%E4%B8%8Byum%E5%AE%89%E8%A3%85Tomcat8/" data-id="ck2vzcwqv0000wg0q2mt4ehwu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/22/CentOS-6-x-%E4%B8%8Byum%E5%AE%89%E8%A3%85Tomcat8/" data-id="ck2vzfff50000x90qg2i109a9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li></ul>
@@ -615,7 +500,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/13/Spring-Boot-1-x%E9%9B%86%E6%88%90spring-boot-devtools%E5%BC%80%E5%8F%91%E6%97%B6%E5%AE%9E%E7%8E%B0%E7%83%AD%E9%83%A8%E7%BD%B2/" data-id="ck2vzcwsp001qwg0qg4ra96kb" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/13/Spring-Boot-1-x%E9%9B%86%E6%88%90spring-boot-devtools%E5%BC%80%E5%8F%91%E6%97%B6%E5%AE%9E%E7%8E%B0%E7%83%AD%E9%83%A8%E7%BD%B2/" data-id="ck2vzffh7001ox90qe10t5nkm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li></ul>
@@ -659,7 +544,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/09/Maven%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0%E2%80%9C%E8%AF%B7%E4%BD%BF%E7%94%A8-source-8-%E6%88%96%E6%9B%B4%E9%AB%98%E7%89%88%E6%9C%AC%E4%BB%A5%E5%90%AF%E7%94%A8-lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E2%80%9D/" data-id="ck2vzcws40010wg0qcmjfb5uv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/09/Maven%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0%E2%80%9C%E8%AF%B7%E4%BD%BF%E7%94%A8-source-8-%E6%88%96%E6%9B%B4%E9%AB%98%E7%89%88%E6%9C%AC%E4%BB%A5%E5%90%AF%E7%94%A8-lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E2%80%9D/" data-id="ck2vzffgk000zx90qfmpu6ukj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/" rel="tag">maven</a></li></ul>
@@ -714,7 +599,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/07/Spring-Boot-1-x-%E6%95%B4%E5%90%88mybatis-%E5%B9%B6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90mapper%E5%92%8C%E5%AE%9E%E4%BD%93/" data-id="ck2vzcwso001owg0q24ga1qr0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/07/Spring-Boot-1-x-%E6%95%B4%E5%90%88mybatis-%E5%B9%B6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90mapper%E5%92%8C%E5%AE%9E%E4%BD%93/" data-id="ck2vzffh5001lx90qbtcle51d" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
@@ -777,10 +662,56 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/04/Spring-Boot%E6%A1%86%E6%9E%B6%E4%B8%AD%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/" data-id="ck2vzcwsr001twg0qeocp0e5p" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/04/Spring-Boot%E6%A1%86%E6%9E%B6%E4%B8%AD%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/" data-id="ck2vzffh8001qx90qf3u5335j" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-解决Java异常java-security-InvalidKeyException-Illegal-key-size" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/" class="article-date">
+  <time datetime="2018-04-26T15:41:54.000Z" itemprop="datePublished">2018-04-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/">解决Java异常java.security.InvalidKeyException: Illegal key size</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近公司准备对接马蜂窝的接口，今天在开发的过程中出现了下面的问题：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.security.InvalidKeyException: Illegal key size</span><br></pre></td></tr></table></figure>
+<p>通过仔细阅读马蜂窝的demo时发现，他们在demo里写了下面一段话：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">说明：异常java.security.InvalidKeyException:illegal Key Size的解决方案</span><br><span class="line">在官方网站下载JCE无限制权限策略文件（JDK7的下载地址：</span><br><span class="line">  http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html</span><br><span class="line">下载后解压，可以看到local_policy.jar和US_export_policy.jar以及readme.txt</span><br><span class="line">如果安装了JRE，将两个jar文件放到%JRE_HOME%\lib\security目录下覆盖原来的文件</span><br><span class="line">如果安装了JDK，将两个jar文件放到%JDK_HOME%\jre\lib\security目录下覆盖原来文件</span><br></pre></td></tr></table></figure>
+<p>后来百度得知这里面还有其他原因：<br>如果密钥大于128, 会抛出java.security.InvalidKeyException: Illegal key size 异常. 因为密钥长度是受限制的, java运行时环境读到的是受限的policy文件. 文件位于${java_home}/jre/lib/security, 这种限制是因为美国对软件出口的控制.</p>
+<p>由于现在我用的是Java8，所以我把解决办法整理如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在官方网站下载JCE无限制权限策略文件</span><br><span class="line">JDK7的下载地址: http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html</span><br><span class="line">JDK8的下载地址: http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html</span><br></pre></td></tr></table></figure>
+<p>下载后解压，可以看到local_policy.jar和US_export_policy.jar以及readme.txt<br>如果安装了JRE，将两个jar文件放到%JRE_HOME%\lib\security目录下覆盖原来的文件<br>如果安装了JDK，还要将两个jar文件也放到%JDK_HOME%\jre\lib\security目录下覆盖原来文件</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/" data-id="ck2vzffhx002nx90qci3r34jz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
 
     </footer>
   </div>
@@ -817,7 +748,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/String/" style="font-size: 12.5px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 10px;">elasticSearch</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 17.5px;">linux</a> <a href="/tags/maven/" style="font-size: 12.5px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 12.5px;">mysql</a> <a href="/tags/nginx/" style="font-size: 12.5px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 15px;">php</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 15px;">spring boot</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/String/" style="font-size: 12px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 10px;">elasticSearch</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18px;">linux</a> <a href="/tags/maven/" style="font-size: 14px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 14px;">mysql</a> <a href="/tags/nginx/" style="font-size: 14px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 16px;">php</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16px;">spring boot</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
