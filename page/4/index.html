@@ -61,6 +61,67 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Centos6-9安装ElasticSearch2-x" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/" class="article-date">
+  <time datetime="2017-12-25T15:29:35.000Z" itemprop="datePublished">2017-12-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/">Centos6.9安装ElasticSearch2.x</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我这里安装的是ElasticSearch2.x系列。<br><a href="https://www.elastic.co/guide/en/elasticsearch/reference/2.4/setup-repositories.html" target="_blank" rel="noopener">ElasticSearch官方文档</a><br>1.检查系统是否已经安装了jdk</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list installed |grep java</span><br></pre></td></tr></table></figure>
+<p>若有自带安装的JDK，如何卸载CentOS系统自带Java环境?</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">卸载JDK相关文件输入：yum -y remove java-1.7.0-openjdk*</span><br><span class="line">卸载tzdata-java输入：yum -y remove tzdata-java.noarch</span><br></pre></td></tr></table></figure>
+<p><em>注</em>：“*”表示卸载掉java 1.7.0的所有openjdk相关文件<br>2.查看yum库中的Java安装包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">yum -y list java*</span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ ~]<span class="comment"># yum -y list java*</span></span><br><span class="line">Loaded plugins: security</span><br><span class="line">Installed Packages</span><br><span class="line">java-1.8.0-openjdk.x86_64                                                                        1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-debug.x86_64                                                                  1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-demo.x86_64                                                                   1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-demo-debug.x86_64                                                             1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-devel.x86_64                                                                  1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-devel-debug.x86_64                                                            1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-headless.x86_64                                                               1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-headless-debug.x86_64                                                         1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-javadoc.noarch                                                                1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-javadoc-debug.noarch                                                          1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-src.x86_64                                                                    1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-src-debug.x86_64                                                              1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">Available Packages</span><br><span class="line">java-1.5.0-gcj.x86_64                                                                            1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.5.0-gcj-devel.x86_64                                                                      1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.5.0-gcj-javadoc.x86_64                                                                    1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.5.0-gcj-src.x86_64                                                                        1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.6.0-openjdk.x86_64                                                                        1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-demo.x86_64                                                                   1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-devel.x86_64                                                                  1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-javadoc.x86_64                                                                1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-src.x86_64                                                                    1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.7.0-openjdk.x86_64                                                                        1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-demo.x86_64                                                                   1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-devel.x86_64                                                                  1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-javadoc.noarch                                                                1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-src.x86_64                                                                    1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-clearsilver.i686                                                                            0.10.5-16.el6                                                                       epel    </span><br><span class="line">java-dirq.noarch                                                                                 1.4-1.el6                                                                           epel    </span><br><span class="line">java-dirq-javadoc.noarch                                                                         1.4-1.el6                                                                           epel    </span><br><span class="line">java-service-wrapper.x86_64                                                                      3.2.5-23.el6                                                                        epel    </span><br><span class="line">java-service-wrapper-javadoc.noarch                                                              3.2.5-23.el6                                                                        epel    </span><br><span class="line">java-sleep.noarch                                                                                2.1-6.el6                                                                           epel    </span><br><span class="line">java-sleep-javadoc.noarch                                                                        2.1-6.el6                                                                           epel    </span><br><span class="line">java_cup.x86_64                                                                                  1:0.10k-5.el6                                                                       base    </span><br><span class="line">java_cup-javadoc.x86_64                                                                          1:0.10k-5.el6                                                                       base    </span><br><span class="line">java_cup-manual.x86_64                                                                           1:0.10k-5.el6                                                                       base    </span><br><span class="line">javacc.x86_64                                                                                    4.1-0.5.el6                                                                         base    </span><br><span class="line">javacc-demo.x86_64                                                                               4.1-0.5.el6                                                                         base    </span><br><span class="line">javacc-manual.x86_64                                                                             4.1-0.5.el6                                                                         base    </span><br><span class="line">javassist.noarch                                                                                 3.9.0-6.el6                                                                         base    </span><br><span class="line">javassist-javadoc.noarch                                                                         3.9.0-6.el6                                                                         base    </span><br><span class="line">javastroke.x86_64                                                                                0.5.1-33.el6                                                                        epel    </span><br><span class="line">javatar.noarch                                                                                   2.5-5.el6                                                                           epel    </span><br><span class="line">javatar-javadoc.noarch</span><br></pre></td></tr></table></figure>
+<p>以yum库中的java-1.8为例，将java-1.8.0的所有相关Java程序都安装上。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install java-1.8.0-openjdk*</span><br></pre></td></tr></table></figure>
+<p>3.查看刚安装的Java版本信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java -version 可查看Java版本</span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ ~]<span class="comment"># java -version</span></span><br><span class="line">openjdk version <span class="string">"1.8.0_151"</span></span><br><span class="line">OpenJDK Runtime Environment (build 1.8.0_151-b12)</span><br><span class="line">OpenJDK 64-Bit Server VM (build 25.151-b12, mixed mode)</span><br></pre></td></tr></table></figure>
+<p>4.通过rpm安装ElasticSearch</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">先下载并安装公共签名密钥</span><br><span class="line">rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch</span><br><span class="line">再安装rpm的repository</span><br><span class="line">[elasticsearch-2.x]</span><br><span class="line">name=Elasticsearch repository <span class="keyword">for</span> 2.x packages</span><br><span class="line">baseurl=https://packages.elastic.co/elasticsearch/2.x/centos</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=https://packages.elastic.co/GPG-KEY-elasticsearch</span><br><span class="line">enabled=1</span><br></pre></td></tr></table></figure>
+<p>安装ElasticSearch</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install elasticsearch  </span><br><span class="line">sudo dnf install elasticsearch </span><br><span class="line">sudo zypper install elasticsearch</span><br><span class="line"></span><br><span class="line">使用yum在CentOS和旧的基于Red Hat分发</span><br><span class="line">使用dnf的Fedora和其他新的Red Hat分发</span><br><span class="line">使用zypper基于分布的OpenSUSE</span><br><span class="line"></span><br><span class="line">如果你嫌麻烦可以之前使用下面的方法安装：</span><br><span class="line">wget https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/rpm/elasticsearch/2.4.2/elasticsearch-2.4.2.rpm</span><br><span class="line"></span><br><span class="line">sha1sum elasticsearch-5.6.5.rpm</span><br><span class="line">sudo rpm --install elasticsearch-5.6.5.rpm</span><br></pre></td></tr></table></figure>
+<p>5.使用chkconfig命令将Elasticsearch配置为在系统启动时自动启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo chkconfig --add elasticsearch</span><br><span class="line"></span><br><span class="line">下面的命令启动或者关闭elasticsearch服务</span><br><span class="line"></span><br><span class="line">sudo -i service elasticsearch start</span><br><span class="line">sudo -i service elasticsearch stop</span><br></pre></td></tr></table></figure>
+<p>6.启动elasticsearch服务报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ src]<span class="comment"># service elasticsearch start</span></span><br><span class="line">Starting elasticsearch: OpenJDK 64-Bit Server VM warning: If the number of processors is expected to increase from one, <span class="keyword">then</span> you should configure the number of parallel GC threads appropriately using -XX:ParallelGCThreads=N</span><br><span class="line">OpenJDK 64-Bit Server VM warning: INFO: os::commit_memory(0x0000000085330000, 2060255232, 0) failed; error=<span class="string">'Cannot allocate memory'</span> (errno=12)</span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># There is insufficient memory for the Java Runtime Environment to continue.</span></span><br><span class="line"><span class="comment"># Native memory allocation (mmap) failed to map 2060255232 bytes for committing reserved memory.</span></span><br><span class="line"><span class="comment"># An error report file with more information is saved as:</span></span><br><span class="line"><span class="comment"># /tmp/hs_err_pid23700.log</span></span><br><span class="line">                                                           [FAILED]</span><br></pre></td></tr></table></figure>
+<p>这是因为机器的内存不足，可用内存少于1G,解决方法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vim  /etc/elasticsearch/jvm.options </span><br><span class="line"><span class="comment">##启用如下两项</span></span><br><span class="line"> -Xms4g                   </span><br><span class="line"> -Xmx4g</span><br><span class="line"><span class="comment">##关闭如下两项</span></span><br><span class="line"><span class="comment">##-Xms2g                    </span></span><br><span class="line"><span class="comment">##-Xmx2g</span></span><br></pre></td></tr></table></figure>
+<p>7.配置外网可用访问</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">修改配置文件</span><br><span class="line">vim/etc/elasticsearch/elasticsearch.yml</span><br><span class="line">修改成：network.host: 0.0.0.0</span><br></pre></td></tr></table></figure>
+<p>至此，elasticsearch的基本配置完成！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/" data-id="ck2w0eqnd0005050q9k2l52zo" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Centos6安装Mongodb" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/" class="article-date">
@@ -102,7 +163,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/" data-id="ck2vzkk350007yw0qd4wdb7jf" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/" data-id="ck2w0eqnf0007050q5rj3clrk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li></ul>
@@ -146,7 +207,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/05/Nginx%E5%87%BA%E7%8E%B0The-plain-HTTP-request-was-sent-to-HTTPS-port/" data-id="ck2vzkk45001cyw0qh1x6a26w" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/05/Nginx%E5%87%BA%E7%8E%B0The-plain-HTTP-request-was-sent-to-HTTPS-port/" data-id="ck2w0eqok001c050qf3e78duz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li></ul>
@@ -189,7 +250,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/05/PHP%E5%87%BA%E7%8E%B0Deprecated-Automatically-populating-is-deprecated-and-will-be-removed-in-a-future-version/" data-id="ck2vzkk46001eyw0q5xmmfu64" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/05/PHP%E5%87%BA%E7%8E%B0Deprecated-Automatically-populating-is-deprecated-and-will-be-removed-in-a-future-version/" data-id="ck2w0eqon001g050q3bt05d8o" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
@@ -230,7 +291,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/05/PHP%E5%87%BA%E7%8E%B0%E4%BB%A5%E4%B8%8B%E9%94%99%E8%AF%AFCannot-find-module-IP-MIB/" data-id="ck2vzkk47001gyw0qddnb40a5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/05/PHP%E5%87%BA%E7%8E%B0%E4%BB%A5%E4%B8%8B%E9%94%99%E8%AF%AFCannot-find-module-IP-MIB/" data-id="ck2w0eqop001j050qgmwm241x" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
@@ -280,7 +341,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/04/MySQL%E5%87%BA%E7%8E%B01267%E7%9A%84%E9%94%99%E8%AF%AF/" data-id="ck2vzkk410017yw0qgvz2bpwq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/04/MySQL%E5%87%BA%E7%8E%B01267%E7%9A%84%E9%94%99%E8%AF%AF/" data-id="ck2w0eqof0017050q00bn77ci" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
@@ -330,7 +391,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/04/%E4%BF%AE%E6%94%B9ssh%E7%9A%84%E9%BB%98%E8%AE%A422%E7%AB%AF%E5%8F%A3/" data-id="ck2vzkk4w002iyw0q1wpx5phf" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/04/%E4%BF%AE%E6%94%B9ssh%E7%9A%84%E9%BB%98%E8%AE%A422%E7%AB%AF%E5%8F%A3/" data-id="ck2w0eqpf002k050qes23csiy" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
@@ -373,7 +434,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/04/%E8%BF%85%E6%90%9C-xunsearch-%E5%A4%9A%E5%80%BC%E5%B1%9E%E6%80%A7%E7%9A%84%E5%A4%84%E7%90%86/" data-id="ck2vzkk57002xyw0qcncxg749" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/04/%E8%BF%85%E6%90%9C-xunsearch-%E5%A4%9A%E5%80%BC%E5%B1%9E%E6%80%A7%E7%9A%84%E5%A4%84%E7%90%86/" data-id="ck2w0eqpq002z050q7juocky4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li></ul>
@@ -507,7 +568,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/29/Centos6-9%E4%B8%8A%E6%90%AD%E5%BB%BAlnmp%E7%8E%AF%E5%A2%83/" data-id="ck2vzkk310004yw0q1p4rfept" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/29/Centos6-9%E4%B8%8A%E6%90%AD%E5%BB%BAlnmp%E7%8E%AF%E5%A2%83/" data-id="ck2w0eqnb0004050q7dkf4qh4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
@@ -549,51 +610,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/27/tar-%E5%88%86%E5%8D%B7%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B/" data-id="ck2vzkk4r002ayw0qgf4j2kcc" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/27/tar-%E5%88%86%E5%8D%B7%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B/" data-id="ck2w0eqpa002d050qe9e21cvy" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-如何强制全站https访问" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/11/23/%E5%A6%82%E4%BD%95%E5%BC%BA%E5%88%B6%E5%85%A8%E7%AB%99https%E8%AE%BF%E9%97%AE/" class="article-date">
-  <time datetime="2017-11-23T15:12:52.000Z" itemprop="datePublished">2017-11-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/23/%E5%A6%82%E4%BD%95%E5%BC%BA%E5%88%B6%E5%85%A8%E7%AB%99https%E8%AE%BF%E9%97%AE/">如何强制全站https访问</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今天在阿里云上搞了一个免费的https证书，于是就在自己的服务器上安装了一下，配置好证书之后，如何强制全站https访问呢？其实方法有很多，这里只给出两个比较简单的方法：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">在自己的虚拟主机配置server节点中添加下面的代码，使用其一即可。</span></span><br><span class="line"><span class="meta">#</span><span class="bash">方法一</span></span><br><span class="line">rewrite ^ https://$server_name$request_uri? permanent;</span><br><span class="line"><span class="meta">#</span><span class="bash">方法二</span></span><br><span class="line">return 301 https://$server_name$request_uri;</span><br></pre></td></tr></table></figure>
-<p>我用的是第一个方法，大家可以根据自己的喜好，来决定使用哪中方法。下面贴出我自己网站的配置：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen     443;</span><br><span class="line">    listen     80;</span><br><span class="line">    </span><br><span class="line">    server_name  www.ydstudio.net;</span><br><span class="line">    set $my_server_name $scheme://$server_name;</span><br><span class="line">    </span><br><span class="line">    #防止ip访问，如http://xxx.xxx.xxx.xxx或者https://xxx.xxx.xxx.xxx</span><br><span class="line">    if ( $host ~* "\d+\.\d+\.\d+\.\d+" ) &#123;</span><br><span class="line">        rewrite ^ https://$server_name;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if ( $my_server_name != https://$server_name ) &#123;</span><br><span class="line">       rewrite ^ https://$server_name$request_uri? permanent;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    location / &#123;</span><br><span class="line">       root   /usr/share/nginx/html/typecho/;</span><br><span class="line">       try_files $uri $uri/ /index.php$is_args$args;</span><br><span class="line">       index index.php  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    #error_page  404              /404.html;</span><br><span class="line">    # redirect server error pages to the static page /50x.html</span><br><span class="line">    error_page   500 502 503 504  /50x.html;</span><br><span class="line">    location = /50x.html &#123;</span><br><span class="line">        root   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">    # proxy the PHP scripts to Apache listening on 127.0.0.1:80</span><br><span class="line">    #location ~ \.php$ &#123;</span><br><span class="line">    #    proxy_pass   http://127.0.0.1;</span><br><span class="line">    #&#125;</span><br><span class="line">    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">       #root           html;</span><br><span class="line">       fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">       fastcgi_index  index.php;</span><br><span class="line">       fastcgi_param  SCRIPT_FILENAME  /usr/share/nginx/html/typecho/$fastcgi_script_name;</span><br><span class="line">       include        fastcgi_params;</span><br><span class="line">    &#125;</span><br><span class="line">    # deny access to .htaccess files, if Apache's document root</span><br><span class="line">    # concurs with nginx's one</span><br><span class="line">    #location ~ /\.ht &#123;</span><br><span class="line">    #    deny  all;</span><br><span class="line">    #&#125;</span><br><span class="line">    ssl on;</span><br><span class="line">    ssl_certificate   /etc/nginx/cert/214353452860792.pem;</span><br><span class="line">    ssl_certificate_key  /etc/nginx/cert/214353452860792.key;</span><br><span class="line">    ssl_session_timeout 5m;</span><br><span class="line">    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/23/%E5%A6%82%E4%BD%95%E5%BC%BA%E5%88%B6%E5%85%A8%E7%AB%99https%E8%AE%BF%E9%97%AE/" data-id="ck2vzkk4y002kyw0q3wotfc9z" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li></ul>
 
     </footer>
   </div>
@@ -620,7 +640,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exception/" rel="tag">exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oop/" rel="tag">oop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exception/" rel="tag">exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oop/" rel="tag">oop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/proxy/" rel="tag">proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -630,7 +650,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/String/" style="font-size: 13.33px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 10px;">elasticSearch</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18.33px;">linux</a> <a href="/tags/maven/" style="font-size: 15px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 15px;">mysql</a> <a href="/tags/nginx/" style="font-size: 15px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 16.67px;">php</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16.67px;">spring boot</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/String/" style="font-size: 13.33px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 10px;">elasticSearch</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18.33px;">linux</a> <a href="/tags/maven/" style="font-size: 15px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 15px;">mysql</a> <a href="/tags/nginx/" style="font-size: 16.67px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 16.67px;">php</a> <a href="/tags/proxy/" style="font-size: 10px;">proxy</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16.67px;">spring boot</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -656,6 +676,10 @@
           </li>
         
           <li>
+            <a href="/2018/08/07/Nginx%E5%AE%9E%E7%8E%B0%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-Node-js/">Nginx实现反向代理 Node.js</a>
+          </li>
+        
+          <li>
             <a href="/2018/08/04/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B9%9D%E7%AF%87%EF%BC%9AJava%E4%B8%AD%E6%B3%9B%E5%9E%8B%E7%9A%84%E5%AD%A6%E4%B9%A0/">Java学习系列文章第九篇：Java中泛型的学习</a>
           </li>
         
@@ -665,10 +689,6 @@
         
           <li>
             <a href="/2018/08/01/Maven%E8%B7%B3%E8%BF%87%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Dmaven-test-skip%E5%92%8CskipTests%E7%9A%84%E5%8C%BA%E5%88%AB/">Maven跳过单元测试-Dmaven.test.skip和skipTests的区别</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/30/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%85%AB%E7%AF%87%EF%BC%9AJava8%E4%B8%AD%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8/">Java学习系列文章第八篇：Java8中方法引用</a>
           </li>
         
       </ul>
