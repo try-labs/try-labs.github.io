@@ -61,6 +61,59 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-CentOS-6-x-下安装Zookeeper" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/05/23/CentOS-6-x-%E4%B8%8B%E5%AE%89%E8%A3%85Zookeeper/" class="article-date">
+  <time datetime="2018-05-23T13:41:18.000Z" itemprop="datePublished">2018-05-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/23/CentOS-6-x-%E4%B8%8B%E5%AE%89%E8%A3%85Zookeeper/">CentOS 6.x 下安装Zookeeper</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>目前在研究dubbo这个国内流行的RPC框架，实现去中心话的微服务需要用到Zookeeper,所以今天来说说如何安装Zookeeper。<br>Zookeeper的<a href="https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/" target="_blank" rel="noopener">官方下载地址</a></p>
+<p>查看Centos版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/issue</span><br><span class="line"></span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ tomcat]<span class="comment"># cat /etc/issue</span></span><br><span class="line">CentOS release 6.9 (Final)</span><br><span class="line">Kernel \r on an \m</span><br></pre></td></tr></table></figure>
+<p> 1.下载安装包到/usr/local/src/目录下，并创建安装目录/usr/local/zookeeper。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src/</span><br><span class="line"><span class="comment">#这里使用3.4.10，没有使用较高的版本</span></span><br><span class="line">wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.10/zookeeper-3.4.10.tar.gz</span><br><span class="line">mkdir /usr/<span class="built_in">local</span>/zookeeper</span><br></pre></td></tr></table></figure>
+<p> 2.解压安装包,并将解压后的文件拷贝到/usr/local/zookeeper</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf zookeeper-3.4.10.tar.gz</span><br><span class="line">cp -R /usr/<span class="built_in">local</span>/zookeeper/zookeeper-3.4.10/*  /usr/<span class="built_in">local</span>/zookeeper</span><br></pre></td></tr></table></figure>
+<p>3.添加系统变量到/etc/profile</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> ZOOKEEPER_HOME=/usr/<span class="built_in">local</span>/zookeeper</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$ZOOKEEPER_HOME</span>/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="built_in">export</span> PATH</span><br></pre></td></tr></table></figure>
+<p>执行命令 source /etc/profile使配置文件立即生效</p>
+<p>4.创建zookeeper配置文件,并作相应的配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>  /usr/<span class="built_in">local</span>/zookeeper/conf/</span><br><span class="line">cp zoo_sample.cfg zoo.cfg</span><br><span class="line"></span><br><span class="line"><span class="comment">#配置zookeeper</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#服务器与客户端之间交互的基本时间单元（ms）</span></span><br><span class="line"></span><br><span class="line">tickTime=2000</span><br><span class="line"></span><br><span class="line"><span class="comment">#配置保存数据文件夹</span></span><br><span class="line"></span><br><span class="line">dataDir=/usr/<span class="built_in">local</span>/zookeeper/data</span><br><span class="line"></span><br><span class="line"><span class="comment">#配置保存日志文件夹，当此配置不存在时默认路径与dataDir一致</span></span><br><span class="line"></span><br><span class="line">dataLogDir=/var/<span class="built_in">log</span>/zookeeper</span><br><span class="line"></span><br><span class="line"><span class="comment">#客户端访问zookeeper的端口号</span></span><br><span class="line"></span><br><span class="line">clientPort=2181</span><br></pre></td></tr></table></figure>
+<p>5.zookeeper相关命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">启动服务：zkServer.sh start</span><br><span class="line">查看状态：zkServer.sh status</span><br><span class="line">关闭服务：zkServer.sh stop</span><br><span class="line">重启服务：zkServer.sh restart</span><br></pre></td></tr></table></figure>
+<p>至此，zookeeper安装完成</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/05/23/CentOS-6-x-%E4%B8%8B%E5%AE%89%E8%A3%85Zookeeper/" data-id="ck2w0vv4t00032q0q0qwbhawi" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-CentOS-6-x-下yum安装Tomcat8" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/05/22/CentOS-6-x-%E4%B8%8Byum%E5%AE%89%E8%A3%85Tomcat8/" class="article-date">
@@ -100,7 +153,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/22/CentOS-6-x-%E4%B8%8Byum%E5%AE%89%E8%A3%85Tomcat8/" data-id="ck2w0tgvj0001220qdvk7hrbk" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/22/CentOS-6-x-%E4%B8%8Byum%E5%AE%89%E8%A3%85Tomcat8/" data-id="ck2w0vv4p00012q0q4pbk4jk6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li></ul>
@@ -162,7 +215,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/13/Spring-Boot-1-x%E9%9B%86%E6%88%90spring-boot-devtools%E5%BC%80%E5%8F%91%E6%97%B6%E5%AE%9E%E7%8E%B0%E7%83%AD%E9%83%A8%E7%BD%B2/" data-id="ck2w0tgxj0024220q69aocjen" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/13/Spring-Boot-1-x%E9%9B%86%E6%88%90spring-boot-devtools%E5%BC%80%E5%8F%91%E6%97%B6%E5%AE%9E%E7%8E%B0%E7%83%AD%E9%83%A8%E7%BD%B2/" data-id="ck2w0vv6m00262q0qhrk95z2n" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li></ul>
@@ -206,7 +259,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/09/Maven%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0%E2%80%9C%E8%AF%B7%E4%BD%BF%E7%94%A8-source-8-%E6%88%96%E6%9B%B4%E9%AB%98%E7%89%88%E6%9C%AC%E4%BB%A5%E5%90%AF%E7%94%A8-lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E2%80%9D/" data-id="ck2w0tgwz001g220q3eos8p5v" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/09/Maven%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0%E2%80%9C%E8%AF%B7%E4%BD%BF%E7%94%A8-source-8-%E6%88%96%E6%9B%B4%E9%AB%98%E7%89%88%E6%9C%AC%E4%BB%A5%E5%90%AF%E7%94%A8-lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E2%80%9D/" data-id="ck2w0vv63001i2q0q1kol5x12" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/" rel="tag">maven</a></li></ul>
@@ -261,7 +314,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/07/Spring-Boot-1-x-%E6%95%B4%E5%90%88mybatis-%E5%B9%B6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90mapper%E5%92%8C%E5%AE%9E%E4%BD%93/" data-id="ck2w0tgxh0021220qa2g11lro" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/07/Spring-Boot-1-x-%E6%95%B4%E5%90%88mybatis-%E5%B9%B6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90mapper%E5%92%8C%E5%AE%9E%E4%BD%93/" data-id="ck2w0vv6n00292q0q7q2dhedb" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
@@ -324,7 +377,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/04/Spring-Boot%E6%A1%86%E6%9E%B6%E4%B8%AD%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/" data-id="ck2w0tgxn0029220qdhg60nx7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/04/Spring-Boot%E6%A1%86%E6%9E%B6%E4%B8%AD%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/" data-id="ck2w0vv6k00242q0q7s369x5e" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
@@ -370,7 +423,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/" data-id="ck2w0tgyf0035220q3zw796ep" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/" data-id="ck2w0vv77002x2q0qbw91bz09" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -424,7 +477,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/13/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E5%92%8C%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" data-id="ck2w0tgxx002n220qddqp6g6l" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/13/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E5%92%8C%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" data-id="ck2w0vv76002v2q0qgl4e7rvi" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
@@ -487,7 +540,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/02/22/MySQL%E4%B8%AD%E7%9C%9F%E6%AD%A3%E6%84%8F%E4%B9%89%E4%B8%8A%E7%9A%84UTF8%E7%BC%96%E7%A0%81/" data-id="ck2w0tgwx001e220q1p73bm4z" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/02/22/MySQL%E4%B8%AD%E7%9C%9F%E6%AD%A3%E6%84%8F%E4%B9%89%E4%B8%8A%E7%9A%84UTF8%E7%BC%96%E7%A0%81/" data-id="ck2w0vv61001g2q0qc9ah0pj9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
@@ -537,54 +590,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/02/09/PHP%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E5%BC%80%E5%90%AFOpcache%E6%9D%A5%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD/" data-id="ck2w0tgxc001u220qghy4h2ea" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/02/09/PHP%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E5%BC%80%E5%90%AFOpcache%E6%9D%A5%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD/" data-id="ck2w0vv6f001z2q0qd3fle16x" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Spring-Boot的三种启动方式" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/01/19/Spring-Boot%E7%9A%84%E4%B8%89%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F/" class="article-date">
-  <time datetime="2018-01-19T15:33:49.000Z" itemprop="datePublished">2018-01-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/19/Spring-Boot%E7%9A%84%E4%B8%89%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F/">Spring Boot的三种启动方式</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Spring Boot有以下三种启动方式，最后一种我们可以很好的设置不同环境使用不同的配置文件。</p>
-<p>1.IDE 运行Application这个类的main方法</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">package com.dameiweb.girl;</span><br><span class="line"></span><br><span class="line">import org.springframework.boot.SpringApplication;</span><br><span class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"></span><br><span class="line">@SpringBootApplication</span><br><span class="line">public class GirlApplication &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		SpringApplication.run(GirlApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2.在springboot的应用的根目录下运行mvn spring-boot:run</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">$ mvn spring-boot:run</span><br><span class="line">[INFO] Scanning <span class="keyword">for</span> projects...</span><br><span class="line">Downloading: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.pom</span><br><span class="line">Downloaded: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.pom (0 B at 0 B/s)</span><br><span class="line">Downloading: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.jar</span><br><span class="line">Downloaded: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.jar (0 B at 0 B/s)</span><br><span class="line">Downloading: http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/codehaus-parent/3/codehaus-parent-3.pom</span><br><span class="line">Downloaded: http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/codehaus-parent/3/codehaus-parent-3.pom (0 B at 0 B/s)</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] Building girl 0.0.1-SNAPSHOT</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] &gt;&gt;&gt; spring-boot-maven-plugin:1.5.9.RELEASE:run (default-cli) &gt; <span class="built_in">test</span>-compile @ girl &gt;&gt;&gt;</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ girl ---</span><br><span class="line">[INFO] Using <span class="string">'UTF-8'</span> encoding to copy filtered resources.</span><br><span class="line">[INFO] Copying 3 resources</span><br><span class="line">[INFO] Copying 0 resource</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ girl ---</span><br><span class="line">[INFO] Nothing to compile - all classes are up to date</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ girl ---</span><br><span class="line">[INFO] Using <span class="string">'UTF-8'</span> encoding to copy filtered resources.</span><br><span class="line">[INFO] skip non existing resourceDirectory D:\work\girl\src\<span class="built_in">test</span>\resources</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ girl ---</span><br><span class="line">[INFO] Nothing to compile - all classes are up to date</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] &lt;&lt;&lt; spring-boot-maven-plugin:1.5.9.RELEASE:run (default-cli) &lt; <span class="built_in">test</span>-compile @ girl &lt;&lt;&lt;</span><br><span class="line">[INFO]</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- spring-boot-maven-plugin:1.5.9.RELEASE:run (default-cli) @ girl ---</span><br></pre></td></tr></table></figure>
-<p>3.在springboot的应用的根目录下 mvn install 生成jar后运行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">先执行 mvn install</span><br><span class="line">再执行 java -jar target/girl-0.0.1-SNAPSHOT.jar --spring.profile.active=prod</span><br><span class="line"></span><br><span class="line">java -jar target/girl-0.0.1-SNAPSHOT.jar --spring.profile.active=prod</span><br><span class="line"></span><br><span class="line">  .   ____          _            __ _ _</span><br><span class="line"> /\\ / ___<span class="string">'_ __ _ _(_)_ __  __ _ \ \ \ \</span></span><br><span class="line"><span class="string">( ( )\___ | '</span>_ | <span class="string">'_| | '</span>_ \/ _` | \ \ \ \</span><br><span class="line"> \\/  ___)| |_)| | | | | || (_| |  ) ) ) )</span><br><span class="line">  <span class="string">'  |____| .__|_| |_|_| |_\__, | / / / /</span></span><br><span class="line"><span class="string"> =========|_|==============|___/=/_/_/_/</span></span><br><span class="line"><span class="string"> :: Spring Boot ::        (v1.5.9.RELEASE)</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/19/Spring-Boot%E7%9A%84%E4%B8%89%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F/" data-id="ck2w0tgxl0026220q6f78g4ff" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
 
     </footer>
   </div>
@@ -611,7 +620,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BigDecimal/" rel="tag">BigDecimal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exception/" rel="tag">exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ide/" rel="tag">ide</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oop/" rel="tag">oop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/proxy/" rel="tag">proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BigDecimal/" rel="tag">BigDecimal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exception/" rel="tag">exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/feign/" rel="tag">feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ide/" rel="tag">ide</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oop/" rel="tag">oop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/proxy/" rel="tag">proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -621,7 +630,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/BigDecimal/" style="font-size: 10px;">BigDecimal</a> <a href="/tags/String/" style="font-size: 13.33px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 11.67px;">elasticSearch</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/ide/" style="font-size: 10px;">ide</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18.33px;">linux</a> <a href="/tags/maven/" style="font-size: 15px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 15px;">mysql</a> <a href="/tags/nginx/" style="font-size: 16.67px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 16.67px;">php</a> <a href="/tags/proxy/" style="font-size: 10px;">proxy</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16.67px;">spring boot</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/BigDecimal/" style="font-size: 10px;">BigDecimal</a> <a href="/tags/String/" style="font-size: 13.33px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 11.67px;">elasticSearch</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/feign/" style="font-size: 10px;">feign</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/ide/" style="font-size: 10px;">ide</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18.33px;">linux</a> <a href="/tags/maven/" style="font-size: 15px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 15px;">mysql</a> <a href="/tags/nginx/" style="font-size: 16.67px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 16.67px;">php</a> <a href="/tags/proxy/" style="font-size: 10px;">proxy</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16.67px;">spring boot</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -630,7 +639,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
     </div>
   </div>
 
@@ -647,6 +656,10 @@
           </li>
         
           <li>
+            <a href="/2018/09/30/Feign%E8%B0%83%E7%94%A8%E8%BF%94%E5%9B%9E%E5%A4%8D%E6%9D%82%E5%AF%B9%E8%B1%A1%E6%97%B6%E6%8A%A5%E9%94%99java-lang-ClassCastException-java-util-LinkedHashMap-cannot-be-cast-to-xxx/">Feign调用返回复杂对象时报错java.lang.ClassCastException: java.util.LinkedHashMap cannot be cast to xxx</a>
+          </li>
+        
+          <li>
             <a href="/2018/08/30/Elastic-Search%E6%90%9C%E7%B4%A2%E6%95%B0%E6%8D%AETerms%E8%81%9A%E5%90%88%E8%BF%94%E5%9B%9E%E7%9A%84%E4%B8%8D%E6%AD%A3%E7%A1%AE%E7%9A%84%E9%97%AE%E9%A2%98/">Elastic Search搜索数据Terms聚合返回的不正确的问题</a>
           </li>
         
@@ -656,10 +669,6 @@
         
           <li>
             <a href="/2018/08/24/BigDecimal%E8%BF%90%E7%AE%97%E5%87%BA%E7%8E%B0Non-terminating-decimal-expansion-no-exact-representable-decimal-result/">BigDecimal运算出现Non-terminating decimal expansion; no exact representable decimal result</a>
-          </li>
-        
-          <li>
-            <a href="/2018/08/07/Nginx%E5%AE%9E%E7%8E%B0%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-Node-js/">Nginx实现反向代理 Node.js</a>
           </li>
         
       </ul>
