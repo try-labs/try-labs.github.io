@@ -100,9 +100,76 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/10/hello-world/" data-id="ck2vzffhj0023x90qbiekfhfe" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/11/10/hello-world/" data-id="ck2vzivid0026yd0qfvhbevoj" class="article-share-link">Share</a>
       
       
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Centos-6-x-安装git" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/03/Centos-6-x-%E5%AE%89%E8%A3%85git/" class="article-date">
+  <time datetime="2018-08-03T15:01:47.000Z" itemprop="datePublished">2018-08-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/03/Centos-6-x-%E5%AE%89%E8%A3%85git/">Centos 6.x 安装git</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在Centos上安装软件时，我都是先更新一下系统的yum源，保持yum源是比较新的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum update</span><br></pre></td></tr></table></figure>
+<p>下面进入今日的主题，安装git：</p>
+<p> 1.下载源码包<br>查看系统yum源中的git的版本，发现是比较老的版本，于是采用源码包编译安装。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src</span><br><span class="line">wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.9.0.tar.gz</span><br></pre></td></tr></table></figure>
+<p> 2.编译安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src</span><br><span class="line">tar -zxvf git-2.9.0.tar.gz </span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src/git-2.9.0</span><br><span class="line"></span><br><span class="line"><span class="comment">#安装到 /usr/local/git</span></span><br><span class="line">./configure prefix=/usr/<span class="built_in">local</span>/git</span><br></pre></td></tr></table></figure>
+<p>make &amp;&amp; make instal 报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@iZbp1fuxiq5o2qp7z60ydpZ git-2.9.0]<span class="comment"># make &amp;&amp; make install</span></span><br><span class="line">    CC credential-store.o</span><br><span class="line">In file included from credential-store.c:1:0:</span><br><span class="line">cache.h:40:18: fatal error: zlib.h: No such file or directory</span><br><span class="line"> <span class="comment">#include &lt;zlib.h&gt;</span></span><br></pre></td></tr></table></figure>
+<p>解决方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安装依赖</span></span><br><span class="line">yum -y install zlib zlib-devel</span><br></pre></td></tr></table></figure>
+<p>再次执行make，仍然报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/perl Makefile.PL PREFIX=<span class="string">'/usr/local/git'</span> INSTALL_BASE=<span class="string">''</span> --localedir=<span class="string">'/usr/local/git/share/locale'</span></span><br><span class="line">Can<span class="string">'t locate ExtUtils/MakeMaker.pm in @INC (@INC contains: /usr/local/lib64/perl5 /usr/local/share/perl5 /usr/lib64/perl5/vendor_perl /usr/share/perl5/vendor_perl /usr/lib64/perl5 /usr/share/perl5 .) at Makefile.PL line 3.</span></span><br><span class="line"><span class="string">BEGIN failed--compilation aborted at Makefile.PL line 3.</span></span><br><span class="line"><span class="string">make[1]: *** [perl.mak] Error 2</span></span><br><span class="line"><span class="string">make: *** [perl/perl.mak] Error 2</span></span><br></pre></td></tr></table></figure>
+<p>解决办法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安装下面的依赖</span></span><br><span class="line">yum install perl-ExtUtils-CBuilder perl-ExtUtils-MakeMaker cpan</span><br></pre></td></tr></table></figure>
+<p>再次执行make &amp; make install，编译安装成功</p>
+<p> 3.创建git用户，并将/usr/local/git所属组和所属主修改成git</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">useradd git</span><br><span class="line"></span><br><span class="line">chown -R git:git /usr/<span class="built_in">local</span>/git</span><br></pre></td></tr></table></figure>
+<p> 4.将git加到系统环境变量里面</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> GIT_HOME=/usr/<span class="built_in">local</span>/git</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$GIT_HOME</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+<p> 5.初始化仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git init --bare mt-front.git</span><br><span class="line"></span><br><span class="line"><span class="comment">#下面是几种克隆方式</span></span><br><span class="line">git <span class="built_in">clone</span> git@xx.xx.xx.xx:/home/git/repository/mt-front.git</span><br><span class="line">git <span class="built_in">clone</span> ssh://git@xx.xx.xx.xx:/home/git/repository/mt-front.git</span><br><span class="line">git <span class="built_in">clone</span> http://git@xx.xx.xx.xx:/home/git/repository/mt-front.git</span><br></pre></td></tr></table></figure>
+<p>本地clone的时候会报错</p>
+<ul>
+<li>提示git-upload-pack命令不存在<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bash: git-upload-pack: <span class="built_in">command</span> not found</span><br><span class="line"><span class="comment">#解决</span></span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/git/bin/git-upload-pack /usr/bin/git-upload-pack</span><br></pre></td></tr></table></figure></li>
+<li>提示git-receive-pack命令不存在<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bash: git-receive-pack: <span class="built_in">command</span> not found</span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/git/bin/git-receive-pack /usr/bin/git-receive-pack</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p> 7.配置git记住密码，在git的全局配置文件gitconfig文件中添加下面的配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[credential]</span><br><span class="line">	helper = store</span><br><span class="line">[user]</span><br><span class="line">	name = nick</span><br><span class="line">	email = nick@da.com</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/08/03/Centos-6-x-%E5%AE%89%E8%A3%85git/" data-id="ck2vzivgj0003yd0q956dcxni" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
     </footer>
   </div>
   
@@ -143,7 +210,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/01/Maven%E8%B7%B3%E8%BF%87%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Dmaven-test-skip%E5%92%8CskipTests%E7%9A%84%E5%8C%BA%E5%88%AB/" data-id="ck2vzffgi000xx90q5tvf32k6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/01/Maven%E8%B7%B3%E8%BF%87%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Dmaven-test-skip%E5%92%8CskipTests%E7%9A%84%E5%8C%BA%E5%88%AB/" data-id="ck2vzivhl0014yd0q3rlrh7ij" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/" rel="tag">maven</a></li></ul>
@@ -195,7 +262,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/30/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%85%AB%E7%AF%87%EF%BC%9AJava8%E4%B8%AD%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8/" data-id="ck2vzffg2000ix90qhxdaa0bg" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/30/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%85%AB%E7%AF%87%EF%BC%9AJava8%E4%B8%AD%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8/" data-id="ck2vzivh5000kyd0qelcs3l43" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -246,7 +313,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/30/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%83%E7%AF%87%EF%BC%9AJava8%E4%B8%AD%E6%8E%A5%E5%8F%A3%E7%9A%84%E9%BB%98%E8%AE%A4%E6%96%B9%E6%B3%95%E4%B8%8E%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95/" data-id="ck2vzfffr000ax90qb9efem8v" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/30/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%83%E7%AF%87%EF%BC%9AJava8%E4%B8%AD%E6%8E%A5%E5%8F%A3%E7%9A%84%E9%BB%98%E8%AE%A4%E6%96%B9%E6%B3%95%E4%B8%8E%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95/" data-id="ck2vzivgx000cyd0q7082dou8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -293,7 +360,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/28/Maven%E4%B8%AD%E7%9A%84dependencyManagement%E5%92%8Cdependencies/" data-id="ck2vzffgh000vx90qcsgj1y03" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/28/Maven%E4%B8%AD%E7%9A%84dependencyManagement%E5%92%8Cdependencies/" data-id="ck2vzivhg000yyd0qbq72hbvx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/" rel="tag">maven</a></li></ul>
@@ -338,7 +405,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/18/Spring-Boot-1-x-%E4%BD%BF%E7%94%A8Value%E6%B3%A8%E8%A7%A3%E7%BB%99%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F%E8%B5%8B%E5%80%BC/" data-id="ck2vzffh3001jx90q30h45h5x" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/18/Spring-Boot-1-x-%E4%BD%BF%E7%94%A8Value%E6%B3%A8%E8%A7%A3%E7%BB%99%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F%E8%B5%8B%E5%80%BC/" data-id="ck2vzivhy001myd0q6obs6tt3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
@@ -393,7 +460,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/01/Mybatis%E6%96%B9%E6%B3%95%E4%BC%A0%E5%A4%9A%E4%B8%AA%E5%8F%82%E6%95%B0%EF%BC%88%E4%B8%89%E7%A7%8D%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%89/" data-id="ck2vzffgq0014x90q3pg9as1k" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/01/Mybatis%E6%96%B9%E6%B3%95%E4%BC%A0%E5%A4%9A%E4%B8%AA%E5%8F%82%E6%95%B0%EF%BC%88%E4%B8%89%E7%A7%8D%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%89/" data-id="ck2vzivho0018yd0q90n201wh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li></ul>
@@ -497,7 +564,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%85%AD%E7%AF%87%EF%BC%9A%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E5%88%A9%E5%99%A8-Maven/" data-id="ck2vzffg4000kx90qgv0aawtm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%85%AD%E7%AF%87%EF%BC%9A%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E5%88%A9%E5%99%A8-Maven/" data-id="ck2vzivh7000nyd0q1neo6vi6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/" rel="tag">maven</a></li></ul>
@@ -576,74 +643,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%BA%94%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4Java%E4%B8%AD%E7%9A%84%E5%BC%82%E5%B8%B8/" data-id="ck2vzfffy000gx90q4kmghf0r" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%BA%94%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4Java%E4%B8%AD%E7%9A%84%E5%BC%82%E5%B8%B8/" data-id="ck2vzivh3000iyd0q4dgb5m45" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/exception/" rel="tag">exception</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Java学习系列文章第四篇：说说Java的三大特性" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%9B%9B%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4Java%E7%9A%84%E4%B8%89%E5%A4%A7%E7%89%B9%E6%80%A7/" class="article-date">
-  <time datetime="2018-06-29T13:58:31.000Z" itemprop="datePublished">2018-06-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%9B%9B%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4Java%E7%9A%84%E4%B8%89%E5%A4%A7%E7%89%B9%E6%80%A7/">Java学习系列文章第四篇：说说Java的三大特性</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Java语言提供类、接口和继承等面向对象的特性，为了简单起见，只支持类之间的单继承，但支持接口之间的多继承，并支持类与接口之间的实现机制（关键字为implements）。Java语言全面支持动态绑定，而C++语言只对虚函数使用动态绑定。总之，Java语言是一个纯的面向对象程序设计语言。</p>
-<p>说到面向对象编程，那就不得不提面向对象编程的三大特性：继承、封装和多态。那下面我们先来说一说封装。</p>
-<p>封装隐藏了类的内部实现机制，可以在不想影响使用的情况下改变类的内部结构，同时也保护了数据。对外界也可以隐藏内部的细节，只暴露给外界访问的方法。</p>
-<p>继承可以复用父类的代码。两个类之间若存在is-a的关系，就可以使用继承，从而达到代码的复用，同时也给多态的实现做了铺垫。</p>
-<p>下面我们只要说说面向对象编程中的多态。所谓的多态就是指程序中定义的引用变量所指向的具体类型和通过该引用变量发出的方法调用在编程时并不确定，而是在程序的运行期间才确定，即一个引用变量到底会指向哪个类的实例对象，该引用变量发出的方法调用到底是哪个类中实现的方法，必须在程序运行期间才能确定，这就是所谓的动态绑定（dynamic binding）。</p>
-<p>既然多态那么重要，那么多态到底有什么好处呢？</p>
-<ol>
-<li>可替换性</li>
-<li>消除类型之间的耦合关系</li>
-<li>可扩充性</li>
-<li>接口性</li>
-<li>灵活性</li>
-<li>简化性</li>
-</ol>
-<p><strong>Java实现多态有三个必要的条件：继承、重写、向上转型</strong></p>
-<ol>
-<li>继承：在多态中必须存在有继承关系的子类和父类。</li>
-<li>重写：子类对父类中某些方法进行重写定义，在调用这些方法时就会调用子类的方法。</li>
-<li>向上转型：在多态中需要将父类的引用指向子类，只有这样该引用才能够具备调用父类和子类的方法。</li>
-</ol>
-<p>多态的实现方式</p>
-<h4 id="1-继承重写"><a href="#1-继承重写" class="headerlink" title="1. 继承重写"></a>1. 继承重写</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Cat</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"吃鱼"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"抓老鼠"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dog</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"吃骨头"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"看家"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        Animal a = <span class="keyword">new</span> Cat();  <span class="comment">// 向上转型</span></span><br><span class="line">        a.eat();               <span class="comment">// 调用的是 Cat 的 eat</span></span><br><span class="line"></span><br><span class="line">        Animal b = <span class="keyword">new</span> Dog();  <span class="comment">// 向上转型</span></span><br><span class="line">        b.eat();               <span class="comment">// 调用的是 Dog 的 eat</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>所以基于继承实现的多态可以总结如下：对于引用子类的父类类型，在处理该引用时，它适用于继承该父类的所有子类，子类对象的不同，对方法的实现也就不同，执行相同动作产生的行为也就不同。<br>如果父类是抽象类，那么子类必须要实现父类中所有的抽象方法，这样该父类所有的子类一定存在统一的对外接口，但其内部的具体实现可以各异。这样我们就可以使用顶层类提供的统一接口来处理该层次的方法。</p>
-<h4 id="2-基于接口实现多态"><a href="#2-基于接口实现多态" class="headerlink" title="2.基于接口实现多态"></a>2.基于接口实现多态</h4><p>继承是通过重写父类的同一方法的几个不同子类来体现的，那么就可就是通过实现接口并覆盖接口中同一方法的几不同的类体现的。</p>
-<p>在接口的多态中，指向接口的引用必须是指定这实现了该接口的一个类的实例程序，在运行时，根据对象引用的实际类型来执行对应的方法。</p>
-<p>继承都是单继承，只能为一组相关的类提供一致的服务接口。但是接口可以是多继承多实现，它能够利用一组相关或者不相关的接口进行组合与扩充，能够对外提供一致的服务接口。所以它相对于继承来说有更好的灵活性。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%9B%9B%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4Java%E7%9A%84%E4%B8%89%E5%A4%A7%E7%89%B9%E6%80%A7/" data-id="ck2vzffg7000nx90q4sjdawnb" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/oop/" rel="tag">oop</a></li></ul>
 
     </footer>
   </div>
@@ -680,7 +683,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/String/" style="font-size: 12px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 10px;">elasticSearch</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18px;">linux</a> <a href="/tags/maven/" style="font-size: 14px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 14px;">mysql</a> <a href="/tags/nginx/" style="font-size: 14px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 16px;">php</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16px;">spring boot</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/String/" style="font-size: 13.33px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 10px;">elasticSearch</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18.33px;">linux</a> <a href="/tags/maven/" style="font-size: 15px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 15px;">mysql</a> <a href="/tags/nginx/" style="font-size: 15px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 16.67px;">php</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16.67px;">spring boot</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -706,6 +709,10 @@
           </li>
         
           <li>
+            <a href="/2018/08/03/Centos-6-x-%E5%AE%89%E8%A3%85git/">Centos 6.x 安装git</a>
+          </li>
+        
+          <li>
             <a href="/2018/08/01/Maven%E8%B7%B3%E8%BF%87%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Dmaven-test-skip%E5%92%8CskipTests%E7%9A%84%E5%8C%BA%E5%88%AB/">Maven跳过单元测试-Dmaven.test.skip和skipTests的区别</a>
           </li>
         
@@ -715,10 +722,6 @@
         
           <li>
             <a href="/2018/07/30/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%83%E7%AF%87%EF%BC%9AJava8%E4%B8%AD%E6%8E%A5%E5%8F%A3%E7%9A%84%E9%BB%98%E8%AE%A4%E6%96%B9%E6%B3%95%E4%B8%8E%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95/">Java学习系列文章第七篇：Java8中接口的默认方法与静态方法</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/28/Maven%E4%B8%AD%E7%9A%84dependencyManagement%E5%92%8Cdependencies/">Maven中的dependencyManagement和dependencies</a>
           </li>
         
       </ul>
