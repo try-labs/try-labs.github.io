@@ -61,6 +61,56 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-MySQL出现1267的错误" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/04/MySQL%E5%87%BA%E7%8E%B01267%E7%9A%84%E9%94%99%E8%AF%AF/" class="article-date">
+  <time datetime="2017-12-04T15:21:47.000Z" itemprop="datePublished">2017-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/04/MySQL%E5%87%BA%E7%8E%B01267%E7%9A%84%E9%94%99%E8%AF%AF/">MySQL出现1267的错误</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>执行SQL的时候，MySQL出现了下面的1267的错误，提示与字符集有关系。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1267 - Illegal mix of collations (utf8_unicode_ci,IMPLICIT) and (utf8_general_ci,IMPLICIT) <span class="keyword">for</span> operation <span class="string">'='</span></span><br></pre></td></tr></table></figure>
+<p>查找问题的时候，发现有一张表是从其他地方拷贝过来的，这个表和我们目前项目中的表，稍微有点不同。数据表中字符串类型的字段，不仅有字符集这个属性，还有一个排序规则的属性。拷贝过来的表的字符串类型的字段的排序规则是utf8_unicode_ci，而我们的项目中的是utf8_general_ci，修改之后再次执行上述的SQL，就没有出现上面的错误！<br>下面是问题的简单总结：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ci(caseinsensitive大小写不敏感)</span><br><span class="line">utf8_unicode_ci和utf8_general_ci对中、英文来说没有实质的差别。</span><br><span class="line">utf8_general_ci校对速度快，但准确度稍差。</span><br><span class="line">utf8_unicode_ci准确度高，但校对速度稍慢。</span><br></pre></td></tr></table></figure>
+<p>如果你的应用有德语、法语或者俄语，请一定使用utf8_unicode_ci。一般用utf8_general_ci就够了，到现在也没发现问题。。。</p>
+<p>详细总结：</p>
+<p>1、对于一种语言仅当使用utf8_unicode_ci排序做的不好时，才执行与具体语言相关的utf8字符集校对规则。例如，对于德语和法语，utf8_unicode_ci工作的很好，因此不再需要为这两种语言创建特殊的utf8校对规则。<br>2、utf8_general_ci也适用与德语和法语，除了‘?’等于‘s’，而不是‘ss’之外。如果你的应用能够接受这些，那么应该使用 utf8_general_ci，因为它速度快。否则，使用utf8_unicode_ci，因为它比较准确。<br>用一句话概况上面这段话：utf8_unicode_ci比较准确，utf8_general_ci速度比较快。通常情况下 utf8_general_ci的准确性就够我们用的了，在我看过很多程序源码后，发现它们大多数也用的是utf8_general_ci，所以新建数据 库时一般选用utf8_general_ci就可以了。</p>
+<h4 id="如何在MySQL5-0中使用UTF8"><a href="#如何在MySQL5-0中使用UTF8" class="headerlink" title="如何在MySQL5.0中使用UTF8"></a>如何在MySQL5.0中使用UTF8</h4><p>在 my.cnf中增加下列参数<br>复制代码代码如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">init_connect=<span class="string">'SET NAMES utf8'</span></span><br><span class="line">default-character-set=utf8</span><br><span class="line">default-collation = utf8_general_ci</span><br></pre></td></tr></table></figure>
+<p>执行查询 mysql&gt; show variables; 相关如下:  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">character_set_client | utf8 </span><br><span class="line">character_set_connection | utf8 </span><br><span class="line">character_set_database | utf8 </span><br><span class="line">character_set_results | utf8 </span><br><span class="line">character_set_server | utf8 </span><br><span class="line">character_set_system | utf8</span><br><span class="line">collation_connection | utf8_general_ci </span><br><span class="line">collation_database | utf8_general_ci </span><br><span class="line">collation_server | utf8_general_ci</span><br></pre></td></tr></table></figure>
+<p>个人见解，对于数据库的使用，utf8_general 已经足够的准确，并且相较与  utf8_unicode速度上有优势，固可放心采用之</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/04/MySQL%E5%87%BA%E7%8E%B01267%E7%9A%84%E9%94%99%E8%AF%AF/" data-id="ck2w0zlkt001i390q4w1pe8zw" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-修改ssh的默认22端口" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/12/04/%E4%BF%AE%E6%94%B9ssh%E7%9A%84%E9%BB%98%E8%AE%A422%E7%AB%AF%E5%8F%A3/" class="article-date">
@@ -99,7 +149,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/04/%E4%BF%AE%E6%94%B9ssh%E7%9A%84%E9%BB%98%E8%AE%A422%E7%AB%AF%E5%8F%A3/" data-id="ck2w0vv72002q2q0qd6k46wjl" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/04/%E4%BF%AE%E6%94%B9ssh%E7%9A%84%E9%BB%98%E8%AE%A422%E7%AB%AF%E5%8F%A3/" data-id="ck2w0zllt002y390q67nmfsop" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
@@ -142,7 +192,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/04/%E8%BF%85%E6%90%9C-xunsearch-%E5%A4%9A%E5%80%BC%E5%B1%9E%E6%80%A7%E7%9A%84%E5%A4%84%E7%90%86/" data-id="ck2w0vv7j003a2q0q7jbkfa1w" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/04/%E8%BF%85%E6%90%9C-xunsearch-%E5%A4%9A%E5%80%BC%E5%B1%9E%E6%80%A7%E7%9A%84%E5%A4%84%E7%90%86/" data-id="ck2w0zlm3003d390qbhqgh8oj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li></ul>
@@ -276,7 +326,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/29/Centos6-9%E4%B8%8A%E6%90%AD%E5%BB%BAlnmp%E7%8E%AF%E5%A2%83/" data-id="ck2w0vv4x00052q0qenn6c63c" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/29/Centos6-9%E4%B8%8A%E6%90%AD%E5%BB%BAlnmp%E7%8E%AF%E5%A2%83/" data-id="ck2w0zljo0005390q24yd5uqd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
@@ -318,7 +368,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/27/tar-%E5%88%86%E5%8D%B7%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B/" data-id="ck2w0vv6z002n2q0q9i0h7nsa" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/27/tar-%E5%88%86%E5%8D%B7%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B/" data-id="ck2w0zllo002r390q6g7za1qg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
@@ -359,7 +409,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/23/%E5%A6%82%E4%BD%95%E5%BC%BA%E5%88%B6%E5%85%A8%E7%AB%99https%E8%AE%BF%E9%97%AE/" data-id="ck2w0vv7a00322q0q5wdzgc3z" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/23/%E5%A6%82%E4%BD%95%E5%BC%BA%E5%88%B6%E5%85%A8%E7%AB%99https%E8%AE%BF%E9%97%AE/" data-id="ck2w0zllv0031390q3lskd22m" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li></ul>
@@ -417,7 +467,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/19/Linux%E4%B8%8Bchkconfig%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/" data-id="ck2w0vv5w001c2q0qcsd85ay6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/19/Linux%E4%B8%8Bchkconfig%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/" data-id="ck2w0zlkl0019390qd2soeclw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
@@ -465,7 +515,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/17/%E5%AE%9E%E7%8E%B0MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" data-id="ck2w0vv7900302q0q50zh680y" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/17/%E5%AE%9E%E7%8E%B0MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" data-id="ck2w0zllz0036390qanb215qw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
@@ -514,7 +564,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/15/Linux-Crontab-%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/" data-id="ck2w0vv5s00152q0qbd8d1w8u" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/15/Linux-Crontab-%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/" data-id="ck2w0zlki0014390q12o8ft8z" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
@@ -563,59 +613,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/15/PHP%E7%9B%AE%E5%89%8D%E6%AF%94%E8%BE%83%E5%B8%B8%E8%A7%81%E7%9A%84%E4%BA%94%E5%A4%A7%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F/" data-id="ck2w0vv6c001u2q0q3yf43rpq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/15/PHP%E7%9B%AE%E5%89%8D%E6%AF%94%E8%BE%83%E5%B8%B8%E8%A7%81%E7%9A%84%E4%BA%94%E5%A4%A7%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F/" data-id="ck2w0zll50020390q93xf1vex" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-解决git默认不区分文件名大小写的问题" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/11/13/%E8%A7%A3%E5%86%B3git%E9%BB%98%E8%AE%A4%E4%B8%8D%E5%8C%BA%E5%88%86%E6%96%87%E4%BB%B6%E5%90%8D%E5%A4%A7%E5%B0%8F%E5%86%99%E7%9A%84%E9%97%AE%E9%A2%98/" class="article-date">
-  <time datetime="2017-11-13T14:46:50.000Z" itemprop="datePublished">2017-11-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/13/%E8%A7%A3%E5%86%B3git%E9%BB%98%E8%AE%A4%E4%B8%8D%E5%8C%BA%E5%88%86%E6%96%87%E4%BB%B6%E5%90%8D%E5%A4%A7%E5%B0%8F%E5%86%99%E7%9A%84%E9%97%AE%E9%A2%98/">解决git默认不区分文件名大小写的问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>当你创建一个文件后,叫 readme.md 写入内容后 提交到线上代码仓库.<br>然后你在本地修改文件名为 Readme.md 接着你去提交,发现代码没有变化.</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
-<p>你会无任何提示信息,其实 git 默认对于文件名大小写是不敏感的,所以上面你修改了首字母大写,但是git 并没有发现代码任何改动.那么如何才能让 git 识别文件名大小写变化.</p>
-<p>一  配置git 使其对文件名大小写敏感</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config core.ignorecase false</span><br></pre></td></tr></table></figure>
-<p>二 从git 本地仓库删除此文件,然后添加再提交<br>(1) 删除</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm readme.md</span><br></pre></td></tr></table></figure>
-<p>(2) 重新添加</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add Readme.md</span><br></pre></td></tr></table></figure>
-<p>(3)提交</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m 'Readme.md'</span><br></pre></td></tr></table></figure>
-<p>这样git不区分文件名大小写的问题就解决了！</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/13/%E8%A7%A3%E5%86%B3git%E9%BB%98%E8%AE%A4%E4%B8%8D%E5%8C%BA%E5%88%86%E6%96%87%E4%BB%B6%E5%90%8D%E5%A4%A7%E5%B0%8F%E5%86%99%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ck2w0vv7g00372q0q1lcm4re6" class="article-share-link">Share</a>
-      
-      
     </footer>
   </div>
   
@@ -641,7 +643,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BigDecimal/" rel="tag">BigDecimal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exception/" rel="tag">exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/feign/" rel="tag">feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ide/" rel="tag">ide</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oop/" rel="tag">oop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/proxy/" rel="tag">proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BigDecimal/" rel="tag">BigDecimal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eureka/" rel="tag">eureka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exception/" rel="tag">exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/feign/" rel="tag">feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ide/" rel="tag">ide</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oop/" rel="tag">oop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/proxy/" rel="tag">proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud/" rel="tag">spring cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -651,7 +653,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/BigDecimal/" style="font-size: 10px;">BigDecimal</a> <a href="/tags/String/" style="font-size: 13.33px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 11.67px;">elasticSearch</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/feign/" style="font-size: 10px;">feign</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/ide/" style="font-size: 10px;">ide</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18.33px;">linux</a> <a href="/tags/maven/" style="font-size: 15px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 15px;">mysql</a> <a href="/tags/nginx/" style="font-size: 16.67px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 16.67px;">php</a> <a href="/tags/proxy/" style="font-size: 10px;">proxy</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16.67px;">spring boot</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/BigDecimal/" style="font-size: 10px;">BigDecimal</a> <a href="/tags/String/" style="font-size: 13.33px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 11.67px;">elasticSearch</a> <a href="/tags/eureka/" style="font-size: 10px;">eureka</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/feign/" style="font-size: 10px;">feign</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/ide/" style="font-size: 10px;">ide</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18.33px;">linux</a> <a href="/tags/maven/" style="font-size: 15px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 15px;">mysql</a> <a href="/tags/nginx/" style="font-size: 16.67px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 16.67px;">php</a> <a href="/tags/proxy/" style="font-size: 10px;">proxy</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16.67px;">spring boot</a> <a href="/tags/spring-cloud/" style="font-size: 10px;">spring cloud</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -681,15 +683,15 @@
           </li>
         
           <li>
+            <a href="/2018/09/09/Spring-Cloud%E6%95%B4%E5%90%88%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83Eureka%E4%B8%AD%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%8A%B6%E6%80%81%E6%98%BE%E7%A4%BAUNKOWN/">Spring Cloud整合配置中心Eureka中的服务状态显示UNKOWN</a>
+          </li>
+        
+          <li>
             <a href="/2018/08/30/Elastic-Search%E6%90%9C%E7%B4%A2%E6%95%B0%E6%8D%AETerms%E8%81%9A%E5%90%88%E8%BF%94%E5%9B%9E%E7%9A%84%E4%B8%8D%E6%AD%A3%E7%A1%AE%E7%9A%84%E9%97%AE%E9%A2%98/">Elastic Search搜索数据Terms聚合返回的不正确的问题</a>
           </li>
         
           <li>
             <a href="/2018/08/28/IntelliJ-Idea-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE%E5%88%97%E8%A1%A8/">IntelliJ Idea 常用快捷键列表</a>
-          </li>
-        
-          <li>
-            <a href="/2018/08/24/BigDecimal%E8%BF%90%E7%AE%97%E5%87%BA%E7%8E%B0Non-terminating-decimal-expansion-no-exact-representable-decimal-result/">BigDecimal运算出现Non-terminating decimal expansion; no exact representable decimal result</a>
           </li>
         
       </ul>
