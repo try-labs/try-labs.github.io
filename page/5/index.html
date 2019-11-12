@@ -61,6 +61,64 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Linux下chkconfig命令详解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/19/Linux%E4%B8%8Bchkconfig%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/" class="article-date">
+  <time datetime="2017-11-19T15:11:31.000Z" itemprop="datePublished">2017-11-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/19/Linux%E4%B8%8Bchkconfig%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/">Linux下chkconfig命令详解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>chkconfig命令检查、设置系统的各种服务。这是Red Hat公司遵循GPL规则所开发的程序，它可查询操作系统在每一个执行等级中会执行哪些系统服务，其中包括各类常驻服务。谨记chkconfig不是立即自动禁止或激活一个服务，它只是简单的改变了符号连接。</p>
+<h4 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ ~]# chkconfig --help</span><br><span class="line">chkconfig version 1.3.49.5 - Copyright (C) 1997-2000 Red Hat, Inc.</span><br><span class="line">This may be freely redistributed under the terms of the GNU Public License.</span><br><span class="line"></span><br><span class="line">usage:   chkconfig [--list] [--type &lt;type&gt;] [name]</span><br><span class="line">         chkconfig --add &lt;name&gt;</span><br><span class="line">         chkconfig --del &lt;name&gt;</span><br><span class="line">         chkconfig --override &lt;name&gt;</span><br><span class="line">         chkconfig [--level &lt;levels&gt;] [--type &lt;type&gt;] &lt;name&gt; &lt;on|off|reset|resetpriorities&gt;</span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ ~]# </span><br><span class="line"></span><br><span class="line">--add：增加所指定的系统服务，让chkconfig指令得以管理它，并同时在系统启动的叙述文件内增加相关数据； </span><br><span class="line">--del：删除所指定的系统服务，不再由chkconfig指令管理，并同时在系统启动的叙述文件内删除相关数据； </span><br><span class="line">--level&lt;等级代号&gt;：指定读系统服务要在哪一个执行等级中开启或关毕。</span><br></pre></td></tr></table></figure>
+<p>level等级代号解释如下：</p>
+<ul>
+<li>等级0表示：表示关机 </li>
+<li>等级1表示：单用户模式 </li>
+<li>等级2表示：无网络连接的多用户命令行模式 </li>
+<li>等级3表示：有网络连接的多用户命令行模式 </li>
+<li>等级4表示：不可用 </li>
+<li>等级5表示：带图形界面的多用户模式 </li>
+<li>等级6表示：重新启动</li>
+</ul>
+<p>需要说明的是，level选项可以指定要查看的运行级而不一定是当前运行级。对于每个运行级，只能有一个启动脚本或者停止脚本。当切换运行级时，init不会重新启动已经启动的服务，也不会再次去停止已经停止的服务。</p>
+<p>运行级文件：<br>每个被chkconfig管理的服务需要在对应的init.d下的脚本加上两行或者更多行的注释。第一行告诉chkconfig缺省启动的运行级以及启动和停止的优先级。如果某服务缺省不在任何运行级启动，那么使用-代替运行级。第二行对服务进行描述，可以用\跨行注释。如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># chkconfig: 2345 20 80</span><br><span class="line"># description: Saves and restores system entropy pool for \</span><br><span class="line"># higher quality random number generation.</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">chkconfig --list #列出所有的系统服务。 </span><br><span class="line">chkconfig --add httpd #增加httpd服务。 </span><br><span class="line">chkconfig --del httpd #删除httpd服务。 </span><br><span class="line">chkconfig --level httpd 2345 on #设置httpd在运行级别为2、3、4、5的情况下都是on（开启）的状态。 </span><br><span class="line">chkconfig --list #列出系统所有的服务启动情况。 </span><br><span class="line">chkconfig --list mysqld #列出mysqld服务设置情况。 </span><br><span class="line">chkconfig --level 35 mysqld on #设定mysqld在等级3和5为开机运行服务，--level 35表示操作只在等级3和5执行，on表示启动，off表示关闭。 </span><br><span class="line">chkconfig mysqld on #设定mysqld在各等级为on，“各等级”包括2、3、4、5等级。</span><br></pre></td></tr></table></figure>
+<p>如何增加一个服务：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">服务脚本必须存放在/etc/ini.d/目录下；</span><br><span class="line">chkconfig --add servicename在chkconfig工具服务列表中增加此服务，此时服务会被在/etc/rc.d/rcN.d中赋予K/S入口了；</span><br><span class="line">chkconfig --level 35 mysqld on修改服务的默认启动等级。</span><br></pre></td></tr></table></figure>
+<p><em>注意</em> 此命令只能在Centos7以下使用，因为Centos7中已由systemctl替代chkconfig命令</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/11/19/Linux%E4%B8%8Bchkconfig%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/" data-id="ck2vzkk3s000wyw0q3ag45yza" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-实现MySQL主从复制" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/11/17/%E5%AE%9E%E7%8E%B0MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" class="article-date">
@@ -97,7 +155,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/17/%E5%AE%9E%E7%8E%B0MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" data-id="ck2vzivis002oyd0q99t6faco" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/17/%E5%AE%9E%E7%8E%B0MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" data-id="ck2vzkk52002pyw0qa30h2g8t" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
@@ -146,7 +204,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/15/Linux-Crontab-%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/" data-id="ck2vzivhc000syd0qguhq22th" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/15/Linux-Crontab-%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/" data-id="ck2vzkk3q000uyw0qe48idb61" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
@@ -195,7 +253,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/15/PHP%E7%9B%AE%E5%89%8D%E6%AF%94%E8%BE%83%E5%B8%B8%E8%A7%81%E7%9A%84%E4%BA%94%E5%A4%A7%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F/" data-id="ck2vzivhw001kyd0qbair08qc" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/15/PHP%E7%9B%AE%E5%89%8D%E6%AF%94%E8%BE%83%E5%B8%B8%E8%A7%81%E7%9A%84%E4%BA%94%E5%A4%A7%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F/" data-id="ck2vzkk4a001lyw0q51u481v6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
@@ -245,7 +303,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/13/%E8%A7%A3%E5%86%B3git%E9%BB%98%E8%AE%A4%E4%B8%8D%E5%8C%BA%E5%88%86%E6%96%87%E4%BB%B6%E5%90%8D%E5%A4%A7%E5%B0%8F%E5%86%99%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ck2vziviw002tyd0qfx0w86rz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/13/%E8%A7%A3%E5%86%B3git%E9%BB%98%E8%AE%A4%E4%B8%8D%E5%8C%BA%E5%88%86%E6%96%87%E4%BB%B6%E5%90%8D%E5%A4%A7%E5%B0%8F%E5%86%99%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ck2vzkk55002uyw0q44gbfh8w" class="article-share-link">Share</a>
       
       
     </footer>
@@ -286,7 +344,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/13/%E9%9A%90%E8%97%8FNginx%E6%88%96Apache%E4%BB%A5%E5%8F%8APHP%E7%9A%84%E7%89%88%E6%9C%AC%E5%8F%B7/" data-id="ck2vzivj0002yyd0qgjadhelz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/13/%E9%9A%90%E8%97%8FNginx%E6%88%96Apache%E4%BB%A5%E5%8F%8APHP%E7%9A%84%E7%89%88%E6%9C%AC%E5%8F%B7/" data-id="ck2vzkk58002zyw0q84pkgjcd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -328,7 +386,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/13/%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%AE%E6%94%B9Python%E7%9A%84pip%E8%87%AA%E5%B8%A6%E7%9A%84%E6%BA%90/" data-id="ck2vzivip002lyd0qcx5i4xm5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/13/%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%AE%E6%94%B9Python%E7%9A%84pip%E8%87%AA%E5%B8%A6%E7%9A%84%E6%BA%90/" data-id="ck2vzkk50002nyw0q37f17t3o" class="article-share-link">Share</a>
       
       
     </footer>
@@ -369,7 +427,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/10/Linux%E6%96%87%E4%BB%B6%E6%97%B6%E9%97%B4%E8%AF%A6%E8%A7%A3-ctime%E3%80%81mtime%E5%92%8Catime/" data-id="ck2vzivhe000wyd0q7rzv4tiv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/10/Linux%E6%96%87%E4%BB%B6%E6%97%B6%E9%97%B4%E8%AF%A6%E8%A7%A3-ctime%E3%80%81mtime%E5%92%8Catime/" data-id="ck2vzkk3t000xyw0q3fb5ennk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
@@ -412,7 +470,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/10/apache%E5%87%BA%E7%8E%B0no-input-file-specified-%E7%9A%84%E5%AE%8C%E7%BE%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" data-id="ck2vzivi8001zyd0q29qac90e" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/10/apache%E5%87%BA%E7%8E%B0no-input-file-specified-%E7%9A%84%E5%AE%8C%E7%BE%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" data-id="ck2vzkk4k0020yw0qbfcu90r7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li></ul>
@@ -456,48 +514,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/10/git-pull%E6%93%8D%E4%BD%9C%E5%A4%B1%E8%B4%A5%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ck2vzivi90021yd0q1d9uhlsq" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-git的-gitignore规则不生效的解决办法" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/11/10/git%E7%9A%84-gitignore%E8%A7%84%E5%88%99%E4%B8%8D%E7%94%9F%E6%95%88%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/" class="article-date">
-  <time datetime="2017-11-10T14:51:42.000Z" itemprop="datePublished">2017-11-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/10/git%E7%9A%84-gitignore%E8%A7%84%E5%88%99%E4%B8%8D%E7%94%9F%E6%95%88%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/">git的.gitignore规则不生效的解决办法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在git中如果想忽略掉某个文件，不让这个文件提交到版本库中，可以使用修改根目录中 .gitignore 文件的方法（如无，则需自己手工建立此文件）。这个文件每一行保存了一个匹配的规则例如：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 此为注释 – 将被 Git 忽略</span></span><br><span class="line">*.a       # 忽略所有 .a 结尾的文件</span><br><span class="line">!lib.a    # 但 lib.a 除外</span><br><span class="line">/TODO     # 仅仅忽略项目根目录下的 TODO 文件，不包括 subdir/TODO</span><br><span class="line">build/    # 忽略 build/ 目录下的所有文件</span><br><span class="line">doc/*.txt # 会忽略 doc/notes.txt 但不包括 doc/server/arch.txt</span><br></pre></td></tr></table></figure>
-<p>规则很简单，不做过多解释，但是有时候在项目开发过程中，突然心血来潮想把某些目录或文件加入忽略规则，按照上述方法定义后发现并未生效，原因是.gitignore只能忽略那些原来没有被track的文件，如果某些文件已经被纳入了版本管理中，则修改.gitignore是无效的。那么解决方法就是先把本地缓存删除（改变成未track状态），然后再提交：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git rm -r --cached .</span><br><span class="line">git add .</span><br><span class="line">git commit -m 'update .gitignore'</span><br></pre></td></tr></table></figure>
-<p>这样git的忽略规则不生效的问题就解决了！</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/10/git%E7%9A%84-gitignore%E8%A7%84%E5%88%99%E4%B8%8D%E7%94%9F%E6%95%88%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/" data-id="ck2vzivib0024yd0q27kv9pds" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/10/git-pull%E6%93%8D%E4%BD%9C%E5%A4%B1%E8%B4%A5%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ck2vzkk4m0023yw0q30obdch1" class="article-share-link">Share</a>
       
       
     </footer>
@@ -511,7 +528,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
+    <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -561,6 +578,10 @@
           </li>
         
           <li>
+            <a href="/2018/08/04/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B9%9D%E7%AF%87%EF%BC%9AJava%E4%B8%AD%E6%B3%9B%E5%9E%8B%E7%9A%84%E5%AD%A6%E4%B9%A0/">Java学习系列文章第九篇：Java中泛型的学习</a>
+          </li>
+        
+          <li>
             <a href="/2018/08/03/Centos-6-x-%E5%AE%89%E8%A3%85git/">Centos 6.x 安装git</a>
           </li>
         
@@ -570,10 +591,6 @@
         
           <li>
             <a href="/2018/07/30/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%85%AB%E7%AF%87%EF%BC%9AJava8%E4%B8%AD%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8/">Java学习系列文章第八篇：Java8中方法引用</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/30/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%83%E7%AF%87%EF%BC%9AJava8%E4%B8%AD%E6%8E%A5%E5%8F%A3%E7%9A%84%E9%BB%98%E8%AE%A4%E6%96%B9%E6%B3%95%E4%B8%8E%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95/">Java学习系列文章第七篇：Java8中接口的默认方法与静态方法</a>
           </li>
         
       </ul>
