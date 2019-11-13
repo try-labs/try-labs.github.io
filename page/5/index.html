@@ -61,10 +61,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Spring-Boot的三种启动方式" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Java学习系列文章第六篇：项目开发利器-Maven" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/01/19/Spring-Boot%E7%9A%84%E4%B8%89%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F/" class="article-date">
-  <time datetime="2018-01-19T15:33:49.000Z" itemprop="datePublished">2018-01-19</time>
+    <a href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%85%AD%E7%AF%87%EF%BC%9A%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E5%88%A9%E5%99%A8-Maven/" class="article-date">
+  <time datetime="2018-06-29T14:03:43.000Z" itemprop="datePublished">2018-06-29</time>
 </a>
     
   </div>
@@ -75,7 +75,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/19/Spring-Boot%E7%9A%84%E4%B8%89%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F/">Spring Boot的三种启动方式</a>
+      <a class="article-title" href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%85%AD%E7%AF%87%EF%BC%9A%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E5%88%A9%E5%99%A8-Maven/">Java学习系列文章第六篇：项目开发利器-Maven</a>
     </h1>
   
 
@@ -83,74 +83,286 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Spring Boot有以下三种启动方式，最后一种我们可以很好的设置不同环境使用不同的配置文件。</p>
-<p>1.IDE 运行Application这个类的main方法</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">package com.dameiweb.girl;</span><br><span class="line"></span><br><span class="line">import org.springframework.boot.SpringApplication;</span><br><span class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"></span><br><span class="line">@SpringBootApplication</span><br><span class="line">public class GirlApplication &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		SpringApplication.run(GirlApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2.在springboot的应用的根目录下运行mvn spring-boot:run</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">$ mvn spring-boot:run</span><br><span class="line">[INFO] Scanning <span class="keyword">for</span> projects...</span><br><span class="line">Downloading: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.pom</span><br><span class="line">Downloaded: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.pom (0 B at 0 B/s)</span><br><span class="line">Downloading: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.jar</span><br><span class="line">Downloaded: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.jar (0 B at 0 B/s)</span><br><span class="line">Downloading: http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/codehaus-parent/3/codehaus-parent-3.pom</span><br><span class="line">Downloaded: http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/codehaus-parent/3/codehaus-parent-3.pom (0 B at 0 B/s)</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] Building girl 0.0.1-SNAPSHOT</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] &gt;&gt;&gt; spring-boot-maven-plugin:1.5.9.RELEASE:run (default-cli) &gt; <span class="built_in">test</span>-compile @ girl &gt;&gt;&gt;</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ girl ---</span><br><span class="line">[INFO] Using <span class="string">'UTF-8'</span> encoding to copy filtered resources.</span><br><span class="line">[INFO] Copying 3 resources</span><br><span class="line">[INFO] Copying 0 resource</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ girl ---</span><br><span class="line">[INFO] Nothing to compile - all classes are up to date</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ girl ---</span><br><span class="line">[INFO] Using <span class="string">'UTF-8'</span> encoding to copy filtered resources.</span><br><span class="line">[INFO] skip non existing resourceDirectory D:\work\girl\src\<span class="built_in">test</span>\resources</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ girl ---</span><br><span class="line">[INFO] Nothing to compile - all classes are up to date</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] &lt;&lt;&lt; spring-boot-maven-plugin:1.5.9.RELEASE:run (default-cli) &lt; <span class="built_in">test</span>-compile @ girl &lt;&lt;&lt;</span><br><span class="line">[INFO]</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- spring-boot-maven-plugin:1.5.9.RELEASE:run (default-cli) @ girl ---</span><br></pre></td></tr></table></figure>
-<p>3.在springboot的应用的根目录下 mvn install 生成jar后运行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">先执行 mvn install</span><br><span class="line">再执行 java -jar target/girl-0.0.1-SNAPSHOT.jar --spring.profile.active=prod</span><br><span class="line"></span><br><span class="line">java -jar target/girl-0.0.1-SNAPSHOT.jar --spring.profile.active=prod</span><br><span class="line"></span><br><span class="line">  .   ____          _            __ _ _</span><br><span class="line"> /\\ / ___<span class="string">'_ __ _ _(_)_ __  __ _ \ \ \ \</span></span><br><span class="line"><span class="string">( ( )\___ | '</span>_ | <span class="string">'_| | '</span>_ \/ _` | \ \ \ \</span><br><span class="line"> \\/  ___)| |_)| | | | | || (_| |  ) ) ) )</span><br><span class="line">  <span class="string">'  |____| .__|_| |_|_| |_\__, | / / / /</span></span><br><span class="line"><span class="string"> =========|_|==============|___/=/_/_/_/</span></span><br><span class="line"><span class="string"> :: Spring Boot ::        (v1.5.9.RELEASE)</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/19/Spring-Boot%E7%9A%84%E4%B8%89%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F/" data-id="ck2xfms9d002mbs0q78fe9vcm" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Java里有哪些语法糖" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/01/09/Java%E9%87%8C%E6%9C%89%E5%93%AA%E4%BA%9B%E8%AF%AD%E6%B3%95%E7%B3%96/" class="article-date">
-  <time datetime="2018-01-09T15:36:33.000Z" itemprop="datePublished">2018-01-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/09/Java%E9%87%8C%E6%9C%89%E5%93%AA%E4%BA%9B%E8%AF%AD%E6%B3%95%E7%B3%96/">Java里有哪些语法糖</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">语法糖（Syntactic Sugar），也称糖衣语法，指在计算机语言中添加的某种语法，这种语法对语言本身功能来说没有什么影响，只是为了方便程序员的开发，提高开发效率。说白了，语法糖就是对现有语法的一个封装。</span><br></pre></td></tr></table></figure>
-<p>Java作为一种与平台无关的高级语言，当然也含有语法糖，这些语法糖并不被虚拟机所支持，在编译成字节码阶段就自动转换成简单常用语法。<br>语法糖的大概有三个特性：</p>
+        <h3 id="什么是Maven"><a href="#什么是Maven" class="headerlink" title="什么是Maven"></a>什么是Maven</h3><p>Maven是现在的Java程序员应该都会遇到或使用的一个工具。那Maven具体是什么？到底能干什么？</p>
+<p>Maven是一个项目管理工具，用来管理项目的生命周期，如项目中各个项目之间的依赖管理，项目中使用到的jar包依赖管理，还有许多项目构建的插件等。使用Maven最大的好处就是不再需要我们手工维护项目中的各种jar包，及jar包需要依赖的其他jar包，也不再需要我们解决各种jar包之间的冲突，这一切maven帮我们都做好了。</p>
+<p>目前Java开发中流行的集成开发工具Idea已经集成了Maven工具，打开Idea的设置选择Maven项，就可以看到自带的Maven的一些信息。我觉得Idea自带的Maven就挺好的，就没有去再安装一个。但是之前不知道Idea自带Maven工具，为此有次出现一个问题，就是因为两个Maven仓库的原因。在公司的电脑上我自己装了一个Maven，自己的电脑上没有装，直接使用Idea自带的Maven。</p>
+<h3 id="Maven仓库"><a href="#Maven仓库" class="headerlink" title="Maven仓库"></a>Maven仓库</h3><p>使用 Maven 给我们带来的最直接的帮助，就是 jar 包得到了统一管理，那么这些 jar 包存放在哪里呢？它们就在您的 本地仓库 中，位于 C:\Users\用户名.m2 目录下（当然也可以修改这个默认地址）。</p>
+<p>实际上可将本地仓库理解“缓存”，因为项目首先会从本地仓库中获取 jar 包，当无法获取指定 jar 包的时候，本地仓库会从 远程仓库（或 中央仓库） 中下载 jar 包，并放入本地仓库中以备将来使用。这个远程仓库是 Maven 官方提供的，可通过 <a href="http://search.maven.org/" target="_blank" rel="noopener">http://search.maven.org/</a> 来访问。这样一来，本地仓库会随着项目的积累越来越大。通过下面这张图可以清晰地表达项目、本地仓库、远程仓库之间的关系。</p>
+<h3 id="Maven命令"><a href="#Maven命令" class="headerlink" title="Maven命令"></a>Maven命令</h3><p>Maven执行命令有两种方式：</p>
 <ol>
-<li>提高程序开发效率</li>
-<li>程序性能不受影响</li>
-<li>规避coder可能因手误而出现的错误</li>
+<li>Interactive Mode（交互模式）</li>
+<li>Batch Mode（批处理模式）</li>
 </ol>
-<p>那Java有哪些语法糖呢？Java大概有如下6个语法糖：</p>
+<h4 id="交互模式创建项目"><a href="#交互模式创建项目" class="headerlink" title="交互模式创建项目"></a>交互模式创建项目</h4><p>执行下面的命令</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn archetype:generate</span><br></pre></td></tr></table></figure>
+<p>接下来会出现下面的选项：</p>
+<ul>
+<li>项目 Archetype Version（原型版本号）是什么？—— 可选择 1.0 版本</li>
+<li>项目 groupId（组织名） 是什么？—— 可输入 net.ydstudio</li>
+<li>项目 artifactId（构件名）是什么？—— 可输入 maven-demo</li>
+<li>项目 version（版本号）是什么？—— 可输入 1.0</li>
+<li>项目 package（包名）是什么？—— 可输入 net.ydstudio.demo</li>
+</ul>
+<h4 id="使用批处理模式创建项目"><a href="#使用批处理模式创建项目" class="headerlink" title="使用批处理模式创建项目"></a>使用批处理模式创建项目</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn archetype:generate -DinteractiveMode=<span class="keyword">false</span> -DarchetypeArtifactId=maven-archetype-webapp -DgroupId=net.ydstudio -DartifactId=maven-demo -Dversion=<span class="number">1.0</span></span><br></pre></td></tr></table></figure>
+<p>创建项目这事我觉得还是用Idea来做，方便快捷。用命令创建的话，命令有时记得不全，不是很方便。</p>
+<p>创建成功之后的项目中一般会有下面的几个目录，如果没有的话就自行创建。</p>
 <ol>
-<li>泛型与类型擦除</li>
-<li>自动装箱与拆箱</li>
-<li>变长参数</li>
-<li>增强for循环</li>
-<li>内部类</li>
-<li>枚举类</li>
+<li>src/main/java，主要代码存放的地方</li>
+<li>src/test/java，测试代码存放的地方</li>
+<li>src/main/resources，配置、资源文件存放的地方</li>
+<li>src/main/webapp,Web应用相关代码存放的地方</li>
+</ol>
+<p>还有一个重要的文件： pom.xml；pom.xml称为Project Object Model（项目对象模型），它用于描述整个Maven项目，所以也称为Maven描述文件。pom.xml 才是理解 Maven 的关键点，很有必要看看它到底长什么样。</p>
+<h3 id="pom文件"><a href="#pom文件" class="headerlink" title="pom文件"></a>pom文件</h3><p>打开生成的pom文件，内容如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;project xmlns=<span class="string">"http://maven.apache.org/POM/4.0.0"</span></span><br><span class="line">        xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span><br><span class="line">        xsi:schemaLocation=<span class="string">"http://maven.apache.org/POM/4.0.0</span></span><br><span class="line"><span class="string">        http://maven.apache.org/maven-v4_0_0.xsd"</span>&gt;</span><br><span class="line"></span><br><span class="line">   &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;</span><br><span class="line">   &lt;groupId&gt;net.ydstudio&lt;/groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;maven-demo&lt;/artifactId&gt;</span><br><span class="line">   &lt;version&gt;1.0&lt;/version&gt;</span><br><span class="line">   &lt;packaging&gt;war&lt;/packaging&gt;</span><br><span class="line"></span><br><span class="line">   &lt;name&gt;maven-demo Maven Webapp&lt;/name&gt;</span><br><span class="line">   &lt;url&gt;http:<span class="comment">//maven.apache.org&lt;/url&gt;</span></span><br><span class="line"></span><br><span class="line">   &lt;dependencies&gt;</span><br><span class="line">       &lt;dependency&gt;</span><br><span class="line">           &lt;groupId&gt;junit&lt;/groupId&gt;</span><br><span class="line">           &lt;artifactId&gt;junit&lt;/artifactId&gt;</span><br><span class="line">           &lt;version&gt;3.8.1&lt;/version&gt;</span><br><span class="line">           &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">       &lt;/dependency&gt;</span><br><span class="line">   &lt;/dependencies&gt;</span><br><span class="line">   &lt;build&gt;</span><br><span class="line">       &lt;finalName&gt;maven-demo&lt;/finalName&gt;</span><br><span class="line">   &lt;/build&gt;</span><br><span class="line">&lt;/project&gt;</span><br></pre></td></tr></table></figure>
+<p>我们来解释一下：</p>
+<ul>
+<li><p>modelVersion:这个是pom的版本号，现在都是4.0.0的，必须得有，但不需要修改。 </p>
+</li>
+<li><p>groupId、artifactId、version：分别表示 Maven 项目的组织名、构件名、版本号，它们三个合起来就是 Maven 坐标，根据这个坐标可以在 Maven 仓库中对应唯一的 Maven 构件。</p>
+</li>
+<li><p>packaging：表示该项目的打包方式，war 表示打包为 war 文件，默认为 jar，表示打包为 jar 文件。</p>
+</li>
+<li><p>name、url：表示该项目的名称与 URL 地址，意义不大，可以省略。</p>
+</li>
+<li><p>dependencies：定义该项目的依赖关系，其中每一个 dependency 对应一个 Maven 项目，可见 Maven 坐标再次出现，还多了一个 scope，表示作用域（下面会描述）。</p>
+</li>
+<li><p>build：表示与构建相关的配置，这里的 finalName 表示最终构建后的名称 maven-demo.war，这里的 finalName 还可以使用另一种方式来定义（下面会描述）。</p>
+</li>
+</ul>
+<p>我们可以在 pom.xml中定义一些列的项目依赖（构件包），每个构件包都会有一个 Scope（作用域），它表示该构件包在什么时候起作用，包括以下五种：</p>
+<ol>
+<li>compile：默认作用域，在编译、测试、运行时有效</li>
+<li>test：对于测试时有效</li>
+<li>runtime：对于测试、运行时有效</li>
+<li>provided：对于编译、测试时有效，但在运行时无效</li>
+<li>system：与 provided 类似，但依赖于系统资</li>
+</ol>
+<h3 id="Maven常见命令"><a href="#Maven常见命令" class="headerlink" title="Maven常见命令"></a>Maven常见命令</h3><p>前面我们已经使用了几个 Maven 命令，例如：mvn archetype:generate，mvn tomcat7:run-war 等。其实，可使用两种不同的方式来执行 Maven 命令：</p>
+<ol>
+<li>mvn &lt;插件&gt;:&lt;目标&gt; [参数]</li>
+<li>mvn &lt;阶段&gt;<br>现在我们接触到的都是第一种方式，而第二种方式才是我们日常中使用最频繁的，例如：</li>
+<li>mvn clean：清空输出目录（即 target 目录）</li>
+<li>mvn compile：编译源代码</li>
+<li>mvn package：生成构件包（一般为 jar 包或 war 包）</li>
+<li>mvn install：将构件包安装到本地仓库</li>
+<li>mvn deploy：将构件包部署到远程仓库</li>
+</ol>
+<p>执行 Maven 命令需要注意的是：必须在Maven项目的根目录处执行，也就是当前目录下一定存在一个名为 pom.xml 的文件。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%85%AD%E7%AF%87%EF%BC%9A%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E5%88%A9%E5%99%A8-Maven/" data-id="ck2xghnan0016dt0q394c53xy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/" rel="tag">maven</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Java学习系列文章第五篇：说说Java中的异常" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%BA%94%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4Java%E4%B8%AD%E7%9A%84%E5%BC%82%E5%B8%B8/" class="article-date">
+  <time datetime="2018-06-29T14:00:54.000Z" itemprop="datePublished">2018-06-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%BA%94%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4Java%E4%B8%AD%E7%9A%84%E5%BC%82%E5%B8%B8/">Java学习系列文章第五篇：说说Java中的异常</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在正常的程序设计中，程序异常处理是非常关键和重要的一部分。试想一个项目中没有一个好的异常处理，这个项目会怎么样？</p>
+<h3 id="什么是异常"><a href="#什么是异常" class="headerlink" title="什么是异常"></a>什么是异常</h3><p>异常其实是程序上的错误，包括程序逻辑错误和系统错误。比如数组下标越界、内存溢出等，这些都是意外的情况，错误在我们的程序的编写过程中会经常发生，包括编译期间和运行期间的错误。在编译期间出现的错误编译器会帮助我们修正，可是在运行期间的错误编译器就无能为力了，并且运行期间的错误往往是难以预料的。</p>
+<p>程序出现了错误，我们不能不去处理，这样的程序的健壮性太差了。为了提高程序的健壮性我们要合理的解决这些错误！于是Java中提供了异常的处理机制，通过异常来处理程序运行期间中出现的错误。通过这一特性，我们可以很好的提高程序的健壮性。</p>
+<p>Java是一个全面的面向对象语言，不像PHP那样，既支持过程式编程，也支持面向对象编程。Java中异常的父类是java.lang.Throwable类。在Java中定义很多的的异常类，比如OutOfMenoryError、NullPointerException、IndexOutOfBoundsException等。</p>
+<h3 id="Exception-类的层次"><a href="#Exception-类的层次" class="headerlink" title="Exception 类的层次"></a>Exception 类的层次</h3><p>所有的异常类是从 java.lang.Exception 类继承的子类。</p>
+<ul>
+<li>Exception 类是 Throwable类的子类。除了Exception类外，Throwable还有一个子类Error 。<br>Java 程序通常不捕获错误。错误一般发生在严重故障时，它们在Java程序处理的范畴之外。</li>
+<li>Error 用来指示运行时环境发生的错误。<br>例如，JVM 内存溢出。一般地，程序不会从错误中恢复。<br>异常类有两个主要的子类：IOException 类和 RuntimeException 类。</li>
+</ul>
+<p>Exception，也就是我们经常见到的一些异常情况，例如NullPointerException、IndexOutOfBoundsException等，这些异常时是我们可以处理的异常。</p>
+<p>Exception类的异常包括checked exception和unchecked exception（unchecked exception也称作运行时异常RuntimeException，Exception类的异常都是在运行期间发生的），对于运行时异常，Java编译器不要求必须进行异常处理捕获处理或者抛出，这个由程序员自行决定。</p>
+<p>checked exception（检查异常），也称为非运行时异常（运行时异常以外的异常就是非运行时异常），Java编译器强制程序员必须捕获处理，比如常见的IOException和SQLException。对于非运行时异常如果不进行捕获或者抛出处理，Java编译器都不会通过。</p>
+<p>在网上找了一个图，能够很清楚的描述在Java中，<strong>异常类的结构层次</strong>（有些时候语言就略显苍白，不如图片或者视频表现力丰富）。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/eQPyBffYbucQFWMv8Ix897PkJgliafiaVavLbzN8oE8tib6bWI5aONicssXV7RHUPaLib6BNiag50QfpLGNGTNGtM7nA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1" alt="image"><br>在Java中，所有的异常都是继承至java.lang.Throwable类。Error类是error类型异常的父类，Exception类是exception类型异常的父类，RuntimeException类是所有运行时异常的父类，RuntimeException以外的并且继承Exception的类是非运行时异常。</p>
+<ul>
+<li><p>典型的RuntimeException包括NullPointerException、IndexOutOfBoundsException、IllegalArgumentException等。</p>
+</li>
+<li><p>典型的非RuntimeException包括IOException、SQLException等。</p>
+</li>
+</ul>
+<h3 id="Java如何处理异常"><a href="#Java如何处理异常" class="headerlink" title="Java如何处理异常"></a>Java如何处理异常</h3><p>在Java中如果需要处理异常，必须先对异常进行捕获（这一点是和PHP是相同的）。使用try和catch关键字进行处理。具体的规则如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">  <span class="comment">// 程序代码</span></span><br><span class="line">&#125;<span class="keyword">catch</span>(异常类型<span class="number">1</span> 异常的变量名<span class="number">1</span>)&#123;</span><br><span class="line">  <span class="comment">// 程序代码</span></span><br><span class="line">&#125;<span class="keyword">catch</span>(异常类型<span class="number">2</span> 异常的变量名<span class="number">2</span>)&#123;</span><br><span class="line">  <span class="comment">// 程序代码</span></span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">  <span class="comment">// 程序代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>来段实际的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExcepTest</span></span>&#123;</span><br><span class="line"> </span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">     File file = <span class="keyword">new</span> File(<span class="string">"/Users/sam/a.txt"</span>);</span><br><span class="line">     <span class="keyword">if</span>(!file.exists())</span><br><span class="line">       file.createNewFile();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">       e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>被try块包围的代码说明这段代码可能会发生异常，一旦发生异常，异常便会被catch捕获到，然后需要在catch块中进行异常处理。这是一种处理异常的方式。在Java中还提供了另一种异常处理方式即抛出异常，顾名思义，也就是说一旦发生异常，我把这个异常抛出去，让调用者去进行处理，自己不进行具体的处理，此时需要用到throw和throws关键字。</p>
+<p>我们看下面的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           createFile();</span><br><span class="line">       &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">           <span class="comment">// <span class="doctag">TODO:</span> handle exception</span></span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">    </span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">createFile</span><span class="params">()</span> <span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">       File file = <span class="keyword">new</span> File(<span class="string">"/Users/sam/a.txt);</span></span><br><span class="line"><span class="string">       if(!file.exists())</span></span><br><span class="line"><span class="string">           file.createNewFile();</span></span><br><span class="line"><span class="string">   &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>这段代码和上面一段代码的区别是，在实际的createFile方法中并没有捕获异常，而是用throws关键字声明抛出异常，即告知调用者此方法可能会抛出IOException，需要调用者进行捕获处理。那么在main方法中调用createFile方法的时候，采用try…catch块进行了异常捕获处理。</p>
+<p>还可以使用throw关键字进行抛出异常。看下面的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> exception;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by Sam on 18/6/17.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        People people = <span class="keyword">new</span> People(<span class="string">"Sam"</span>,<span class="keyword">new</span> Byte(<span class="string">"25"</span>));</span><br><span class="line">        people.sayAge();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">People</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Byte age;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">People</span><span class="params">(String name, Byte age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Byte <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(Byte age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Byte <span class="title">sayAge</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (age &gt; Byte.MIN_VALUE)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> MyException(<span class="string">"年龄太大了"</span>,<span class="string">"100"</span> );</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyException</span> <span class="keyword">extends</span> <span class="title">RuntimeException</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String code;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyException</span><span class="params">(String message, String code)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(message);</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCode</span><span class="params">(String code)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面就是利用throw关键字进行手动抛出异常。调用者可以捕获处理异常，也可以不用处理异常。下面我们就修改一下代码进行捕获处理：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        People people = <span class="keyword">new</span> People(<span class="string">"Sam"</span>,<span class="keyword">new</span> Byte(<span class="string">"25"</span>));</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            people.sayAge();</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            System.out.println(e);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">程序输出：</span><br><span class="line">exception.MyException: 年龄太大了</span><br></pre></td></tr></table></figure>
+<p>也就说在Java中进行异常处理的话，对于可能会发生异常的代码，可以选择三种方法来进行异常处理：</p>
+<p>1、对代码块用try..catch进行异常捕获处理；</p>
+<p>2、在该代码的方法体外用throws进行抛出声明，告知此方法的调用者这段代码可能会出现这些异常，你需要谨慎处理。此时有两种情况：</p>
+<p>如果声明抛出的异常是非运行时异常，此方法的调用者必须显示地用try..catch块进行捕获或者继续向上层抛出异常。</p>
+<p>如果声明抛出的异常是运行时异常，此方法的调用者可以选择地进行异常捕获处理。</p>
+<p>3、在代码块用throw手动抛出一个异常对象，此时也有两种情况，跟2）中的类似：</p>
+<p>如果抛出的异常对象是非运行时异常，此方法的调用者必须显示地用try..catch块进行捕获或者继续向上层抛出异常。</p>
+<p>如果抛出的异常对象是运行时异常，此方法的调用者可以选择地进行异常捕获处理。（如果最终将异常抛给main方法，则相当于交给jvm自动处理，此时jvm会简单地打印异常信息）</p>
+<p>关于Java的异常机制就暂时说到这里。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%BA%94%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4Java%E4%B8%AD%E7%9A%84%E5%BC%82%E5%B8%B8/" data-id="ck2xghnak0011dt0qhc0udvlh" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/exception/" rel="tag">exception</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Java学习系列文章第四篇：说说Java的三大特性" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%9B%9B%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4Java%E7%9A%84%E4%B8%89%E5%A4%A7%E7%89%B9%E6%80%A7/" class="article-date">
+  <time datetime="2018-06-29T13:58:31.000Z" itemprop="datePublished">2018-06-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%9B%9B%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4Java%E7%9A%84%E4%B8%89%E5%A4%A7%E7%89%B9%E6%80%A7/">Java学习系列文章第四篇：说说Java的三大特性</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Java语言提供类、接口和继承等面向对象的特性，为了简单起见，只支持类之间的单继承，但支持接口之间的多继承，并支持类与接口之间的实现机制（关键字为implements）。Java语言全面支持动态绑定，而C++语言只对虚函数使用动态绑定。总之，Java语言是一个纯的面向对象程序设计语言。</p>
+<p>说到面向对象编程，那就不得不提面向对象编程的三大特性：继承、封装和多态。那下面我们先来说一说封装。</p>
+<p>封装隐藏了类的内部实现机制，可以在不想影响使用的情况下改变类的内部结构，同时也保护了数据。对外界也可以隐藏内部的细节，只暴露给外界访问的方法。</p>
+<p>继承可以复用父类的代码。两个类之间若存在is-a的关系，就可以使用继承，从而达到代码的复用，同时也给多态的实现做了铺垫。</p>
+<p>下面我们只要说说面向对象编程中的多态。所谓的多态就是指程序中定义的引用变量所指向的具体类型和通过该引用变量发出的方法调用在编程时并不确定，而是在程序的运行期间才确定，即一个引用变量到底会指向哪个类的实例对象，该引用变量发出的方法调用到底是哪个类中实现的方法，必须在程序运行期间才能确定，这就是所谓的动态绑定（dynamic binding）。</p>
+<p>既然多态那么重要，那么多态到底有什么好处呢？</p>
+<ol>
+<li>可替换性</li>
+<li>消除类型之间的耦合关系</li>
+<li>可扩充性</li>
+<li>接口性</li>
+<li>灵活性</li>
+<li>简化性</li>
+</ol>
+<p><strong>Java实现多态有三个必要的条件：继承、重写、向上转型</strong></p>
+<ol>
+<li>继承：在多态中必须存在有继承关系的子类和父类。</li>
+<li>重写：子类对父类中某些方法进行重写定义，在调用这些方法时就会调用子类的方法。</li>
+<li>向上转型：在多态中需要将父类的引用指向子类，只有这样该引用才能够具备调用父类和子类的方法。</li>
+</ol>
+<p>多态的实现方式</p>
+<h4 id="1-继承重写"><a href="#1-继承重写" class="headerlink" title="1. 继承重写"></a>1. 继承重写</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Cat</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"吃鱼"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"抓老鼠"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dog</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"吃骨头"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"看家"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        Animal a = <span class="keyword">new</span> Cat();  <span class="comment">// 向上转型</span></span><br><span class="line">        a.eat();               <span class="comment">// 调用的是 Cat 的 eat</span></span><br><span class="line"></span><br><span class="line">        Animal b = <span class="keyword">new</span> Dog();  <span class="comment">// 向上转型</span></span><br><span class="line">        b.eat();               <span class="comment">// 调用的是 Dog 的 eat</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所以基于继承实现的多态可以总结如下：对于引用子类的父类类型，在处理该引用时，它适用于继承该父类的所有子类，子类对象的不同，对方法的实现也就不同，执行相同动作产生的行为也就不同。<br>如果父类是抽象类，那么子类必须要实现父类中所有的抽象方法，这样该父类所有的子类一定存在统一的对外接口，但其内部的具体实现可以各异。这样我们就可以使用顶层类提供的统一接口来处理该层次的方法。</p>
+<h4 id="2-基于接口实现多态"><a href="#2-基于接口实现多态" class="headerlink" title="2.基于接口实现多态"></a>2.基于接口实现多态</h4><p>继承是通过重写父类的同一方法的几个不同子类来体现的，那么就可就是通过实现接口并覆盖接口中同一方法的几不同的类体现的。</p>
+<p>在接口的多态中，指向接口的引用必须是指定这实现了该接口的一个类的实例程序，在运行时，根据对象引用的实际类型来执行对应的方法。</p>
+<p>继承都是单继承，只能为一组相关的类提供一致的服务接口。但是接口可以是多继承多实现，它能够利用一组相关或者不相关的接口进行组合与扩充，能够对外提供一致的服务接口。所以它相对于继承来说有更好的灵活性。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E5%9B%9B%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4Java%E7%9A%84%E4%B8%89%E5%A4%A7%E7%89%B9%E6%80%A7/" data-id="ck2xghnap0018dt0q0zoj1wc8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/oop/" rel="tag">oop</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Java学习系列文章第三篇：说说equals和" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%89%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4equals%E5%92%8C/" class="article-date">
+  <time datetime="2018-06-29T13:49:25.000Z" itemprop="datePublished">2018-06-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%89%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4equals%E5%92%8C/">Java学习系列文章第三篇：说说equals和==</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在上一篇文章中我们写过这样的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 直接赋值</span></span><br><span class="line">String str1 = <span class="string">"hello world"</span>;</span><br><span class="line"><span class="comment">// 构造方法</span></span><br><span class="line">String str2 = <span class="keyword">new</span> String(<span class="string">"hello world"</span>);</span><br><span class="line"></span><br><span class="line">String str3 = <span class="string">"hello world"</span>;</span><br><span class="line"></span><br><span class="line">String str4 = <span class="keyword">new</span> String(<span class="string">"hello world"</span>);</span><br><span class="line"></span><br><span class="line">System.out.println(str1==str2);</span><br><span class="line">System.out.println(str1==str3);</span><br><span class="line">System.out.println(str2==str4);</span><br></pre></td></tr></table></figure>
+<p>我们现在都知道了它们的输出的结果，分别是false、true和false。</p>
+<h3 id="是在比较什么"><a href="#是在比较什么" class="headerlink" title="==是在比较什么"></a>==是在比较什么</h3><p>在《think in java》这本书里有这样的一句话“关系操作符生成的是一个布尔的结果，它们计算的是操作数之间值的关系”。简单的说就是==号是用来比较值是否相等。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> n = <span class="number">30</span>;</span><br><span class="line">        <span class="keyword">int</span> m = <span class="number">30</span>;</span><br><span class="line">        </span><br><span class="line">        System.out.println(n == m);</span><br><span class="line">        </span><br><span class="line">        String str = <span class="keyword">new</span> String(<span class="string">"hello world"</span>);</span><br><span class="line"></span><br><span class="line">        String str1 = <span class="keyword">new</span> String(<span class="string">"hello world"</span>);</span><br><span class="line"></span><br><span class="line">        String str2 = <span class="keyword">new</span> String(<span class="string">"hello world"</span>);</span><br><span class="line">        </span><br><span class="line">        System.out.println(str1 == str2);</span><br><span class="line">        str1 = str;</span><br><span class="line">        str2 = str;</span><br><span class="line">        System.out.println(str1 == str2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码的输出结果可能大家都知道是true、false和true。也许会有人会有疑问，那我们来好好的解释一下：</p>
+<p>n == m结果为true，这个很容易理解，变量n和变量m存储的值都为3，肯定是相等的。而为什么str1和str2两次比较的结果不同？要理解这个其实只需要理解基本数据类型变量和非基本数据类型变量的区别。对于Java中的8中基本类型（4种整型byte、short、int、long，2种浮点型float、double，一个boolean型，还有一个字符型char）的变量，变量本身存储的就是值，关系操作符==进行比较时，比较的就是值本身。所以上面的 n == m的比较就是3 == 3，这个肯定结果是true啊！</p>
+<p>对于那些引用类型的变量如str1，变量存储的并不是值本身，而是其关联对象在内存的地址。所以变量str1中存储的是它指向的对象在内存中的存储地址，并不是“值”本身，也就是说并不是直接存储的字符串”hello world”。这里面的引用和C/C++中的指针很类似。因此在用==对str1和str2进行第一次比较时，得到的结果是false。因此它们分别指向的是不同的对象，也就是说它们实际存储的内存地址不同。而在第二次比较时，都让str1和str2指向了str指向的对象，那么得到的结果毫无疑问是true。</p>
+<h3 id="equals又是在比较什么"><a href="#equals又是在比较什么" class="headerlink" title="equals又是在比较什么"></a>equals又是在比较什么</h3><p>equals方法是基类Object中的方法，因此对于所有继承Object的类都有该方法。先看一下下面的代码，猜猜输出的结果是什么</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;;</span><br><span class="line"></span><br><span class="line">        Object object1 = <span class="keyword">new</span> Object();</span><br><span class="line">        Object object2 = <span class="keyword">new</span> Object();</span><br><span class="line"></span><br><span class="line">        Object object3 = object1;</span><br><span class="line"></span><br><span class="line">        System.out.println(object1.equals(object2));</span><br><span class="line">        System.out.println(object1.equals(object3));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码的输出结果是false、true。我们来看看Object类中equals源码是什么样的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (<span class="keyword">this</span> == obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在Object类中的equals方法是用来比较两个对象的引用是否相等，即是两个变量的引用是否指向同一个对象。</p>
+<p>那下面的代码肯定会有人有疑问了，为啥输出的结果是true</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;;</span><br><span class="line"></span><br><span class="line">        String str1 = <span class="keyword">new</span> String(<span class="string">"hello"</span>);</span><br><span class="line"></span><br><span class="line">        String str2 = <span class="keyword">new</span> String(<span class="string">"hello"</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(str1.equals(str2));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要想知道是为什么，我们查看一下String类的equals的源码就知道是怎么回事了！</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object anObject)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span> == anObject) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (anObject <span class="keyword">instanceof</span> String) &#123;</span><br><span class="line">        String anotherString = (String)anObject;</span><br><span class="line">        <span class="keyword">int</span> n = value.length;</span><br><span class="line">        <span class="keyword">if</span> (n == anotherString.value.length) &#123;</span><br><span class="line">            <span class="keyword">char</span> v1[] = value;</span><br><span class="line">            <span class="keyword">char</span> v2[] = anotherString.value;</span><br><span class="line">            <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span> (n-- != <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (v1[i] != v2[i])</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>String类对equals方法进行了重写，用来比较指向的字符串对象所存储的字符串是否相等。</p>
+<p>Java中其他的类例如Double、Date、Integer等，都对equals进行重写，来比较指向的对象存储的内容是否相等。</p>
+<p>我们来总结一下：</p>
+<ol>
+<li>对于==，如果作用于基本数据类型的变量，则直接比较两操作数的值是否相等；如果作用于引用类型的变量，则比较的引用变量所指向的对象的地址。</li>
+<li>对于equals，如果类对equals没有进行重写，则比较的是引用类型的变量所指向的对象地址；诸如String类对equals方法进行了重写，比较的则是引用变量所指向的对象的内容。</li>
+<li>注意equals方法不能作用于基本数据类型的变量</li>
 </ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/09/Java%E9%87%8C%E6%9C%89%E5%93%AA%E4%BA%9B%E8%AF%AD%E6%B3%95%E7%B3%96/" data-id="ck2xfms830012bs0qefj76sbt" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%89%E7%AF%87%EF%BC%9A%E8%AF%B4%E8%AF%B4equals%E5%92%8C/" data-id="ck2xghnad000vdt0q8gvwbac1" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
 
     </footer>
   </div>
@@ -159,10 +371,10 @@
 
 
   
-    <article id="post-Java出现错误Implicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Java学习系列文章第一篇：基本变量类型" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/01/05/Java%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFImplicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor/" class="article-date">
-  <time datetime="2018-01-05T15:32:03.000Z" itemprop="datePublished">2018-01-05</time>
+    <a href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%80%E7%AF%87%EF%BC%9A%E5%9F%BA%E6%9C%AC%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B/" class="article-date">
+  <time datetime="2018-06-29T13:48:24.000Z" itemprop="datePublished">2018-06-29</time>
 </a>
     
   </div>
@@ -173,7 +385,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/05/Java%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFImplicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor/">Java出现错误Implicit super constructor  **  is undefined for default constructor. Must define an explicit constructor</a>
+      <a class="article-title" href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%80%E7%AF%87%EF%BC%9A%E5%9F%BA%E6%9C%AC%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B/">Java学习系列文章第一篇：基本变量类型</a>
     </h1>
   
 
@@ -181,20 +393,91 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>公司开展新的项目，要求使用Java，给一个月的学习时间。(<strong><strong>南京一些比较大的公司也开始转向Java，语言环境发了改变，学习Java也是大势所趋。2018年1月26日修改</strong></strong>)，只好开始学习Java！说好有系统的培训，结果我现在在自学！在学习java的时候，遇到了下面的问题：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Implicit <span class="keyword">super</span> constructor <span class="title">People</span><span class="params">()</span> is undefined <span class="keyword">for</span> <span class="keyword">default</span> constructor. Must define an explicit constructor</span></span><br></pre></td></tr></table></figure>
-<p>大致的意思是父类没有定义默认的无参数的构造方法，父类必须定义一个无参的构造方法。经过一番研究得知，Java中有一下的规则： 因为你的父类已经定义了一个有参的构造函数并且父类中没有默认的无参构造方法，此时编译器不会为你调用默认的构造函数， 当子类继承时，必须在自己的构造函数显式调用父类的构造函数，自己才能确保子类在初始化前父类会被实例化， 如果你父类中有无参的构造函数，子类就不会强制要求调用，即你写的那个就可以通过， 编译器会默认帮你调用父类的构造函数。</p>
-<p>修改后的代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//父类</span></span><br><span class="line"><span class="keyword">package</span> dmw;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">People</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> String name;</span><br><span class="line">	<span class="keyword">protected</span> <span class="keyword">int</span> age;</span><br><span class="line">	<span class="keyword">protected</span> String gender;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">People</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">People</span><span class="params">(<span class="keyword">int</span> age,String name,String gender)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.age = age;</span><br><span class="line">		<span class="keyword">this</span>.name =name;</span><br><span class="line">		<span class="keyword">this</span>.gender=gender;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	 <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span></span>&#123;</span><br><span class="line">		 <span class="keyword">return</span> <span class="keyword">this</span>.age;</span><br><span class="line">	 &#125;</span><br><span class="line">	 </span><br><span class="line">	 <span class="function"><span class="keyword">public</span> String <span class="title">getGender</span><span class="params">()</span></span>&#123;</span><br><span class="line">		 <span class="keyword">return</span> <span class="keyword">this</span>.gender;</span><br><span class="line">	 &#125;</span><br><span class="line">	 </span><br><span class="line">	 <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span></span>;</span><br><span class="line">	 </span><br><span class="line">	 </span><br><span class="line">	 <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">setGender</span><span class="params">(String gender)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//子类</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> dmw;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">extends</span> <span class="title">People</span> </span>&#123; </span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">(<span class="keyword">int</span> age, String name, String gender)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>(age, name, gender);</span><br><span class="line">		<span class="comment">// TODO Auto-generated constructor stub</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.age = age;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">setGender</span><span class="params">(String gender)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.gender = gender;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><a href="http://blog.csdn.net/children_of_light/article/details/54985869" target="_blank" rel="noopener">eclipse的maven配置</a></p>
+        <p>Java有着丰富的变量类型，有8种基本数据类型，以及他们对应的包装类型，还有数组集合等众多变量类型。相比之下PHP的数据类型就相对少多了，PHP只有布尔类型（Boolean）、整型（Integer）、浮点型（Float）、数组（Array）、字符串（String）、对象（Object）、资源类型（Resource）和NULL。本文我们先以基本数据类型为主，其他的类型为辅。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">type identifier [ = value][, identifier [= value] ...] ;</span><br><span class="line">格式说明：type为Java数据类型。identifier是变量名。可以使用逗号隔开来声明多个同类型变量。</span><br></pre></td></tr></table></figure>
+<p>下面我就简单的举几个变量声明的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">byte</span> a,b,c;</span><br><span class="line"><span class="keyword">short</span> e = g = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> f = <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">boolean</span> h = <span class="keyword">false</span>;</span><br><span class="line"><span class="keyword">char</span> i = <span class="string">'a'</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="Java的两大数据类型："><a href="#Java的两大数据类型：" class="headerlink" title="Java的两大数据类型："></a>Java的两大数据类型：</h3><ol>
+<li>内置数据类型</li>
+<li>引用数据类型<h3 id="内置数据类型"><a href="#内置数据类型" class="headerlink" title="内置数据类型"></a>内置数据类型</h3>Java语言提供了八种基本数据类型。六种数字类型（四个整数型，两个浮点型），一种字符类型，还有一种是布尔型。Java中的数字类型都是无符号（unsigned）的，不像C语言和C++那样还提供有符号的类型。在后续的MySQL学习中，你会发现MySQL中字段的类型里面会有无符号这个属性，这样就会出现MySQL的字段映射成Java变量时，会有取值范围不同的问题。<h4 id="byte"><a href="#byte" class="headerlink" title="byte"></a>byte</h4></li>
+</ol>
+<ul>
+<li>byte 占用一个字节的内存；</li>
+<li>最小值是-128（-2^7)， 最大值是127（2^7-1）；</li>
+<li>默认值是0，对应的包装类型是Byte,包装类型的默认值是null；</li>
+<li>例子：byte a = 10；</li>
+</ul>
+<h4 id="short"><a href="#short" class="headerlink" title="short"></a>short</h4><ul>
+<li>short 占用两个字节的内存；</li>
+<li>最小值是-32768（-2^15）， 最大值是32767（2^15-1）</li>
+<li>默认值是0，对应的包装类型是Short,默认值是null；</li>
+<li>例子：short a = 1200；</li>
+</ul>
+<h4 id="char"><a href="#char" class="headerlink" title="char"></a>char</h4><ul>
+<li>char 占用两个字节的内存，采用 Unicode 编码；</li>
+<li>最小值是 \u0000（即为0）；</li>
+<li>最大值是 \uffff（即为65,535）；</li>
+<li>char 可以储存任何字符（部分生僻的中文字符可能不行）；</li>
+<li>例子：char letter = ‘A’;。</li>
+</ul>
+<h4 id="int"><a href="#int" class="headerlink" title="int"></a>int</h4><ul>
+<li>int 占用四个字节的内存；</li>
+<li>最小值是-2,147,483,648（-2^31）， 最大值是2,147,483,6478（2^31-1）</li>
+<li>默认值是0，对应的包装类型是 Integer，默认值是null；</li>
+<li>一般的整型变量默认为 int 类型</li>
+<li>例子：int a = -10020；</li>
+</ul>
+<h4 id="long"><a href="#long" class="headerlink" title="long"></a>long</h4><ul>
+<li>long 占用八个字节的内存；</li>
+<li>最小值是 -9,223,372,036,854,775,808（-2^63），最大值是 9,223,372,036,854,775,807（2^63-1），这种类型主要使用在需要比较大整数的系统上；</li>
+<li>默认值是 0L，对应的包装类型是 Long，默认值是null；</li>
+<li>例子：long a = 100000L，Long b = -200000L。<br>“L”理论上不分大小写，但是若写成”l”容易与数字”1”混淆，不容易分辩。所以最好大写。</li>
+</ul>
+<h4 id="float"><a href="#float" class="headerlink" title="float"></a>float</h4><ul>
+<li>float 占用四个字节的内存；</li>
+<li>默认值是 0.0f；浮点数不能用来表示精确的值，如货币，存储货币推荐使用 BigDecimal；对应的包装类型是Float，默认值是null；</li>
+<li>例子：float f1 = 234.58f；</li>
+</ul>
+<h4 id="double"><a href="#double" class="headerlink" title="double"></a>double</h4><ul>
+<li>double 占用八个字节的内存；</li>
+<li>默认值是 0.0d；double不能用来表示精确的值，如货币，存储货币推荐使用BigDecimal；对应的包装类型是Double，默认值是null；</li>
+<li>例子：double d1 = 234.05d；double d2 = 467.90;<br>注意：不带任何标志的浮点型数据，系统默认是double类型。</li>
+</ul>
+<h4 id="boolean"><a href="#boolean" class="headerlink" title="boolean"></a>boolean</h4><ul>
+<li>boolean(JVM规范没有明确规定其所占的空间大小；</li>
+<li>只有两个取值，true和false;</li>
+<li>默认值false,对应的包装类型是Boolean，默认值是null；</li>
+<li>例子： boolean b = false;</li>
+</ul>
+<h4 id="void"><a href="#void" class="headerlink" title="void"></a>void</h4><ul>
+<li>对应包装类型Void，不常用</li>
+</ul>
+<p>byte、int、long和short还可以使用16进制和8进制的方式标识，默认都是使用10进制。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> decimal = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">int</span> octal = <span class="number">0144</span>;</span><br><span class="line"><span class="keyword">int</span> hexa =  <span class="number">0x64</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="自动类型转换"><a href="#自动类型转换" class="headerlink" title="自动类型转换"></a>自动类型转换</h3><p>整型和字符型数据可以混合运算，不同的类型的数据先转化成同一类型，然后进行计算。</p>
+<p>低———————————&gt;高</p>
+<p>byte-&gt;short,char—&gt; int —&gt;float —&gt; long—&gt; double </p>
+<p>数据类型转换必须满足下面的规则：</p>
+<ul>
+<li>不能对boolean类型进行类型转换</li>
+<li>不能把对象类型转换成不相干类的对象</li>
+<li>把类型范围大的转换成类型范围小的时候必须使用强制类型转换</li>
+<li>强制转换的过程中会出现溢出或损失精度</li>
+</ul>
+<h3 id="引用类型"><a href="#引用类型" class="headerlink" title="引用类型"></a>引用类型</h3><ul>
+<li>在Java中引用类型变量指向一个对象，这种变量在定义的时候，被声明成特定的类型，比如 Man、Student等。变量类型一但确定之后类型就不能改变。这一点和动态脚本语言PHP有着很大的不同，PHP中的变量定义后仍能保存其他类型的变量；</li>
+<li>所用引用类型的默认值都是null；</li>
+</ul>
+<p>写于：2018-06-06 14:56</p>
+<p>修改：2018-06-06 22:56</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/05/Java%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFImplicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor/" data-id="ck2xfms7i000gbs0q91sk6q7o" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%B8%80%E7%AF%87%EF%BC%9A%E5%9F%BA%E6%9C%AC%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B/" data-id="ck2xghna8000odt0q36q1dd9m" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
 
     </footer>
   </div>
@@ -203,10 +486,10 @@
 
 
   
-    <article id="post-使用java和javac命令来编译运行Java" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Java学习系列文章第二篇：字符串" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/01/01/%E4%BD%BF%E7%94%A8java%E5%92%8Cjavac%E5%91%BD%E4%BB%A4%E6%9D%A5%E7%BC%96%E8%AF%91%E8%BF%90%E8%A1%8CJava/" class="article-date">
-  <time datetime="2018-01-01T15:31:03.000Z" itemprop="datePublished">2018-01-01</time>
+    <a href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%BA%8C%E7%AF%87%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="article-date">
+  <time datetime="2018-06-29T13:44:13.000Z" itemprop="datePublished">2018-06-29</time>
 </a>
     
   </div>
@@ -217,7 +500,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/01/%E4%BD%BF%E7%94%A8java%E5%92%8Cjavac%E5%91%BD%E4%BB%A4%E6%9D%A5%E7%BC%96%E8%AF%91%E8%BF%90%E8%A1%8CJava/">使用java和javac命令来编译运行Java</a>
+      <a class="article-title" href="/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%BA%8C%E7%AF%87%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2/">Java学习系列文章第二篇：字符串</a>
     </h1>
   
 
@@ -225,20 +508,83 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>废话不多说，直奔主题!</p>
-<p> 1.先创建一个Test.java的文件，里面保存的内容如下：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> void main(String[] args)&#123;</span><br><span class="line">        System.out.println(<span class="string">"hello world!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">`</span><br></pre></td></tr></table></figure>
-<p> 2.使用javac编译Test.java文件，编译通过会生成一个Test.class的文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">C:\Users\nick\Desktop&gt;javac Test.java</span><br><span class="line"></span><br><span class="line">C:\Users\nick\Desktop&gt;</span><br></pre></td></tr></table></figure>
-<p> 3.使用java Test命令执行Test.class文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\nick\Desktop&gt;java Test</span><br><span class="line">hello world!</span><br><span class="line"></span><br><span class="line">C:\Users\nick\Desktop&gt;</span><br></pre></td></tr></table></figure>
+        <p>在众多的编程语言里面，字符串都被广泛的使用。在Java中字符串属于对象，语言提供了String类来创建和操作字符串。</p>
+<h3 id="字符串String简单知识"><a href="#字符串String简单知识" class="headerlink" title="字符串String简单知识"></a>字符串String简单知识</h3><p>Java提供两种方式来定义字符串，例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">定义字符使用单引号，定义字符串使用双引号；</span><br><span class="line"></span><br><span class="line"><span class="comment">// 直接赋值</span></span><br><span class="line">String str1 = <span class="string">"hello world"</span>;</span><br><span class="line"><span class="comment">// 构造方法</span></span><br><span class="line">String str2 = <span class="keyword">new</span> String(<span class="string">"hello world"</span>);</span><br></pre></td></tr></table></figure>
+<p>通过对String源码的查看：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">String</span></span></span><br><span class="line"><span class="class">    <span class="keyword">implements</span> <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span>, <span class="title">Comparable</span>&lt;<span class="title">String</span>&gt;, <span class="title">CharSequence</span> </span>&#123;</span><br><span class="line">    <span class="comment">/** The value is used for character storage. */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">char</span> value[];</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Cache the hash code for the string */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> hash; <span class="comment">// Default to 0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/** use serialVersionUID from JDK 1.0.2 for interoperability */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">6849794470754667710L</span>;</span><br><span class="line"></span><br><span class="line">    ……</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上面的代码我们可以得出两点结论：</p>
+<ol>
+<li>Java中的String类被final修饰。在Java中被final修饰的类不允许被继承，并且成员方法默认被final修饰。在早期的JVM的版本，被final修饰的方法会被转为内嵌调用借此来提升执行效率，但是从Java1.5/6之后，这种方式就被取消了。在之后的版本里，final修饰类只是为了不让类被继承。</li>
+<li>String类是通过char数组保存字符串的。</li>
+</ol>
+<p>对字符串的每一次操作，例如连接子串都会重新创建一个新的String对象。我们可以从String中的concat方法源码中可以看出这一点，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">concat</span><span class="params">(String str)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> otherLen = str.length();</span><br><span class="line">    <span class="keyword">if</span> (otherLen == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> len = value.length;</span><br><span class="line">    <span class="keyword">char</span> buf[] = Arrays.copyOf(value, len + otherLen);</span><br><span class="line">    str.getChars(buf, len);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> String(buf, <span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当被连接的子串的长度为0时，直接返回自身，连接一个长度不为0的子串，通过char数组的系列操作，重新生成一个新的String对象。<br>所以在此要注意<strong>对String类对象的任何改变都不影响到原对象，相关的任何change操作都会生成新的对象。</strong></p>
+<h3 id="深入理解字符串String"><a href="#深入理解字符串String" class="headerlink" title="深入理解字符串String"></a>深入理解字符串String</h3><p>上面写了两种定义字符串的方式，不知道大家知道这两种方式的区别和联系么？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 直接赋值</span></span><br><span class="line">String str1 = <span class="string">"hello world"</span>;</span><br><span class="line"><span class="comment">// 构造方法</span></span><br><span class="line">String str2 = <span class="keyword">new</span> String(<span class="string">"hello world"</span>);</span><br><span class="line"></span><br><span class="line">String str3 = <span class="string">"hello world"</span>;</span><br><span class="line"></span><br><span class="line">String str4 = <span class="keyword">new</span> String(<span class="string">"hello world"</span>);</span><br><span class="line"></span><br><span class="line">System.out.println(str1==str2);</span><br><span class="line">System.out.println(str1==str3);</span><br><span class="line">System.out.println(str2==str4);</span><br></pre></td></tr></table></figure>
+<p>你能直接说出上面的执行结果么？如果不能请继续往下看，能的话也请继续往下看。<br>具体的结果如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">false</span></span><br><span class="line"><span class="keyword">true</span></span><br><span class="line"><span class="keyword">false</span></span><br></pre></td></tr></table></figure>
+<p>在class文件中有一部分来存储编译期间生成的字面常量以及符号引用，这部分叫做class文件常量池，在运行期间对应着方法区的运行时常量池。在上述的代码中String str1 = “hello world”;和String str2 = new String(“hello world”);都在编译期生成了字面常量和符号引用，运行期间字面常量”hello world”都被存储在运行时常量池。JVM执行引擎会在运行时常量池中查找是否存在相同的字面常量，若有则直接将引用指向已经存在的字面常量；否则在运行时常量池中开辟一个新的空间来存储该字面量，并将引用指向该字面常量，通过这种方式来把String对象跟引用绑定。</p>
+<p>通过new关键字生成对象这个过程是在堆heap中进行的，而在堆进行对象生成过程中，不会有检查对象是否已经存在这个行为。因此通过new来创建对象，创建出来的一定是新的对象，即在内存中有着新的内存地址，但字符串的内容是相同的。</p>
+<p>下面是Java中不同变量在内存中存放的位置：</p>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>内存位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>new出来的对象</td>
+<td>heap 堆</td>
+</tr>
+<tr>
+<td>局部变量、基本数据类型</td>
+<td>stack 栈</td>
+</tr>
+<tr>
+<td>静态变量、字符串、常量</td>
+<td>data segment 数据区</td>
+</tr>
+<tr>
+<td>代码</td>
+<td>code segment 代码区</td>
+</tr>
+</tbody></table>
+<h3 id="String、StringBuffer、StringBuilder的区别"><a href="#String、StringBuffer、StringBuilder的区别" class="headerlink" title="String、StringBuffer、StringBuilder的区别"></a>String、StringBuffer、StringBuilder的区别</h3><p>为什么已经存在了String了，还会出现StringBuffer、StringBuilder？<br>如果一个字符串需要连接10000次其他的字符串，实现代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        </span><br><span class="line">        String string = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10000</span>;i++)&#123;</span><br><span class="line">            string = string.concat(<span class="string">"hello"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码不断的new字符串对象，前面已经说了重要的一点<strong>对String类对象的任何改变都不影响到原对象，相关的任何change操作都会生成新的对象。</strong>，这种代码将会有多大的内存消耗。这个时候想必大家已经有了点答案。我将上述的代码稍微的修改一下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        </span><br><span class="line">        String string = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10000</span>;i++)&#123;</span><br><span class="line">            string += <span class="string">"hello"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>两部分代码看似只有一点差异，其实两者的内存消耗有着天大的差别。我们通过javap命令来反编译.class文件。具体内容如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">D:\work\javaLearn\out\production\javaLearn&gt;javap -c Main</span><br><span class="line">Compiled from <span class="string">"Main.java"</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Main</span><span class="params">()</span></span>;</span><br><span class="line">    Code:</span><br><span class="line">       <span class="number">0</span>: aload_0</span><br><span class="line">       1: invokespecial #1                  // Method java/lang/Object."&lt;init&gt;":()V</span><br><span class="line">       <span class="number">4</span>: <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(java.lang.String[])</span></span>;</span><br><span class="line">    Code:</span><br><span class="line">       0: ldc           #2                  // String</span><br><span class="line">       <span class="number">2</span>: astore_1</span><br><span class="line">       <span class="number">3</span>: iconst_0</span><br><span class="line">       <span class="number">4</span>: istore_2</span><br><span class="line">       <span class="number">5</span>: iload_2</span><br><span class="line">       <span class="number">6</span>: sipush        <span class="number">10000</span></span><br><span class="line">       <span class="number">9</span>: if_icmpge     <span class="number">38</span></span><br><span class="line">      12: new           #3                  // class java/lang/StringBuilder</span><br><span class="line">      <span class="number">15</span>: dup</span><br><span class="line">      16: invokespecial #4                  // Method java/lang/StringBuilder."&lt;init&gt;":()V</span><br><span class="line">      <span class="number">19</span>: aload_1</span><br><span class="line">      20: invokevirtual #5                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;</span><br><span class="line">      23: ldc           #6                  // String hello</span><br><span class="line">      25: invokevirtual #5                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;</span><br><span class="line">      28: invokevirtual #7                  // Method java/lang/StringBuilder.toString:()Ljava/lang/String;</span><br><span class="line">      <span class="number">31</span>: astore_1</span><br><span class="line">      <span class="number">32</span>: iinc          <span class="number">2</span>, <span class="number">1</span></span><br><span class="line">      <span class="number">35</span>: goto          <span class="number">5</span></span><br><span class="line">      <span class="number">38</span>: <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上面反编译出来的字节码中可以看出一点门道：string+=”hello”的操作事实上会自动被JVM优化成StringBuilder类的append操作。</p>
+<p>那么有人会问既然有了StringBuilder类，为什么还需要StringBuffer类？查看源代码便一目了然，事实上，StringBuilder和StringBuffer类拥有的成员属性以及成员方法基本相同，区别是StringBuffer类的成员方法前面多了一个关键字：synchronized，不用多说，这个关键字是在多线程访问时起到安全保护作用的,也就是说StringBuffer是线程安全的。</p>
+<p>我们来看下面的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        String str1 = <span class="string">"I "</span>+<span class="string">"love "</span>+<span class="string">"you"</span>;</span><br><span class="line">        String str2 = <span class="string">"I "</span>;</span><br><span class="line">        String str3 = <span class="string">"love "</span>;</span><br><span class="line">        String str4 = <span class="string">"you "</span>;</span><br><span class="line"></span><br><span class="line">        String str5 = str2 + str3 + str4;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用javap命令来反编译.class文件：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">D:\work\javaLearn\out\production\javaLearn&gt;javap -c Main</span><br><span class="line">Compiled from <span class="string">"Main.java"</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Main</span><span class="params">()</span></span>;</span><br><span class="line">    Code:</span><br><span class="line">       <span class="number">0</span>: aload_0</span><br><span class="line">       1: invokespecial #1                  // Method java/lang/Object."&lt;init&gt;":()V</span><br><span class="line">       <span class="number">4</span>: <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(java.lang.String[])</span></span>;</span><br><span class="line">    Code:</span><br><span class="line">       0: ldc           #2                  // String I love you</span><br><span class="line">       <span class="number">2</span>: astore_1</span><br><span class="line">       3: ldc           #3                  // String I</span><br><span class="line">       <span class="number">5</span>: astore_2</span><br><span class="line">       6: ldc           #4                  // String love</span><br><span class="line">       <span class="number">8</span>: astore_3</span><br><span class="line">       9: ldc           #5                  // String you</span><br><span class="line">      <span class="number">11</span>: astore        <span class="number">4</span></span><br><span class="line">      13: new           #6                  // class java/lang/StringBuilder</span><br><span class="line">      <span class="number">16</span>: dup</span><br><span class="line">      17: invokespecial #7                  // Method java/lang/StringBuilder."&lt;init&gt;":()V</span><br><span class="line">      <span class="number">20</span>: aload_2</span><br><span class="line">      21: invokevirtual #8                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;</span><br><span class="line">      <span class="number">24</span>: aload_3</span><br><span class="line">      25: invokevirtual #8                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;</span><br><span class="line">      <span class="number">28</span>: aload         <span class="number">4</span></span><br><span class="line">      30: invokevirtual #8                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;</span><br><span class="line">      33: invokevirtual #9                  // Method java/lang/StringBuilder.toString:()Ljava/lang/String;</span><br><span class="line">      <span class="number">36</span>: astore        <span class="number">5</span></span><br><span class="line">      <span class="number">38</span>: <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>str1在编译之后就被直接赋值为”I love you”;str5却没有什么操作。综上所述我们可以得出一些结论：</p>
+<ol>
+<li>对于直接通过加号相连字符串效率高，因为编译器直接确定了它的值。就像上面的”I “+”love “+”you”;的字符串相加，在编译期间就被优化成了”I love you“。</li>
+<li>对于间接相加的，形如str2 + str3 + str4;编译期不会进行优化。</li>
+<li>对于执行效率来说StringBuilder &gt; StringBuffer &gt; String，但这个也不是绝对的。比如String str = “hello”+ “world”的效率就比 StringBuilder st  = new StringBuilder().append(“hello”).append(“world”)要高。但是，当字符串相加的操作或者字符改动的情况较少的时候，采用String肯定是比较好的；当字符串的操作较多的时候推荐使用StringBuilder，如果考虑到线程安全问题，无疑采用StringBuffer是最合适的。<h3 id="常见的字符串相关的面试题"><a href="#常见的字符串相关的面试题" class="headerlink" title="常见的字符串相关的面试题"></a>常见的字符串相关的面试题</h3></li>
+<li>下面的代码输出的结果是什么？<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String a = <span class="string">"hello2"</span>; 　　</span><br><span class="line">String b = <span class="string">"hello"</span> + <span class="number">2</span>; 　　</span><br><span class="line">System.out.println((a == b));</span><br></pre></td></tr></table></figure>
+结果是true，它String b = “hello” + 2; 被编译器优化成了String b = “hello2”; 所以运行时字符串a和b指向同一个对象。</li>
+<li>下面的代码输出的结果是什么？<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String a = <span class="string">"hello2"</span>; 　  </span><br><span class="line">String b = <span class="string">"hello"</span>;       </span><br><span class="line">String c = b + <span class="number">2</span>;       </span><br><span class="line">System.out.println((a == c));</span><br></pre></td></tr></table></figure>
+输出结果为:false。由于有符号引用的存在，所以  String c = b + 2;不会在编译期间被优化，不会把b+2当做字面常量来处理的，通过StringBuilder生成了一个新的对象，因此这种方式生成的对象事实上是保存在堆上的。</li>
+<li>下面的代码输出的结果是什么？<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String a = <span class="string">"hello2"</span>;</span><br><span class="line"><span class="keyword">final</span> String b = <span class="string">"hello"</span>; </span><br><span class="line">String c = b + <span class="number">2</span>; </span><br><span class="line">System.out.println((a == c));</span><br></pre></td></tr></table></figure>
+输出结果为：true。对于被final修饰的变量，会在class文件常量池中保存一个副本，也就是说不会通过连接而进行访问，对final变量的访问在编译期间都会直接被替代为真实的值。那么String c = b + 2;在编译期间就会被优化成：String c = “hello” + 2;</li>
+</ol>
+<p>字符串的故事就暂时说到这里，后续有的话就继续更新。</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/01/%E4%BD%BF%E7%94%A8java%E5%92%8Cjavac%E5%91%BD%E4%BB%A4%E6%9D%A5%E7%BC%96%E8%AF%91%E8%BF%90%E8%A1%8CJava/" data-id="ck2xfms9x003gbs0q547r8qwu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/29/Java%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%AC%AC%E4%BA%8C%E7%AF%87%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2/" data-id="ck2xghnah000ydt0qfhtt71jx" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
 
     </footer>
   </div>
@@ -247,10 +593,10 @@
 
 
   
-    <article id="post-Centos6-9安装ElasticSearch2-x" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-CentOS-6-x-下安装Zookeeper" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/" class="article-date">
-  <time datetime="2017-12-25T15:29:35.000Z" itemprop="datePublished">2017-12-25</time>
+    <a href="/2018/05/23/CentOS-6-x-%E4%B8%8B%E5%AE%89%E8%A3%85Zookeeper/" class="article-date">
+  <time datetime="2018-05-23T13:41:18.000Z" itemprop="datePublished">2018-05-23</time>
 </a>
     
   </div>
@@ -261,7 +607,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/">Centos6.9安装ElasticSearch2.x</a>
+      <a class="article-title" href="/2018/05/23/CentOS-6-x-%E4%B8%8B%E5%AE%89%E8%A3%85Zookeeper/">CentOS 6.x 下安装Zookeeper</a>
     </h1>
   
 
@@ -269,37 +615,29 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>我这里安装的是ElasticSearch2.x系列。<br><a href="https://www.elastic.co/guide/en/elasticsearch/reference/2.4/setup-repositories.html" target="_blank" rel="noopener">ElasticSearch官方文档</a><br>1.检查系统是否已经安装了jdk</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list installed |grep java</span><br></pre></td></tr></table></figure>
-<p>若有自带安装的JDK，如何卸载CentOS系统自带Java环境?</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">卸载JDK相关文件输入：yum -y remove java-1.7.0-openjdk*</span><br><span class="line">卸载tzdata-java输入：yum -y remove tzdata-java.noarch</span><br></pre></td></tr></table></figure>
-<p><em>注</em>：“*”表示卸载掉java 1.7.0的所有openjdk相关文件<br>2.查看yum库中的Java安装包</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">yum -y list java*</span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ ~]<span class="comment"># yum -y list java*</span></span><br><span class="line">Loaded plugins: security</span><br><span class="line">Installed Packages</span><br><span class="line">java-1.8.0-openjdk.x86_64                                                                        1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-debug.x86_64                                                                  1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-demo.x86_64                                                                   1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-demo-debug.x86_64                                                             1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-devel.x86_64                                                                  1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-devel-debug.x86_64                                                            1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-headless.x86_64                                                               1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-headless-debug.x86_64                                                         1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-javadoc.noarch                                                                1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-javadoc-debug.noarch                                                          1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-src.x86_64                                                                    1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-src-debug.x86_64                                                              1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">Available Packages</span><br><span class="line">java-1.5.0-gcj.x86_64                                                                            1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.5.0-gcj-devel.x86_64                                                                      1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.5.0-gcj-javadoc.x86_64                                                                    1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.5.0-gcj-src.x86_64                                                                        1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.6.0-openjdk.x86_64                                                                        1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-demo.x86_64                                                                   1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-devel.x86_64                                                                  1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-javadoc.x86_64                                                                1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-src.x86_64                                                                    1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.7.0-openjdk.x86_64                                                                        1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-demo.x86_64                                                                   1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-devel.x86_64                                                                  1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-javadoc.noarch                                                                1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-src.x86_64                                                                    1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-clearsilver.i686                                                                            0.10.5-16.el6                                                                       epel    </span><br><span class="line">java-dirq.noarch                                                                                 1.4-1.el6                                                                           epel    </span><br><span class="line">java-dirq-javadoc.noarch                                                                         1.4-1.el6                                                                           epel    </span><br><span class="line">java-service-wrapper.x86_64                                                                      3.2.5-23.el6                                                                        epel    </span><br><span class="line">java-service-wrapper-javadoc.noarch                                                              3.2.5-23.el6                                                                        epel    </span><br><span class="line">java-sleep.noarch                                                                                2.1-6.el6                                                                           epel    </span><br><span class="line">java-sleep-javadoc.noarch                                                                        2.1-6.el6                                                                           epel    </span><br><span class="line">java_cup.x86_64                                                                                  1:0.10k-5.el6                                                                       base    </span><br><span class="line">java_cup-javadoc.x86_64                                                                          1:0.10k-5.el6                                                                       base    </span><br><span class="line">java_cup-manual.x86_64                                                                           1:0.10k-5.el6                                                                       base    </span><br><span class="line">javacc.x86_64                                                                                    4.1-0.5.el6                                                                         base    </span><br><span class="line">javacc-demo.x86_64                                                                               4.1-0.5.el6                                                                         base    </span><br><span class="line">javacc-manual.x86_64                                                                             4.1-0.5.el6                                                                         base    </span><br><span class="line">javassist.noarch                                                                                 3.9.0-6.el6                                                                         base    </span><br><span class="line">javassist-javadoc.noarch                                                                         3.9.0-6.el6                                                                         base    </span><br><span class="line">javastroke.x86_64                                                                                0.5.1-33.el6                                                                        epel    </span><br><span class="line">javatar.noarch                                                                                   2.5-5.el6                                                                           epel    </span><br><span class="line">javatar-javadoc.noarch</span><br></pre></td></tr></table></figure>
-<p>以yum库中的java-1.8为例，将java-1.8.0的所有相关Java程序都安装上。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install java-1.8.0-openjdk*</span><br></pre></td></tr></table></figure>
-<p>3.查看刚安装的Java版本信息</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java -version 可查看Java版本</span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ ~]<span class="comment"># java -version</span></span><br><span class="line">openjdk version <span class="string">"1.8.0_151"</span></span><br><span class="line">OpenJDK Runtime Environment (build 1.8.0_151-b12)</span><br><span class="line">OpenJDK 64-Bit Server VM (build 25.151-b12, mixed mode)</span><br></pre></td></tr></table></figure>
-<p>4.通过rpm安装ElasticSearch</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">先下载并安装公共签名密钥</span><br><span class="line">rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch</span><br><span class="line">再安装rpm的repository</span><br><span class="line">[elasticsearch-2.x]</span><br><span class="line">name=Elasticsearch repository <span class="keyword">for</span> 2.x packages</span><br><span class="line">baseurl=https://packages.elastic.co/elasticsearch/2.x/centos</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=https://packages.elastic.co/GPG-KEY-elasticsearch</span><br><span class="line">enabled=1</span><br></pre></td></tr></table></figure>
-<p>安装ElasticSearch</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install elasticsearch  </span><br><span class="line">sudo dnf install elasticsearch </span><br><span class="line">sudo zypper install elasticsearch</span><br><span class="line"></span><br><span class="line">使用yum在CentOS和旧的基于Red Hat分发</span><br><span class="line">使用dnf的Fedora和其他新的Red Hat分发</span><br><span class="line">使用zypper基于分布的OpenSUSE</span><br><span class="line"></span><br><span class="line">如果你嫌麻烦可以之前使用下面的方法安装：</span><br><span class="line">wget https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/rpm/elasticsearch/2.4.2/elasticsearch-2.4.2.rpm</span><br><span class="line"></span><br><span class="line">sha1sum elasticsearch-5.6.5.rpm</span><br><span class="line">sudo rpm --install elasticsearch-5.6.5.rpm</span><br></pre></td></tr></table></figure>
-<p>5.使用chkconfig命令将Elasticsearch配置为在系统启动时自动启动</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo chkconfig --add elasticsearch</span><br><span class="line"></span><br><span class="line">下面的命令启动或者关闭elasticsearch服务</span><br><span class="line"></span><br><span class="line">sudo -i service elasticsearch start</span><br><span class="line">sudo -i service elasticsearch stop</span><br></pre></td></tr></table></figure>
-<p>6.启动elasticsearch服务报错</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ src]<span class="comment"># service elasticsearch start</span></span><br><span class="line">Starting elasticsearch: OpenJDK 64-Bit Server VM warning: If the number of processors is expected to increase from one, <span class="keyword">then</span> you should configure the number of parallel GC threads appropriately using -XX:ParallelGCThreads=N</span><br><span class="line">OpenJDK 64-Bit Server VM warning: INFO: os::commit_memory(0x0000000085330000, 2060255232, 0) failed; error=<span class="string">'Cannot allocate memory'</span> (errno=12)</span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># There is insufficient memory for the Java Runtime Environment to continue.</span></span><br><span class="line"><span class="comment"># Native memory allocation (mmap) failed to map 2060255232 bytes for committing reserved memory.</span></span><br><span class="line"><span class="comment"># An error report file with more information is saved as:</span></span><br><span class="line"><span class="comment"># /tmp/hs_err_pid23700.log</span></span><br><span class="line">                                                           [FAILED]</span><br></pre></td></tr></table></figure>
-<p>这是因为机器的内存不足，可用内存少于1G,解决方法如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vim  /etc/elasticsearch/jvm.options </span><br><span class="line"><span class="comment">##启用如下两项</span></span><br><span class="line"> -Xms4g                   </span><br><span class="line"> -Xmx4g</span><br><span class="line"><span class="comment">##关闭如下两项</span></span><br><span class="line"><span class="comment">##-Xms2g                    </span></span><br><span class="line"><span class="comment">##-Xmx2g</span></span><br></pre></td></tr></table></figure>
-<p>7.配置外网可用访问</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">修改配置文件</span><br><span class="line">vim/etc/elasticsearch/elasticsearch.yml</span><br><span class="line">修改成：network.host: 0.0.0.0</span><br></pre></td></tr></table></figure>
-<p>至此，elasticsearch的基本配置完成！</p>
+        <p>目前在研究dubbo这个国内流行的RPC框架，实现去中心话的微服务需要用到Zookeeper,所以今天来说说如何安装Zookeeper。<br>Zookeeper的<a href="https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/" target="_blank" rel="noopener">官方下载地址</a></p>
+<p>查看Centos版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/issue</span><br><span class="line"></span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ tomcat]<span class="comment"># cat /etc/issue</span></span><br><span class="line">CentOS release 6.9 (Final)</span><br><span class="line">Kernel \r on an \m</span><br></pre></td></tr></table></figure>
+<p> 1.下载安装包到/usr/local/src/目录下，并创建安装目录/usr/local/zookeeper。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src/</span><br><span class="line"><span class="comment">#这里使用3.4.10，没有使用较高的版本</span></span><br><span class="line">wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.10/zookeeper-3.4.10.tar.gz</span><br><span class="line">mkdir /usr/<span class="built_in">local</span>/zookeeper</span><br></pre></td></tr></table></figure>
+<p> 2.解压安装包,并将解压后的文件拷贝到/usr/local/zookeeper</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf zookeeper-3.4.10.tar.gz</span><br><span class="line">cp -R /usr/<span class="built_in">local</span>/zookeeper/zookeeper-3.4.10/*  /usr/<span class="built_in">local</span>/zookeeper</span><br></pre></td></tr></table></figure>
+<p>3.添加系统变量到/etc/profile</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> ZOOKEEPER_HOME=/usr/<span class="built_in">local</span>/zookeeper</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$ZOOKEEPER_HOME</span>/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="built_in">export</span> PATH</span><br></pre></td></tr></table></figure>
+<p>执行命令 source /etc/profile使配置文件立即生效</p>
+<p>4.创建zookeeper配置文件,并作相应的配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>  /usr/<span class="built_in">local</span>/zookeeper/conf/</span><br><span class="line">cp zoo_sample.cfg zoo.cfg</span><br><span class="line"></span><br><span class="line"><span class="comment">#配置zookeeper</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#服务器与客户端之间交互的基本时间单元（ms）</span></span><br><span class="line"></span><br><span class="line">tickTime=2000</span><br><span class="line"></span><br><span class="line"><span class="comment">#配置保存数据文件夹</span></span><br><span class="line"></span><br><span class="line">dataDir=/usr/<span class="built_in">local</span>/zookeeper/data</span><br><span class="line"></span><br><span class="line"><span class="comment">#配置保存日志文件夹，当此配置不存在时默认路径与dataDir一致</span></span><br><span class="line"></span><br><span class="line">dataLogDir=/var/<span class="built_in">log</span>/zookeeper</span><br><span class="line"></span><br><span class="line"><span class="comment">#客户端访问zookeeper的端口号</span></span><br><span class="line"></span><br><span class="line">clientPort=2181</span><br></pre></td></tr></table></figure>
+<p>5.zookeeper相关命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">启动服务：zkServer.sh start</span><br><span class="line">查看状态：zkServer.sh status</span><br><span class="line">关闭服务：zkServer.sh stop</span><br><span class="line">重启服务：zkServer.sh restart</span><br></pre></td></tr></table></figure>
+<p>至此，zookeeper安装完成</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/" data-id="ck2xfms780007bs0qbowt2wmo" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/23/CentOS-6-x-%E4%B8%8B%E5%AE%89%E8%A3%85Zookeeper/" data-id="ck2xghn9j0003dt0q184c6l97" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
 
     </footer>
   </div>
@@ -308,10 +646,10 @@
 
 
   
-    <article id="post-Centos6安装Mongodb" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-CentOS-6-x-下yum安装Tomcat8" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/" class="article-date">
-  <time datetime="2017-12-06T15:27:40.000Z" itemprop="datePublished">2017-12-06</time>
+    <a href="/2018/05/22/CentOS-6-x-%E4%B8%8Byum%E5%AE%89%E8%A3%85Tomcat8/" class="article-date">
+  <time datetime="2018-05-22T13:40:05.000Z" itemprop="datePublished">2018-05-22</time>
 </a>
     
   </div>
@@ -322,7 +660,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/">Centos6安装Mongodb</a>
+      <a class="article-title" href="/2018/05/22/CentOS-6-x-%E4%B8%8Byum%E5%AE%89%E8%A3%85Tomcat8/">CentOS 6.x 下yum安装Tomcat8</a>
     </h1>
   
 
@@ -330,29 +668,27 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>1.运行下面命令查看服务器中是否存在Mongodb的源</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum info mongo-10gen</span><br></pre></td></tr></table></figure>
-<p>结果提示没有相关匹配的信息 ，说明系统中的yum源不包含MongoDB的相关资源，所以要在使用yum命令安装MongoDB前需要增加yum源。<br>2.配置包管理系统（yum）<br>创建一个/etc/yum.repos.d/mongodb-org-3.6.repo文件，以便您可以直接使用安装MongoDB yum。写入一下内容：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[mongodb-org-3.6]</span><br><span class="line">name=MongoDB Repository</span><br><span class="line">baseurl=https://repo.mongodb.org/yum/redhat/<span class="variable">$releasever</span>/mongodb-org/3.6/x86_64/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=1</span><br><span class="line">gpgkey=https://www.mongodb.org/static/pgp/server-3.6.asc</span><br></pre></td></tr></table></figure>
-<p>3.安装MongoDB包<br>要安装最新的稳定版本的MongoDB，请发出以下命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y mongodb-org</span><br></pre></td></tr></table></figure>
-<p>要安装特定版本的MongoDB，请分别指定每个组件包，并将版本号附加到包名称，如下例所示：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y mongodb-org-3.6.0 mongodb-org-server-3.6.0 mongodb-org-shell-3.6.0 mongodb-org-mongos-3.6.0 mongodb-org-tools-3.6.0</span><br></pre></td></tr></table></figure>
-<p>4.在阿里云上安全组添加一条规则,并在Centos中的iptables添加一条记录</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#阿里云安全组规则</span></span><br><span class="line">允许 自定义 TCP 27017/27017	地址段访问  0.0.0.0/0</span><br><span class="line"></span><br><span class="line"><span class="comment">#iptables</span></span><br><span class="line">-A INPUT -p tcp -m tcp --dport 27017 -j ACCEPT </span><br><span class="line"></span><br><span class="line"><span class="comment">#重启iptables</span></span><br><span class="line">/etc/init.d/iptables restart</span><br></pre></td></tr></table></figure>
-<p>5.开机自启动,执行下面命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig mongod on</span><br></pre></td></tr></table></figure>
-<p>6.Mongodb启动、关闭和重启命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#启动</span></span><br><span class="line">service mongod start</span><br><span class="line"><span class="comment">#关闭</span></span><br><span class="line">service mongod stop</span><br><span class="line"><span class="comment">#restart</span></span><br><span class="line">service mongod restart</span><br></pre></td></tr></table></figure>
-<p><em>END Mongodb安装结束</em></p>
+        <p>废话不多说，今天准备在Centos上安装tomcat，学java不会tomcat，那不就是白学Java么？<br>查看Centos版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/issue</span><br><span class="line"></span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ tomcat]<span class="comment"># cat /etc/issue</span></span><br><span class="line">CentOS release 6.9 (Final)</span><br><span class="line">Kernel \r on an \m</span><br></pre></td></tr></table></figure>
+<p>通过yum好处其实很多，环境变量不用配置，配置文件放在大家都熟悉的地方，通过rpm -ql xxx可以知道全部文件的地方等等。</p>
+<p> 1.安装Tomcat<br>自带的yum源里面的Tomcat版本过低，所以我准备安装Tomcat8。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src/</span><br><span class="line">// 下载脚本</span><br><span class="line"><span class="comment"># git clone https://github.com/boundlessgeo/rpm-tomcat8.git &amp;&amp; cd rpm-tomcat8</span></span><br><span class="line">// 安装rpm打包工具</span><br><span class="line"><span class="comment"># yum -y install rpmdevtools</span></span><br><span class="line">// 打包rpm包</span><br><span class="line"><span class="comment"># ./make_rpm.sh</span></span><br><span class="line">// 安装依赖</span><br><span class="line"><span class="comment"># yum install -y redhat-lsb-core</span></span><br><span class="line">// 安装Tomcat8</span><br><span class="line"><span class="comment"># rpm -ivh rpmbuild/RPMS/noarch/boundless-server-tomcat8-8.0.47-5.noarch.rpm</span></span><br><span class="line"></span><br><span class="line">备注：主要是这个脚本https://github.com/boundlessgeo/rpm-tomcat8，想要哪个版本可以直接上去这里修改文件即可。</span><br></pre></td></tr></table></figure>
+
+<p> 2.设置开机启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig tomcat8 on</span><br></pre></td></tr></table></figure>
+<p> 3.常用的命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 服务状态</span><br><span class="line">service tomcat8 status</span><br><span class="line">// 服务启动</span><br><span class="line">service tomcat8 start</span><br><span class="line">// 服务停止</span><br><span class="line">service tomcat8 stop</span><br><span class="line">// 服务重启</span><br><span class="line">service tomcat8 restart</span><br></pre></td></tr></table></figure>
+<p>4.卸载Tomcat</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -e boundless-server-tomcat8.noarch</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/" data-id="ck2xfms7a0008bs0qfdmih5yh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/22/CentOS-6-x-%E4%B8%8Byum%E5%AE%89%E8%A3%85Tomcat8/" data-id="ck2xghn9e0001dt0qfx2thi63" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li></ul>
 
     </footer>
   </div>
@@ -361,10 +697,10 @@
 
 
   
-    <article id="post-Nginx出现The-plain-HTTP-request-was-sent-to-HTTPS-port" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Spring-Boot-1-x集成spring-boot-devtools开发时实现热部署" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/12/05/Nginx%E5%87%BA%E7%8E%B0The-plain-HTTP-request-was-sent-to-HTTPS-port/" class="article-date">
-  <time datetime="2017-12-05T15:26:28.000Z" itemprop="datePublished">2017-12-05</time>
+    <a href="/2018/05/13/Spring-Boot-1-x%E9%9B%86%E6%88%90spring-boot-devtools%E5%BC%80%E5%8F%91%E6%97%B6%E5%AE%9E%E7%8E%B0%E7%83%AD%E9%83%A8%E7%BD%B2/" class="article-date">
+  <time datetime="2018-05-13T13:38:16.000Z" itemprop="datePublished">2018-05-13</time>
 </a>
     
   </div>
@@ -375,7 +711,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/05/Nginx%E5%87%BA%E7%8E%B0The-plain-HTTP-request-was-sent-to-HTTPS-port/">Nginx出现The plain HTTP request was sent to HTTPS port</a>
+      <a class="article-title" href="/2018/05/13/Spring-Boot-1-x%E9%9B%86%E6%88%90spring-boot-devtools%E5%BC%80%E5%8F%91%E6%97%B6%E5%AE%9E%E7%8E%B0%E7%83%AD%E9%83%A8%E7%BD%B2/">Spring Boot 1.x集成spring-boot-devtools开发时实现热部署</a>
     </h1>
   
 
@@ -383,20 +719,38 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Nginx突然出现了下面的问题：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The plain HTTP request was sent to HTTPS port</span><br></pre></td></tr></table></figure>
-<p>在博客配置ssl证书的时候，博客的https地址和http地址是都能访问，不过，今天突然发现博客访问出现上面的问题，经过百度找到了问题的解决办法，在此记录一下。</p>
-<p>解决办法：</p>
-<p>删掉ssl on; 并在 listen 443; 443后加上ssl即可。<br>Nginx最新配置文件内容如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen     80;</span><br><span class="line">    listen     443 ssl; </span><br><span class="line">    </span><br><span class="line">    server_name  www.ydstudio.net  ydstudio.net;</span><br><span class="line">    <span class="built_in">set</span> <span class="variable">$my_server_name</span> <span class="variable">$scheme</span>://<span class="variable">$server_name</span>;</span><br><span class="line">    root  html;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$host</span> = <span class="string">'ydstudio.net'</span>) &#123;</span><br><span class="line">      rewrite ^ https://www.ydstudio.net<span class="variable">$request_uri</span>? permanent;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">#防止ip访问，如http://xxx.xxx.xxx.xxx或者https://xxx.xxx.xxx.xxx</span></span><br><span class="line">    <span class="keyword">if</span> ( <span class="variable">$host</span> ~* <span class="string">"\d+\.\d+\.\d+\.\d+"</span> ) &#123;</span><br><span class="line">        rewrite ^ https://<span class="variable">$server_name</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> ( <span class="variable">$my_server_name</span> != https://<span class="variable">$server_name</span> ) &#123;</span><br><span class="line">       <span class="built_in">return</span>      301 https://<span class="variable">$server_name</span><span class="variable">$request_uri</span>;</span><br><span class="line">       <span class="comment">#rewrite ^ https://$server_name$request_uri? permanent;</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    location / &#123;</span><br><span class="line">       try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.php<span class="variable">$is_args</span><span class="variable">$args</span>;</span><br><span class="line">       index index.php  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">#error_page  404              /404.html;</span></span><br><span class="line">    <span class="comment"># redirect server error pages to the static page /50x.html</span></span><br><span class="line">    error_page   500 502 503 504  /50x.html;</span><br><span class="line">    location = /50x.html &#123;</span><br><span class="line">        root   /usr/share/nginx/html;</span><br><span class="line">    &#125; </span><br><span class="line"></span><br><span class="line">    <span class="comment"># pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span></span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">       <span class="comment">#root           html;</span></span><br><span class="line">       fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">       fastcgi_index  index.php;</span><br><span class="line">       fastcgi_param  SCRIPT_FILENAME  html/typecho/<span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">       include        fastcgi_params;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$ &#123;</span><br><span class="line">        <span class="comment">#expires指令设置浏览器缓存过期时间</span></span><br><span class="line">        <span class="comment">#可以在http、server、location三个作用域中设置</span></span><br><span class="line">        <span class="comment">#缓存图片或视频30天</span></span><br><span class="line">        expires 30d;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ .*\.(js|css)?$ &#123;</span><br><span class="line">        <span class="comment">#缓存js/css 1小时</span></span><br><span class="line">        expires 1h;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">#ssl on;</span></span><br><span class="line">    ssl_certificate   cert/214353452860792.pem;</span><br><span class="line">    ssl_certificate_key  cert/214353452860792.key;</span><br><span class="line">    ssl_session_timeout 5m;</span><br><span class="line">    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p><strong>热部署</strong><br>大家都知道在项目开发过程中，常常会改动页面数据或者修改数据结构，为了显示改动效果，往往需要重启应用查看改变效果，其实就是重新编译生成了新的Class文件，这个文件里记录着和代码等对应的各种信息，然后Class文件将被虚拟机的ClassLoader加载。<br>而热部署正是利用了这个特点，它监听到如果有Class文件改动了，就会创建一个新的ClaassLoader进行加载该文件，经过一系列的过程，最终将结果呈现在我们眼前。</p>
+<p><strong>类加载机制</strong><br>Java中的类经过编译器可以把代码编译为存储字节码的Class文件，该Class文件存储了各种信息，最终要加载到虚拟机中运行使用。类加载机制（摘自《深入理解 Java 虚拟机》）虚拟机把描述类的数据从Class文件加载到内存中，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的Java类型。</p>
+<p><strong>Spring Boot实现热部署</strong><br>Spring Boot实现热部署有如下方式：</p>
+<ol>
+<li>使用 <a href="https://github.com/spring-projects/spring-loaded" target="_blank" rel="noopener">Spring Loaded</a></li>
+<li>使用 <a href="https://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-devtools" target="_blank" rel="noopener">spring-boot-devtools</a></li>
+</ol>
+<p><strong>Spring Loaded</strong><br>这种方式是以Maven插件的形式去加载，所以启动时使用通过Maven命令mvn spring-boot:run启动，而通过Application.run方式启动的会无效，因为通过应用程序启动时，已经绕开了Maven插件机制。<br>pom集成方式：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springloaded<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.5.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>spring-boot-devtools</strong><br>这种方式无论怎么启动应用，都可以达到修改文件后重启应用。<br>pom集成：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 热部署模块 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-devtools<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span> <span class="comment">&lt;!-- 这个需要为 true 热部署才有效 --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>集成注意</strong></p>
+<ol>
+<li>如果发现没有热部署效果，则需要检查IDE配置中有没有打开自动编译。</li>
+<li>如果使用Thymeleaf模板引擎，需要把模板默认缓存设置为false<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#禁止thymeleaf缓存（建议：开发环境设置为false，生成环境设置为true）</span><br><span class="line">spring.thymeleaf.cache=<span class="keyword">false</span></span><br></pre></td></tr></table></figure></li>
+<li>针对devtools的可以指定目录或者排除目录来进行热部署<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#添加那个目录的文件需要restart</span><br><span class="line">spring.devtools.restart.additional-paths=src/main/java</span><br><span class="line">#排除那个目录的文件不需要restart</span><br><span class="line">spring.devtools.restart.exclude=<span class="keyword">static</span><span class="comment">/**,public/**</span></span><br></pre></td></tr></table></figure>
+<strong>设置idea让他实现文件修改自动重启项目</strong><ol>
+<li>找到idea的Preferences -&gt; Build, Execution, Deployment -&gt; Compiler，勾选Build project automatically</li>
+<li>回到idea正常界面，Mac使用快捷键shift+option+command+/，window上的快捷键是Shift+Ctrl+Alt+/，打开Registry，勾选compiler.automake.allow.when.app.runningcompiler.automake.allow.when.app.running</li>
+</ol>
+</li>
+</ol>
+<p>通过以上的设置就可以在不重启服务的情况下加载html，但如果修改java文件，服务在几秒后会自动重启，如果不希望服务重启需要在application.properties或application.yml中添加spring.devtools.reatart.enable=false</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/05/Nginx%E5%87%BA%E7%8E%B0The-plain-HTTP-request-was-sent-to-HTTPS-port/" data-id="ck2xfms8o001qbs0qemt4e92y" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/13/Spring-Boot-1-x%E9%9B%86%E6%88%90spring-boot-devtools%E5%BC%80%E5%8F%91%E6%97%B6%E5%AE%9E%E7%8E%B0%E7%83%AD%E9%83%A8%E7%BD%B2/" data-id="ck2xghnc80035dt0qdqix6jxq" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li></ul>
 
     </footer>
   </div>
@@ -405,10 +759,10 @@
 
 
   
-    <article id="post-PHP出现Deprecated-Automatically-populating-is-deprecated-and-will-be-removed-in-a-future-version" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Maven项目出现“请使用-source-8-或更高版本以启用-lambda-表达式”" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/12/05/PHP%E5%87%BA%E7%8E%B0Deprecated-Automatically-populating-is-deprecated-and-will-be-removed-in-a-future-version/" class="article-date">
-  <time datetime="2017-12-05T15:24:30.000Z" itemprop="datePublished">2017-12-05</time>
+    <a href="/2018/05/09/Maven%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0%E2%80%9C%E8%AF%B7%E4%BD%BF%E7%94%A8-source-8-%E6%88%96%E6%9B%B4%E9%AB%98%E7%89%88%E6%9C%AC%E4%BB%A5%E5%90%AF%E7%94%A8-lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E2%80%9D/" class="article-date">
+  <time datetime="2018-05-09T13:36:34.000Z" itemprop="datePublished">2018-05-09</time>
 </a>
     
   </div>
@@ -419,7 +773,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/05/PHP%E5%87%BA%E7%8E%B0Deprecated-Automatically-populating-is-deprecated-and-will-be-removed-in-a-future-version/">PHP出现Deprecated Automatically populating  is deprecated and will be removed in a future version</a>
+      <a class="article-title" href="/2018/05/09/Maven%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0%E2%80%9C%E8%AF%B7%E4%BD%BF%E7%94%A8-source-8-%E6%88%96%E6%9B%B4%E9%AB%98%E7%89%88%E6%9C%AC%E4%BB%A5%E5%90%AF%E7%94%A8-lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E2%80%9D/">Maven项目出现“请使用 -source 8 或更高版本以启用 lambda 表达式”</a>
     </h1>
   
 
@@ -427,110 +781,20 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>本地新搭建的PHP环境，出现下面的问题：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Deprecated:  Automatically populating <span class="variable">$HTTP_RAW_POST_DATA</span> is deprecated and will be removed <span class="keyword">in</span> a future version. To avoid this warning <span class="built_in">set</span> <span class="string">'always_populate_raw_post_data'</span> to <span class="string">'-1'</span> <span class="keyword">in</span> php.ini and use the php://input stream instead. <span class="keyword">in</span> Unknown on line 0</span><br><span class="line">Warning: Cannot modify header information - headers already sent <span class="keyword">in</span> Unknown on line 0</span><br></pre></td></tr></table></figure>
-<p>这个问题和PHP版本有关系，PHP 5.6已经废弃了$HTTP_RAW_POST_DATA。<br>解决方法：<br>修改php.ini</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">always_populate_raw_post_data = -1</span><br></pre></td></tr></table></figure>
-<p>重启PHP即可</p>
+        <p>今天在编译项目的时候出现“请使用 -source 8 或更高版本以启用 lambda 表达式”的问题。这个问题是怎么出现的呢？<br>其实是自己Maven的默认JDK的版本过低的原因，貌似JDK的版本默认为JDK1.5。知道问题的所在，我们就可以着手解决了。</p>
+<ol>
+<li>在Maven中指定JDK的版本<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"..."</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">source</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">source</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">target</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">target</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>在Maven的settings.xml里面指定全局JDK编译版本<br>右键点击项目找到Maven，找到关于settings.xml选项，打开settings.xml文件，写入下面的内容：<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">profiles</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">profile</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>jdk-1.8<span class="tag">&lt;/<span class="name">id</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">activation</span>&gt;</span>  </span><br><span class="line">          <span class="tag">&lt;<span class="name">activeByDefault</span>&gt;</span>true<span class="tag">&lt;/<span class="name">activeByDefault</span>&gt;</span>  </span><br><span class="line">          <span class="tag">&lt;<span class="name">jdk</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">jdk</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;/<span class="name">activation</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">properties</span>&gt;</span>  </span><br><span class="line">          <span class="tag">&lt;<span class="name">maven.compiler.source</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">maven.compiler.source</span>&gt;</span>  </span><br><span class="line">          <span class="tag">&lt;<span class="name">maven.compiler.target</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">maven.compiler.target</span>&gt;</span>  </span><br><span class="line">          <span class="tag">&lt;<span class="name">maven.compiler.compilerVersion</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">maven.compiler.compilerVersion</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;/<span class="name">properties</span>&gt;</span>   </span><br><span class="line">  　<span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">profiles</span>&gt;</span></span><br></pre></td></tr></table></figure>
+然后重新编译就可以了</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/05/PHP%E5%87%BA%E7%8E%B0Deprecated-Automatically-populating-is-deprecated-and-will-be-removed-in-a-future-version/" data-id="ck2xfms8u001xbs0q2mtmhew5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/09/Maven%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0%E2%80%9C%E8%AF%B7%E4%BD%BF%E7%94%A8-source-8-%E6%88%96%E6%9B%B4%E9%AB%98%E7%89%88%E6%9C%AC%E4%BB%A5%E5%90%AF%E7%94%A8-lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E2%80%9D/" data-id="ck2xghnb6001pdt0qfmz92tbf" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-PHP出现以下错误Cannot-find-module-IP-MIB" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/12/05/PHP%E5%87%BA%E7%8E%B0%E4%BB%A5%E4%B8%8B%E9%94%99%E8%AF%AFCannot-find-module-IP-MIB/" class="article-date">
-  <time datetime="2017-12-05T15:22:45.000Z" itemprop="datePublished">2017-12-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/05/PHP%E5%87%BA%E7%8E%B0%E4%BB%A5%E4%B8%8B%E9%94%99%E8%AF%AFCannot-find-module-IP-MIB/">PHP出现以下错误Cannot find module (IP-MIB)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>查看PHP版本的时候出现下面的问题：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">php -v</span><br><span class="line"></span><br><span class="line">MIB search path: c:/usr/share/snmp/mibs</span><br><span class="line">Cannot find module (IP-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (IF-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (TCP-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (UDP-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (HOST-RESOURCES-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMPv2-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMPv2-SMI): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (NOTIFICATION-LOG-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (UCD-SNMP-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (UCD-DEMO-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMP-TARGET-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (NET-SNMP-AGENT-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (DISMAN-EVENT-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMP-VIEW-BASED-ACM-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMP-COMMUNITY-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMP-FRAMEWORK-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMP-MPD-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMP-USER-BASED-SM-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMP-NOTIFICATION-MIB): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">Cannot find module (SNMPv2-TM): At line 0 <span class="keyword">in</span> (none)</span><br><span class="line">PHP 7.0.12 (cli) (built: Oct 13 2016 11:04:07) ( NTS )</span><br><span class="line">Copyright (c) 1997-2016 The PHP Group</span><br><span class="line">Zend Engine v3.0.0, Copyright (c) 1998-2016 Zend Technologies</span><br></pre></td></tr></table></figure>
-<p>解决办法：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#关掉snmp扩展</span></span><br><span class="line"><span class="comment">#windows</span></span><br><span class="line">注释掉 extension=php_snmp.dll</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/05/PHP%E5%87%BA%E7%8E%B0%E4%BB%A5%E4%B8%8B%E9%94%99%E8%AF%AFCannot-find-module-IP-MIB/" data-id="ck2xfms8w0020bs0q9xuf7knm" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-MySQL出现1267的错误" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/12/04/MySQL%E5%87%BA%E7%8E%B01267%E7%9A%84%E9%94%99%E8%AF%AF/" class="article-date">
-  <time datetime="2017-12-04T15:21:47.000Z" itemprop="datePublished">2017-12-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/04/MySQL%E5%87%BA%E7%8E%B01267%E7%9A%84%E9%94%99%E8%AF%AF/">MySQL出现1267的错误</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>执行SQL的时候，MySQL出现了下面的1267的错误，提示与字符集有关系。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1267 - Illegal mix of collations (utf8_unicode_ci,IMPLICIT) and (utf8_general_ci,IMPLICIT) <span class="keyword">for</span> operation <span class="string">'='</span></span><br></pre></td></tr></table></figure>
-<p>查找问题的时候，发现有一张表是从其他地方拷贝过来的，这个表和我们目前项目中的表，稍微有点不同。数据表中字符串类型的字段，不仅有字符集这个属性，还有一个排序规则的属性。拷贝过来的表的字符串类型的字段的排序规则是utf8_unicode_ci，而我们的项目中的是utf8_general_ci，修改之后再次执行上述的SQL，就没有出现上面的错误！<br>下面是问题的简单总结：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ci(caseinsensitive大小写不敏感)</span><br><span class="line">utf8_unicode_ci和utf8_general_ci对中、英文来说没有实质的差别。</span><br><span class="line">utf8_general_ci校对速度快，但准确度稍差。</span><br><span class="line">utf8_unicode_ci准确度高，但校对速度稍慢。</span><br></pre></td></tr></table></figure>
-<p>如果你的应用有德语、法语或者俄语，请一定使用utf8_unicode_ci。一般用utf8_general_ci就够了，到现在也没发现问题。。。</p>
-<p>详细总结：</p>
-<p>1、对于一种语言仅当使用utf8_unicode_ci排序做的不好时，才执行与具体语言相关的utf8字符集校对规则。例如，对于德语和法语，utf8_unicode_ci工作的很好，因此不再需要为这两种语言创建特殊的utf8校对规则。<br>2、utf8_general_ci也适用与德语和法语，除了‘?’等于‘s’，而不是‘ss’之外。如果你的应用能够接受这些，那么应该使用 utf8_general_ci，因为它速度快。否则，使用utf8_unicode_ci，因为它比较准确。<br>用一句话概况上面这段话：utf8_unicode_ci比较准确，utf8_general_ci速度比较快。通常情况下 utf8_general_ci的准确性就够我们用的了，在我看过很多程序源码后，发现它们大多数也用的是utf8_general_ci，所以新建数据 库时一般选用utf8_general_ci就可以了。</p>
-<h4 id="如何在MySQL5-0中使用UTF8"><a href="#如何在MySQL5-0中使用UTF8" class="headerlink" title="如何在MySQL5.0中使用UTF8"></a>如何在MySQL5.0中使用UTF8</h4><p>在 my.cnf中增加下列参数<br>复制代码代码如下:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">init_connect=<span class="string">'SET NAMES utf8'</span></span><br><span class="line">default-character-set=utf8</span><br><span class="line">default-collation = utf8_general_ci</span><br></pre></td></tr></table></figure>
-<p>执行查询 mysql&gt; show variables; 相关如下:  </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">character_set_client | utf8 </span><br><span class="line">character_set_connection | utf8 </span><br><span class="line">character_set_database | utf8 </span><br><span class="line">character_set_results | utf8 </span><br><span class="line">character_set_server | utf8 </span><br><span class="line">character_set_system | utf8</span><br><span class="line">collation_connection | utf8_general_ci </span><br><span class="line">collation_database | utf8_general_ci </span><br><span class="line">collation_server | utf8_general_ci</span><br></pre></td></tr></table></figure>
-<p>个人见解，对于数据库的使用，utf8_general 已经足够的准确，并且相较与  utf8_unicode速度上有优势，固可放心采用之</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/04/MySQL%E5%87%BA%E7%8E%B01267%E7%9A%84%E9%94%99%E8%AF%AF/" data-id="ck2xfms8g001hbs0q58w1ax09" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/" rel="tag">maven</a></li></ul>
 
     </footer>
   </div>
@@ -543,7 +807,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/">Next &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/6/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -557,7 +821,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BigDecimal/" rel="tag">BigDecimal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/arrayList/" rel="tag">arrayList</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/" rel="tag">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eureka/" rel="tag">eureka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exception/" rel="tag">exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastJson/" rel="tag">fastJson</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/feign/" rel="tag">feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ide/" rel="tag">ide</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mycat/" rel="tag">mycat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oop/" rel="tag">oop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-fpm/" rel="tag">php-fpm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/proxy/" rel="tag">proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sharding-jdbc/" rel="tag">sharding-jdbc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud/" rel="tag">spring cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud-config/" rel="tag">spring cloud config</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BigDecimal/" rel="tag">BigDecimal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EasyExcel/" rel="tag">EasyExcel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Iterator/" rel="tag">Iterator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ListIterator/" rel="tag">ListIterator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PowerDesigner/" rel="tag">PowerDesigner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis-Sentinel/" rel="tag">Redis-Sentinel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Snowflake/" rel="tag">Snowflake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/arrayList/" rel="tag">arrayList</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bean/" rel="tag">bean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/" rel="tag">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eureka/" rel="tag">eureka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exception/" rel="tag">exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastJson/" rel="tag">fastJson</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/feign/" rel="tag">feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ide/" rel="tag">ide</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea/" rel="tag">idea</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mycat/" rel="tag">mycat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oop/" rel="tag">oop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-fpm/" rel="tag">php-fpm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/proxy/" rel="tag">proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sharding-jdbc/" rel="tag">sharding-jdbc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud/" rel="tag">spring cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud-config/" rel="tag">spring cloud config</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" rel="tag">主从复制</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%88%86%E6%B3%95/" rel="tag">二分法</a></li></ul>
     </div>
   </div>
 
@@ -567,7 +831,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/BigDecimal/" style="font-size: 10px;">BigDecimal</a> <a href="/tags/String/" style="font-size: 12.86px;">String</a> <a href="/tags/arrayList/" style="font-size: 11.43px;">arrayList</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/elasticSearch/" style="font-size: 11.43px;">elasticSearch</a> <a href="/tags/eureka/" style="font-size: 10px;">eureka</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/fastJson/" style="font-size: 10px;">fastJson</a> <a href="/tags/feign/" style="font-size: 10px;">feign</a> <a href="/tags/git/" style="font-size: 11.43px;">git</a> <a href="/tags/ide/" style="font-size: 10px;">ide</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18.57px;">linux</a> <a href="/tags/maven/" style="font-size: 14.29px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mycat/" style="font-size: 11.43px;">mycat</a> <a href="/tags/mysql/" style="font-size: 14.29px;">mysql</a> <a href="/tags/nginx/" style="font-size: 15.71px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 15.71px;">php</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/proxy/" style="font-size: 11.43px;">proxy</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/sharding-jdbc/" style="font-size: 10px;">sharding-jdbc</a> <a href="/tags/spring-boot/" style="font-size: 17.14px;">spring boot</a> <a href="/tags/spring-cloud/" style="font-size: 11.43px;">spring cloud</a> <a href="/tags/spring-cloud-config/" style="font-size: 10px;">spring cloud config</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/BigDecimal/" style="font-size: 10px;">BigDecimal</a> <a href="/tags/EasyExcel/" style="font-size: 10px;">EasyExcel</a> <a href="/tags/Iterator/" style="font-size: 10px;">Iterator</a> <a href="/tags/ListIterator/" style="font-size: 10px;">ListIterator</a> <a href="/tags/PowerDesigner/" style="font-size: 10px;">PowerDesigner</a> <a href="/tags/Redis-Sentinel/" style="font-size: 10px;">Redis-Sentinel</a> <a href="/tags/Snowflake/" style="font-size: 10px;">Snowflake</a> <a href="/tags/String/" style="font-size: 12.86px;">String</a> <a href="/tags/arrayList/" style="font-size: 11.43px;">arrayList</a> <a href="/tags/bean/" style="font-size: 10px;">bean</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/dubbo/" style="font-size: 14.29px;">dubbo</a> <a href="/tags/elasticSearch/" style="font-size: 11.43px;">elasticSearch</a> <a href="/tags/eureka/" style="font-size: 10px;">eureka</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/fastJson/" style="font-size: 10px;">fastJson</a> <a href="/tags/feign/" style="font-size: 10px;">feign</a> <a href="/tags/git/" style="font-size: 11.43px;">git</a> <a href="/tags/ide/" style="font-size: 10px;">ide</a> <a href="/tags/idea/" style="font-size: 10px;">idea</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18.57px;">linux</a> <a href="/tags/maven/" style="font-size: 14.29px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 12.86px;">mybatis</a> <a href="/tags/mycat/" style="font-size: 11.43px;">mycat</a> <a href="/tags/mysql/" style="font-size: 14.29px;">mysql</a> <a href="/tags/nginx/" style="font-size: 17.14px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 15.71px;">php</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/proxy/" style="font-size: 11.43px;">proxy</a> <a href="/tags/redis/" style="font-size: 12.86px;">redis</a> <a href="/tags/sharding-jdbc/" style="font-size: 10px;">sharding-jdbc</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.14px;">spring boot</a> <a href="/tags/spring-cloud/" style="font-size: 11.43px;">spring cloud</a> <a href="/tags/spring-cloud-config/" style="font-size: 10px;">spring cloud config</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" style="font-size: 10px;">主从复制</a> <a href="/tags/%E4%BA%8C%E5%88%86%E6%B3%95/" style="font-size: 10px;">二分法</a>
     </div>
   </div>
 
@@ -576,7 +840,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
     </div>
   </div>
 
@@ -593,19 +857,19 @@
           </li>
         
           <li>
-            <a href="/2018/12/24/%E4%BD%BF%E7%94%A8FastJson%E8%BF%9B%E8%A1%8C%E5%AF%B9%E8%B1%A1%E5%92%8CJSON%E8%BD%AC%E6%8D%A2%E5%B1%9E%E6%80%A7%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99%E4%B8%BA%E4%B8%8B%E5%88%92%E7%BA%BF%E5%92%8C%E9%A9%BC%E5%B3%B0%E7%9A%84%E9%97%AE%E9%A2%98/">使用FastJson进行对象和JSON转换属性命名规则为下划线和驼峰的问题</a>
+            <a href="/2019/05/20/Dubbo%E6%B6%88%E8%B4%B9%E8%80%85consumer%E6%8D%95%E6%8D%89%E6%9C%8D%E5%8A%A1%E6%8F%90%E4%BE%9B%E8%80%85provider%E6%8A%9B%E5%87%BA%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8/">Dubbo消费者consumer捕捉服务提供者provider抛出的自定义异常</a>
           </li>
         
           <li>
-            <a href="/2018/12/13/%E8%B0%88%E8%B0%88Java%E9%9B%86%E5%90%88ArrayList%E6%89%A9%E5%AE%B9/">谈谈Java集合ArrayList扩容</a>
+            <a href="/2019/05/17/%E5%B0%8F%E8%AF%95%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4EasyExcel%E5%AF%BC%E5%87%BAExcel/">小试阿里巴巴EasyExcel导出Excel</a>
           </li>
         
           <li>
-            <a href="/2018/11/30/%E8%B0%88%E8%B0%88Java%E9%9B%86%E5%90%88ArrayList/">谈谈Java集合ArrayList</a>
+            <a href="/2019/05/17/%E6%9F%A5%E7%9C%8B%E4%BE%9D%E8%B5%96%E7%AC%AC%E4%B8%89%E6%96%B9jar%E6%9C%80%E4%BD%8E%E8%A6%81%E6%B1%82%E8%BF%90%E8%A1%8C%E7%9A%84jdk%E7%89%88%E6%9C%AC/">查看依赖第三方jar最低要求运行的jdk版本</a>
           </li>
         
           <li>
-            <a href="/2018/11/08/%E4%BD%BF%E7%94%A8Nginx%E5%81%9A%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-%E8%AE%BE%E7%BD%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E6%97%B6%E5%B8%A6%E4%B8%8A%E8%A2%AB%E4%BB%A3%E7%90%86%E6%9C%BA%E5%99%A8%E7%9A%84%E4%BF%A1%E6%81%AF/">使用Nginx做反向代理,设置请求返回时带上被代理机器的信息</a>
+            <a href="/2019/05/14/Dubbo%E5%87%BA%E7%8E%B0ExceedPayloadLimitException-Data-length-too-large%E7%9A%84%E9%94%99%E8%AF%AF/">Dubbo出现ExceedPayloadLimitException: Data length too large的错误</a>
           </li>
         
       </ul>
