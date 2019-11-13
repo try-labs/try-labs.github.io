@@ -61,6 +61,434 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-CentOS-6-x-下安装Zookeeper" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/05/23/CentOS-6-x-%E4%B8%8B%E5%AE%89%E8%A3%85Zookeeper/" class="article-date">
+  <time datetime="2018-05-23T13:41:18.000Z" itemprop="datePublished">2018-05-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/23/CentOS-6-x-%E4%B8%8B%E5%AE%89%E8%A3%85Zookeeper/">CentOS 6.x 下安装Zookeeper</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>目前在研究dubbo这个国内流行的RPC框架，实现去中心话的微服务需要用到Zookeeper,所以今天来说说如何安装Zookeeper。<br>Zookeeper的<a href="https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/" target="_blank" rel="noopener">官方下载地址</a></p>
+<p>查看Centos版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/issue</span><br><span class="line"></span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ tomcat]<span class="comment"># cat /etc/issue</span></span><br><span class="line">CentOS release 6.9 (Final)</span><br><span class="line">Kernel \r on an \m</span><br></pre></td></tr></table></figure>
+<p> 1.下载安装包到/usr/local/src/目录下，并创建安装目录/usr/local/zookeeper。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src/</span><br><span class="line"><span class="comment">#这里使用3.4.10，没有使用较高的版本</span></span><br><span class="line">wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.10/zookeeper-3.4.10.tar.gz</span><br><span class="line">mkdir /usr/<span class="built_in">local</span>/zookeeper</span><br></pre></td></tr></table></figure>
+<p> 2.解压安装包,并将解压后的文件拷贝到/usr/local/zookeeper</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf zookeeper-3.4.10.tar.gz</span><br><span class="line">cp -R /usr/<span class="built_in">local</span>/zookeeper/zookeeper-3.4.10/*  /usr/<span class="built_in">local</span>/zookeeper</span><br></pre></td></tr></table></figure>
+<p>3.添加系统变量到/etc/profile</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> ZOOKEEPER_HOME=/usr/<span class="built_in">local</span>/zookeeper</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$ZOOKEEPER_HOME</span>/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="built_in">export</span> PATH</span><br></pre></td></tr></table></figure>
+<p>执行命令 source /etc/profile使配置文件立即生效</p>
+<p>4.创建zookeeper配置文件,并作相应的配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>  /usr/<span class="built_in">local</span>/zookeeper/conf/</span><br><span class="line">cp zoo_sample.cfg zoo.cfg</span><br><span class="line"></span><br><span class="line"><span class="comment">#配置zookeeper</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#服务器与客户端之间交互的基本时间单元（ms）</span></span><br><span class="line"></span><br><span class="line">tickTime=2000</span><br><span class="line"></span><br><span class="line"><span class="comment">#配置保存数据文件夹</span></span><br><span class="line"></span><br><span class="line">dataDir=/usr/<span class="built_in">local</span>/zookeeper/data</span><br><span class="line"></span><br><span class="line"><span class="comment">#配置保存日志文件夹，当此配置不存在时默认路径与dataDir一致</span></span><br><span class="line"></span><br><span class="line">dataLogDir=/var/<span class="built_in">log</span>/zookeeper</span><br><span class="line"></span><br><span class="line"><span class="comment">#客户端访问zookeeper的端口号</span></span><br><span class="line"></span><br><span class="line">clientPort=2181</span><br></pre></td></tr></table></figure>
+<p>5.zookeeper相关命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">启动服务：zkServer.sh start</span><br><span class="line">查看状态：zkServer.sh status</span><br><span class="line">关闭服务：zkServer.sh stop</span><br><span class="line">重启服务：zkServer.sh restart</span><br></pre></td></tr></table></figure>
+<p>至此，zookeeper安装完成</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/05/23/CentOS-6-x-%E4%B8%8B%E5%AE%89%E8%A3%85Zookeeper/" data-id="ck2xfms730003bs0qe5mf68t7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-CentOS-6-x-下yum安装Tomcat8" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/05/22/CentOS-6-x-%E4%B8%8Byum%E5%AE%89%E8%A3%85Tomcat8/" class="article-date">
+  <time datetime="2018-05-22T13:40:05.000Z" itemprop="datePublished">2018-05-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/22/CentOS-6-x-%E4%B8%8Byum%E5%AE%89%E8%A3%85Tomcat8/">CentOS 6.x 下yum安装Tomcat8</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>废话不多说，今天准备在Centos上安装tomcat，学java不会tomcat，那不就是白学Java么？<br>查看Centos版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/issue</span><br><span class="line"></span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ tomcat]<span class="comment"># cat /etc/issue</span></span><br><span class="line">CentOS release 6.9 (Final)</span><br><span class="line">Kernel \r on an \m</span><br></pre></td></tr></table></figure>
+<p>通过yum好处其实很多，环境变量不用配置，配置文件放在大家都熟悉的地方，通过rpm -ql xxx可以知道全部文件的地方等等。</p>
+<p> 1.安装Tomcat<br>自带的yum源里面的Tomcat版本过低，所以我准备安装Tomcat8。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src/</span><br><span class="line">// 下载脚本</span><br><span class="line"><span class="comment"># git clone https://github.com/boundlessgeo/rpm-tomcat8.git &amp;&amp; cd rpm-tomcat8</span></span><br><span class="line">// 安装rpm打包工具</span><br><span class="line"><span class="comment"># yum -y install rpmdevtools</span></span><br><span class="line">// 打包rpm包</span><br><span class="line"><span class="comment"># ./make_rpm.sh</span></span><br><span class="line">// 安装依赖</span><br><span class="line"><span class="comment"># yum install -y redhat-lsb-core</span></span><br><span class="line">// 安装Tomcat8</span><br><span class="line"><span class="comment"># rpm -ivh rpmbuild/RPMS/noarch/boundless-server-tomcat8-8.0.47-5.noarch.rpm</span></span><br><span class="line"></span><br><span class="line">备注：主要是这个脚本https://github.com/boundlessgeo/rpm-tomcat8，想要哪个版本可以直接上去这里修改文件即可。</span><br></pre></td></tr></table></figure>
+
+<p> 2.设置开机启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig tomcat8 on</span><br></pre></td></tr></table></figure>
+<p> 3.常用的命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 服务状态</span><br><span class="line">service tomcat8 status</span><br><span class="line">// 服务启动</span><br><span class="line">service tomcat8 start</span><br><span class="line">// 服务停止</span><br><span class="line">service tomcat8 stop</span><br><span class="line">// 服务重启</span><br><span class="line">service tomcat8 restart</span><br></pre></td></tr></table></figure>
+<p>4.卸载Tomcat</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -e boundless-server-tomcat8.noarch</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/05/22/CentOS-6-x-%E4%B8%8Byum%E5%AE%89%E8%A3%85Tomcat8/" data-id="ck2xfms6y0001bs0q5sb61xes" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Spring-Boot-1-x集成spring-boot-devtools开发时实现热部署" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/05/13/Spring-Boot-1-x%E9%9B%86%E6%88%90spring-boot-devtools%E5%BC%80%E5%8F%91%E6%97%B6%E5%AE%9E%E7%8E%B0%E7%83%AD%E9%83%A8%E7%BD%B2/" class="article-date">
+  <time datetime="2018-05-13T13:38:16.000Z" itemprop="datePublished">2018-05-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/13/Spring-Boot-1-x%E9%9B%86%E6%88%90spring-boot-devtools%E5%BC%80%E5%8F%91%E6%97%B6%E5%AE%9E%E7%8E%B0%E7%83%AD%E9%83%A8%E7%BD%B2/">Spring Boot 1.x集成spring-boot-devtools开发时实现热部署</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>热部署</strong><br>大家都知道在项目开发过程中，常常会改动页面数据或者修改数据结构，为了显示改动效果，往往需要重启应用查看改变效果，其实就是重新编译生成了新的Class文件，这个文件里记录着和代码等对应的各种信息，然后Class文件将被虚拟机的ClassLoader加载。<br>而热部署正是利用了这个特点，它监听到如果有Class文件改动了，就会创建一个新的ClaassLoader进行加载该文件，经过一系列的过程，最终将结果呈现在我们眼前。</p>
+<p><strong>类加载机制</strong><br>Java中的类经过编译器可以把代码编译为存储字节码的Class文件，该Class文件存储了各种信息，最终要加载到虚拟机中运行使用。类加载机制（摘自《深入理解 Java 虚拟机》）虚拟机把描述类的数据从Class文件加载到内存中，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的Java类型。</p>
+<p><strong>Spring Boot实现热部署</strong><br>Spring Boot实现热部署有如下方式：</p>
+<ol>
+<li>使用 <a href="https://github.com/spring-projects/spring-loaded" target="_blank" rel="noopener">Spring Loaded</a></li>
+<li>使用 <a href="https://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-devtools" target="_blank" rel="noopener">spring-boot-devtools</a></li>
+</ol>
+<p><strong>Spring Loaded</strong><br>这种方式是以Maven插件的形式去加载，所以启动时使用通过Maven命令mvn spring-boot:run启动，而通过Application.run方式启动的会无效，因为通过应用程序启动时，已经绕开了Maven插件机制。<br>pom集成方式：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springloaded<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.5.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>spring-boot-devtools</strong><br>这种方式无论怎么启动应用，都可以达到修改文件后重启应用。<br>pom集成：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 热部署模块 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-devtools<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span> <span class="comment">&lt;!-- 这个需要为 true 热部署才有效 --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>集成注意</strong></p>
+<ol>
+<li>如果发现没有热部署效果，则需要检查IDE配置中有没有打开自动编译。</li>
+<li>如果使用Thymeleaf模板引擎，需要把模板默认缓存设置为false<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#禁止thymeleaf缓存（建议：开发环境设置为false，生成环境设置为true）</span><br><span class="line">spring.thymeleaf.cache=<span class="keyword">false</span></span><br></pre></td></tr></table></figure></li>
+<li>针对devtools的可以指定目录或者排除目录来进行热部署<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#添加那个目录的文件需要restart</span><br><span class="line">spring.devtools.restart.additional-paths=src/main/java</span><br><span class="line">#排除那个目录的文件不需要restart</span><br><span class="line">spring.devtools.restart.exclude=<span class="keyword">static</span><span class="comment">/**,public/**</span></span><br></pre></td></tr></table></figure>
+<strong>设置idea让他实现文件修改自动重启项目</strong><ol>
+<li>找到idea的Preferences -&gt; Build, Execution, Deployment -&gt; Compiler，勾选Build project automatically</li>
+<li>回到idea正常界面，Mac使用快捷键shift+option+command+/，window上的快捷键是Shift+Ctrl+Alt+/，打开Registry，勾选compiler.automake.allow.when.app.runningcompiler.automake.allow.when.app.running</li>
+</ol>
+</li>
+</ol>
+<p>通过以上的设置就可以在不重启服务的情况下加载html，但如果修改java文件，服务在几秒后会自动重启，如果不希望服务重启需要在application.properties或application.yml中添加spring.devtools.reatart.enable=false</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/05/13/Spring-Boot-1-x%E9%9B%86%E6%88%90spring-boot-devtools%E5%BC%80%E5%8F%91%E6%97%B6%E5%AE%9E%E7%8E%B0%E7%83%AD%E9%83%A8%E7%BD%B2/" data-id="ck2xfms99002hbs0qh91uafdk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Maven项目出现“请使用-source-8-或更高版本以启用-lambda-表达式”" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/05/09/Maven%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0%E2%80%9C%E8%AF%B7%E4%BD%BF%E7%94%A8-source-8-%E6%88%96%E6%9B%B4%E9%AB%98%E7%89%88%E6%9C%AC%E4%BB%A5%E5%90%AF%E7%94%A8-lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E2%80%9D/" class="article-date">
+  <time datetime="2018-05-09T13:36:34.000Z" itemprop="datePublished">2018-05-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/09/Maven%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0%E2%80%9C%E8%AF%B7%E4%BD%BF%E7%94%A8-source-8-%E6%88%96%E6%9B%B4%E9%AB%98%E7%89%88%E6%9C%AC%E4%BB%A5%E5%90%AF%E7%94%A8-lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E2%80%9D/">Maven项目出现“请使用 -source 8 或更高版本以启用 lambda 表达式”</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天在编译项目的时候出现“请使用 -source 8 或更高版本以启用 lambda 表达式”的问题。这个问题是怎么出现的呢？<br>其实是自己Maven的默认JDK的版本过低的原因，貌似JDK的版本默认为JDK1.5。知道问题的所在，我们就可以着手解决了。</p>
+<ol>
+<li>在Maven中指定JDK的版本<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"..."</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">source</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">source</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">target</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">target</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>在Maven的settings.xml里面指定全局JDK编译版本<br>右键点击项目找到Maven，找到关于settings.xml选项，打开settings.xml文件，写入下面的内容：<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">profiles</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">profile</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>jdk-1.8<span class="tag">&lt;/<span class="name">id</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">activation</span>&gt;</span>  </span><br><span class="line">          <span class="tag">&lt;<span class="name">activeByDefault</span>&gt;</span>true<span class="tag">&lt;/<span class="name">activeByDefault</span>&gt;</span>  </span><br><span class="line">          <span class="tag">&lt;<span class="name">jdk</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">jdk</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;/<span class="name">activation</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">properties</span>&gt;</span>  </span><br><span class="line">          <span class="tag">&lt;<span class="name">maven.compiler.source</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">maven.compiler.source</span>&gt;</span>  </span><br><span class="line">          <span class="tag">&lt;<span class="name">maven.compiler.target</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">maven.compiler.target</span>&gt;</span>  </span><br><span class="line">          <span class="tag">&lt;<span class="name">maven.compiler.compilerVersion</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">maven.compiler.compilerVersion</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;/<span class="name">properties</span>&gt;</span>   </span><br><span class="line">  　<span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">profiles</span>&gt;</span></span><br></pre></td></tr></table></figure>
+然后重新编译就可以了</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/05/09/Maven%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0%E2%80%9C%E8%AF%B7%E4%BD%BF%E7%94%A8-source-8-%E6%88%96%E6%9B%B4%E9%AB%98%E7%89%88%E6%9C%AC%E4%BB%A5%E5%90%AF%E7%94%A8-lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E2%80%9D/" data-id="ck2xfms8d001dbs0q0nuh3j1x" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/" rel="tag">maven</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Spring-Boot-1-x-整合mybatis-并自动生成mapper和实体" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/05/07/Spring-Boot-1-x-%E6%95%B4%E5%90%88mybatis-%E5%B9%B6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90mapper%E5%92%8C%E5%AE%9E%E4%BD%93/" class="article-date">
+  <time datetime="2018-05-07T13:35:19.000Z" itemprop="datePublished">2018-05-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/07/Spring-Boot-1-x-%E6%95%B4%E5%90%88mybatis-%E5%B9%B6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90mapper%E5%92%8C%E5%AE%9E%E4%BD%93/">Spring Boot 1.x 整合mybatis,并自动生成mapper和实体</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近一直都在学习Java，发现目前Java招聘中，mybatis出现的频率挺高的，可能是目前Java开发中使用比较多的数据库ORM框架。于是我准备研究下Spring Boot 1.x 和mybatis的整合。</p>
+<p> 1.在pom.xml文件中添加下面的配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">		<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-jdbc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>druid<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.29<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-jpa<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="comment">&lt;!-- 这个是官方的mybatis依赖，这个你不加没法用噻 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 这个是自动生成mapper等的依赖，必须得加--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.generator<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-generator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--这个是自动生成mapper等的依赖，必须得加 https://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.generator<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-generator-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.generator<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-generator-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--配置文件存放的地址--&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--&lt;configurationFile&gt;src/main/resources/mybatis-generator/generatorConfig.xml&lt;/configurationFile&gt;--&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">verbose</span>&gt;</span>true<span class="tag">&lt;/<span class="name">verbose</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">overwrite</span>&gt;</span>true<span class="tag">&lt;/<span class="name">overwrite</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p> 2.在application.properties配置文件中进行数据库和mybatis扫描的配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">spring.datasource.driver-class-name=com.mysql.jdbc.Driver</span><br><span class="line">spring.datasource.url=jdbc:mysql://localhost:3306/yddy?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC</span><br><span class="line">spring.datasource.username=root</span><br><span class="line">spring.datasource.password=123456</span><br><span class="line"></span><br><span class="line">mybatis.config-locations=classpath:mybatis-config.xml</span><br><span class="line"># mapper文件</span><br><span class="line">mybatis.mapper-locations=classpath:mapper/*.xml #这里直接写*，对后面自定义sql，编写xxxExt.xml有好处，自动扫描到这些文件，不用再改配置了</span><br><span class="line">mybatis.type-aliases-package=com.dameiweb.learn.model</span><br><span class="line">logging.level.com.dameiweb.learn.dao=debug</span><br><span class="line"></span><br><span class="line">#mybatis.config = mybatis 配置文件名称</span><br><span class="line">#mybatis.mapperLocations = mapper xml 文件地址</span><br><span class="line">#mybatis.typeAliasesPackage = 实体类包路径</span><br><span class="line">#mybatis.typeHandlersPackage = type handlers 处理器包路径</span><br><span class="line">#mybatis.check-config-location = 检查 mybatis 配置是否存在，一般命名为 mybatis-config.xml</span><br><span class="line">#mybatis.executorType = 执行模式。默认是 SIMPLE</span><br></pre></td></tr></table></figure>
+<p>3.mybatis的配置和自动生成mapper的配置<br>在resource目录下新建一个generatorConfig.xml和mybatis-config.xml。内容如下：<br>generatorConfig.xml内容</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE generatorConfiguration</span></span><br><span class="line"><span class="meta">        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"</span></span><br><span class="line"><span class="meta">        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd"&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">generatorConfiguration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">classPathEntry</span> <span class="attr">location</span>=<span class="string">"C:\Users\nick\.m2\repository/mysql/mysql-connector-java/5.1.46/mysql-connector-java-5.1.46.jar"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context</span> <span class="attr">id</span>=<span class="string">"DB2Tables"</span>    <span class="attr">targetRuntime</span>=<span class="string">"MyBatis3"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">commentGenerator</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"suppressDate"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"suppressAllComments"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">commentGenerator</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--数据库链接地址账号密码--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">jdbcConnection</span> <span class="attr">driverClass</span>=<span class="string">"com.mysql.jdbc.Driver"</span> <span class="attr">connectionURL</span>=<span class="string">"jdbc:mysql://localhost:3306/yddy?useUnicode=true&amp;amp;characterEncoding=UTF-8&amp;amp;serverTimezone=UTC"</span> <span class="attr">userId</span>=<span class="string">"root"</span> <span class="attr">password</span>=<span class="string">"123456"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">jdbcConnection</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">javaTypeResolver</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"forceBigDecimals"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">javaTypeResolver</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--生成Model类存放位置--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">javaModelGenerator</span> <span class="attr">targetPackage</span>=<span class="string">"com.dameiweb.learn.model"</span> <span class="attr">targetProject</span>=<span class="string">"src/main/java"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"enableSubPackages"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 从数据库返回的值被清理前后的空格 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"trimStrings"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">javaModelGenerator</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--生成映射文件存放位置--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">sqlMapGenerator</span> <span class="attr">targetPackage</span>=<span class="string">"mapper"</span> <span class="attr">targetProject</span>=<span class="string">"src/main/resources"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"enableSubPackages"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">sqlMapGenerator</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--生成Dao类存放位置--&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 客户端代码，生成易于使用的针对Model对象和XML配置文件 的代码</span></span><br><span class="line"><span class="comment">                type="ANNOTATEDMAPPER",生成Java Model 和基于注解的Mapper对象</span></span><br><span class="line"><span class="comment">                type="MIXEDMAPPER",生成基于注解的Java Model 和相应的Mapper对象</span></span><br><span class="line"><span class="comment">                type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper接口</span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">javaClientGenerator</span> <span class="attr">type</span>=<span class="string">"XMLMAPPER"</span> <span class="attr">targetPackage</span>=<span class="string">"com.dameiweb.learn.dao"</span> <span class="attr">targetProject</span>=<span class="string">"src/main/java"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"enableSubPackages"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">javaClientGenerator</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">    <span class="tag">&lt;/<span class="name">context</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">generatorConfiguration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>mybatis-config.xml的内容：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd"&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"callSettersOnNulls"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"lazyLoadingEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"aggressiveLazyLoading"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"multipleResultSetsEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"useColumnLabel"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"useGeneratedKeys"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"autoMappingBehavior"</span> <span class="attr">value</span>=<span class="string">"PARTIAL"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"defaultExecutorType"</span> <span class="attr">value</span>=<span class="string">"SIMPLE"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"mapUnderscoreToCamelCase"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"localCacheScope"</span> <span class="attr">value</span>=<span class="string">"SESSION"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"jdbcTypeForNull"</span> <span class="attr">value</span>=<span class="string">"NULL"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">alias</span>=<span class="string">"Integer"</span> <span class="attr">type</span>=<span class="string">"java.lang.Integer"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">alias</span>=<span class="string">"Long"</span> <span class="attr">type</span>=<span class="string">"java.lang.Long"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">alias</span>=<span class="string">"HashMap"</span> <span class="attr">type</span>=<span class="string">"java.util.HashMap"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">alias</span>=<span class="string">"LinkedHashMap"</span> <span class="attr">type</span>=<span class="string">"java.util.LinkedHashMap"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">alias</span>=<span class="string">"ArrayList"</span> <span class="attr">type</span>=<span class="string">"java.util.ArrayList"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">alias</span>=<span class="string">"LinkedList"</span> <span class="attr">type</span>=<span class="string">"java.util.LinkedList"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这样我们就配置好了Spring Boot和mybatis与mybatis自动生成mapper和实体的功能。这样我们要生成某个表的实体和mapper的时候，只需要在generatorConfig.xml中javaClientGenerator标签之后添加下面的内容即可。<br>此处我们已yd_movies表为例(主要数据库表名字不要用复数，这个表名肯定是我之前脑子抽了，搞个复数的名字)</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">&lt;!--生成对应表及类名--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">table</span>  <span class="attr">tableName</span>=<span class="string">"yd_movies"</span> <span class="attr">domainObjectName</span>=<span class="string">"Movie"</span> <span class="attr">enableCountByExample</span>=<span class="string">"false"</span> <span class="attr">enableUpdateByExample</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">               <span class="attr">enableDeleteByExample</span>=<span class="string">"false"</span> <span class="attr">enableSelectByExample</span>=<span class="string">"false"</span> <span class="attr">selectByExampleQueryId</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">columnOverride</span> <span class="attr">column</span>=<span class="string">"cover_photos"</span> <span class="attr">javaType</span>=<span class="string">"java.lang.String"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">columnOverride</span> <span class="attr">column</span>=<span class="string">"cover_photos_loc"</span> <span class="attr">javaType</span>=<span class="string">"java.lang.String"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">columnOverride</span> <span class="attr">column</span>=<span class="string">"pubdates"</span> <span class="attr">javaType</span>=<span class="string">"java.lang.String"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">columnOverride</span> <span class="attr">column</span>=<span class="string">"photographs_origin"</span> <span class="attr">javaType</span>=<span class="string">"java.lang.String"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">columnOverride</span> <span class="attr">column</span>=<span class="string">"photographs_origin_loc"</span> <span class="attr">javaType</span>=<span class="string">"java.lang.String"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">columnOverride</span> <span class="attr">column</span>=<span class="string">"languages"</span> <span class="attr">javaType</span>=<span class="string">"java.lang.String"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">columnOverride</span> <span class="attr">column</span>=<span class="string">"awards"</span> <span class="attr">javaType</span>=<span class="string">"java.lang.String"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">columnOverride</span> <span class="attr">column</span>=<span class="string">"summary"</span> <span class="attr">javaType</span>=<span class="string">"java.lang.String"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--columnOverride使用这个标签是为了防止数据库字段类型为text时候，mybatis会生成xxxxWithBLOBs文件。--&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后点击idea右侧Maven projects，就可以看到mybatis-generate下的mybatis-generate：generate，双击mybatis-generate：generate即可。</p>
+<p><strong>generator 注意点，也可以说是BUG<br>就是在生成的时候，在第二次生成的时候，dao 和entity 都会直接覆盖，而Mapper.xml 会直接追加，导致运行报错，而且很难找。</strong></p>
+<p>4.mybatis自定义sql<br>当我们需要自定义sql的时候，我们不能把这些也放到mapper文件中。不然，当数据库表的字段有更新需要重新生成mapper的时候，这样我们自定义的sql不就被覆盖没了么！所以我们需要在MovieMapper.xml的同级目录里，新建一个MovieMapperExt.xml文件，把自定义的sql放到这里，例子如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">MovieMapperExt.xml文件内容</span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" &gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">"com.dameiweb.learn.dao.MovieMapper"</span> &gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"selectByCondition"</span>  <span class="attr">resultMap</span>=<span class="string">"BaseResultMap"</span> <span class="attr">parameterType</span>=<span class="string">"com.dameiweb.learn.dto.MovieRequest"</span>&gt;</span></span><br><span class="line">    SELECT yd_movies.* FROM yd_movies</span><br><span class="line">    LEFT JOIN yd_r_movie_countries ON yd_movies.id = yd_r_movie_countries.movie_id</span><br><span class="line">    LEFT JOIN yd_countries cou ON yd_r_movie_countries.country_id = cou.id</span><br><span class="line">    LEFT JOIN yd_r_movie_category ON yd_movies.id = yd_r_movie_category.movie_id</span><br><span class="line">    LEFT JOIN yd_category cat ON yd_r_movie_category.category_id = cat.id</span><br><span class="line">    LEFT JOIN yd_r_movie_actor ON yd_movies.id = yd_r_movie_actor.movie_id</span><br><span class="line">    LEFT JOIN yd_actors a ON yd_r_movie_actor.actor_id = a.id</span><br><span class="line"></span><br><span class="line">    WHERE</span><br><span class="line">    yd_movies.status = 1</span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"movieRequest.title != null"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      AND yd_movies.title LIKE "%"#&#123;movieRequest.title&#125;"%"</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"movieRequest.country != null"</span>&gt;</span></span><br><span class="line">      AND cou.id = #&#123;movieRequest.country&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"movieRequest.category != null"</span>&gt;</span></span><br><span class="line">      AND cat.id = #&#123;movieRequest.category&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"movieRequest.year != null"</span>&gt;</span></span><br><span class="line">      AND year = #&#123;movieRequest.year&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"movieRequest.rate != null"</span>&gt;</span></span><br><span class="line">      AND rate &gt;= #&#123;movieRequest.rate&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"movieRequest.rate != null"</span>&gt;</span></span><br><span class="line">      AND rate &amp;lt; (#&#123;movieRequest.rate&#125;+1)</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"movieRequest.subtype != null"</span>&gt;</span></span><br><span class="line">      AND yd_movies.subtype = #&#123;movieRequest.subtype&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    GROUP BY yd_movies.id</span><br><span class="line">    ORDER BY updated_at DESC, year</span><br><span class="line">  <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/05/07/Spring-Boot-1-x-%E6%95%B4%E5%90%88mybatis-%E5%B9%B6%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90mapper%E5%92%8C%E5%AE%9E%E4%BD%93/" data-id="ck2xfms97002fbs0q7dascdd1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Spring-Boot框架中读取配置的几种方式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/05/04/Spring-Boot%E6%A1%86%E6%9E%B6%E4%B8%AD%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/" class="article-date">
+  <time datetime="2018-05-04T13:33:18.000Z" itemprop="datePublished">2018-05-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/04/Spring-Boot%E6%A1%86%E6%9E%B6%E4%B8%AD%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/">Spring Boot框架中读取配置的几种方式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>现在开发的主力语言已经从PHP转向Java，目前参与或负责公司的几个项目都是使用Spring Boot框架。用了Java之后，对比PHP就一个感觉：繁琐，Java比PHP繁琐的很！由于自己平时也在努力学习Java中，今天趁着有空闲来总结一下Spring Boot中读取配置的几种方式，加深一下自己的印象。</p>
+<p><strong>读取application文件</strong><br>在application.yml或者properties文件中添加：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">info.address=RPC</span><br><span class="line">info.company=Spring</span><br><span class="line">info.degree=high</span><br></pre></td></tr></table></figure>
+
+<p> 1.@Value注解读取方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InfoConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;info.address&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String address;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;info.company&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String company;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;info.degree&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String degree;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getAddress</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> address;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAddress</span><span class="params">(String address)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.address = address;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getCompany</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> company;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCompany</span><span class="params">(String company)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.company = company;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDegree</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> degree;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDegree</span><span class="params">(String degree)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.degree = degree;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 2.@ConfigurationProperties注解读取方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"info"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InfoConfig</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String address;</span><br><span class="line">    <span class="keyword">private</span> String company;</span><br><span class="line">    <span class="keyword">private</span> String degree;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getAddress</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> address;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAddress</span><span class="params">(String address)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.address = address;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getCompany</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> company;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCompany</span><span class="params">(String company)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.company = company;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDegree</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> degree;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDegree</span><span class="params">(String degree)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.degree = degree;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>读取指定文件</strong><br>资源目录下建立config/db-config.properties:</p>
+<p>db.username=root<br>db.password=123456</p>
+<ol>
+<li><p>@PropertySource+@Value注解读取方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@PropertySource</span>(value =  &#123;</span><br><span class="line">    <span class="string">"config/db-config.properties"</span>&#125;</span><br><span class="line">)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DBConfig1</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;db.username&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;db.password&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUsername</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.username = username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPassword</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPassword</span><span class="params">(String password)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.password = password;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>注意：@PropertySource不支持yml文件读取。</em></p>
+</li>
+<li><p>@PropertySource+@ConfigurationProperties注解读取方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"db"</span>)</span><br><span class="line"><span class="meta">@PropertySource</span>(value = &#123;<span class="string">"config/db-config.properties"</span>&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DBConfig2</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUsername</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.username = username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPassword</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPassword</span><span class="params">(String password)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.password = password;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Environment读取方式 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> Environment environment;</span><br><span class="line"></span><br><span class="line">environment.getProperty(<span class="string">"info.degree"</span>);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>从以上示例来看，Spring Boot可以通过@PropertySource,@Value,@Environment,@ConfigurationProperties的相互配合来读取配置文件的内容，读取单个的配置Environment无疑是最霸道的方法。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/05/04/Spring-Boot%E6%A1%86%E6%9E%B6%E4%B8%AD%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/" data-id="ck2xfms9b002kbs0qaex5aqn8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-解决Java异常java-security-InvalidKeyException-Illegal-key-size" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/" class="article-date">
+  <time datetime="2018-04-26T15:41:54.000Z" itemprop="datePublished">2018-04-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/">解决Java异常java.security.InvalidKeyException: Illegal key size</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近公司准备对接马蜂窝的接口，今天在开发的过程中出现了下面的问题：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.security.InvalidKeyException: Illegal key size</span><br></pre></td></tr></table></figure>
+<p>通过仔细阅读马蜂窝的demo时发现，他们在demo里写了下面一段话：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">说明：异常java.security.InvalidKeyException:illegal Key Size的解决方案</span><br><span class="line">在官方网站下载JCE无限制权限策略文件（JDK7的下载地址：</span><br><span class="line">  http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html</span><br><span class="line">下载后解压，可以看到local_policy.jar和US_export_policy.jar以及readme.txt</span><br><span class="line">如果安装了JRE，将两个jar文件放到%JRE_HOME%\lib\security目录下覆盖原来的文件</span><br><span class="line">如果安装了JDK，将两个jar文件放到%JDK_HOME%\jre\lib\security目录下覆盖原来文件</span><br></pre></td></tr></table></figure>
+<p>后来百度得知这里面还有其他原因：<br>如果密钥大于128, 会抛出java.security.InvalidKeyException: Illegal key size 异常. 因为密钥长度是受限制的, java运行时环境读到的是受限的policy文件. 文件位于${java_home}/jre/lib/security, 这种限制是因为美国对软件出口的控制.</p>
+<p>由于现在我用的是Java8，所以我把解决办法整理如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在官方网站下载JCE无限制权限策略文件</span><br><span class="line">JDK7的下载地址: http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html</span><br><span class="line">JDK8的下载地址: http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html</span><br></pre></td></tr></table></figure>
+<p>下载后解压，可以看到local_policy.jar和US_export_policy.jar以及readme.txt<br>如果安装了JRE，将两个jar文件放到%JRE_HOME%\lib\security目录下覆盖原来的文件<br>如果安装了JDK，还要将两个jar文件也放到%JDK_HOME%\jre\lib\security目录下覆盖原来文件</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/" data-id="ck2xfmsa4003nbs0q89wx0273" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-什么是缓存雪崩和缓存穿透" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/13/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E5%92%8C%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" class="article-date">
+  <time datetime="2018-03-13T15:39:32.000Z" itemprop="datePublished">2018-03-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/13/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E5%92%8C%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/">什么是缓存雪崩和缓存穿透</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p> <strong>1. 缓存雪崩</strong></p>
+<p>如果缓存集中在一段时间内失效，发生大量的缓存穿透，所有的查询都落在数据库上，造成了缓存雪崩。这个没有完美解决办法，但可以分析用户行为，尽量让失效时间点均匀分布。大多数系统设计者考虑用加锁或者队列的方式保证缓存的单线程（进程）写，从而避免失效时大量的并发请求落到底层存储系统上。</p>
+<p>解决办法</p>
+<ul>
+<li>在缓存失效后，通过加锁或者队列来控制读数据库写缓存的线程数量。比如对某个key只允许一个线程查询数据和写缓存，其他线程等待。</li>
+<li>可以通过缓存reload机制，预先去更新缓存，再即将发生大并发访问前手动触发加载缓存。</li>
+<li>不同的key，设置不同的过期时间，让缓存失效的时间点尽量均匀。</li>
+<li>做二级缓存，或者双缓存策略。A1为原始缓存，A2为拷贝缓存，A1失效时，可以访问A2，A1缓存失效时间设置为短期，A2设置为长期。</li>
+</ul>
+<p> <strong>2. 缓存穿透</strong></p>
+<p>缓存穿透是指查询一个一定不存在的数据，由于缓存是不命中时需要从数据库查询，查不到数据则不写入缓存，这将导致这个不存在的数据每次请求都要到数据库去查询，造成缓存穿透。</p>
+<p>解决办法</p>
+<ul>
+<li>对所有可能查询的参数以hash形式存储，在控制层先进行校验，不符合则丢弃。还有最常见的则是采用布隆过滤器，将所有可能存在的数据哈希到一个足够大的bitmap中，一个一定不存在的数据会被这个bitmap拦截掉，从而避免了对底层存储系统的查询压力。</li>
+<li>也可以采用一个更为简单粗暴的方法，如果一个查询返回的数据为空（不管是数据不存在，还是系统故障），我们仍然把这个空结果进行缓存，但它的过期时间会很短，最长不超过五分钟。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/03/13/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E5%92%8C%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/" data-id="ck2xfms9u003bbs0qa4sbaadj" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-MySQL中真正意义上的UTF8编码" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/02/22/MySQL%E4%B8%AD%E7%9C%9F%E6%AD%A3%E6%84%8F%E4%B9%89%E4%B8%8A%E7%9A%84UTF8%E7%BC%96%E7%A0%81/" class="article-date">
@@ -112,7 +540,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/02/22/MySQL%E4%B8%AD%E7%9C%9F%E6%AD%A3%E6%84%8F%E4%B9%89%E4%B8%8A%E7%9A%84UTF8%E7%BC%96%E7%A0%81/" data-id="ck2w14lr6001i470qfclrdlsx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/02/22/MySQL%E4%B8%AD%E7%9C%9F%E6%AD%A3%E6%84%8F%E4%B9%89%E4%B8%8A%E7%9A%84UTF8%E7%BC%96%E7%A0%81/" data-id="ck2xfms8i001ibs0qakm94as8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
@@ -162,397 +590,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/02/09/PHP%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E5%BC%80%E5%90%AFOpcache%E6%9D%A5%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD/" data-id="ck2w14lrg001x470qa2pd298c" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/02/09/PHP%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E5%BC%80%E5%90%AFOpcache%E6%9D%A5%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD/" data-id="ck2xfms8z0025bs0q7cb7a0ax" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Spring-Boot的三种启动方式" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/01/19/Spring-Boot%E7%9A%84%E4%B8%89%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F/" class="article-date">
-  <time datetime="2018-01-19T15:33:49.000Z" itemprop="datePublished">2018-01-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/19/Spring-Boot%E7%9A%84%E4%B8%89%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F/">Spring Boot的三种启动方式</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Spring Boot有以下三种启动方式，最后一种我们可以很好的设置不同环境使用不同的配置文件。</p>
-<p>1.IDE 运行Application这个类的main方法</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">package com.dameiweb.girl;</span><br><span class="line"></span><br><span class="line">import org.springframework.boot.SpringApplication;</span><br><span class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"></span><br><span class="line">@SpringBootApplication</span><br><span class="line">public class GirlApplication &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		SpringApplication.run(GirlApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2.在springboot的应用的根目录下运行mvn spring-boot:run</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">$ mvn spring-boot:run</span><br><span class="line">[INFO] Scanning <span class="keyword">for</span> projects...</span><br><span class="line">Downloading: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.pom</span><br><span class="line">Downloaded: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.pom (0 B at 0 B/s)</span><br><span class="line">Downloading: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.jar</span><br><span class="line">Downloaded: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-help-plugin/2.2/maven-help-plugin-2.2.jar (0 B at 0 B/s)</span><br><span class="line">Downloading: http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/codehaus-parent/3/codehaus-parent-3.pom</span><br><span class="line">Downloaded: http://maven.aliyun.com/nexus/content/groups/public/org/codehaus/codehaus-parent/3/codehaus-parent-3.pom (0 B at 0 B/s)</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] Building girl 0.0.1-SNAPSHOT</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] &gt;&gt;&gt; spring-boot-maven-plugin:1.5.9.RELEASE:run (default-cli) &gt; <span class="built_in">test</span>-compile @ girl &gt;&gt;&gt;</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ girl ---</span><br><span class="line">[INFO] Using <span class="string">'UTF-8'</span> encoding to copy filtered resources.</span><br><span class="line">[INFO] Copying 3 resources</span><br><span class="line">[INFO] Copying 0 resource</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ girl ---</span><br><span class="line">[INFO] Nothing to compile - all classes are up to date</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ girl ---</span><br><span class="line">[INFO] Using <span class="string">'UTF-8'</span> encoding to copy filtered resources.</span><br><span class="line">[INFO] skip non existing resourceDirectory D:\work\girl\src\<span class="built_in">test</span>\resources</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ girl ---</span><br><span class="line">[INFO] Nothing to compile - all classes are up to date</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] &lt;&lt;&lt; spring-boot-maven-plugin:1.5.9.RELEASE:run (default-cli) &lt; <span class="built_in">test</span>-compile @ girl &lt;&lt;&lt;</span><br><span class="line">[INFO]</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- spring-boot-maven-plugin:1.5.9.RELEASE:run (default-cli) @ girl ---</span><br></pre></td></tr></table></figure>
-<p>3.在springboot的应用的根目录下 mvn install 生成jar后运行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">先执行 mvn install</span><br><span class="line">再执行 java -jar target/girl-0.0.1-SNAPSHOT.jar --spring.profile.active=prod</span><br><span class="line"></span><br><span class="line">java -jar target/girl-0.0.1-SNAPSHOT.jar --spring.profile.active=prod</span><br><span class="line"></span><br><span class="line">  .   ____          _            __ _ _</span><br><span class="line"> /\\ / ___<span class="string">'_ __ _ _(_)_ __  __ _ \ \ \ \</span></span><br><span class="line"><span class="string">( ( )\___ | '</span>_ | <span class="string">'_| | '</span>_ \/ _` | \ \ \ \</span><br><span class="line"> \\/  ___)| |_)| | | | | || (_| |  ) ) ) )</span><br><span class="line">  <span class="string">'  |____| .__|_| |_|_| |_\__, | / / / /</span></span><br><span class="line"><span class="string"> =========|_|==============|___/=/_/_/_/</span></span><br><span class="line"><span class="string"> :: Spring Boot ::        (v1.5.9.RELEASE)</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/19/Spring-Boot%E7%9A%84%E4%B8%89%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F/" data-id="ck2w14lrx002h470q6ywaefw5" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Java里有哪些语法糖" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/01/09/Java%E9%87%8C%E6%9C%89%E5%93%AA%E4%BA%9B%E8%AF%AD%E6%B3%95%E7%B3%96/" class="article-date">
-  <time datetime="2018-01-09T15:36:33.000Z" itemprop="datePublished">2018-01-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/09/Java%E9%87%8C%E6%9C%89%E5%93%AA%E4%BA%9B%E8%AF%AD%E6%B3%95%E7%B3%96/">Java里有哪些语法糖</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">语法糖（Syntactic Sugar），也称糖衣语法，指在计算机语言中添加的某种语法，这种语法对语言本身功能来说没有什么影响，只是为了方便程序员的开发，提高开发效率。说白了，语法糖就是对现有语法的一个封装。</span><br></pre></td></tr></table></figure>
-<p>Java作为一种与平台无关的高级语言，当然也含有语法糖，这些语法糖并不被虚拟机所支持，在编译成字节码阶段就自动转换成简单常用语法。<br>语法糖的大概有三个特性：</p>
-<ol>
-<li>提高程序开发效率</li>
-<li>程序性能不受影响</li>
-<li>规避coder可能因手误而出现的错误</li>
-</ol>
-<p>那Java有哪些语法糖呢？Java大概有如下6个语法糖：</p>
-<ol>
-<li>泛型与类型擦除</li>
-<li>自动装箱与拆箱</li>
-<li>变长参数</li>
-<li>增强for循环</li>
-<li>内部类</li>
-<li>枚举类</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/09/Java%E9%87%8C%E6%9C%89%E5%93%AA%E4%BA%9B%E8%AF%AD%E6%B3%95%E7%B3%96/" data-id="ck2w14lqm000v470q11mhgf2v" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Java出现错误Implicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/01/05/Java%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFImplicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor/" class="article-date">
-  <time datetime="2018-01-05T15:32:03.000Z" itemprop="datePublished">2018-01-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/05/Java%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFImplicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor/">Java出现错误Implicit super constructor  **  is undefined for default constructor. Must define an explicit constructor</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>公司开展新的项目，要求使用Java，给一个月的学习时间。(<strong><strong>南京一些比较大的公司也开始转向Java，语言环境发了改变，学习Java也是大势所趋。2018年1月26日修改</strong></strong>)，只好开始学习Java！说好有系统的培训，结果我现在在自学！在学习java的时候，遇到了下面的问题：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Implicit <span class="keyword">super</span> constructor <span class="title">People</span><span class="params">()</span> is undefined <span class="keyword">for</span> <span class="keyword">default</span> constructor. Must define an explicit constructor</span></span><br></pre></td></tr></table></figure>
-<p>大致的意思是父类没有定义默认的无参数的构造方法，父类必须定义一个无参的构造方法。经过一番研究得知，Java中有一下的规则： 因为你的父类已经定义了一个有参的构造函数并且父类中没有默认的无参构造方法，此时编译器不会为你调用默认的构造函数， 当子类继承时，必须在自己的构造函数显式调用父类的构造函数，自己才能确保子类在初始化前父类会被实例化， 如果你父类中有无参的构造函数，子类就不会强制要求调用，即你写的那个就可以通过， 编译器会默认帮你调用父类的构造函数。</p>
-<p>修改后的代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//父类</span></span><br><span class="line"><span class="keyword">package</span> dmw;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">People</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> String name;</span><br><span class="line">	<span class="keyword">protected</span> <span class="keyword">int</span> age;</span><br><span class="line">	<span class="keyword">protected</span> String gender;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">People</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">People</span><span class="params">(<span class="keyword">int</span> age,String name,String gender)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.age = age;</span><br><span class="line">		<span class="keyword">this</span>.name =name;</span><br><span class="line">		<span class="keyword">this</span>.gender=gender;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	 <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span></span>&#123;</span><br><span class="line">		 <span class="keyword">return</span> <span class="keyword">this</span>.age;</span><br><span class="line">	 &#125;</span><br><span class="line">	 </span><br><span class="line">	 <span class="function"><span class="keyword">public</span> String <span class="title">getGender</span><span class="params">()</span></span>&#123;</span><br><span class="line">		 <span class="keyword">return</span> <span class="keyword">this</span>.gender;</span><br><span class="line">	 &#125;</span><br><span class="line">	 </span><br><span class="line">	 <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span></span>;</span><br><span class="line">	 </span><br><span class="line">	 </span><br><span class="line">	 <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">setGender</span><span class="params">(String gender)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//子类</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> dmw;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">extends</span> <span class="title">People</span> </span>&#123; </span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">(<span class="keyword">int</span> age, String name, String gender)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>(age, name, gender);</span><br><span class="line">		<span class="comment">// TODO Auto-generated constructor stub</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.age = age;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">setGender</span><span class="params">(String gender)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.gender = gender;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><a href="http://blog.csdn.net/children_of_light/article/details/54985869" target="_blank" rel="noopener">eclipse的maven配置</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/05/Java%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFImplicit-super-constructor-is-undefined-for-default-constructor-Must-define-an-explicit-constructor/" data-id="ck2w14lq6000g470qgre26kke" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-使用java和javac命令来编译运行Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/01/01/%E4%BD%BF%E7%94%A8java%E5%92%8Cjavac%E5%91%BD%E4%BB%A4%E6%9D%A5%E7%BC%96%E8%AF%91%E8%BF%90%E8%A1%8CJava/" class="article-date">
-  <time datetime="2018-01-01T15:31:03.000Z" itemprop="datePublished">2018-01-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/01/%E4%BD%BF%E7%94%A8java%E5%92%8Cjavac%E5%91%BD%E4%BB%A4%E6%9D%A5%E7%BC%96%E8%AF%91%E8%BF%90%E8%A1%8CJava/">使用java和javac命令来编译运行Java</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>废话不多说，直奔主题!</p>
-<p> 1.先创建一个Test.java的文件，里面保存的内容如下：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> void main(String[] args)&#123;</span><br><span class="line">        System.out.println(<span class="string">"hello world!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">`</span><br></pre></td></tr></table></figure>
-<p> 2.使用javac编译Test.java文件，编译通过会生成一个Test.class的文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">C:\Users\nick\Desktop&gt;javac Test.java</span><br><span class="line"></span><br><span class="line">C:\Users\nick\Desktop&gt;</span><br></pre></td></tr></table></figure>
-<p> 3.使用java Test命令执行Test.class文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\nick\Desktop&gt;java Test</span><br><span class="line">hello world!</span><br><span class="line"></span><br><span class="line">C:\Users\nick\Desktop&gt;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/01/%E4%BD%BF%E7%94%A8java%E5%92%8Cjavac%E5%91%BD%E4%BB%A4%E6%9D%A5%E7%BC%96%E8%AF%91%E8%BF%90%E8%A1%8CJava/" data-id="ck2w14lsd002y470q3q3zgzqj" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Centos6-9安装ElasticSearch2-x" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/" class="article-date">
-  <time datetime="2017-12-25T15:29:35.000Z" itemprop="datePublished">2017-12-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/">Centos6.9安装ElasticSearch2.x</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我这里安装的是ElasticSearch2.x系列。<br><a href="https://www.elastic.co/guide/en/elasticsearch/reference/2.4/setup-repositories.html" target="_blank" rel="noopener">ElasticSearch官方文档</a><br>1.检查系统是否已经安装了jdk</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list installed |grep java</span><br></pre></td></tr></table></figure>
-<p>若有自带安装的JDK，如何卸载CentOS系统自带Java环境?</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">卸载JDK相关文件输入：yum -y remove java-1.7.0-openjdk*</span><br><span class="line">卸载tzdata-java输入：yum -y remove tzdata-java.noarch</span><br></pre></td></tr></table></figure>
-<p><em>注</em>：“*”表示卸载掉java 1.7.0的所有openjdk相关文件<br>2.查看yum库中的Java安装包</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">yum -y list java*</span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ ~]<span class="comment"># yum -y list java*</span></span><br><span class="line">Loaded plugins: security</span><br><span class="line">Installed Packages</span><br><span class="line">java-1.8.0-openjdk.x86_64                                                                        1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-debug.x86_64                                                                  1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-demo.x86_64                                                                   1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-demo-debug.x86_64                                                             1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-devel.x86_64                                                                  1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-devel-debug.x86_64                                                            1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-headless.x86_64                                                               1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-headless-debug.x86_64                                                         1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-javadoc.noarch                                                                1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-javadoc-debug.noarch                                                          1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-src.x86_64                                                                    1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">java-1.8.0-openjdk-src-debug.x86_64                                                              1:1.8.0.151-1.b12.el6_9                                                             @updates</span><br><span class="line">Available Packages</span><br><span class="line">java-1.5.0-gcj.x86_64                                                                            1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.5.0-gcj-devel.x86_64                                                                      1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.5.0-gcj-javadoc.x86_64                                                                    1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.5.0-gcj-src.x86_64                                                                        1.5.0.0-29.1.el6                                                                    base    </span><br><span class="line">java-1.6.0-openjdk.x86_64                                                                        1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-demo.x86_64                                                                   1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-devel.x86_64                                                                  1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-javadoc.x86_64                                                                1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.6.0-openjdk-src.x86_64                                                                    1:1.6.0.41-1.13.13.1.el6_8                                                          base    </span><br><span class="line">java-1.7.0-openjdk.x86_64                                                                        1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-demo.x86_64                                                                   1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-devel.x86_64                                                                  1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-javadoc.noarch                                                                1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-1.7.0-openjdk-src.x86_64                                                                    1:1.7.0.161-2.6.12.0.el6_9                                                          updates </span><br><span class="line">java-clearsilver.i686                                                                            0.10.5-16.el6                                                                       epel    </span><br><span class="line">java-dirq.noarch                                                                                 1.4-1.el6                                                                           epel    </span><br><span class="line">java-dirq-javadoc.noarch                                                                         1.4-1.el6                                                                           epel    </span><br><span class="line">java-service-wrapper.x86_64                                                                      3.2.5-23.el6                                                                        epel    </span><br><span class="line">java-service-wrapper-javadoc.noarch                                                              3.2.5-23.el6                                                                        epel    </span><br><span class="line">java-sleep.noarch                                                                                2.1-6.el6                                                                           epel    </span><br><span class="line">java-sleep-javadoc.noarch                                                                        2.1-6.el6                                                                           epel    </span><br><span class="line">java_cup.x86_64                                                                                  1:0.10k-5.el6                                                                       base    </span><br><span class="line">java_cup-javadoc.x86_64                                                                          1:0.10k-5.el6                                                                       base    </span><br><span class="line">java_cup-manual.x86_64                                                                           1:0.10k-5.el6                                                                       base    </span><br><span class="line">javacc.x86_64                                                                                    4.1-0.5.el6                                                                         base    </span><br><span class="line">javacc-demo.x86_64                                                                               4.1-0.5.el6                                                                         base    </span><br><span class="line">javacc-manual.x86_64                                                                             4.1-0.5.el6                                                                         base    </span><br><span class="line">javassist.noarch                                                                                 3.9.0-6.el6                                                                         base    </span><br><span class="line">javassist-javadoc.noarch                                                                         3.9.0-6.el6                                                                         base    </span><br><span class="line">javastroke.x86_64                                                                                0.5.1-33.el6                                                                        epel    </span><br><span class="line">javatar.noarch                                                                                   2.5-5.el6                                                                           epel    </span><br><span class="line">javatar-javadoc.noarch</span><br></pre></td></tr></table></figure>
-<p>以yum库中的java-1.8为例，将java-1.8.0的所有相关Java程序都安装上。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install java-1.8.0-openjdk*</span><br></pre></td></tr></table></figure>
-<p>3.查看刚安装的Java版本信息</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java -version 可查看Java版本</span><br><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ ~]<span class="comment"># java -version</span></span><br><span class="line">openjdk version <span class="string">"1.8.0_151"</span></span><br><span class="line">OpenJDK Runtime Environment (build 1.8.0_151-b12)</span><br><span class="line">OpenJDK 64-Bit Server VM (build 25.151-b12, mixed mode)</span><br></pre></td></tr></table></figure>
-<p>4.通过rpm安装ElasticSearch</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">先下载并安装公共签名密钥</span><br><span class="line">rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch</span><br><span class="line">再安装rpm的repository</span><br><span class="line">[elasticsearch-2.x]</span><br><span class="line">name=Elasticsearch repository <span class="keyword">for</span> 2.x packages</span><br><span class="line">baseurl=https://packages.elastic.co/elasticsearch/2.x/centos</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=https://packages.elastic.co/GPG-KEY-elasticsearch</span><br><span class="line">enabled=1</span><br></pre></td></tr></table></figure>
-<p>安装ElasticSearch</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install elasticsearch  </span><br><span class="line">sudo dnf install elasticsearch </span><br><span class="line">sudo zypper install elasticsearch</span><br><span class="line"></span><br><span class="line">使用yum在CentOS和旧的基于Red Hat分发</span><br><span class="line">使用dnf的Fedora和其他新的Red Hat分发</span><br><span class="line">使用zypper基于分布的OpenSUSE</span><br><span class="line"></span><br><span class="line">如果你嫌麻烦可以之前使用下面的方法安装：</span><br><span class="line">wget https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/rpm/elasticsearch/2.4.2/elasticsearch-2.4.2.rpm</span><br><span class="line"></span><br><span class="line">sha1sum elasticsearch-5.6.5.rpm</span><br><span class="line">sudo rpm --install elasticsearch-5.6.5.rpm</span><br></pre></td></tr></table></figure>
-<p>5.使用chkconfig命令将Elasticsearch配置为在系统启动时自动启动</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo chkconfig --add elasticsearch</span><br><span class="line"></span><br><span class="line">下面的命令启动或者关闭elasticsearch服务</span><br><span class="line"></span><br><span class="line">sudo -i service elasticsearch start</span><br><span class="line">sudo -i service elasticsearch stop</span><br></pre></td></tr></table></figure>
-<p>6.启动elasticsearch服务报错</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@iZwz99xkrnh5xy0cqp8aofZ src]<span class="comment"># service elasticsearch start</span></span><br><span class="line">Starting elasticsearch: OpenJDK 64-Bit Server VM warning: If the number of processors is expected to increase from one, <span class="keyword">then</span> you should configure the number of parallel GC threads appropriately using -XX:ParallelGCThreads=N</span><br><span class="line">OpenJDK 64-Bit Server VM warning: INFO: os::commit_memory(0x0000000085330000, 2060255232, 0) failed; error=<span class="string">'Cannot allocate memory'</span> (errno=12)</span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># There is insufficient memory for the Java Runtime Environment to continue.</span></span><br><span class="line"><span class="comment"># Native memory allocation (mmap) failed to map 2060255232 bytes for committing reserved memory.</span></span><br><span class="line"><span class="comment"># An error report file with more information is saved as:</span></span><br><span class="line"><span class="comment"># /tmp/hs_err_pid23700.log</span></span><br><span class="line">                                                           [FAILED]</span><br></pre></td></tr></table></figure>
-<p>这是因为机器的内存不足，可用内存少于1G,解决方法如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vim  /etc/elasticsearch/jvm.options </span><br><span class="line"><span class="comment">##启用如下两项</span></span><br><span class="line"> -Xms4g                   </span><br><span class="line"> -Xmx4g</span><br><span class="line"><span class="comment">##关闭如下两项</span></span><br><span class="line"><span class="comment">##-Xms2g                    </span></span><br><span class="line"><span class="comment">##-Xmx2g</span></span><br></pre></td></tr></table></figure>
-<p>7.配置外网可用访问</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">修改配置文件</span><br><span class="line">vim/etc/elasticsearch/elasticsearch.yml</span><br><span class="line">修改成：network.host: 0.0.0.0</span><br></pre></td></tr></table></figure>
-<p>至此，elasticsearch的基本配置完成！</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/" data-id="ck2w14lpy0008470qgdqd3yhl" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Centos6安装Mongodb" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/" class="article-date">
-  <time datetime="2017-12-06T15:27:40.000Z" itemprop="datePublished">2017-12-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/">Centos6安装Mongodb</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>1.运行下面命令查看服务器中是否存在Mongodb的源</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum info mongo-10gen</span><br></pre></td></tr></table></figure>
-<p>结果提示没有相关匹配的信息 ，说明系统中的yum源不包含MongoDB的相关资源，所以要在使用yum命令安装MongoDB前需要增加yum源。<br>2.配置包管理系统（yum）<br>创建一个/etc/yum.repos.d/mongodb-org-3.6.repo文件，以便您可以直接使用安装MongoDB yum。写入一下内容：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[mongodb-org-3.6]</span><br><span class="line">name=MongoDB Repository</span><br><span class="line">baseurl=https://repo.mongodb.org/yum/redhat/<span class="variable">$releasever</span>/mongodb-org/3.6/x86_64/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=1</span><br><span class="line">gpgkey=https://www.mongodb.org/static/pgp/server-3.6.asc</span><br></pre></td></tr></table></figure>
-<p>3.安装MongoDB包<br>要安装最新的稳定版本的MongoDB，请发出以下命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y mongodb-org</span><br></pre></td></tr></table></figure>
-<p>要安装特定版本的MongoDB，请分别指定每个组件包，并将版本号附加到包名称，如下例所示：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y mongodb-org-3.6.0 mongodb-org-server-3.6.0 mongodb-org-shell-3.6.0 mongodb-org-mongos-3.6.0 mongodb-org-tools-3.6.0</span><br></pre></td></tr></table></figure>
-<p>4.在阿里云上安全组添加一条规则,并在Centos中的iptables添加一条记录</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#阿里云安全组规则</span></span><br><span class="line">允许 自定义 TCP 27017/27017	地址段访问  0.0.0.0/0</span><br><span class="line"></span><br><span class="line"><span class="comment">#iptables</span></span><br><span class="line">-A INPUT -p tcp -m tcp --dport 27017 -j ACCEPT </span><br><span class="line"></span><br><span class="line"><span class="comment">#重启iptables</span></span><br><span class="line">/etc/init.d/iptables restart</span><br></pre></td></tr></table></figure>
-<p>5.开机自启动,执行下面命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig mongod on</span><br></pre></td></tr></table></figure>
-<p>6.Mongodb启动、关闭和重启命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#启动</span></span><br><span class="line">service mongod start</span><br><span class="line"><span class="comment">#关闭</span></span><br><span class="line">service mongod stop</span><br><span class="line"><span class="comment">#restart</span></span><br><span class="line">service mongod restart</span><br></pre></td></tr></table></figure>
-<p><em>END Mongodb安装结束</em></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/06/Centos6%E5%AE%89%E8%A3%85Mongodb/" data-id="ck2w14lpw0007470q68217t3e" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Nginx出现The-plain-HTTP-request-was-sent-to-HTTPS-port" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/12/05/Nginx%E5%87%BA%E7%8E%B0The-plain-HTTP-request-was-sent-to-HTTPS-port/" class="article-date">
-  <time datetime="2017-12-05T15:26:28.000Z" itemprop="datePublished">2017-12-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/05/Nginx%E5%87%BA%E7%8E%B0The-plain-HTTP-request-was-sent-to-HTTPS-port/">Nginx出现The plain HTTP request was sent to HTTPS port</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Nginx突然出现了下面的问题：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The plain HTTP request was sent to HTTPS port</span><br></pre></td></tr></table></figure>
-<p>在博客配置ssl证书的时候，博客的https地址和http地址是都能访问，不过，今天突然发现博客访问出现上面的问题，经过百度找到了问题的解决办法，在此记录一下。</p>
-<p>解决办法：</p>
-<p>删掉ssl on; 并在 listen 443; 443后加上ssl即可。<br>Nginx最新配置文件内容如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen     80;</span><br><span class="line">    listen     443 ssl; </span><br><span class="line">    </span><br><span class="line">    server_name  www.ydstudio.net  ydstudio.net;</span><br><span class="line">    <span class="built_in">set</span> <span class="variable">$my_server_name</span> <span class="variable">$scheme</span>://<span class="variable">$server_name</span>;</span><br><span class="line">    root  html;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$host</span> = <span class="string">'ydstudio.net'</span>) &#123;</span><br><span class="line">      rewrite ^ https://www.ydstudio.net<span class="variable">$request_uri</span>? permanent;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">#防止ip访问，如http://xxx.xxx.xxx.xxx或者https://xxx.xxx.xxx.xxx</span></span><br><span class="line">    <span class="keyword">if</span> ( <span class="variable">$host</span> ~* <span class="string">"\d+\.\d+\.\d+\.\d+"</span> ) &#123;</span><br><span class="line">        rewrite ^ https://<span class="variable">$server_name</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> ( <span class="variable">$my_server_name</span> != https://<span class="variable">$server_name</span> ) &#123;</span><br><span class="line">       <span class="built_in">return</span>      301 https://<span class="variable">$server_name</span><span class="variable">$request_uri</span>;</span><br><span class="line">       <span class="comment">#rewrite ^ https://$server_name$request_uri? permanent;</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    location / &#123;</span><br><span class="line">       try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.php<span class="variable">$is_args</span><span class="variable">$args</span>;</span><br><span class="line">       index index.php  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">#error_page  404              /404.html;</span></span><br><span class="line">    <span class="comment"># redirect server error pages to the static page /50x.html</span></span><br><span class="line">    error_page   500 502 503 504  /50x.html;</span><br><span class="line">    location = /50x.html &#123;</span><br><span class="line">        root   /usr/share/nginx/html;</span><br><span class="line">    &#125; </span><br><span class="line"></span><br><span class="line">    <span class="comment"># pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span></span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">       <span class="comment">#root           html;</span></span><br><span class="line">       fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">       fastcgi_index  index.php;</span><br><span class="line">       fastcgi_param  SCRIPT_FILENAME  html/typecho/<span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">       include        fastcgi_params;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$ &#123;</span><br><span class="line">        <span class="comment">#expires指令设置浏览器缓存过期时间</span></span><br><span class="line">        <span class="comment">#可以在http、server、location三个作用域中设置</span></span><br><span class="line">        <span class="comment">#缓存图片或视频30天</span></span><br><span class="line">        expires 30d;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ .*\.(js|css)?$ &#123;</span><br><span class="line">        <span class="comment">#缓存js/css 1小时</span></span><br><span class="line">        expires 1h;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">#ssl on;</span></span><br><span class="line">    ssl_certificate   cert/214353452860792.pem;</span><br><span class="line">    ssl_certificate_key  cert/214353452860792.key;</span><br><span class="line">    ssl_session_timeout 5m;</span><br><span class="line">    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/05/Nginx%E5%87%BA%E7%8E%B0The-plain-HTTP-request-was-sent-to-HTTPS-port/" data-id="ck2w14lr9001n470qdxdy5u54" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-PHP出现Deprecated-Automatically-populating-is-deprecated-and-will-be-removed-in-a-future-version" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/12/05/PHP%E5%87%BA%E7%8E%B0Deprecated-Automatically-populating-is-deprecated-and-will-be-removed-in-a-future-version/" class="article-date">
-  <time datetime="2017-12-05T15:24:30.000Z" itemprop="datePublished">2017-12-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/05/PHP%E5%87%BA%E7%8E%B0Deprecated-Automatically-populating-is-deprecated-and-will-be-removed-in-a-future-version/">PHP出现Deprecated Automatically populating  is deprecated and will be removed in a future version</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本地新搭建的PHP环境，出现下面的问题：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Deprecated:  Automatically populating <span class="variable">$HTTP_RAW_POST_DATA</span> is deprecated and will be removed <span class="keyword">in</span> a future version. To avoid this warning <span class="built_in">set</span> <span class="string">'always_populate_raw_post_data'</span> to <span class="string">'-1'</span> <span class="keyword">in</span> php.ini and use the php://input stream instead. <span class="keyword">in</span> Unknown on line 0</span><br><span class="line">Warning: Cannot modify header information - headers already sent <span class="keyword">in</span> Unknown on line 0</span><br></pre></td></tr></table></figure>
-<p>这个问题和PHP版本有关系，PHP 5.6已经废弃了$HTTP_RAW_POST_DATA。<br>解决方法：<br>修改php.ini</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">always_populate_raw_post_data = -1</span><br></pre></td></tr></table></figure>
-<p>重启PHP即可</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/05/PHP%E5%87%BA%E7%8E%B0Deprecated-Automatically-populating-is-deprecated-and-will-be-removed-in-a-future-version/" data-id="ck2w14lrd001s470qcqbfbnt2" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
 
     </footer>
   </div>
@@ -565,7 +606,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/3/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/">Next &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/3/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -579,7 +620,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BigDecimal/" rel="tag">BigDecimal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eureka/" rel="tag">eureka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exception/" rel="tag">exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/feign/" rel="tag">feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ide/" rel="tag">ide</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oop/" rel="tag">oop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/proxy/" rel="tag">proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud/" rel="tag">spring cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud-config/" rel="tag">spring cloud config</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BigDecimal/" rel="tag">BigDecimal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/arrayList/" rel="tag">arrayList</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/" rel="tag">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eureka/" rel="tag">eureka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exception/" rel="tag">exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastJson/" rel="tag">fastJson</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/feign/" rel="tag">feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ide/" rel="tag">ide</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mycat/" rel="tag">mycat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oop/" rel="tag">oop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-fpm/" rel="tag">php-fpm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/proxy/" rel="tag">proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sharding-jdbc/" rel="tag">sharding-jdbc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud/" rel="tag">spring cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud-config/" rel="tag">spring cloud config</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -589,7 +630,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/BigDecimal/" style="font-size: 10px;">BigDecimal</a> <a href="/tags/String/" style="font-size: 13.33px;">String</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/elasticSearch/" style="font-size: 11.67px;">elasticSearch</a> <a href="/tags/eureka/" style="font-size: 10px;">eureka</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/feign/" style="font-size: 10px;">feign</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/ide/" style="font-size: 10px;">ide</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18.33px;">linux</a> <a href="/tags/maven/" style="font-size: 15px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 15px;">mysql</a> <a href="/tags/nginx/" style="font-size: 16.67px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 16.67px;">php</a> <a href="/tags/proxy/" style="font-size: 10px;">proxy</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring-boot/" style="font-size: 16.67px;">spring boot</a> <a href="/tags/spring-cloud/" style="font-size: 11.67px;">spring cloud</a> <a href="/tags/spring-cloud-config/" style="font-size: 10px;">spring cloud config</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/BigDecimal/" style="font-size: 10px;">BigDecimal</a> <a href="/tags/String/" style="font-size: 12.86px;">String</a> <a href="/tags/arrayList/" style="font-size: 11.43px;">arrayList</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/elasticSearch/" style="font-size: 11.43px;">elasticSearch</a> <a href="/tags/eureka/" style="font-size: 10px;">eureka</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/fastJson/" style="font-size: 10px;">fastJson</a> <a href="/tags/feign/" style="font-size: 10px;">feign</a> <a href="/tags/git/" style="font-size: 11.43px;">git</a> <a href="/tags/ide/" style="font-size: 10px;">ide</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18.57px;">linux</a> <a href="/tags/maven/" style="font-size: 14.29px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mycat/" style="font-size: 11.43px;">mycat</a> <a href="/tags/mysql/" style="font-size: 14.29px;">mysql</a> <a href="/tags/nginx/" style="font-size: 15.71px;">nginx</a> <a href="/tags/oop/" style="font-size: 10px;">oop</a> <a href="/tags/php/" style="font-size: 15.71px;">php</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/proxy/" style="font-size: 11.43px;">proxy</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/sharding-jdbc/" style="font-size: 10px;">sharding-jdbc</a> <a href="/tags/spring-boot/" style="font-size: 17.14px;">spring boot</a> <a href="/tags/spring-cloud/" style="font-size: 11.43px;">spring cloud</a> <a href="/tags/spring-cloud-config/" style="font-size: 10px;">spring cloud config</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -598,7 +639,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
     </div>
   </div>
 
@@ -615,19 +656,19 @@
           </li>
         
           <li>
-            <a href="/2018/09/30/Feign%E8%B0%83%E7%94%A8%E8%BF%94%E5%9B%9E%E5%A4%8D%E6%9D%82%E5%AF%B9%E8%B1%A1%E6%97%B6%E6%8A%A5%E9%94%99java-lang-ClassCastException-java-util-LinkedHashMap-cannot-be-cast-to-xxx/">Feign调用返回复杂对象时报错java.lang.ClassCastException: java.util.LinkedHashMap cannot be cast to xxx</a>
+            <a href="/2018/12/24/%E4%BD%BF%E7%94%A8FastJson%E8%BF%9B%E8%A1%8C%E5%AF%B9%E8%B1%A1%E5%92%8CJSON%E8%BD%AC%E6%8D%A2%E5%B1%9E%E6%80%A7%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99%E4%B8%BA%E4%B8%8B%E5%88%92%E7%BA%BF%E5%92%8C%E9%A9%BC%E5%B3%B0%E7%9A%84%E9%97%AE%E9%A2%98/">使用FastJson进行对象和JSON转换属性命名规则为下划线和驼峰的问题</a>
           </li>
         
           <li>
-            <a href="/2018/09/15/Spring-Cloud-Config%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8A%A5%E9%94%99Could-not-locate-PropertySource-I-O-error-on-GET-request-xxx/">Spring Cloud Config客户端报错Could not locate PropertySource: I/O error on GET request xxx</a>
+            <a href="/2018/12/13/%E8%B0%88%E8%B0%88Java%E9%9B%86%E5%90%88ArrayList%E6%89%A9%E5%AE%B9/">谈谈Java集合ArrayList扩容</a>
           </li>
         
           <li>
-            <a href="/2018/09/09/Spring-Cloud%E6%95%B4%E5%90%88%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83Eureka%E4%B8%AD%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%8A%B6%E6%80%81%E6%98%BE%E7%A4%BAUNKOWN/">Spring Cloud整合配置中心Eureka中的服务状态显示UNKOWN</a>
+            <a href="/2018/11/30/%E8%B0%88%E8%B0%88Java%E9%9B%86%E5%90%88ArrayList/">谈谈Java集合ArrayList</a>
           </li>
         
           <li>
-            <a href="/2018/08/30/Elastic-Search%E6%90%9C%E7%B4%A2%E6%95%B0%E6%8D%AETerms%E8%81%9A%E5%90%88%E8%BF%94%E5%9B%9E%E7%9A%84%E4%B8%8D%E6%AD%A3%E7%A1%AE%E7%9A%84%E9%97%AE%E9%A2%98/">Elastic Search搜索数据Terms聚合返回的不正确的问题</a>
+            <a href="/2018/11/08/%E4%BD%BF%E7%94%A8Nginx%E5%81%9A%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-%E8%AE%BE%E7%BD%AE%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E6%97%B6%E5%B8%A6%E4%B8%8A%E8%A2%AB%E4%BB%A3%E7%90%86%E6%9C%BA%E5%99%A8%E7%9A%84%E4%BF%A1%E6%81%AF/">使用Nginx做反向代理,设置请求返回时带上被代理机器的信息</a>
           </li>
         
       </ul>
