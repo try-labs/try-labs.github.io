@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Sam的个人博客">
 <meta property="og:description" content="热部署大家都知道在项目开发过程中，常常会改动页面数据或者修改数据结构，为了显示改动效果，往往需要重启应用查看改变效果，其实就是重新编译生成了新的Class文件，这个文件里记录着和代码等对应的各种信息，然后Class文件将被虚拟机的ClassLoader加载。而热部署正是利用了这个特点，它监听到如果有Class文件改动了，就会创建一个新的ClaassLoader进行加载该文件，经过一系列的过程，最终">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-12T13:39:35.000Z">
+<meta property="og:updated_time" content="2019-11-18T14:43:15.000Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
@@ -86,6 +86,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>热部署</strong><br>大家都知道在项目开发过程中，常常会改动页面数据或者修改数据结构，为了显示改动效果，往往需要重启应用查看改变效果，其实就是重新编译生成了新的Class文件，这个文件里记录着和代码等对应的各种信息，然后Class文件将被虚拟机的ClassLoader加载。<br>而热部署正是利用了这个特点，它监听到如果有Class文件改动了，就会创建一个新的ClaassLoader进行加载该文件，经过一系列的过程，最终将结果呈现在我们眼前。</p>
+<a id="more"></a>
 <p><strong>类加载机制</strong><br>Java中的类经过编译器可以把代码编译为存储字节码的Class文件，该Class文件存储了各种信息，最终要加载到虚拟机中运行使用。类加载机制（摘自《深入理解 Java 虚拟机》）虚拟机把描述类的数据从Class文件加载到内存中，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的Java类型。</p>
 <p><strong>Spring Boot实现热部署</strong><br>Spring Boot实现热部署有如下方式：</p>
 <ol>
@@ -113,7 +114,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2018/05/13/Spring-Boot-1-x%E9%9B%86%E6%88%90spring-boot-devtools%E5%BC%80%E5%8F%91%E6%97%B6%E5%AE%9E%E7%8E%B0%E7%83%AD%E9%83%A8%E7%BD%B2/" data-id="ck32q15wg003fym0q4or78lcp" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2018/05/13/Spring-Boot-1-x%E9%9B%86%E6%88%90spring-boot-devtools%E5%BC%80%E5%8F%91%E6%97%B6%E5%AE%9E%E7%8E%B0%E7%83%AD%E9%83%A8%E7%BD%B2/" data-id="ck34jm8a4003e3s0q5m1q7u87" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot-devtools/" rel="tag">spring-boot-devtools</a></li></ul>

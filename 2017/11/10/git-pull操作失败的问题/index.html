@@ -7,14 +7,14 @@
   
   <title>git pull操作失败的问题 | Sam的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="使用git版本控制，提交代码到测试环境，发现代码没有更新，直接在服务器上用命令行操作的时候出现下面的错误： 123456789101112www@iZ23oqentptZ:~&#x2F;develop.dameiweb.com&#x2F;webroot$ git pullerror: Cannot update the ref &amp;apos;refs&#x2F;remotes&#x2F;origin&#x2F;develop&amp;apos;: unable to appe">
+  <meta name="description" content="使用git版本控制，提交代码到测试环境，发现代码没有更新，直接在服务器上用命令行操作的时候出现下面的错误：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="git pull操作失败的问题">
 <meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;2017&#x2F;11&#x2F;10&#x2F;git-pull%E6%93%8D%E4%BD%9C%E5%A4%B1%E8%B4%A5%E7%9A%84%E9%97%AE%E9%A2%98&#x2F;index.html">
 <meta property="og:site_name" content="Sam的个人博客">
-<meta property="og:description" content="使用git版本控制，提交代码到测试环境，发现代码没有更新，直接在服务器上用命令行操作的时候出现下面的错误： 123456789101112www@iZ23oqentptZ:~&#x2F;develop.dameiweb.com&#x2F;webroot$ git pullerror: Cannot update the ref &amp;apos;refs&#x2F;remotes&#x2F;origin&#x2F;develop&amp;apos;: unable to appe">
+<meta property="og:description" content="使用git版本控制，提交代码到测试环境，发现代码没有更新，直接在服务器上用命令行操作的时候出现下面的错误：">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-10T14:53:31.000Z">
+<meta property="og:updated_time" content="2019-11-18T14:33:08.000Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
@@ -85,8 +85,9 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>使用git版本控制，提交代码到测试环境，发现代码没有更新，直接在服务器上用命令行操作的时候出现下面的错误：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">www@iZ23oqentptZ:~/develop.dameiweb.com/webroot$ git pull</span><br><span class="line">error: Cannot update the ref 'refs/remotes/origin/develop': </span><br><span class="line">unable to append to .git/logs/refs/remotes/origin/develop: </span><br><span class="line">Permission denied</span><br><span class="line">From git.dameiweb.com:dm/www.dameiweb.com</span><br><span class="line"> ! 3fa3fb3..297aa33 develop -&gt; origin/develop  </span><br><span class="line">(unable to update local ref)</span><br><span class="line">error: Cannot update the ref 'refs/remotes/origin/master': </span><br><span class="line">unable to append to .git/logs/refs/remotes/origin/master:</span><br><span class="line"> Permission denied</span><br><span class="line"> ! 0eadc3f..d8ad757  master -&gt; origin/master  </span><br><span class="line">(unable to update local ref)</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">www@iZ23oqentptZ:~/develop.dameiweb.com/webroot$ git pull</span><br><span class="line">error: Cannot update the ref 'refs/remotes/origin/develop': </span><br><span class="line">unable to append to .git/logs/refs/remotes/origin/develop: </span><br><span class="line">Permission denied</span><br><span class="line">From git.dameiweb.com:dm/www.dameiweb.com</span><br><span class="line"> ! 3fa3fb3..297aa33 develop -&gt; origin/develop  </span><br><span class="line">(unable to update local ref)</span><br><span class="line">error: Cannot update the ref 'refs/remotes/origin/master': </span><br><span class="line">unable to append to .git/logs/refs/remotes/origin/master:</span><br><span class="line"> Permission denied</span><br><span class="line"> ! 0eadc3f..d8ad757  master -&gt; origin/master  </span><br><span class="line">(unable to update local ref)</span><br></pre></td></tr></table></figure>
+<!--more-->
 <p>通过查看文件的权限，发现.git文件夹下文件的权限不对，有的文件不属于git账号（git的用户是www），出现这个情况可能是用不同的账号去执行git命令，譬如我们这就是使用root账号操作过。<br>  解决办法就是用root账户修改.git文件的权限,.git文件的所有者和所属组都是www,于是执行命令：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">文件的所有者和所属组修改成www</span></span><br><span class="line">chown -R www:www .git</span><br></pre></td></tr></table></figure>
 <p>执行完命令之后，查看文件的权限修改成功后，再切换成www用户，执行git pull，更新成功！<br>  大家切记，linux下权限很重要，不用乱用不用的用户，这样会导致文件的所有者和所属组发生改变！</p>
@@ -94,7 +95,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2017/11/10/git-pull%E6%93%8D%E4%BD%9C%E5%A4%B1%E8%B4%A5%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ck32q15wt003zym0q893h7i3n" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2017/11/10/git-pull%E6%93%8D%E4%BD%9C%E5%A4%B1%E8%B4%A5%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ck34jm8af003v3s0q2p9t1yk9" class="article-share-link">Share</a>
       
       
     </footer>

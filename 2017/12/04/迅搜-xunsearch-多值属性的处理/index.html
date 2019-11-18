@@ -7,15 +7,15 @@
   
   <title>迅搜(xunsearch) 多值属性的处理 | Sam的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="我之前使用Yii2框架做了一个电影网站dy360.net,网站的搜索是通过MySQL的like实现，搜索的条件很多，担心以后数据越来越多，会拖垮网站的速度，于是想通过搜索引擎来解决！ 开始准备使用sphinx，研究发现不太好使。后发现迅搜(xunsearch)，文档比较清楚，上手比较简单，并且有Yii2的composer包，于是决定使用迅搜。使用的过程中遇到这样一个问题：一部电影有多个演员，出品国">
+  <meta name="description" content="我之前使用Yii2框架做了一个电影网站dy360.net,网站的搜索是通过MySQL的like实现，搜索的条件很多，担心以后数据越来越多，会拖垮网站的速度，于是想通过搜索引擎来解决！ 开始准备使用sphinx，研究发现不太好使。后发现迅搜(xunsearch)，文档比较清楚，上手比较简单，并且有Yii2的composer包，于是决定使用迅搜。">
 <meta name="keywords" content="linux,xunsearch">
 <meta property="og:type" content="article">
 <meta property="og:title" content="迅搜(xunsearch) 多值属性的处理">
 <meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;2017&#x2F;12&#x2F;04&#x2F;%E8%BF%85%E6%90%9C-xunsearch-%E5%A4%9A%E5%80%BC%E5%B1%9E%E6%80%A7%E7%9A%84%E5%A4%84%E7%90%86&#x2F;index.html">
 <meta property="og:site_name" content="Sam的个人博客">
-<meta property="og:description" content="我之前使用Yii2框架做了一个电影网站dy360.net,网站的搜索是通过MySQL的like实现，搜索的条件很多，担心以后数据越来越多，会拖垮网站的速度，于是想通过搜索引擎来解决！ 开始准备使用sphinx，研究发现不太好使。后发现迅搜(xunsearch)，文档比较清楚，上手比较简单，并且有Yii2的composer包，于是决定使用迅搜。使用的过程中遇到这样一个问题：一部电影有多个演员，出品国">
+<meta property="og:description" content="我之前使用Yii2框架做了一个电影网站dy360.net,网站的搜索是通过MySQL的like实现，搜索的条件很多，担心以后数据越来越多，会拖垮网站的速度，于是想通过搜索引擎来解决！ 开始准备使用sphinx，研究发现不太好使。后发现迅搜(xunsearch)，文档比较清楚，上手比较简单，并且有Yii2的composer包，于是决定使用迅搜。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-11T15:19:51.000Z">
+<meta property="og:updated_time" content="2019-11-18T14:31:05.000Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
@@ -85,7 +85,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>我之前使用Yii2框架做了一个电影网站<a href="http://www.dy360.net" target="_blank" rel="noopener">dy360.net</a>,网站的搜索是通过MySQL的like实现，搜索的条件很多，担心以后数据越来越多，会拖垮网站的速度，于是想通过搜索引擎来解决！ 开始准备使用sphinx，研究发现不太好使。后发现迅搜(xunsearch)，文档比较清楚，上手比较简单，并且有Yii2的composer包，于是决定使用迅搜。<br>使用的过程中遇到这样一个问题：一部电影有多个演员，出品国家或地区，其实就是文档的多值属性的新建、搜索的问题。我研究了一下，最终结局方案如下：</p>
+        <p>我之前使用Yii2框架做了一个电影网站<a href="http://www.dy360.net" target="_blank" rel="noopener">dy360.net</a>,网站的搜索是通过MySQL的like实现，搜索的条件很多，担心以后数据越来越多，会拖垮网站的速度，于是想通过搜索引擎来解决！ 开始准备使用sphinx，研究发现不太好使。后发现迅搜(xunsearch)，文档比较清楚，上手比较简单，并且有Yii2的composer包，于是决定使用迅搜。</p>
+<a id="more"></a>
+<p>使用的过程中遇到这样一个问题：一部电影有多个演员，出品国家或地区，其实就是文档的多值属性的新建、搜索的问题。我研究了一下，最终结局方案如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#项目的配置文件</span></span><br><span class="line"></span><br><span class="line">project.name = yddy</span><br><span class="line">project.default_charset = utf-8</span><br><span class="line">server.index = 8383</span><br><span class="line">server.search = 8384</span><br><span class="line"></span><br><span class="line">[id]</span><br><span class="line"><span class="built_in">type</span> = id</span><br><span class="line">phrase = yes</span><br><span class="line"></span><br><span class="line">[summary]</span><br><span class="line"><span class="built_in">type</span> = body</span><br><span class="line">cutlen=900</span><br><span class="line"></span><br><span class="line">[year]</span><br><span class="line"><span class="built_in">type</span> = numeric</span><br><span class="line">phrase = yes</span><br><span class="line">index = self</span><br><span class="line"> </span><br><span class="line">[actors_text]</span><br><span class="line"><span class="built_in">type</span> = string</span><br><span class="line">index = self</span><br><span class="line">tokenizer = split(/)</span><br><span class="line"></span><br><span class="line">[category_id]</span><br><span class="line"><span class="built_in">type</span> = string</span><br><span class="line">index = self</span><br><span class="line">tokenizer = split(,)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[country_id]</span><br><span class="line"><span class="built_in">type</span> = string</span><br><span class="line">index = self</span><br><span class="line">tokenizer = split(,)</span><br><span class="line">phrase = yes</span><br></pre></td></tr></table></figure>
 <p>其实就是使用迅搜的tokenizer分词器，文档上具体的语法如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">tokenizer 分词器</span><br><span class="line"></span><br><span class="line">默认为 default 采用内置的功能强大的 scws 分词，适合绝大多数字符串字段。也可以指定自定义分词器， 格式为 name 或 name(arg) 两种形式，其中 name 是分词器名称，arg 则是传递给分词器构造函数的参数。 自定义分词器需要在 lib/ 目录下编写名为 XSTokenizerName 的分词类并实现接口 XSTokenizer， 内置支持的分词器有以下几种：</span><br><span class="line"></span><br><span class="line">full 表示本字段的值整体作为一个检索词，像各种 ID 都适合这种情况</span><br><span class="line">none 表示本字段没有任何词汇用于索引</span><br><span class="line">split([ ]) 表示根据参数分割内容，默认参数为空格，若参数以 / 开头并以 / 结尾则 内部调用 preg_split(arg, ..) 来分割取词，以支持正则或其它特殊字符分割</span><br><span class="line">xlen([2]) 表示根据指定参数长度分段取词，如 ABCDEF =&gt; AB + CD + EF</span><br><span class="line">xstep([2]) 表示根据指定参数步长逐段取词，如 ABCDEF =&gt; AB + ABCD + ABCDEF</span><br><span class="line">scws([3]) 表示采用指定参数为复合等级的 scws 分词，（若无特殊复合需求，无需指定）</span><br><span class="line">tokenizer = default</span><br></pre></td></tr></table></figure>
@@ -94,7 +96,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2017/12/04/%E8%BF%85%E6%90%9C-xunsearch-%E5%A4%9A%E5%80%BC%E5%B1%9E%E6%80%A7%E7%9A%84%E5%A4%84%E7%90%86/" data-id="ck32q15xt005cym0q310x203n" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2017/12/04/%E8%BF%85%E6%90%9C-xunsearch-%E5%A4%9A%E5%80%BC%E5%B1%9E%E6%80%A7%E7%9A%84%E5%A4%84%E7%90%86/" data-id="ck34jm8bl005g3s0q0q9lgoni" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li></ul>

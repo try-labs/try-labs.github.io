@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Sam的个人博客">
 <meta property="og:description" content="在开启Opcache之前，我们先了解一下什么是Opcache: 12OPcache 通过将 PHP 脚本预编译的字节码存储到共享内存中来提升 PHP 的性能， 存储预编译字节码的好处就是 省去了每次加载和解析 PHP 脚本的开销。PHP 5.5.0 及后续版本中已经绑定了 OPcache 扩展。 对于 PHP 5.2，5.3 和 5.4 版本可以使用 » PECL 扩展中的 OPcache 库。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-11T15:36:13.000Z">
+<meta property="og:updated_time" content="2019-11-18T14:39:48.000Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
@@ -87,6 +87,7 @@
       
         <p>在开启Opcache之前，我们先了解一下什么是Opcache:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">OPcache 通过将 PHP 脚本预编译的字节码存储到共享内存中来提升 PHP 的性能， 存储预编译字节码的好处就是 省去了每次加载和解析 PHP 脚本的开销。</span><br><span class="line">PHP 5.5.0 及后续版本中已经绑定了 OPcache 扩展。 对于 PHP 5.2，5.3 和 5.4 版本可以使用 » PECL 扩展中的 OPcache 库。</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>下面来说说如何安装Opcache,不同的PHP版本安装的方法稍有不同：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">OPcache 只能编译为共享扩展。 如果你使用 --<span class="built_in">disable</span>-all 参数 禁用了默认扩展的构建， 那么必须使用 --<span class="built_in">enable</span>-opcache 选项来开启 OPcache。</span><br><span class="line">编译之后，就可以使用 zend_extension 指令来将 OPcache 扩展加载到 PHP 中。在非 Windows 平台使用 zend_extension=/full/path/to/opcache.so，</span><br><span class="line">Windows平台使用 zend_extension=C:\path\to\php_opcache.dll</span><br><span class="line"></span><br><span class="line">PHP 5.2,5.3和 5.4版本中没有和PHP捆绑，需要自行安装，这里不做说明。</span><br></pre></td></tr></table></figure>
 <p>官方出了一个推荐配置如下：</p>
@@ -101,7 +102,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2018/02/09/PHP%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E5%BC%80%E5%90%AFOpcache%E6%9D%A5%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD/" data-id="ck32q15w4002tym0qasdvcnun" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2018/02/09/PHP%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E5%BC%80%E5%90%AFOpcache%E6%9D%A5%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD/" data-id="ck34jm89s002v3s0q3m92ced1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>

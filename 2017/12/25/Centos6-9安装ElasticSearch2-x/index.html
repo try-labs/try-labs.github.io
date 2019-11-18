@@ -7,15 +7,15 @@
   
   <title>Centos6.9安装ElasticSearch2.x | Sam的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="我这里安装的是ElasticSearch2.x系列。ElasticSearch官方文档1.检查系统是否已经安装了jdk 1yum list installed |grep java 若有自带安装的JDK，如何卸载CentOS系统自带Java环境? 12卸载JDK相关文件输入：yum -y remove java-1.7.0-openjdk*卸载tzdata-java输入：yum -y remove">
+  <meta name="description" content="我这里安装的是ElasticSearch2.x系列。ElasticSearch官方文档1.检查系统是否已经安装了jdk">
 <meta name="keywords" content="linux,elasticSearch">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Centos6.9安装ElasticSearch2.x">
 <meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;2017&#x2F;12&#x2F;25&#x2F;Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x&#x2F;index.html">
 <meta property="og:site_name" content="Sam的个人博客">
-<meta property="og:description" content="我这里安装的是ElasticSearch2.x系列。ElasticSearch官方文档1.检查系统是否已经安装了jdk 1yum list installed |grep java 若有自带安装的JDK，如何卸载CentOS系统自带Java环境? 12卸载JDK相关文件输入：yum -y remove java-1.7.0-openjdk*卸载tzdata-java输入：yum -y remove">
+<meta property="og:description" content="我这里安装的是ElasticSearch2.x系列。ElasticSearch官方文档1.检查系统是否已经安装了jdk">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-11T15:46:59.000Z">
+<meta property="og:updated_time" content="2019-11-18T14:32:18.000Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
@@ -86,6 +86,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>我这里安装的是ElasticSearch2.x系列。<br><a href="https://www.elastic.co/guide/en/elasticsearch/reference/2.4/setup-repositories.html" target="_blank" rel="noopener">ElasticSearch官方文档</a><br>1.检查系统是否已经安装了jdk</p>
+<a id="more"></a>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list installed |grep java</span><br></pre></td></tr></table></figure>
 <p>若有自带安装的JDK，如何卸载CentOS系统自带Java环境?</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">卸载JDK相关文件输入：yum -y remove java-1.7.0-openjdk*</span><br><span class="line">卸载tzdata-java输入：yum -y remove tzdata-java.noarch</span><br></pre></td></tr></table></figure>
@@ -112,7 +113,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/" data-id="ck32q15tu0007ym0q6rp7b4ms" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2017/12/25/Centos6-9%E5%AE%89%E8%A3%85ElasticSearch2-x/" data-id="ck34jm87t00073s0qfc6o778k" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>

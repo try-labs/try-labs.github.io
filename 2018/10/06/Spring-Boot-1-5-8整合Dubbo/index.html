@@ -7,15 +7,15 @@
   
   <title>Spring Boot 1.5.8整合Dubbo | Sam的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="废话不多说，今天说说Spring Boot和Dubbo的整合,注册服务中心用的是Zookeeper，至于Dubbo、Zookeeper为何物我在此不再多言，不知道是什么自己去百度，本文适用于对微服务或者RPC了解的人准备的！  先介绍一下整合过程中用到的主要软件的版本： 1234Spring Boot: 1.5.8.RELEASEDubbo: dubbo-spring-boot-starter 0">
+  <meta name="description" content="废话不多说，今天说说Spring Boot和Dubbo的整合,注册服务中心用的是Zookeeper，至于Dubbo、Zookeeper为何物我在此不再多言，不知道是什么自己去百度，本文适用于对微服务或者RPC了解的人准备的！">
 <meta name="keywords" content="dubbo,spring boot">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring Boot 1.5.8整合Dubbo">
 <meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;2018&#x2F;10&#x2F;06&#x2F;Spring-Boot-1-5-8%E6%95%B4%E5%90%88Dubbo&#x2F;index.html">
 <meta property="og:site_name" content="Sam的个人博客">
-<meta property="og:description" content="废话不多说，今天说说Spring Boot和Dubbo的整合,注册服务中心用的是Zookeeper，至于Dubbo、Zookeeper为何物我在此不再多言，不知道是什么自己去百度，本文适用于对微服务或者RPC了解的人准备的！  先介绍一下整合过程中用到的主要软件的版本： 1234Spring Boot: 1.5.8.RELEASEDubbo: dubbo-spring-boot-starter 0">
+<meta property="og:description" content="废话不多说，今天说说Spring Boot和Dubbo的整合,注册服务中心用的是Zookeeper，至于Dubbo、Zookeeper为何物我在此不再多言，不知道是什么自己去百度，本文适用于对微服务或者RPC了解的人准备的！">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-13T15:07:54.000Z">
+<meta property="og:updated_time" content="2019-11-18T14:43:04.000Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
@@ -85,7 +85,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>废话不多说，今天说说Spring Boot和Dubbo的整合,注册服务中心用的是Zookeeper，至于Dubbo、Zookeeper为何物我在此不再多言，不知道是什么自己去百度，本文适用于对微服务或者RPC了解的人准备的！<br>  先介绍一下整合过程中用到的主要软件的版本：</p>
+        <p>废话不多说，今天说说Spring Boot和Dubbo的整合,注册服务中心用的是Zookeeper，至于Dubbo、Zookeeper为何物我在此不再多言，不知道是什么自己去百度，本文适用于对微服务或者RPC了解的人准备的！</p>
+<a id="more"></a>
+<p>  先介绍一下整合过程中用到的主要软件的版本：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Spring Boot: <span class="number">1.5</span><span class="number">.8</span>.RELEASE</span><br><span class="line">Dubbo: dubbo-spring-boot-starter <span class="number">0.1</span><span class="number">.1</span></span><br><span class="line">Zookeeper: <span class="number">3.4</span><span class="number">.10</span></span><br><span class="line">dubbo-admin：<span class="number">2.5</span><span class="number">.4</span></span><br></pre></td></tr></table></figure>
 <p>其中dubbo-admin使用的是老版本的，新版本的大家可以到github上去搜索，这里给出这个版本的下载地址，我不保证任何时候都可以使用<br><a href="http://files.git.oschina.net/group1/M00/02/8C/PaAvDFo5ucaAR9erAZJTkl50Dto401.war?token=c66854e7d9046899e84dd1c1d96a0065&ts=1538744101&attname=dubbo-admin-2.5.4.war" target="_blank" rel="noopener">dubbo-admin-2.5.4</a><br>Dubbo使用的是alibaba官方提供的starter ：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>dubbo-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
@@ -118,7 +120,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2018/10/06/Spring-Boot-1-5-8%E6%95%B4%E5%90%88Dubbo/" data-id="ck32q15wa0035ym0q3vj57ivo" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2018/10/06/Spring-Boot-1-5-8%E6%95%B4%E5%90%88Dubbo/" data-id="ck34jm89y00343s0qhjxw5ddr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>

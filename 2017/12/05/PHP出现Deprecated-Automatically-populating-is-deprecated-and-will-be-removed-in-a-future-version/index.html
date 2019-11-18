@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Sam的个人博客">
 <meta property="og:description" content="本地新搭建的PHP环境，出现下面的问题： 12Deprecated Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set &amp;apos;always_populate_raw_post_data&amp;apos; to &amp;apos;-1&amp;apos;">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-16T15:48:58.000Z">
+<meta property="og:updated_time" content="2019-11-18T14:39:38.000Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
@@ -87,6 +87,7 @@
       
         <p>本地新搭建的PHP环境，出现下面的问题：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Deprecated Automatically populating <span class="variable">$HTTP_RAW_POST_DATA</span> is deprecated and will be removed <span class="keyword">in</span> a future version. To avoid this warning <span class="built_in">set</span> <span class="string">'always_populate_raw_post_data'</span> to <span class="string">'-1'</span> <span class="keyword">in</span> php.ini and use the php://input stream instead. <span class="keyword">in</span> Unknown on line 0</span><br><span class="line">Warning: Cannot modify header information - headers already sent <span class="keyword">in</span> Unknown on line 0</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>这个问题和PHP版本有关系，PHP 5.6已经废弃了$HTTP_RAW_POST_DATA。<br>解决方法：<br>修改php.ini</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">always_populate_raw_post_data = -1</span><br></pre></td></tr></table></figure>
 <p>重启PHP即可</p>
@@ -94,7 +95,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2017/12/05/PHP%E5%87%BA%E7%8E%B0Deprecated-Automatically-populating-is-deprecated-and-will-be-removed-in-a-future-version/" data-id="ck32q15w1002oym0qddrq54n0" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2017/12/05/PHP%E5%87%BA%E7%8E%B0Deprecated-Automatically-populating-is-deprecated-and-will-be-removed-in-a-future-version/" data-id="ck34jm89o002n3s0q8qacca7o" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>

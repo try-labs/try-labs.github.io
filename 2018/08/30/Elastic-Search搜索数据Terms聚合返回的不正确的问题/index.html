@@ -7,15 +7,15 @@
   
   <title>Elastic Search搜索数据Terms聚合返回的不正确的问题 | Sam的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="项目中使用Elastic Search做搜索，在聚合产品的标签的时候，我发现标签的种类有很多超过了10个（这一点很重要），但是聚合标签出来的数据只有10个，缺少了很多标签，查询的语句如下： 1234567891011121314151617181920212223242526272829&amp;#123;  &quot;from&quot; : 0,  &quot;size&quot; : 15,  &quot;query&quot; : &amp;#123;    &quot;">
+  <meta name="description" content="项目中使用Elastic Search做搜索，在聚合产品的标签的时候，我发现标签的种类有很多超过了10个（这一点很重要），但是聚合标签出来的数据只有10个，缺少了很多标签，查询的语句如下：">
 <meta name="keywords" content="java,elasticSearch">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Elastic Search搜索数据Terms聚合返回的不正确的问题">
 <meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;2018&#x2F;08&#x2F;30&#x2F;Elastic-Search%E6%90%9C%E7%B4%A2%E6%95%B0%E6%8D%AETerms%E8%81%9A%E5%90%88%E8%BF%94%E5%9B%9E%E7%9A%84%E4%B8%8D%E6%AD%A3%E7%A1%AE%E7%9A%84%E9%97%AE%E9%A2%98&#x2F;index.html">
 <meta property="og:site_name" content="Sam的个人博客">
-<meta property="og:description" content="项目中使用Elastic Search做搜索，在聚合产品的标签的时候，我发现标签的种类有很多超过了10个（这一点很重要），但是聚合标签出来的数据只有10个，缺少了很多标签，查询的语句如下： 1234567891011121314151617181920212223242526272829&amp;#123;  &quot;from&quot; : 0,  &quot;size&quot; : 15,  &quot;query&quot; : &amp;#123;    &quot;">
+<meta property="og:description" content="项目中使用Elastic Search做搜索，在聚合产品的标签的时候，我发现标签的种类有很多超过了10个（这一点很重要），但是聚合标签出来的数据只有10个，缺少了很多标签，查询的语句如下：">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-12T15:38:47.000Z">
+<meta property="og:updated_time" content="2019-11-18T14:32:34.000Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
@@ -86,6 +86,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>项目中使用Elastic Search做搜索，在聚合产品的标签的时候，我发现标签的种类有很多超过了10个（这一点很重要），但是聚合标签出来的数据只有10个，缺少了很多标签，查询的语句如下：</p>
+<a id="more"></a>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"from"</span> : <span class="number">0</span>,</span><br><span class="line">  <span class="attr">"size"</span> : <span class="number">15</span>,</span><br><span class="line">  <span class="attr">"query"</span> : &#123;</span><br><span class="line">    <span class="attr">"bool"</span> : &#123;</span><br><span class="line">      <span class="attr">"must"</span> : [ &#123;</span><br><span class="line">        <span class="attr">"terms"</span> : &#123;</span><br><span class="line">          <span class="attr">"categoryId"</span> : [ <span class="number">1046</span>, <span class="number">1045</span>, <span class="number">1044</span> ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;, &#123;</span><br><span class="line">        <span class="attr">"terms"</span> : &#123;</span><br><span class="line">          <span class="attr">"tagList.id"</span> : [ <span class="number">1063</span>, <span class="number">1138</span>, <span class="number">1115</span>, <span class="number">1142</span> ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"aggregations"</span> : &#123;</span><br><span class="line">    <span class="attr">"categoryId"</span> : &#123;</span><br><span class="line">      <span class="attr">"terms"</span> : &#123;</span><br><span class="line">        <span class="attr">"field"</span> : <span class="string">"categoryId"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"tagList.tagContent"</span> : &#123;</span><br><span class="line">      <span class="attr">"terms"</span> : &#123;</span><br><span class="line">        <span class="attr">"field"</span> : <span class="string">"tagList.tagContent"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>百思不得其解，看文档发现自己的查询和Terms的聚合使用都是没有任何问题的，但是出来的数据为什么会少呢？于是昨天上午花了将近一个小时的时间才找到问题的所在，下面是文档上对返回数据的一个解释：<br>By default, the terms aggregation will return the buckets for the top ten terms ordered by the doc_count. One can change this default behaviour by setting the size parameter.</p>
 <p>Size<br>The size parameter can be set to define how many term buckets should be returned out of the overall terms list. By default, the node coordinating the search process will request each shard to provide its own top size term buckets and once all shards respond, it will reduce the results to the final list that will then be returned to the client. This means that if the number of unique terms is greater than size, the returned list is slightly off and not accurate (it could be that the term counts are slightly off and it could even be that a term that should have been in the top size buckets was not returned).</p>
@@ -106,7 +107,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2018/08/30/Elastic-Search%E6%90%9C%E7%B4%A2%E6%95%B0%E6%8D%AETerms%E8%81%9A%E5%90%88%E8%BF%94%E5%9B%9E%E7%9A%84%E4%B8%8D%E6%AD%A3%E7%A1%AE%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ck32q15u1000fym0q5z3kb181" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2018/08/30/Elastic-Search%E6%90%9C%E7%B4%A2%E6%95%B0%E6%8D%AETerms%E8%81%9A%E5%90%88%E8%BF%94%E5%9B%9E%E7%9A%84%E4%B8%8D%E6%AD%A3%E7%A1%AE%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ck34jm882000g3s0qgcx3a8bl" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>

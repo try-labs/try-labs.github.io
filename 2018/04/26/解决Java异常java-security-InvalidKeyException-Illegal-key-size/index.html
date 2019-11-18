@@ -7,15 +7,15 @@
   
   <title>解决Java异常java.security.InvalidKeyException: Illegal key size | Sam的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="最近公司准备对接马蜂窝的接口，今天在开发的过程中出现了下面的问题： 1java.security.InvalidKeyException: Illegal key size 通过仔细阅读马蜂窝的demo时发现，他们在demo里写了下面一段话： 123456说明：异常java.security.InvalidKeyException:illegal Key Size的解决方案在官方网站下载JCE无限">
+  <meta name="description" content="最近公司准备对接马蜂窝的接口，今天在开发的过程中出现了下面的问题： 1java.security.InvalidKeyException: Illegal key size">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="解决Java异常java.security.InvalidKeyException: Illegal key size">
 <meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;2018&#x2F;04&#x2F;26&#x2F;%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size&#x2F;index.html">
 <meta property="og:site_name" content="Sam的个人博客">
-<meta property="og:description" content="最近公司准备对接马蜂窝的接口，今天在开发的过程中出现了下面的问题： 1java.security.InvalidKeyException: Illegal key size 通过仔细阅读马蜂窝的demo时发现，他们在demo里写了下面一段话： 123456说明：异常java.security.InvalidKeyException:illegal Key Size的解决方案在官方网站下载JCE无限">
+<meta property="og:description" content="最近公司准备对接马蜂窝的接口，今天在开发的过程中出现了下面的问题： 1java.security.InvalidKeyException: Illegal key size">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-11T15:42:23.000Z">
+<meta property="og:updated_time" content="2019-11-18T14:30:14.000Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
@@ -87,6 +87,7 @@
       
         <p>最近公司准备对接马蜂窝的接口，今天在开发的过程中出现了下面的问题：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.security.InvalidKeyException: Illegal key size</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>通过仔细阅读马蜂窝的demo时发现，他们在demo里写了下面一段话：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">说明：异常java.security.InvalidKeyException:illegal Key Size的解决方案</span><br><span class="line">在官方网站下载JCE无限制权限策略文件（JDK7的下载地址：</span><br><span class="line">  http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html</span><br><span class="line">下载后解压，可以看到local_policy.jar和US_export_policy.jar以及readme.txt</span><br><span class="line">如果安装了JRE，将两个jar文件放到%JRE_HOME%\lib\security目录下覆盖原来的文件</span><br><span class="line">如果安装了JDK，将两个jar文件放到%JDK_HOME%\jre\lib\security目录下覆盖原来文件</span><br></pre></td></tr></table></figure>
 <p>后来百度得知这里面还有其他原因：<br>如果密钥大于128, 会抛出java.security.InvalidKeyException: Illegal key size 异常. 因为密钥长度是受限制的, java运行时环境读到的是受限的policy文件. 文件位于${java_home}/jre/lib/security, 这种限制是因为美国对软件出口的控制.</p>
@@ -97,7 +98,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/" data-id="ck32q15xf004vym0q1tbj6soh" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2018/04/26/%E8%A7%A3%E5%86%B3Java%E5%BC%82%E5%B8%B8java-security-InvalidKeyException-Illegal-key-size/" data-id="ck34jm8bb00513s0qaaqjgq9f" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>

@@ -7,14 +7,14 @@
   
   <title>解决git默认不区分文件名大小写的问题 | Sam的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="当你创建一个文件后,叫 readme.md 写入内容后 提交到线上代码仓库.然后你在本地修改文件名为 Readme.md 接着你去提交,发现代码没有变化. 1git status 你会无任何提示信息,其实 git 默认对于文件名大小写是不敏感的,所以上面你修改了首字母大写,但是git 并没有发现代码任何改动.那么如何才能让 git 识别文件名大小写变化. 一  配置git 使其对文件名大小写敏感">
+  <meta name="description" content="当你创建一个文件后,叫 readme.md 写入内容后 提交到线上代码仓库.然后你在本地修改文件名为 Readme.md 接着你去提交,发现代码没有变化.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="解决git默认不区分文件名大小写的问题">
 <meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;2017&#x2F;11&#x2F;13&#x2F;%E8%A7%A3%E5%86%B3git%E9%BB%98%E8%AE%A4%E4%B8%8D%E5%8C%BA%E5%88%86%E6%96%87%E4%BB%B6%E5%90%8D%E5%A4%A7%E5%B0%8F%E5%86%99%E7%9A%84%E9%97%AE%E9%A2%98&#x2F;index.html">
 <meta property="og:site_name" content="Sam的个人博客">
-<meta property="og:description" content="当你创建一个文件后,叫 readme.md 写入内容后 提交到线上代码仓库.然后你在本地修改文件名为 Readme.md 接着你去提交,发现代码没有变化. 1git status 你会无任何提示信息,其实 git 默认对于文件名大小写是不敏感的,所以上面你修改了首字母大写,但是git 并没有发现代码任何改动.那么如何才能让 git 识别文件名大小写变化. 一  配置git 使其对文件名大小写敏感">
+<meta property="og:description" content="当你创建一个文件后,叫 readme.md 写入内容后 提交到线上代码仓库.然后你在本地修改文件名为 Readme.md 接着你去提交,发现代码没有变化.">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-10T14:47:22.000Z">
+<meta property="og:updated_time" content="2019-11-18T14:29:55.000Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
@@ -85,6 +85,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>当你创建一个文件后,叫 readme.md 写入内容后 提交到线上代码仓库.<br>然后你在本地修改文件名为 Readme.md 接着你去提交,发现代码没有变化.</p>
+<a id="more"></a>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
 <p>你会无任何提示信息,其实 git 默认对于文件名大小写是不敏感的,所以上面你修改了首字母大写,但是git 并没有发现代码任何改动.那么如何才能让 git 识别文件名大小写变化.</p>
 <p>一  配置git 使其对文件名大小写敏感</p>
@@ -100,7 +101,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2017/11/13/%E8%A7%A3%E5%86%B3git%E9%BB%98%E8%AE%A4%E4%B8%8D%E5%8C%BA%E5%88%86%E6%96%87%E4%BB%B6%E5%90%8D%E5%A4%A7%E5%B0%8F%E5%86%99%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ck32q15xj0052ym0q6xlq0fi7" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2017/11/13/%E8%A7%A3%E5%86%B3git%E9%BB%98%E8%AE%A4%E4%B8%8D%E5%8C%BA%E5%88%86%E6%96%87%E4%BB%B6%E5%90%8D%E5%A4%A7%E5%B0%8F%E5%86%99%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ck34jm8bc00543s0qf7f0e8tm" class="article-share-link">Share</a>
       
       
     </footer>

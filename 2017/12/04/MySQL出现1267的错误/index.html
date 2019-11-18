@@ -7,15 +7,15 @@
   
   <title>MySQL出现1267的错误 | Sam的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="执行SQL的时候，MySQL出现了下面的1267的错误，提示与字符集有关系。 11267 - Illegal mix of collations (utf8_unicode_ci,IMPLICIT) and (utf8_general_ci,IMPLICIT) for operation &amp;apos;=&amp;apos; 查找问题的时候，发现有一张表是从其他地方拷贝过来的，这个表和我们目前项目中的表，稍微有点不同。数据表中">
+  <meta name="description" content="执行SQL的时候，MySQL出现了下面的1267的错误，提示与字符集有关系。 11267 - Illegal mix of collations (utf8_unicode_ci,IMPLICIT) and (utf8_general_ci,IMPLICIT) for operation &amp;apos;=&amp;apos;">
 <meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL出现1267的错误">
 <meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;2017&#x2F;12&#x2F;04&#x2F;MySQL%E5%87%BA%E7%8E%B01267%E7%9A%84%E9%94%99%E8%AF%AF&#x2F;index.html">
 <meta property="og:site_name" content="Sam的个人博客">
-<meta property="og:description" content="执行SQL的时候，MySQL出现了下面的1267的错误，提示与字符集有关系。 11267 - Illegal mix of collations (utf8_unicode_ci,IMPLICIT) and (utf8_general_ci,IMPLICIT) for operation &amp;apos;=&amp;apos; 查找问题的时候，发现有一张表是从其他地方拷贝过来的，这个表和我们目前项目中的表，稍微有点不同。数据表中">
+<meta property="og:description" content="执行SQL的时候，MySQL出现了下面的1267的错误，提示与字符集有关系。 11267 - Illegal mix of collations (utf8_unicode_ci,IMPLICIT) and (utf8_general_ci,IMPLICIT) for operation &amp;apos;=&amp;apos;">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-11T15:22:24.000Z">
+<meta property="og:updated_time" content="2019-11-18T14:38:48.000Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
@@ -87,6 +87,7 @@
       
         <p>执行SQL的时候，MySQL出现了下面的1267的错误，提示与字符集有关系。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1267 - Illegal mix of collations (utf8_unicode_ci,IMPLICIT) and (utf8_general_ci,IMPLICIT) <span class="keyword">for</span> operation <span class="string">'='</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>查找问题的时候，发现有一张表是从其他地方拷贝过来的，这个表和我们目前项目中的表，稍微有点不同。数据表中字符串类型的字段，不仅有字符集这个属性，还有一个排序规则的属性。拷贝过来的表的字符串类型的字段的排序规则是utf8_unicode_ci，而我们的项目中的是utf8_general_ci，修改之后再次执行上述的SQL，就没有出现上面的错误！<br>下面是问题的简单总结：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ci(caseinsensitive大小写不敏感)</span><br><span class="line">utf8_unicode_ci和utf8_general_ci对中、英文来说没有实质的差别。</span><br><span class="line">utf8_general_ci校对速度快，但准确度稍差。</span><br><span class="line">utf8_unicode_ci准确度高，但校对速度稍慢。</span><br></pre></td></tr></table></figure>
 <p>如果你的应用有德语、法语或者俄语，请一定使用utf8_unicode_ci。一般用utf8_general_ci就够了，到现在也没发现问题。。。</p>
@@ -101,7 +102,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2017/12/04/MySQL%E5%87%BA%E7%8E%B01267%E7%9A%84%E9%94%99%E8%AF%AF/" data-id="ck32q15vo0027ym0qe83vc856" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2017/12/04/MySQL%E5%87%BA%E7%8E%B01267%E7%9A%84%E9%94%99%E8%AF%AF/" data-id="ck34jm89a00243s0qcq1mcelq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>

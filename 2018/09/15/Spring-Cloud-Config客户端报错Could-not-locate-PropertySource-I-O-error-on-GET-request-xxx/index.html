@@ -7,15 +7,15 @@
   
   <title>Spring Cloud Config客户端报错Could not locate PropertySource: I/O error on GET request xxx | Sam的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="今天在研究Spring Cloud Config配置中心，出了一个很让人恼火的问题，我先贴一下我的相关配置信息： 客户端的bootstrap.yml配置： 123456789101112131415161718192021server:  port: 9009spring:  application:    name: admin-server    profiles:      active:">
+  <meta name="description" content="今天在研究Spring Cloud Config配置中心，出了一个很让人恼火的问题，我先贴一下我的相关配置信息：">
 <meta name="keywords" content="spring cloud,spring cloud config">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring Cloud Config客户端报错Could not locate PropertySource: I&#x2F;O error on GET request xxx">
 <meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;2018&#x2F;09&#x2F;15&#x2F;Spring-Cloud-Config%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8A%A5%E9%94%99Could-not-locate-PropertySource-I-O-error-on-GET-request-xxx&#x2F;index.html">
 <meta property="og:site_name" content="Sam的个人博客">
-<meta property="og:description" content="今天在研究Spring Cloud Config配置中心，出了一个很让人恼火的问题，我先贴一下我的相关配置信息： 客户端的bootstrap.yml配置： 123456789101112131415161718192021server:  port: 9009spring:  application:    name: admin-server    profiles:      active:">
+<meta property="og:description" content="今天在研究Spring Cloud Config配置中心，出了一个很让人恼火的问题，我先贴一下我的相关配置信息：">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-12T15:47:31.000Z">
+<meta property="og:updated_time" content="2019-11-18T14:46:25.000Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
@@ -86,6 +86,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>今天在研究Spring Cloud Config配置中心，出了一个很让人恼火的问题，我先贴一下我的相关配置信息：</p>
+<a id="more"></a>
 <p>客户端的bootstrap.yml配置：</p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">9009</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">admin-server</span></span><br><span class="line">    <span class="attr">profiles:</span></span><br><span class="line">      <span class="attr">active:</span> <span class="string">dev</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">config:</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">admin-server-config</span></span><br><span class="line">      <span class="attr">label:</span> <span class="string">master</span></span><br><span class="line">      <span class="attr">profile:</span> <span class="string">dev</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">        <span class="attr">service-id:</span> <span class="string">config-server</span></span><br><span class="line"></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line">  <span class="attr">client:</span></span><br><span class="line">    <span class="attr">service-url:</span></span><br><span class="line">      <span class="attr">defaultZone:</span> <span class="string">http://Eurexxxr:xxxx-12xxx56@accp.xxx.net:8786/eureka/</span></span><br></pre></td></tr></table></figure>
 <p>出现的问题如下：</p>
@@ -97,7 +98,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2018/09/15/Spring-Cloud-Config%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8A%A5%E9%94%99Could-not-locate-PropertySource-I-O-error-on-GET-request-xxx/" data-id="ck32q15wl003mym0q515j3r6y" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2018/09/15/Spring-Cloud-Config%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8A%A5%E9%94%99Could-not-locate-PropertySource-I-O-error-on-GET-request-xxx/" data-id="ck34jm8a9003l3s0q169e0d1k" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-cloud/" rel="tag">spring cloud</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-cloud-config/" rel="tag">spring cloud config</a></li></ul>
