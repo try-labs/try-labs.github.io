@@ -61,6 +61,51 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Mac下安装zookeeper" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/12/07/Mac%E4%B8%8B%E5%AE%89%E8%A3%85zookeeper/" class="article-date">
+  <time datetime="2019-12-07T14:15:07.000Z" itemprop="datePublished">2019-12-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/07/Mac%E4%B8%8B%E5%AE%89%E8%A3%85zookeeper/">Mac下安装zookeeper</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>从<a href="https://archive.apache.org/dist/zookeeper/zookeeper-3.5.6/" target="_blank" rel="noopener">zookeeper下载地址</a>下载，注意下载带-bin后缀的安装包，不然安装之后启动会出现以下的错误。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">错误: 找不到或无法加载主类org.apache.zookeeper.server.quorum.QuorumPeerMain</span><br></pre></td></tr></table></figure>
+<p>解决方案<br>原来是因为从版本3.5.5开始，带有bin名称的包才是我们想要的下载可以直接使用的里面有编译后的二进制的包，而之前的普通的tar.gz的包里面是只是源码的包无法直接使用。</p>
+<p>将下载后的安装包解压到 /usr/local/zookeeper 目录下，进行后续的安装配置。</p>
+<h5 id="编辑配置文件"><a href="#编辑配置文件" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h5><p>在conf目录下拷贝 zoo_sample.cfg 文件新建 zoo.cfg配置文件，修改或者新加以下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># The number of milliseconds of each tick</span></span><br><span class="line">tickTime=2000</span><br><span class="line"><span class="comment"># The number of ticks that the initial </span></span><br><span class="line"><span class="comment"># synchronization phase can take</span></span><br><span class="line">initLimit=10</span><br><span class="line"><span class="comment"># The number of ticks that can pass between </span></span><br><span class="line"><span class="comment"># sending a request and getting an acknowledgement</span></span><br><span class="line">syncLimit=5</span><br><span class="line"><span class="comment"># the directory where the snapshot is stored.</span></span><br><span class="line"><span class="comment"># do not use /tmp for storage, /tmp here is just </span></span><br><span class="line"><span class="comment"># example sakes.</span></span><br><span class="line">dataDir=/usr/<span class="built_in">local</span>/zookeeper/data</span><br><span class="line"><span class="comment"># the port at which the clients will connect</span></span><br><span class="line">clientPort=2181</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#tickTime: zookeeper中使用的基本时间单位, 毫秒值.</span></span><br><span class="line"><span class="comment">#dataDir: 数据目录. 可以是任意目录.</span></span><br><span class="line"><span class="comment">#dataLogDir: log目录, 同样可以是任意目录. 如果没有设置该参数, 将使用和#dataDir相同的设置.此目录可以不加</span></span><br><span class="line"><span class="comment">#clientPort: 监听client连接的端口号.</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="将zookeeper加入系统环境变量中"><a href="#将zookeeper加入系统环境变量中" class="headerlink" title="将zookeeper加入系统环境变量中"></a>将zookeeper加入系统环境变量中</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/profile</span><br><span class="line"></span><br><span class="line">PATH=<span class="variable">$PATH</span>:/usr/<span class="built_in">local</span>/sphinx/bin:/usr/<span class="built_in">local</span>/elasticsearch/bin:/usr/<span class="built_in">local</span>/mycat/bin:/usr/<span class="built_in">local</span>/zookeeper/bin</span><br><span class="line"><span class="built_in">export</span> PATH</span><br><span class="line"></span><br><span class="line"><span class="comment">#让环境变量立马生效</span></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line">Sam-Mac-2:~ Sam$ zkServer.sh start</span><br><span class="line">/usr/bin/java</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/<span class="built_in">local</span>/zookeeper/bin/../conf/zoo.cfg</span><br><span class="line">Starting zookeeper ... STARTED</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭</span></span><br><span class="line">Sam-Mac-2:~ Sam$ zkServer.sh stop</span><br><span class="line">/usr/bin/java</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/<span class="built_in">local</span>/zookeeper/bin/../conf/zoo.cfg</span><br><span class="line">Stopping zookeeper ... STOPPED</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/2019/12/07/Mac%E4%B8%8B%E5%AE%89%E8%A3%85zookeeper/" data-id="ck3vp0zv7001mgj0qbw7r119z" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/11/10/hello-world/" class="article-date">
@@ -92,7 +137,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2019/11/10/hello-world/" data-id="ck34jt3tm003z4g0q29uz5svf" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2019/11/10/hello-world/" data-id="ck3vp0zwu0043gj0q74gvgcjr" class="article-share-link">Share</a>
       
       
     </footer>
@@ -134,7 +179,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2019/09/18/%E8%A7%A3%E5%86%B3nested-exception-is-java-lang-IllegalArgumentException-Could-not-resolve-placeholder-alipay-appId-in-string-value-alipay-appId/" data-id="ck34jt3ud00554g0qcvdhbxpq" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2019/09/18/%E8%A7%A3%E5%86%B3nested-exception-is-java-lang-IllegalArgumentException-Could-not-resolve-placeholder-alipay-appId-in-string-value-alipay-appId/" data-id="ck3vp0zxq0059gj0qfoyc4jwy" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/" rel="tag">spring</a></li></ul>
@@ -177,7 +222,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2019/09/04/Java%E8%8E%B7%E5%8F%96%E4%B8%80%E5%A4%A9%E7%9A%84%E6%9C%80%E5%A4%A7%E6%97%B6%E9%97%B423-59-59%E5%92%8C%E6%9C%80%E5%B0%8F%E6%97%B6%E9%97%B400-00-00/" data-id="ck34jt3s0001e4g0q64k23gja" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2019/09/04/Java%E8%8E%B7%E5%8F%96%E4%B8%80%E5%A4%A9%E7%9A%84%E6%9C%80%E5%A4%A7%E6%97%B6%E9%97%B423-59-59%E5%92%8C%E6%9C%80%E5%B0%8F%E6%97%B6%E9%97%B400-00-00/" data-id="ck3vp0zv2001hgj0qgjindzww" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -222,7 +267,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2019/06/03/IDEA%E4%B8%8Btomcat%E5%90%AF%E5%8A%A8%E5%90%8E-server%E4%B9%B1%E7%A0%81%EF%BC%8CTomcat-Catalina-Log%E5%92%8CTomcat-Localhost-Log%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3/" data-id="ck34jt3r9000k4g0q2yu21htz" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2019/06/03/IDEA%E4%B8%8Btomcat%E5%90%AF%E5%8A%A8%E5%90%8E-server%E4%B9%B1%E7%A0%81%EF%BC%8CTomcat-Catalina-Log%E5%92%8CTomcat-Localhost-Log%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3/" data-id="ck3vp0zua000kgj0q93yg2r6b" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/idea/" rel="tag">idea</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li></ul>
@@ -265,7 +310,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2019/05/23/JavaScript%E5%A6%82%E4%BD%95%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" data-id="ck34jt3rc000o4g0q87a4gwrv" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2019/05/23/JavaScript%E5%A6%82%E4%BD%95%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" data-id="ck3vp0zud000ogj0q2yzu1opd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/oop/" rel="tag">oop</a></li></ul>
@@ -308,7 +353,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2019/05/20/Dubbo%E6%B6%88%E8%B4%B9%E8%80%85consumer%E6%8D%95%E6%8D%89%E6%9C%8D%E5%8A%A1%E6%8F%90%E4%BE%9B%E8%80%85provider%E6%8A%9B%E5%87%BA%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8/" data-id="ck34jt3r0000c4g0q6jtt8p2y" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2019/05/20/Dubbo%E6%B6%88%E8%B4%B9%E8%80%85consumer%E6%8D%95%E6%8D%89%E6%9C%8D%E5%8A%A1%E6%8F%90%E4%BE%9B%E8%80%85provider%E6%8A%9B%E5%87%BA%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8/" data-id="ck3vp0zu1000cgj0q3khg5kjb" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li></ul>
@@ -351,7 +396,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2019/05/17/%E5%B0%8F%E8%AF%95%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4EasyExcel%E5%AF%BC%E5%87%BAExcel/" data-id="ck34jt3u4004s4g0q3c8sanpu" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2019/05/17/%E5%B0%8F%E8%AF%95%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4EasyExcel%E5%AF%BC%E5%87%BAExcel/" data-id="ck3vp0zxi004wgj0q6oij4eid" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EasyExcel/" rel="tag">EasyExcel</a></li></ul>
@@ -394,7 +439,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2019/05/17/%E6%9F%A5%E7%9C%8B%E4%BE%9D%E8%B5%96%E7%AC%AC%E4%B8%89%E6%96%B9jar%E6%9C%80%E4%BD%8E%E8%A6%81%E6%B1%82%E8%BF%90%E8%A1%8C%E7%9A%84jdk%E7%89%88%E6%9C%AC/" data-id="ck34jt3u7004v4g0q4nxaalxq" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2019/05/17/%E6%9F%A5%E7%9C%8B%E4%BE%9D%E8%B5%96%E7%AC%AC%E4%B8%89%E6%96%B9jar%E6%9C%80%E4%BD%8E%E8%A6%81%E6%B1%82%E8%BF%90%E8%A1%8C%E7%9A%84jdk%E7%89%88%E6%9C%AC/" data-id="ck3vp0zxk004zgj0q5wzz6rbo" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -437,53 +482,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2019/05/14/Dubbo%E5%87%BA%E7%8E%B0ExceedPayloadLimitException-Data-length-too-large%E7%9A%84%E9%94%99%E8%AF%AF/" data-id="ck34jt3qy000a4g0q5i7l9v12" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/2019/05/14/Dubbo%E5%87%BA%E7%8E%B0ExceedPayloadLimitException-Data-length-too-large%E7%9A%84%E9%94%99%E8%AF%AF/" data-id="ck3vp0ztz000agj0q2lw3b4ar" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-MyBatis-Generator配置文件-指定生成实体类使用实际的表列名作为实体类的属性名" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/05/13/MyBatis-Generator%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-%E6%8C%87%E5%AE%9A%E7%94%9F%E6%88%90%E5%AE%9E%E4%BD%93%E7%B1%BB%E4%BD%BF%E7%94%A8%E5%AE%9E%E9%99%85%E7%9A%84%E8%A1%A8%E5%88%97%E5%90%8D%E4%BD%9C%E4%B8%BA%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%84%E5%B1%9E%E6%80%A7%E5%90%8D/" class="article-date">
-  <time datetime="2019-05-13T15:40:33.000Z" itemprop="datePublished">2019-05-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/13/MyBatis-Generator%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-%E6%8C%87%E5%AE%9A%E7%94%9F%E6%88%90%E5%AE%9E%E4%BD%93%E7%B1%BB%E4%BD%BF%E7%94%A8%E5%AE%9E%E9%99%85%E7%9A%84%E8%A1%A8%E5%88%97%E5%90%8D%E4%BD%9C%E4%B8%BA%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%84%E5%B1%9E%E6%80%A7%E5%90%8D/">MyBatis Generator配置文件--指定生成实体类使用实际的表列名作为实体类的属性名</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今天在用MyBatis Generator生成表实体的时候，发现数据库中的表字段使用的是小驼峰命名规则，生成出来的实体属性都是小写了，没有转成小驼峰，一番搜索得知可以在MyBatis Generator的配置文件中修改。</p>
-        
-          <p class="article-more-link">
-            <a href="/2019/05/13/MyBatis-Generator%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-%E6%8C%87%E5%AE%9A%E7%94%9F%E6%88%90%E5%AE%9E%E4%BD%93%E7%B1%BB%E4%BD%BF%E7%94%A8%E5%AE%9E%E9%99%85%E7%9A%84%E8%A1%A8%E5%88%97%E5%90%8D%E4%BD%9C%E4%B8%BA%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%84%E5%B1%9E%E6%80%A7%E5%90%8D/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/2019/05/13/MyBatis-Generator%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-%E6%8C%87%E5%AE%9A%E7%94%9F%E6%88%90%E5%AE%9E%E4%BD%93%E7%B1%BB%E4%BD%BF%E7%94%A8%E5%AE%9E%E9%99%85%E7%9A%84%E8%A1%A8%E5%88%97%E5%90%8D%E4%BD%9C%E4%B8%BA%E5%AE%9E%E4%BD%93%E7%B1%BB%E7%9A%84%E5%B1%9E%E6%80%A7%E5%90%8D/" data-id="ck34jt3se001z4g0qfet64kef" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li></ul>
 
     </footer>
   </div>
@@ -520,7 +522,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/BigDecimal/" style="font-size: 10px;">BigDecimal</a> <a href="/tags/EasyExcel/" style="font-size: 10px;">EasyExcel</a> <a href="/tags/Iterator/" style="font-size: 10px;">Iterator</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/ListIterator/" style="font-size: 10px;">ListIterator</a> <a href="/tags/PowerDesigner/" style="font-size: 10px;">PowerDesigner</a> <a href="/tags/Redis-Sentinel/" style="font-size: 10px;">Redis-Sentinel</a> <a href="/tags/Snowflake/" style="font-size: 10px;">Snowflake</a> <a href="/tags/String/" style="font-size: 12.86px;">String</a> <a href="/tags/arrayList/" style="font-size: 11.43px;">arrayList</a> <a href="/tags/bean/" style="font-size: 10px;">bean</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/dubbo/" style="font-size: 14.29px;">dubbo</a> <a href="/tags/elasticSearch/" style="font-size: 11.43px;">elasticSearch</a> <a href="/tags/eureka/" style="font-size: 10px;">eureka</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/fastJson/" style="font-size: 10px;">fastJson</a> <a href="/tags/feign/" style="font-size: 10px;">feign</a> <a href="/tags/git/" style="font-size: 11.43px;">git</a> <a href="/tags/ide/" style="font-size: 10px;">ide</a> <a href="/tags/idea/" style="font-size: 11.43px;">idea</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18.57px;">linux</a> <a href="/tags/maven/" style="font-size: 14.29px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 12.86px;">mybatis</a> <a href="/tags/mycat/" style="font-size: 11.43px;">mycat</a> <a href="/tags/mysql/" style="font-size: 14.29px;">mysql</a> <a href="/tags/nginx/" style="font-size: 17.14px;">nginx</a> <a href="/tags/oop/" style="font-size: 11.43px;">oop</a> <a href="/tags/php/" style="font-size: 15.71px;">php</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/proxy/" style="font-size: 11.43px;">proxy</a> <a href="/tags/redis/" style="font-size: 12.86px;">redis</a> <a href="/tags/sharding-jdbc/" style="font-size: 10px;">sharding-jdbc</a> <a href="/tags/spring/" style="font-size: 11.43px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.14px;">spring boot</a> <a href="/tags/spring-cloud/" style="font-size: 11.43px;">spring cloud</a> <a href="/tags/spring-cloud-config/" style="font-size: 10px;">spring cloud config</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 11.43px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" style="font-size: 10px;">主从复制</a> <a href="/tags/%E4%BA%8C%E5%88%86%E6%B3%95/" style="font-size: 10px;">二分法</a>
+      <a href="/tags/BigDecimal/" style="font-size: 10px;">BigDecimal</a> <a href="/tags/EasyExcel/" style="font-size: 10px;">EasyExcel</a> <a href="/tags/Iterator/" style="font-size: 10px;">Iterator</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/ListIterator/" style="font-size: 10px;">ListIterator</a> <a href="/tags/PowerDesigner/" style="font-size: 10px;">PowerDesigner</a> <a href="/tags/Redis-Sentinel/" style="font-size: 10px;">Redis-Sentinel</a> <a href="/tags/Snowflake/" style="font-size: 10px;">Snowflake</a> <a href="/tags/String/" style="font-size: 12.86px;">String</a> <a href="/tags/arrayList/" style="font-size: 11.43px;">arrayList</a> <a href="/tags/bean/" style="font-size: 10px;">bean</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/dubbo/" style="font-size: 14.29px;">dubbo</a> <a href="/tags/elasticSearch/" style="font-size: 11.43px;">elasticSearch</a> <a href="/tags/eureka/" style="font-size: 10px;">eureka</a> <a href="/tags/exception/" style="font-size: 10px;">exception</a> <a href="/tags/fastJson/" style="font-size: 10px;">fastJson</a> <a href="/tags/feign/" style="font-size: 10px;">feign</a> <a href="/tags/git/" style="font-size: 11.43px;">git</a> <a href="/tags/ide/" style="font-size: 10px;">ide</a> <a href="/tags/idea/" style="font-size: 11.43px;">idea</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/linux/" style="font-size: 18.57px;">linux</a> <a href="/tags/maven/" style="font-size: 14.29px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mybatis/" style="font-size: 12.86px;">mybatis</a> <a href="/tags/mycat/" style="font-size: 11.43px;">mycat</a> <a href="/tags/mysql/" style="font-size: 14.29px;">mysql</a> <a href="/tags/nginx/" style="font-size: 17.14px;">nginx</a> <a href="/tags/oop/" style="font-size: 11.43px;">oop</a> <a href="/tags/php/" style="font-size: 15.71px;">php</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/proxy/" style="font-size: 11.43px;">proxy</a> <a href="/tags/redis/" style="font-size: 12.86px;">redis</a> <a href="/tags/sharding-jdbc/" style="font-size: 10px;">sharding-jdbc</a> <a href="/tags/spring/" style="font-size: 11.43px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.14px;">spring boot</a> <a href="/tags/spring-cloud/" style="font-size: 11.43px;">spring cloud</a> <a href="/tags/spring-cloud-config/" style="font-size: 10px;">spring cloud config</a> <a href="/tags/spring-boot-devtools/" style="font-size: 10px;">spring-boot-devtools</a> <a href="/tags/tomcat/" style="font-size: 11.43px;">tomcat</a> <a href="/tags/xunsearch/" style="font-size: 10px;">xunsearch</a> <a href="/tags/zookeeper/" style="font-size: 11.43px;">zookeeper</a> <a href="/tags/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" style="font-size: 10px;">主从复制</a> <a href="/tags/%E4%BA%8C%E5%88%86%E6%B3%95/" style="font-size: 10px;">二分法</a>
     </div>
   </div>
 
@@ -529,7 +531,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
     </div>
   </div>
 
@@ -540,6 +542,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/12/07/Mac%E4%B8%8B%E5%AE%89%E8%A3%85zookeeper/">Mac下安装zookeeper</a>
+          </li>
         
           <li>
             <a href="/2019/11/10/hello-world/">Hello World</a>
@@ -555,10 +561,6 @@
         
           <li>
             <a href="/2019/06/03/IDEA%E4%B8%8Btomcat%E5%90%AF%E5%8A%A8%E5%90%8E-server%E4%B9%B1%E7%A0%81%EF%BC%8CTomcat-Catalina-Log%E5%92%8CTomcat-Localhost-Log%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3/">IDEA下tomcat启动后 server乱码，Tomcat Catalina Log和Tomcat Localhost Log乱码问题的解决 </a>
-          </li>
-        
-          <li>
-            <a href="/2019/05/23/JavaScript%E5%A6%82%E4%BD%95%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">JavaScript如何面向对象</a>
           </li>
         
       </ul>
