@@ -1,18 +1,172 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>BigDecimal运算出现Non-terminating decimal expansion; no exact representable decimal result | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="我们都知道Java提供了两个高精度计算的类:BigInteger和BigDeciaml。虽然它们大体上属于“包装器类”的范畴，但两者都没有对应的基本类型。BigDeciaml支持任意精度的定点数。例如，可以用它进行精确的货币计算。（以上摘自Java编程思想第4版）">
+<meta name="keywords" content="java,BigDecimal">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BigDecimal运算出现Non-terminating decimal expansion; no exact representable decimal result">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;post&#x2F;77a90911.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="我们都知道Java提供了两个高精度计算的类:BigInteger和BigDeciaml。虽然它们大体上属于“包装器类”的范畴，但两者都没有对应的基本类型。BigDeciaml支持任意精度的定点数。例如，可以用它进行精确的货币计算。（以上摘自Java编程思想第4版）">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-09T15:03:26.000Z">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.ydstudio.net"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-BigDecimal运算出现Non-terminating-decimal-expansion-no-exact-representable-decimal-result" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/77a90911.html" class="article-date">
+  <time datetime="2018-08-24T15:28:55.000Z" itemprop="datePublished">2018-08-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      BigDecimal运算出现Non-terminating decimal expansion; no exact representable decimal result
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们都知道Java提供了两个高精度计算的类:BigInteger和BigDeciaml。虽然它们大体上属于“包装器类”的范畴，但两者都没有对应的基本类型。BigDeciaml支持任意精度的定点数。例如，可以用它进行精确的货币计算。（以上摘自Java编程思想第4版）</p>
+<a id="more"></a>
+<p>最近的项目使用BigDeciaml，代码如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> originPrice 原始货币金额</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> betweenCurrencyRate 原始货币兑换中间货币的汇率</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> toCurrencyRate 中间货币兑换目标货币的汇率</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span> java.math.BigDecimal</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> BigDecimal <span class="title">rate</span><span class="params">(BigDecimal originPrice,BigDecimal betweenCurrencyRate,BigDecimal toCurrencyRate)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> originPrice.multiply(betweenCurrencyRate).divide(toCurrencyRate);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">BigDecimal chaoIn = exchangeRate.getChaoIn();</span><br><span class="line">BigDecimal cNYChaoIn = exchangeRateCNY.getChaoIn();</span><br><span class="line"></span><br><span class="line">adultPrice = RateExchangeUtil.rate(adultPrice,chaoIn,cNYChaoIn);</span><br><span class="line">childPrice = RateExchangeUtil.rate(childRetail.multiply(<span class="keyword">new</span> BigDecimal(childNum)),chaoIn,cNYChaoIn);</span><br><span class="line"><span class="comment">// 计算酒店里面总价</span></span><br><span class="line">hotelTotalPrice = hotelTotalPrice.add(childPrice).add(adultPrice);</span><br></pre></td></tr></table></figure>
+<p>在使用BigDecimal做运算的时候，出现了下面的异常：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Non-terminating decimal expansion; no exact representable decimal result.</span><br></pre></td></tr></table></figure>
+<p>后来通过搜索得知，通过BigDecimal的divide方法进行除法时当不整除，出现无限循环小数时，就会抛出上面的异常。<br>我们应该使用divide的重载方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">BigDecimal.divide(BigDecimal divisor, <span class="keyword">int</span> scale, RoundingMode roundingMode) ;</span><br><span class="line"></span><br><span class="line">scale为小数位数；</span><br><span class="line"></span><br><span class="line">roundingMode为小数模式；</span><br><span class="line">ROUND_CEILING</span><br><span class="line">如果 BigDecimal 是正的，则做 ROUND_UP 操作；如果为负，则做 ROUND_DOWN 操作。</span><br><span class="line">ROUND_DOWN</span><br><span class="line">从不在舍弃(即截断)的小数之前增加数字。</span><br><span class="line">ROUND_FLOOR</span><br><span class="line">如果 BigDecimal 为正，则作 ROUND_UP ；如果为负，则作 ROUND_DOWN 。</span><br><span class="line">ROUND_HALF_DOWN</span><br><span class="line">若舍弃部分&gt; .<span class="number">5</span>，则作 ROUND_UP；否则，作 ROUND_DOWN 。</span><br><span class="line">ROUND_HALF_EVEN</span><br><span class="line">如果舍弃部分左边的数字为奇数，则作 ROUND_HALF_UP ；如果它为偶数，则作 ROUND_HALF_DOWN 。</span><br><span class="line">ROUND_HALF_UP</span><br><span class="line">若舍弃部分&gt;=.<span class="number">5</span>，则作 ROUND_UP ；否则，作 ROUND_DOWN 。</span><br><span class="line">ROUND_UNNECESSARY</span><br><span class="line">该“伪舍入模式”实际是指明所要求的操作必须是精确的，，因此不需要舍入操作。</span><br><span class="line">ROUND_UP</span><br><span class="line">总是在非 <span class="number">0</span> 舍弃小数(即截断)之前增加数字。</span><br></pre></td></tr></table></figure>
+<p>最后修正rate方法中的问题，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*  货币转换 美元转加元，人民币作为中间货币</span></span><br><span class="line"><span class="comment">*  美元 * 美元兑换人民币的汇率 / 人民币兑换加元的汇率</span></span><br><span class="line"><span class="comment">*  出现问题 Non-terminating decimal expansion; no exact representable decimal result.</span></span><br><span class="line"><span class="comment">*  要指定 divide的后两个参数</span></span><br><span class="line"><span class="comment">*  JAVA中如果用BigDecimal做除法的时候一定要在divide方法中传递scale参数，</span></span><br><span class="line"><span class="comment">*  定义精确到小数点后几位，否则在不整除的情况下，结果是无限循环小数时，就会抛出以上异常。</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> originPrice 原始货币金额</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> betweenCurrencyRate 原始货币兑换中间货币的汇率</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> toCurrencyRate 中间货币兑换目标货币的汇率</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span> java.math.BigDecimal</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> BigDecimal <span class="title">rate</span><span class="params">(BigDecimal originPrice,BigDecimal betweenCurrencyRate,BigDecimal toCurrencyRate)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> originPrice.multiply(betweenCurrencyRate).divide(toCurrencyRate,<span class="number">4</span>,BigDecimal.ROUND_HALF_UP);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/77a90911.html" data-id="ck476owzw0000i40qc3vo66cx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BigDecimal/" rel="tag">BigDecimal</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/fea71f82.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          IntelliJ Idea 常用快捷键列表
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/45183e9d.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Nginx实现反向代理 Node.js</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Sam<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
   </div>
 </body>
 </html>

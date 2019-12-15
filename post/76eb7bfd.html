@@ -1,18 +1,165 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>小试阿里巴巴EasyExcel导出Excel | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="添加easyexcel的maven依赖12345&amp;lt;dependency&amp;gt;         &amp;lt;groupId&amp;gt;com.alibaba&amp;lt;&#x2F;groupId&amp;gt;         &amp;lt;artifactId&amp;gt;easyexcel&amp;lt;&#x2F;artifactId&amp;gt;         &amp;lt;version&amp;gt;1.1.1&amp;lt;&#x2F;version&amp;gt;     &amp;l">
+<meta name="keywords" content="EasyExcel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小试阿里巴巴EasyExcel导出Excel">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;post&#x2F;76eb7bfd.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="添加easyexcel的maven依赖12345&amp;lt;dependency&amp;gt;         &amp;lt;groupId&amp;gt;com.alibaba&amp;lt;&#x2F;groupId&amp;gt;         &amp;lt;artifactId&amp;gt;easyexcel&amp;lt;&#x2F;artifactId&amp;gt;         &amp;lt;version&amp;gt;1.1.1&amp;lt;&#x2F;version&amp;gt;     &amp;l">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-09T15:03:26.000Z">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.ydstudio.net"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-小试阿里巴巴EasyExcel导出Excel" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/76eb7bfd.html" class="article-date">
+  <time datetime="2019-05-17T15:43:39.000Z" itemprop="datePublished">2019-05-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      小试阿里巴巴EasyExcel导出Excel
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="添加easyexcel的maven依赖"><a href="#添加easyexcel的maven依赖" class="headerlink" title="添加easyexcel的maven依赖"></a>添加easyexcel的maven依赖</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>easyexcel<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="导出的模型需要继承BaseRowModel，然后可以在每个属性上设置所在的列和一些format"><a href="#导出的模型需要继承BaseRowModel，然后可以在每个属性上设置所在的列和一些format" class="headerlink" title="导出的模型需要继承BaseRowModel，然后可以在每个属性上设置所在的列和一些format"></a>导出的模型需要继承BaseRowModel，然后可以在每个属性上设置所在的列和一些format</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GoodsOrderExportDto</span> <span class="keyword">extends</span> <span class="title">BaseRowModel</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExcelProperty</span>(value = <span class="string">"订单序号"</span>,index = <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">private</span> Long orderId;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExcelProperty</span>(value = <span class="string">"订单编号"</span>,index = <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">private</span> String orderCode;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExcelProperty</span>(value = <span class="string">"商品序号"</span>,index = <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">private</span> Long goodsId;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExcelProperty</span>(value = <span class="string">"商品名称"</span>,index = <span class="number">3</span>)</span><br><span class="line">    <span class="keyword">private</span> String goodsTitle;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExcelProperty</span>(value = <span class="string">"商品链接"</span>,index = <span class="number">4</span>)</span><br><span class="line">    <span class="keyword">private</span> String goodsDetailsUrl;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExcelProperty</span>(value = <span class="string">"商品图片"</span>,index = <span class="number">5</span>)</span><br><span class="line">    <span class="keyword">private</span> String goodsPhoto;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExcelProperty</span>(value = <span class="string">"商品数量"</span>,index = <span class="number">6</span>)</span><br><span class="line">    <span class="keyword">private</span> Long goodsNum;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExcelProperty</span>(value = <span class="string">"商品价格"</span>,index = <span class="number">7</span>)</span><br><span class="line">    <span class="keyword">private</span> BigDecimal goodsAmt;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExcelProperty</span>(value = <span class="string">"区域公司"</span>,index = <span class="number">8</span>)</span><br><span class="line">    <span class="keyword">private</span> Long areaComp;</span><br><span class="line">   </span><br><span class="line">    <span class="meta">@ExcelProperty</span>(value = <span class="string">"付款时间"</span>,index = <span class="number">12</span>,format = <span class="string">"yy-MM-dd hh:mm:ss"</span>)</span><br><span class="line">    <span class="keyword">private</span> Date payTime;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="最后在控制器输出"><a href="#最后在控制器输出" class="headerlink" title="最后在控制器输出"></a>最后在控制器输出</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"export"</span>,method = RequestMethod.GET)</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exportExcel</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">       List&lt;GoodsOrderDto&gt; orderDtoList = goodsOrderServiceRemote.querGoodsOrderList();</span><br><span class="line">       List&lt;GoodsOrderExportDto&gt; orderExportDtoList = Collections.emptyList();</span><br><span class="line">       <span class="keyword">if</span> (CollectionUtils.isNotEmpty(orderDtoList))&#123;</span><br><span class="line">           orderExportDtoList = <span class="keyword">new</span> ArrayList&lt;&gt;(orderDtoList.size());</span><br><span class="line">           <span class="keyword">for</span> (GoodsOrderDto goodsOrderDto : orderDtoList) &#123;</span><br><span class="line">               GoodsOrderExportDto goodsOrderExportDto = <span class="keyword">new</span> GoodsOrderExportDto();</span><br><span class="line">               BeanUtils.copyProperties(goodsOrderDto,goodsOrderExportDto);</span><br><span class="line"></span><br><span class="line">               orderExportDtoList.add(goodsOrderExportDto);</span><br><span class="line">           &#125;</span><br><span class="line">           orderDtoList.clear();</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment">// 设定输出文件头</span></span><br><span class="line">       response.setHeader(<span class="string">"Content-disposition"</span>, <span class="string">"attachment; filename="</span> + URLEncoder.encode(<span class="string">"订单导出.xls"</span>, <span class="string">"UTF-8"</span>));</span><br><span class="line">       <span class="comment">// 定义输出类型</span></span><br><span class="line">       response.setContentType(<span class="string">"application/msexcel"</span>);</span><br><span class="line"></span><br><span class="line">       OutputStream outputStream = response.getOutputStream();</span><br><span class="line"></span><br><span class="line">       ExcelWriter excelWriter = <span class="keyword">new</span> ExcelWriter(outputStream, ExcelTypeEnum.XLS);</span><br><span class="line"></span><br><span class="line">       Sheet sheet = <span class="keyword">new</span> Sheet(<span class="number">1</span>, <span class="number">0</span>, GoodsOrderExportDto<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">       excelWriter.write(orderExportDtoList,sheet);</span><br><span class="line"></span><br><span class="line">       outputStream.flush();</span><br><span class="line">       excelWriter.finish();</span><br><span class="line">       outputStream.close();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/76eb7bfd.html" data-id="ck476ox4f004ui40q347h5n9j" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EasyExcel/" rel="tag">EasyExcel</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/2e0453a7.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Dubbo消费者consumer捕捉服务提供者provider抛出的自定义异常
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/58af8f82.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">查看依赖第三方jar最低要求运行的jdk版本</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Sam<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
   </div>
 </body>
 </html>

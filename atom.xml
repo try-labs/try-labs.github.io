@@ -2,7 +2,7 @@
 <feed xmlns="https://www.w3.org/2005/Atom">
   <title>Sam的个人博客</title>
   
-  
+  <subtitle>一个程序员的成长记录</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.ydstudio.net/"/>
