@@ -1,160 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-
-  
-  <title>深入理解spring注解之@Bean注解 | Sam的个人博客</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="@Bean是一个方法级别上的注解，主要用在@Configuration注解的类里，也可以用在@Component注解的类里。添加的bean的id为方法名。">
-<meta name="keywords" content="spring,bean">
-<meta property="og:type" content="article">
-<meta property="og:title" content="深入理解spring注解之@Bean注解">
-<meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;post&#x2F;2d1810c4.html">
-<meta property="og:site_name" content="Sam的个人博客">
-<meta property="og:description" content="@Bean是一个方法级别上的注解，主要用在@Configuration注解的类里，也可以用在@Component注解的类里。添加的bean的id为方法名。">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-12-09T15:03:26.000Z">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-
+<%- partial('_partial/head') %>
 <body>
   <div id="container">
     <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Sam的个人博客</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.ydstudio.net"></form>
-      </div>
-    </div>
-  </div>
-</header>
+      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
       <div class="outer">
-        <section id="main"><article id="post-深入理解spring注解之-Bean注解" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/post/2d1810c4.html" class="article-date">
-  <time datetime="2019-04-23T15:36:01.000Z" itemprop="datePublished">2019-04-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      深入理解spring注解之@Bean注解
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>@Bean是一个方法级别上的注解，主要用在@Configuration注解的类里，也可以用在@Component注解的类里。添加的bean的id为方法名。</p>
-<a id="more"></a>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target</span>(&#123;ElementType.METHOD, ElementType.ANNOTATION_TYPE&#125;)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Bean &#123;</span><br><span class="line">    <span class="meta">@AliasFor</span>(<span class="string">"name"</span>)</span><br><span class="line">    String[] value() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@AliasFor</span>(<span class="string">"value"</span>)</span><br><span class="line">    String[] name() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function">Autowire <span class="title">autowire</span><span class="params">()</span> <span class="keyword">default</span> Autowire.NO</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">String <span class="title">initMethod</span><span class="params">()</span> <span class="keyword">default</span> ""</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">String <span class="title">destroyMethod</span><span class="params">()</span> <span class="keyword">default</span> "<span class="params">(inferred)</span>"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">value -- bean别名和name是相互依赖关联的，value,name如果都使用的话值必须要一致</span><br><span class="line">name -- bean名称，如果不写会默认为注解的方法名称</span><br><span class="line">autowire -- 自定装配默认是不开启的，建议尽量不要开启，因为自动装配不能装配基本数据类型、字符串、数组等，这是自动装配设计的局限性，以及自动装配不如显示依赖注入精确</span><br><span class="line">initMethod -- bean的初始化之前的执行方法，该参数一般不怎么用，因为可以完全可以在代码中实现</span><br><span class="line">destroyMethod -- bean销毁执行的方法</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> net.ydstudio.practise.bean;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 功能描述:&lt;br/&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Bean</span>意思是定义一个bean，该注解是一个方法级别上的注解，可以使用在<span class="doctag">@Configuration</span>的类里，也可以</span></span><br><span class="line"><span class="comment"> * 在<span class="doctag">@Component</span>注解的类里，添加的bean的id为方法的名称</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2019/4/23 19:36</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     *  下面的代码就相当于在xml之中添加下面的配置</span></span><br><span class="line"><span class="comment">     *  &lt;beans&gt;</span></span><br><span class="line"><span class="comment">     *      &lt;bean id="transferService" class="net.ydstudio.practise.bean.TransferServiceImpl“ &gt;&lt;/bean&gt;</span></span><br><span class="line"><span class="comment">     *  &lt;/beans&gt;</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     *  还能够使用<span class="doctag">@Scope</span>注解来指定使用<span class="doctag">@Bean</span>定义的bean</span></span><br><span class="line"><span class="comment">     *  singleton : 单例，整个应用中只存在一个实例bean</span></span><br><span class="line"><span class="comment">     *  prototype ： 与单例相对，每次getBean都会重新生成一个Bean。</span></span><br><span class="line"><span class="comment">     *  request ： web环境下，每个请求都会创建一个bean，在一次请求中只存在一个Bean，不同request的bean不同</span></span><br><span class="line"><span class="comment">     *  session ： web环境下，session生命周期下，获取的是同一个bean</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     *  默认情况下，所有单实例bean都会在创建spring容器的时候创建，</span></span><br><span class="line"><span class="comment">     *  如果在bean第一次使用的时候创建，我们称为懒加载</span></span><br><span class="line"><span class="comment">     *  配置很简单，在创建bean的方法上添加<span class="doctag">@Lazy</span>注解即可</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> net.ydstudio.practise.bean.TransferService</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2019/4/23 19:41</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@Lazy</span></span><br><span class="line">    <span class="meta">@Scope</span>(<span class="string">"singleton"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> TransferService <span class="title">transferService</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> TransferServiceImpl();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Bean</span>可以依赖其他任意数量的bean，如果TransferService依赖Foo，我们可以通过方法参数实现这个依赖</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>: foo</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> net.ydstudio.practise.bean.TransferService</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2019/4/24 11:23</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> TransferService <span class="title">transferService</span><span class="params">(Foo foo)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> TransferServiceImpl(foo);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * 任何使用<span class="doctag">@Bean</span>定义的bean，也可以执行生命周期的回调函数</span></span><br><span class="line"><span class="comment">     * 类似<span class="doctag">@PostConstruct</span> and <span class="doctag">@PreDestroy</span>的方法</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> net.ydstudio.practise.bean.Foo</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2019/4/23 19:49</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span>(initMethod = <span class="string">"init"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Foo <span class="title">foo</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Foo();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 任何使用<span class="doctag">@Bean</span>定义的bean，也可以执行生命周期的回调函数</span></span><br><span class="line"><span class="comment">     * 类似<span class="doctag">@PostConstruct</span> and <span class="doctag">@PreDestroy</span>的方法</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>:</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> net.ydstudio.practise.bean.Bar</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2019/4/23 19:50</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span>(destroyMethod = <span class="string">"cleanUp"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Bar <span class="title">bar</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Bar();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * 默认情况下bean的名称和方法名称相同，你也可以使用</span></span><br><span class="line"><span class="comment">     * 注解中的name属性进行指定</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>:</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> net.ydstudio.practise.bean.Foo</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2019/4/23 19:52</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span>(name = <span class="string">"myFoo"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Foo <span class="title">getFoo</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Foo();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 可以通过某些条件，来选择是否注册Bean，通过<span class="doctag">@Condition</span>注解来实现</span></span><br><span class="line"><span class="comment">     * 实现Condition接口，并重写matches方法，根据该方法返回的布尔值来决定是否注册Bean</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> net.ydstudio.practise.bean.Book</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2019/4/24 11:54</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@Conditional</span>(MyCondition<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">Book</span> <span class="title">book</span>()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Book();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Bar</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">cleanUp</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---111111cleanUp---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> StringBuffer sb = <span class="keyword">new</span> StringBuffer(<span class="string">"Bar&#123;"</span>);</span><br><span class="line">        sb.append(<span class="string">'&#125;'</span>);</span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Book</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> BigDecimal price;</span><br><span class="line">    <span class="keyword">private</span> Date publishDate;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> BigDecimal <span class="title">getPrice</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> price;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPrice</span><span class="params">(BigDecimal price)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.price = price;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Date <span class="title">getPublishDate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> publishDate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPublishDate</span><span class="params">(Date publishDate)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.publishDate = publishDate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"初始化之前---init---初始化之前"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> StringBuffer sb = <span class="keyword">new</span> StringBuffer(<span class="string">"Foo&#123;"</span>);</span><br><span class="line">        sb.append(<span class="string">'&#125;'</span>);</span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyCondition</span> <span class="keyword">implements</span> <span class="title">Condition</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">matches</span><span class="params">(ConditionContext conditionContext, AnnotatedTypeMetadata annotatedTypeMetadata)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 根据环境变量是否存在my.env=hello的属性来决定是否创建，</span></span><br><span class="line"><span class="comment">         * 可以通过启动参数指定-Dmy.env=hello来测试。</span></span><br><span class="line"><span class="comment">         **/</span></span><br><span class="line">        Environment environment = conditionContext.getEnvironment();</span><br><span class="line">        String property = environment.getProperty(<span class="string">"my.env"</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"hello"</span>.equals(property)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TransferService</span> </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TransferServiceImpl</span> <span class="keyword">implements</span> <span class="title">TransferService</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Foo foo;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TransferServiceImpl</span><span class="params">(Foo foo)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.foo = foo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TransferServiceImpl</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/post/2d1810c4.html" data-id="ck46sp8nz0050og0q00ck9mtr" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bean/" rel="tag">bean</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/" rel="tag">spring</a></li></ul>
-
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/post/5da32797.html" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Java中ListIterator和Iterator的异同
-        
+        <section id="main"><%- body %></section>
+        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
+          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
+        <% } %>
       </div>
-    </a>
-  
-  
-    <a href="/post/526abd46.html" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">idea自动生成方法注释（含参数及返回值）</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-</section>
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2019 Sam<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
     </div>
-  </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/script.js"></script>
-
-
-
+    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
+    <%- partial('_partial/after-footer') %>
   </div>
 </body>
 </html>

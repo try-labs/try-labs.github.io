@@ -179,7 +179,7 @@ body {
 .mobile-nav-on #wrap {
   left: 280px;
 }
-@media screen and (min-width: 80%) {
+@media screen and (min-width: 768px) {
   #main {
     display: inline;
     float: left;
@@ -748,7 +748,7 @@ a.article-title:hover {
 #article-nav:after {
   clear: both;
 }
-@media screen and (min-width: 80%) {
+@media screen and (min-width: 768px) {
   #article-nav {
     margin: 50px 0;
   }
@@ -781,20 +781,20 @@ a.article-title:hover {
 .article-nav-link-wrap:hover {
   color: #555;
 }
-@media screen and (min-width: 80%) {
+@media screen and (min-width: 768px) {
   .article-nav-link-wrap {
     width: 50%;
     margin-top: 0;
   }
 }
-@media screen and (min-width: 80%) {
+@media screen and (min-width: 768px) {
   #article-nav-newer {
     float: left;
     text-align: right;
     padding-right: 20px;
   }
 }
-@media screen and (min-width: 80%) {
+@media screen and (min-width: 768px) {
   #article-nav-older {
     float: right;
     text-align: left;
@@ -979,7 +979,7 @@ a.article-title:hover {
     column-count: 2;
   }
 }
-@media screen and (min-width: 80%) {
+@media screen and (min-width: 768px) {
   .archives {
     -webkit-column-count: 3;
     -moz-column-count: 3;
@@ -1287,7 +1287,7 @@ pre .javascript .function {
     color: #fff;
   }
 }
-@media screen and (min-width: 80%) {
+@media screen and (min-width: 768px) {
   #sidebar {
     display: inline;
     float: left;
