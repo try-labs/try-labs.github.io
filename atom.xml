@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.ydstudio.net/"/>
-  <updated>2019-12-15T15:50:49.000Z</updated>
+  <updated>2019-12-23T14:38:15.000Z</updated>
   <id>https://blog.ydstudio.net/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>在CentOS7上使用yum安装Docker</title>
+    <link href="https://blog.ydstudio.net/post/ef24ce2b.html"/>
+    <id>https://blog.ydstudio.net/post/ef24ce2b.html</id>
+    <published>2019-12-23T22:30:18.000Z</published>
+    <updated>2019-12-23T14:38:15.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>目前在 Linux 操作系统上安装 Docker，对系统版本有以下要求：</p><ul><li>CentOS：7</li><li>Debian：7.7（Wheezy LTS）、8.0（Jessie LTS）、9（Stretch）</li><li>Fedora：24、25</li><li>Ubuntu：16.04（Xenial LTS）、14.04（Trusty LTS）、17.04（Zesty）</li></ul><a id="more"></a><h5 id="使用-yum-进行安装"><a href="#使用-yum-进行安装" class="headerlink" title="使用 yum 进行安装"></a>使用 yum 进行安装</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># step 1: 安装必要的一些系统工具</span></span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"><span class="comment"># Step 2: 添加软件源信息</span></span><br><span class="line">sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"><span class="comment"># Step 3: 更新并安装Docker-CE</span></span><br><span class="line">sudo yum makecache fast</span><br><span class="line">sudo yum -y install docker-ce</span><br><span class="line"><span class="comment"># Step 4: 开启Docker服务</span></span><br><span class="line">sudo service docker start</span><br><span class="line"></span><br><span class="line"><span class="comment"># 注意：</span></span><br><span class="line"><span class="comment"># 官方软件源默认启用了最新的软件，您可以通过编辑软件源的方式获取各个版本的软件包。</span></span><br><span class="line"><span class="comment"># 例如官方并没有将测试版本的软件源置为可用，您可以通过以下方式开启。同理可以开启各种测试版本等。</span></span><br><span class="line"><span class="comment"># vim /etc/yum.repos.d/docker-ee.repo</span></span><br><span class="line"><span class="comment">#   将[docker-ce-test]下方的enabled=0修改为enabled=1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 安装指定版本的Docker-CE:</span></span><br><span class="line"><span class="comment"># Step 1: 查找Docker-CE的版本:</span></span><br><span class="line"><span class="comment"># yum list docker-ce.x86_64 --showduplicates | sort -r</span></span><br><span class="line"><span class="comment">#   Loading mirror speeds from cached hostfile</span></span><br><span class="line"><span class="comment">#   Loaded plugins: branch, fastestmirror, langpacks</span></span><br><span class="line"><span class="comment">#   docker-ce.x86_64            17.03.1.ce-1.el7.centos            docker-ce-stable</span></span><br><span class="line"><span class="comment">#   docker-ce.x86_64            17.03.1.ce-1.el7.centos            @docker-ce-stable</span></span><br><span class="line"><span class="comment">#   docker-ce.x86_64            17.03.0.ce-1.el7.centos            docker-ce-stable</span></span><br><span class="line"><span class="comment">#   Available Packages</span></span><br><span class="line"><span class="comment"># Step2: 安装指定版本的Docker-CE: (VERSION例如上面的17.03.0.ce.1-1.el7.centos)</span></span><br><span class="line"><span class="comment"># sudo yum -y install docker-ce-[VERSION]</span></span><br></pre></td></tr></table></figure><h5 id="安装校验"><a href="#安装校验" class="headerlink" title="安装校验"></a>安装校验</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">[root@izuf6gp8l1zfgu3hmvia6gz ~]<span class="comment"># docker version</span></span><br><span class="line">Client: Docker Engine - Community</span><br><span class="line"> Version:           19.03.5</span><br><span class="line"> API version:       1.40</span><br><span class="line"> Go version:        go1.12.12</span><br><span class="line"> Git commit:        633a0ea</span><br><span class="line"> Built:             Wed Nov 13 07:25:41 2019</span><br><span class="line"> OS/Arch:           linux/amd64</span><br><span class="line"> Experimental:      <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">Server: Docker Engine - Community</span><br><span class="line"> Engine:</span><br><span class="line">  Version:          19.03.5</span><br><span class="line">  API version:      1.40 (minimum version 1.12)</span><br><span class="line">  Go version:       go1.12.12</span><br><span class="line">  Git commit:       633a0ea</span><br><span class="line">  Built:            Wed Nov 13 07:24:18 2019</span><br><span class="line">  OS/Arch:          linux/amd64</span><br><span class="line">  Experimental:     <span class="literal">false</span></span><br><span class="line"> containerd:</span><br><span class="line">  Version:          1.2.10</span><br><span class="line">  GitCommit:        b34a5c8af56e510852c35414db4c1f4fa6172339</span><br><span class="line"> runc:</span><br><span class="line">  Version:          1.0.0-rc8+dev</span><br><span class="line">  GitCommit:        3e425f80a8c931f88e6d94a8c831b9d5aa481657</span><br><span class="line"> docker-init:</span><br><span class="line">  Version:          0.18.0</span><br><span class="line">  GitCommit:        fec3683</span><br></pre></td></tr></table></figure><p>至此docker安装完成。</p><p><a href="https://help.aliyun.com/document_detail/60742.html#title-8ov-nf9-t1l" target="_blank" rel="noopener">参考资料</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;目前在 Linux 操作系统上安装 Docker，对系统版本有以下要求：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CentOS：7&lt;/li&gt;
+&lt;li&gt;Debian：7.7（Wheezy LTS）、8.0（Jessie LTS）、9（Stretch）&lt;/li&gt;
+&lt;li&gt;Fedora：24、25&lt;/li&gt;
+&lt;li&gt;Ubuntu：16.04（Xenial LTS）、14.04（Trusty LTS）、17.04（Zesty）&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="centos" scheme="https://blog.ydstudio.net/tags/centos/"/>
+    
+      <category term="docker" scheme="https://blog.ydstudio.net/tags/docker/"/>
+    
+  </entry>
   
   <entry>
     <title>Mac下安装zookeeper</title>
@@ -437,29 +466,6 @@
       <category term="java" scheme="https://blog.ydstudio.net/tags/java/"/>
     
       <category term="mybatis" scheme="https://blog.ydstudio.net/tags/mybatis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java实现二分查找算法</title>
-    <link href="https://blog.ydstudio.net/post/e486e255.html"/>
-    <id>https://blog.ydstudio.net/post/e486e255.html</id>
-    <published>2019-01-25T23:26:42.000Z</published>
-    <updated>2019-12-09T15:03:26.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>  二分法查找，也称为折半法，是一种在有序数组中查找特定元素的搜索算法。所以在采用二分法查找时，数据需是有序不重复的，如果是无序的也可通过选择排序、冒泡排序等数组排序方法进行排序之后，就可以使用二分法查找。<br>  基本思想：假设数据是按升序排序的，对于给定值 x，从序列的中间位置开始比较，如果当前位置值等于 x，则查找成功；若 x 小于当前位置值，则在数列的前半段中查找；若 x 大于当前位置值则在数列的后半段中继续查找，直到找到为止，但是如果当前段的索引最大值小于当前段索引最小值，说明查找的值不存在，返回-1，不继续查找。<br>  <a id="more"></a><br> 下面贴出代码实现：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.LinkedList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by Sam on 18/12/9.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span>[] array = &#123;<span class="number">1</span>,<span class="number">4</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">12</span>,<span class="number">56</span>,<span class="number">78</span>,<span class="number">89</span>,<span class="number">120</span>,<span class="number">179</span>,<span class="number">180</span>,<span class="number">200</span>,<span class="number">290</span>&#125;;</span><br><span class="line">        System.out.println(<span class="string">"index="</span>+binarySearch(array,<span class="number">290</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(<span class="keyword">int</span>[] array,<span class="keyword">int</span> searchNumber)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> minIndex = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> maxIndex = array.length - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> searchIndex = (minIndex + maxIndex) &gt;&gt; <span class="number">1</span> ;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (array[searchIndex] != searchNumber)&#123;</span><br><span class="line"></span><br><span class="line">            System.out.printf(<span class="string">"第次%d次运算\n"</span>, ++count);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (array[searchIndex] &gt; searchNumber)&#123;</span><br><span class="line">                maxIndex = searchIndex - <span class="number">1</span> ;</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                minIndex = searchIndex + <span class="number">1</span> ;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (minIndex&gt;maxIndex)&#123;</span><br><span class="line">                <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            searchIndex = (minIndex + maxIndex) &gt;&gt; <span class="number">1</span> ;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> searchIndex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;  二分法查找，也称为折半法，是一种在有序数组中查找特定元素的搜索算法。所以在采用二分法查找时，数据需是有序不重复的，如果是无序的也可通过选择排序、冒泡排序等数组排序方法进行排序之后，就可以使用二分法查找。&lt;br&gt;  基本思想：假设数据是按升序排序的，对于给定值 x，从序列的中间位置开始比较，如果当前位置值等于 x，则查找成功；若 x 小于当前位置值，则在数列的前半段中查找；若 x 大于当前位置值则在数列的后半段中继续查找，直到找到为止，但是如果当前段的索引最大值小于当前段索引最小值，说明查找的值不存在，返回-1，不继续查找。&lt;br&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="java" scheme="https://blog.ydstudio.net/tags/java/"/>
-    
-      <category term="二分法" scheme="https://blog.ydstudio.net/tags/%E4%BA%8C%E5%88%86%E6%B3%95/"/>
     
   </entry>
   
