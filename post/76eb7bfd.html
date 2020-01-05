@@ -97,8 +97,28 @@
 <h4 id="最后在控制器输出"><a href="#最后在控制器输出" class="headerlink" title="最后在控制器输出"></a>最后在控制器输出</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"export"</span>,method = RequestMethod.GET)</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exportExcel</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">       List&lt;GoodsOrderDto&gt; orderDtoList = goodsOrderServiceRemote.querGoodsOrderList();</span><br><span class="line">       List&lt;GoodsOrderExportDto&gt; orderExportDtoList = Collections.emptyList();</span><br><span class="line">       <span class="keyword">if</span> (CollectionUtils.isNotEmpty(orderDtoList))&#123;</span><br><span class="line">           orderExportDtoList = <span class="keyword">new</span> ArrayList&lt;&gt;(orderDtoList.size());</span><br><span class="line">           <span class="keyword">for</span> (GoodsOrderDto goodsOrderDto : orderDtoList) &#123;</span><br><span class="line">               GoodsOrderExportDto goodsOrderExportDto = <span class="keyword">new</span> GoodsOrderExportDto();</span><br><span class="line">               BeanUtils.copyProperties(goodsOrderDto,goodsOrderExportDto);</span><br><span class="line"></span><br><span class="line">               orderExportDtoList.add(goodsOrderExportDto);</span><br><span class="line">           &#125;</span><br><span class="line">           orderDtoList.clear();</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment">// 设定输出文件头</span></span><br><span class="line">       response.setHeader(<span class="string">"Content-disposition"</span>, <span class="string">"attachment; filename="</span> + URLEncoder.encode(<span class="string">"订单导出.xls"</span>, <span class="string">"UTF-8"</span>));</span><br><span class="line">       <span class="comment">// 定义输出类型</span></span><br><span class="line">       response.setContentType(<span class="string">"application/msexcel"</span>);</span><br><span class="line"></span><br><span class="line">       OutputStream outputStream = response.getOutputStream();</span><br><span class="line"></span><br><span class="line">       ExcelWriter excelWriter = <span class="keyword">new</span> ExcelWriter(outputStream, ExcelTypeEnum.XLS);</span><br><span class="line"></span><br><span class="line">       Sheet sheet = <span class="keyword">new</span> Sheet(<span class="number">1</span>, <span class="number">0</span>, GoodsOrderExportDto<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">       excelWriter.write(orderExportDtoList,sheet);</span><br><span class="line"></span><br><span class="line">       outputStream.flush();</span><br><span class="line">       excelWriter.finish();</span><br><span class="line">       outputStream.close();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
       
     </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2019-05-17 23:43:39</li>
+    <li><span>最后更新: </span>2019-12-09 23:03:26</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/76eb7bfd.html" target="_blank" title="小试阿里巴巴EasyExcel导出Excel">https://blog.ydstudio.net/post/76eb7bfd.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a>
+      许可协议，转载请保留原文链接及作者!
+    </li>
+  </ul>
+<div>
+         
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/post/76eb7bfd.html" data-id="ck4yao1vv004wc50qh9492po5" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/post/76eb7bfd.html" data-id="ck50swgdu0053rm0q0mrrdf5x" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EasyExcel/" rel="tag">EasyExcel</a></li></ul>
@@ -110,7 +130,7 @@
 <nav id="article-nav">
   
     <a href="/post/2e0453a7.html" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
+      <strong class="article-nav-caption">Newer >> </strong>
       <div class="article-nav-title">
         
           Dubbo消费者consumer捕捉服务提供者provider抛出的自定义异常
@@ -120,7 +140,7 @@
   
   
     <a href="/post/58af8f82.html" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Older << </strong>
       <div class="article-nav-title">查看依赖第三方jar最低要求运行的jdk版本</div>
     </a>
   

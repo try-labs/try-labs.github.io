@@ -88,9 +88,9 @@
     
     
     
-      <category term="centos" scheme="https://blog.ydstudio.net/tags/centos/"/>
-    
       <category term="docker" scheme="https://blog.ydstudio.net/tags/docker/"/>
+    
+      <category term="centos" scheme="https://blog.ydstudio.net/tags/centos/"/>
     
   </entry>
   

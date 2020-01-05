@@ -101,8 +101,28 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public static <span class="keyword">function</span> search(<span class="variable">$params</span>)&#123;</span><br><span class="line">        <span class="variable">$db</span> = Yii::<span class="variable">$app</span>-&gt;xunsearch-&gt;getDatabase(<span class="string">'yddy'</span>);</span><br><span class="line">        <span class="variable">$xs</span> = <span class="variable">$db</span>-&gt;xs;</span><br><span class="line"></span><br><span class="line">        <span class="variable">$search</span> = <span class="variable">$xs</span>-&gt;getSearch();</span><br><span class="line"></span><br><span class="line">        <span class="variable">$keywords</span> = <span class="variable">$params</span>[<span class="string">'word'</span>];</span><br><span class="line">        <span class="keyword">if</span>(empty(<span class="variable">$keywords</span>))&#123;</span><br><span class="line">            <span class="variable">$keywords</span> =<span class="string">''</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$search</span> = <span class="variable">$search</span>-&gt;setQuery(<span class="variable">$keywords</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$category</span>=<span class="variable">$params</span>[<span class="string">'category'</span>])&#123;</span><br><span class="line">            <span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'category_id'</span>,<span class="variable">$category</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$country</span>=<span class="variable">$params</span>[<span class="string">'country'</span>])&#123;</span><br><span class="line">            <span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'country_id'</span>,<span class="variable">$country</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>( (empty(<span class="variable">$params</span>[<span class="string">'other'</span>]) ) &amp;&amp; (<span class="variable">$year</span> = intval(<span class="variable">$params</span>[<span class="string">'year'</span>])) &amp;&amp; is_numeric(<span class="variable">$params</span>[<span class="string">'year'</span>]))&#123;</span><br><span class="line">            <span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'year'</span>,<span class="variable">$year</span>);</span><br><span class="line"></span><br><span class="line">        &#125;elseif((<span class="variable">$params</span>[<span class="string">'other'</span>] == <span class="string">'ago'</span>) &amp;&amp; (<span class="variable">$year</span> = intval(<span class="variable">$params</span>[<span class="string">'year'</span>])) )&#123;</span><br><span class="line">            //<span class="variable">$search</span>-&gt;addRange(<span class="string">'year'</span>,1900,1978);</span><br><span class="line">            <span class="variable">$search</span>-&gt;addRange(<span class="string">'year'</span>,1900,<span class="variable">$year</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>( <span class="variable">$rating</span>=intval(<span class="variable">$params</span>[<span class="string">'rating'</span>]))&#123;</span><br><span class="line">            <span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'rate'</span>, <span class="variable">$rating</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'subtype'</span>,<span class="variable">$params</span>[<span class="string">'subtype'</span>]);</span><br><span class="line">        //<span class="variable">$search</span>-&gt;addQueryTerm(<span class="string">'status'</span>,1);</span><br><span class="line">        //<span class="built_in">echo</span> <span class="variable">$search</span>-&gt;getQuery();</span><br><span class="line">        <span class="built_in">return</span> <span class="variable">$search</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
       
     </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2017-12-04 23:18:36</li>
+    <li><span>最后更新: </span>2019-12-09 23:03:26</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/10379547.html" target="_blank" title="迅搜(xunsearch) 多值属性的处理">https://blog.ydstudio.net/post/10379547.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a>
+      许可协议，转载请保留原文链接及作者!
+    </li>
+  </ul>
+<div>
+         
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/post/10379547.html" data-id="ck4yao1wa005fc50q4abu860g" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/post/10379547.html" data-id="ck50swge5005nrm0q3qbb9suu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li></ul>
@@ -114,7 +134,7 @@
 <nav id="article-nav">
   
     <a href="/post/68417c42.html" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
+      <strong class="article-nav-caption">Newer >> </strong>
       <div class="article-nav-title">
         
           修改ssh的默认22端口
@@ -124,7 +144,7 @@
   
   
     <a href="/post/123335f3.html" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Older << </strong>
       <div class="article-nav-title">Centos6.9上搭建lnmp环境</div>
     </a>
   

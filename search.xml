@@ -56,9 +56,9 @@
       
         <tags>
             
-            <tag> centos </tag>
-            
             <tag> docker </tag>
+            
+            <tag> centos </tag>
             
         </tags>
       
@@ -1570,13 +1570,13 @@
             
             <tag> linux </tag>
             
+            <tag> git </tag>
+            
             <tag> php </tag>
             
             <tag> nginx </tag>
             
             <tag> mysql </tag>
-            
-            <tag> git </tag>
             
         </tags>
       
