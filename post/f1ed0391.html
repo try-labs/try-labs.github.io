@@ -1,18 +1,194 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>MyBatis Generator配置文件--指定生成实体类使用实际的表列名作为实体类的属性名 | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="今天在用MyBatis Generator生成表实体的时候，发现数据库中的表字段使用的是小驼峰命名规则，生成出来的实体属性都是小写了，没有转成小驼峰，一番搜索得知可以在MyBatis Generator的配置文件中修改。">
+<meta name="keywords" content="mybatis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis Generator配置文件--指定生成实体类使用实际的表列名作为实体类的属性名">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;post&#x2F;f1ed0391.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="今天在用MyBatis Generator生成表实体的时候，发现数据库中的表字段使用的是小驼峰命名规则，生成出来的实体属性都是小写了，没有转成小驼峰，一番搜索得知可以在MyBatis Generator的配置文件中修改。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-09T15:03:26.000Z">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.ydstudio.net"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-MyBatis-Generator配置文件-指定生成实体类使用实际的表列名作为实体类的属性名" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/f1ed0391.html" class="article-date">
+  <time datetime="2019-05-13T23:40:33.000Z" itemprop="datePublished">2019-05-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MyBatis Generator配置文件--指定生成实体类使用实际的表列名作为实体类的属性名
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天在用MyBatis Generator生成表实体的时候，发现数据库中的表字段使用的是小驼峰命名规则，生成出来的实体属性都是小写了，没有转成小驼峰，一番搜索得知可以在MyBatis Generator的配置文件中修改。</p>
+<a id="more"></a>
+
+<p>table标签下的设置属性useActualColumnNames用于指定生成实体类时是否使用实际的列名作为实体类的属性名，取值true或false。</p>
+<p>true：MyBatis Generator会使用数据库中实际的字段名字作为生成的实体类的属性名。</p>
+<p>false：这是默认值。如果设置为false,则MyBatis Generator会将数据库中实际的字段名字转换为Camel Case风格作为生成的实体类的属性名。</p>
+<p>如果明确的使用columnOverride元素指定了字段对应的实体的属性名,那么useActualColumnNames会被忽略。</p>
+<p>假设表有一个字段名为start_date,如果这个属性设置为true,则生成的实体类的属性名为start_date,生成的setter/getter为　setStart_date/getStart_date。如果useActualColumnNames设置为false,则生成的实体类的属性名为startDate,生成的setter/getter为setStartDate/getStartDate。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">table</span> <span class="attr">tableName</span>=<span class="string">"dobbo_goods_order"</span> <span class="attr">domainObjectName</span>=<span class="string">"GoodsOrder"</span> <span class="attr">enableCountByExample</span>=<span class="string">"false"</span> <span class="attr">enableUpdateByExample</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">enableDeleteByExample</span>=<span class="string">"false"</span> <span class="attr">enableSelectByExample</span>=<span class="string">"false"</span> <span class="attr">selectByExampleQueryId</span>=<span class="string">"false"</span> &gt;</span></span><br><span class="line">           <span class="comment">&lt;!-- table标签下的设置属性useActualColumnNames用于指定生成实体类时是否使用实际的列名作为实体类的属性名，取值true或false--&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"useActualColumnNames"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2019-05-13 23:40:33</li>
+    <li><span>最后更新: </span>2019-12-09 23:03:26</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/f1ed0391.html" target="_blank" title="MyBatis Generator配置文件--指定生成实体类使用实际的表列名作为实体类的属性名">https://blog.ydstudio.net/post/f1ed0391.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a>
+      许可协议，转载请保留原文链接及作者!
+    </li>
+  </ul>
+<div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/f1ed0391.html" data-id="ck50teoiw0025du0q43dffju0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/45135675.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          Dubbo出现ExceedPayloadLimitException: Data length too large的错误
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/9008dc8b.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older << </strong>
+      <div class="article-nav-title">Dubbo由于连接不上monitor监控中心报错</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Sam<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
   </div>
 </body>
 </html>
