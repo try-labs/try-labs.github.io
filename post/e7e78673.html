@@ -1,18 +1,239 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>SpringMvc使用@Async注解实现有返回值和无返回值的异步处理 | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="SpringMvc使用@Async注解实现有返回值和无返回值的异步处理 异步调用对应的是同步调用，同步调用指程序按照定义顺序依次执行，每一行程序都必须等待上一行程序执行完成之后才能执行；异步调用指程序在顺序执行时，不等待异步调用的语句返回结果就执行后面的程序。">
+<meta name="keywords" content="SpringMvc,Async">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringMvc使用@Async注解实现有返回值和无返回值的异步处理">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;post&#x2F;e7e78673.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="SpringMvc使用@Async注解实现有返回值和无返回值的异步处理 异步调用对应的是同步调用，同步调用指程序按照定义顺序依次执行，每一行程序都必须等待上一行程序执行完成之后才能执行；异步调用指程序在顺序执行时，不等待异步调用的语句返回结果就执行后面的程序。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-01-11T13:01:38.000Z">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.ydstudio.net"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-SpringMvc使用-Async注解实现有返回值和无返回值的异步处理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/e7e78673.html" class="article-date">
+  <time datetime="2020-01-03T23:12:21.000Z" itemprop="datePublished">2020-01-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SpringMvc使用@Async注解实现有返回值和无返回值的异步处理
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="SpringMvc使用-Async注解实现有返回值和无返回值的异步处理"><a href="#SpringMvc使用-Async注解实现有返回值和无返回值的异步处理" class="headerlink" title="SpringMvc使用@Async注解实现有返回值和无返回值的异步处理"></a>SpringMvc使用@Async注解实现有返回值和无返回值的异步处理</h5><p> 异步调用对应的是同步调用，同步调用指程序按照定义顺序依次执行，每一行程序都必须等待上一行程序执行完成之后才能执行；异步调用指程序在顺序执行时，不等待异步调用的语句返回结果就执行后面的程序。<br> <a id="more"></a></p>
+<h6 id="同步方式调用代码"><a href="#同步方式调用代码" class="headerlink" title="同步方式调用代码"></a>同步方式调用代码</h6><ul>
+<li><p>相关代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TaskService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doTaskOne</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"开始做任务一"</span>);</span><br><span class="line">		<span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">		Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">		<span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">		System.out.println(<span class="string">"完成任务二，耗时：%s"</span> , (end - start) + <span class="string">"毫秒"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doTaskTwo</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"开始做任务二"</span>);</span><br><span class="line">		<span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">		Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">		<span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">		System.out.println(<span class="string">"完成任务二，耗时：%s"</span> , (end - start) + <span class="string">"毫秒"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doTaskThree</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"开始做任务三"</span>);</span><br><span class="line">		<span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">		Thread.sleep(<span class="number">4000</span>);</span><br><span class="line">		<span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">		System.out.println(<span class="string">"完成任务二，耗时：%s"</span> , (end - start) + <span class="string">"毫秒"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>同步调用</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> TaskService task;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		task.doTaskOne();</span><br><span class="line">		task.doTaskTwo();</span><br><span class="line">		task.doTaskThree();</span><br><span class="line">	&#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面是运行结果，可以看到三个方法是依次执行的，分别耗时2秒、3秒、4秒、总耗时9秒</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">开始做任务一</span><br><span class="line">完成任务一，耗时：2001毫秒</span><br><span class="line">开始做任务二</span><br><span class="line">完成任务二，耗时：3000毫秒</span><br><span class="line">开始做任务三</span><br><span class="line">完成任务三，耗时：4001毫秒</span><br></pre></td></tr></table></figure>
+<p>上面的同步调用，虽然顺利地完成了三个任务，但是执行时间比较长，如果这三个任务没有依赖关系，可以并发执行的话，可以考虑使用异步调用的方法。</p>
+<h6 id="异步方式调用代码无返回值"><a href="#异步方式调用代码无返回值" class="headerlink" title="异步方式调用代码无返回值"></a>异步方式调用代码无返回值</h6><ul>
+<li>首先在spring中配置相关参数开启异步调用</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:task</span>=<span class="string">"http://www.springframework.org/schema/task"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">"</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/task</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/task/spring-task.xsd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">task:annotation-driven</span> <span class="attr">executor</span>=<span class="string">"taskExecutor"</span>  /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">task:executor</span> <span class="attr">id</span>=<span class="string">"taskExecutor"</span>  <span class="attr">pool-size</span>=<span class="string">"20"</span> <span class="attr">queue-capacity</span>=<span class="string">"1000"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在方法上加上 @Async 注解就能将同步函数变成异步函数，改造后的代码</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.Future;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TaskService</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Async</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doTaskOne</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"开始做任务一"</span>);</span><br><span class="line">		<span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">		Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">		<span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">		System.out.println(<span class="string">"完成任务二，耗时：%s"</span> , (end - start) + <span class="string">"毫秒"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="meta">@Async</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doTaskTwo</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"开始做任务二"</span>);</span><br><span class="line">		<span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">		Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">		<span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">		System.out.println(<span class="string">"完成任务二，耗时：%s"</span> , (end - start) + <span class="string">"毫秒"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="meta">@Async</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doTaskThree</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"开始做任务三"</span>);</span><br><span class="line">		<span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">		Thread.sleep(<span class="number">4000</span>);</span><br><span class="line">		<span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">		System.out.println(<span class="string">"完成任务二，耗时：%s"</span> , (end - start) + <span class="string">"毫秒"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>重新调用之后的运行结果如下：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">开始做任务三</span><br><span class="line">开始做任务二</span><br><span class="line">开始做任务一</span><br><span class="line">完成任务一，耗时：2000毫秒</span><br><span class="line">完成任务二，耗时：3001毫秒</span><br><span class="line">完成任务三，耗时：4000毫秒</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意事项</strong></p>
+<ul>
+<li><p>@Async 所修饰的函数不要定义为 static 类型，这样异步调用不会生效。</p>
+</li>
+<li><p>调用方法和异步函数不能在一个 class 中。</p>
+</li>
+</ul>
+<h6 id="异步方式调用代码有返回值"><a href="#异步方式调用代码有返回值" class="headerlink" title="异步方式调用代码有返回值"></a>异步方式调用代码有返回值</h6><p>如果想知道异步函数什么时候执行完，那就需要使用 Future (AsyncResult是Future的子类)来返回异步调用的结果。<br>改造后的代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TaskService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Async</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Future&lt;String&gt; <span class="title">doTaskOne</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"开始做任务一"</span>);</span><br><span class="line">		<span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">		Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">		<span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">		System.out.println(<span class="string">"完成任务二，耗时：%s"</span> , (end - start) + <span class="string">"毫秒"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> AsyncResult&lt;&gt;(<span class="string">"任务一完成"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Async</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Future&lt;String&gt; <span class="title">doTaskTwo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"开始做任务二"</span>);</span><br><span class="line">		<span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">		Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">		<span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">		System.out.println(<span class="string">"完成任务二，耗时：%s"</span> , (end - start) + <span class="string">"毫秒"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> AsyncResult&lt;&gt;(<span class="string">"任务二完成"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Async</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Future&lt;String&gt; <span class="title">doTaskThree</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"开始做任务三"</span>);</span><br><span class="line">		<span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">		Thread.sleep(<span class="number">4000</span>);</span><br><span class="line">		<span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">		System.out.println(<span class="string">"完成任务二，耗时：%s"</span> , (end - start) + <span class="string">"毫秒"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> AsyncResult&lt;&gt;(<span class="string">"任务三完成"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>异步方式调用代码有返回值</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> TaskService task;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	List&lt;String&gt; result = <span class="keyword">new</span> ArrayList(<span class="number">16</span>);</span><br><span class="line">	StopWatch stopWatch = <span class="keyword">new</span> StopWatch();</span><br><span class="line">	stopWatch.start(<span class="string">"接口速度统计"</span>);</span><br><span class="line">	<span class="comment">// 3秒超时</span></span><br><span class="line">    <span class="keyword">int</span> timeout = <span class="number">3</span>;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		Future&lt;String&gt; task1 = task.doTaskOne();</span><br><span class="line">        Future&lt;String&gt; task2 = task.doTaskTwo();</span><br><span class="line">        Future&lt;String&gt; task3 = task.doTaskThree();</span><br><span class="line">		</span><br><span class="line">		String taskString1= task1.get(timeout, TimeUnit.SECONDS);</span><br><span class="line">		String taskString2= task2.get(timeout, TimeUnit.SECONDS);</span><br><span class="line">		String taskString3= task3.get(timeout, TimeUnit.SECONDS);</span><br><span class="line">		</span><br><span class="line">		result.add(taskString1);</span><br><span class="line">		result.add(taskString2);</span><br><span class="line">		result.add(taskString3);</span><br><span class="line">		</span><br><span class="line">	&#125;<span class="keyword">catch</span> (TimeoutException | InterruptedException | ExecutionException e)&#123;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">	&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">		stopWatch.stop();</span><br><span class="line">		log.info(stopWatch.prettyPrint());</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">开始做任务三</span><br><span class="line">开始做任务二</span><br><span class="line">开始做任务一</span><br><span class="line">完成任务一，耗时：2001毫秒</span><br><span class="line">完成任务二，耗时：3000毫秒</span><br><span class="line">完成任务三，耗时：4001毫秒</span><br><span class="line"></span><br><span class="line">StopWatch <span class="string">''</span>: running time (millis) = 248</span><br><span class="line">-----------------------------------------</span><br><span class="line">ms     %     Task name</span><br><span class="line">-----------------------------------------</span><br><span class="line">04036  100%  接口速度统计</span><br></pre></td></tr></table></figure>
+<p>刚开始想利用CountDownLatch来实现等待所有线程结束整合结果，后来调整为 Future 的 get(long timeout, TimeUnit unit) 来实现线程的超时控制，我看有些的例子使用死循环来阻塞整合线程的执行结果，这样做是有些问题的，如果有个线程一直没有结束运行，那就完犊子了！</p>
+<p>这是一种常见的场景将一个大的任务切分为数个子任务，并行处理所有子任务，当所有子任务都成功结束时再继续处理后面的逻辑。还有一种做法是利用CountDownLatch, 主线程构造countDownLatch对象，latch的大小为子任务的总数，每一个任务持有countDownLatch的引用，任务完成时对latch减1，主线程阻塞在countDownLatch.await方法上，当所有子任务都成功执行完后，latch=0, 主线程继续执行。</p>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>异步调用可以提升接口性能。比如导出下载、发送邮件短信等代码，可以使用异步执行。</p>
+<p><a href="https://blog.csdn.net/qqfo24/article/details/81383022" target="_blank" rel="noopener">参考 https://blog.csdn.net/qqfo24/article/details/81383022</a></p>
+
+      
+    </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2020-01-03 23:12:21</li>
+    <li><span>最后更新: </span>2020-01-11 21:01:38</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/e7e78673.html" target="_blank" title="SpringMvc使用@Async注解实现有返回值和无返回值的异步处理">https://blog.ydstudio.net/post/e7e78673.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a>
+      许可协议，转载请保留原文链接及作者!
+    </li>
+  </ul>
+<div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/e7e78673.html" data-id="ck59lmgko003vpm0q7uvw1oon" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Async/" rel="tag">Async</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SpringMvc/" rel="tag">SpringMvc</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/97b746d3.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          以centos7镜像为基础构建一个jdk8和tomcat7的镜像
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/ef24ce2b.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older << </strong>
+      <div class="article-nav-title">在CentOS7上使用yum安装Docker</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Sam<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
   </div>
 </body>
 </html>
