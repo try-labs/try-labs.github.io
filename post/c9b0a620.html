@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="Sam的个人博客">
 <meta property="og:description" content="docker 客户端非常简单 ,我们可以直接输入 docker 命令来查看到 Docker 客户端的所有命令选项。可以通过命令 docker command –help 更深入的了解指定的 Docker 命令使用方法。例如我们要查看 docker stats 指令的具体使用方法： 1docker stats --help">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-01-13T15:05:28.000Z">
+<meta property="og:updated_time" content="2020-01-14T14:10:29.000Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
@@ -96,7 +96,6 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stats --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 
-
 <h6 id="docker查找镜像"><a href="#docker查找镜像" class="headerlink" title="docker查找镜像"></a>docker查找镜像</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询镜像</span></span><br><span class="line">docker search 镜像名称</span><br><span class="line"></span><br><span class="line"><span class="comment">#docker查找官方原版镜像</span></span><br><span class="line">docker search --filter <span class="string">"is-official=true"</span> centos</span><br><span class="line"><span class="comment">#或者</span></span><br><span class="line">docker search -f is-official=<span class="literal">true</span> centos</span><br></pre></td></tr></table></figure>
 
 <h5 id="docker-安装镜像"><a href="#docker-安装镜像" class="headerlink" title="docker 安装镜像"></a>docker 安装镜像</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#命令语法</span></span><br><span class="line">docker pull 镜像名称:标签</span><br><span class="line"></span><br><span class="line"><span class="comment">#安装 tomcat8 </span></span><br><span class="line">docker pull tomcat:8</span><br><span class="line"></span><br><span class="line"><span class="comment">#安装 mysql5.7 </span></span><br><span class="line">docker pull mysql:5.7</span><br></pre></td></tr></table></figure>
@@ -144,7 +143,7 @@
 <p>如上，以 &amp;&amp; 符号连接命令，这样执行后，只会创建 1 层镜像。</p>
 <h5 id="开始构建镜像"><a href="#开始构建镜像" class="headerlink" title="开始构建镜像"></a>开始构建镜像</h5><p>在 Dockerfile 文件的存放目录下，执行构建动作。</p>
 <p>以下示例，通过目录下的 Dockerfile 构建一个 tomcat和jdk整合的镜像:v1（镜像名称:镜像标签）<br>注：最后的 . 代表本次执行的上下文路径，下一节会介绍。</p>
-<h1 id="构建镜像命令"><a href="#构建镜像命令" class="headerlink" title="构建镜像命令"></a>构建镜像命令</h1><p>docker build -t javawebenv:v1 .</p>
+<h1 id="构建镜像命令"><a href="#构建镜像命令" class="headerlink" title="构建镜像命令"></a>构建镜像命令</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#命令语法 </span></span><br><span class="line">docker build -t name:tag .</span><br><span class="line">-t 镜像的名字及标签，通常 name:tag 或者 name 格式；可以在一次构建中为一个镜像设置多个标签。</span><br><span class="line"></span><br><span class="line"><span class="comment"># 例如</span></span><br><span class="line">docker build -t javawebenv:v1 .</span><br></pre></td></tr></table></figure>
 <h1 id="Dockerfile内容"><a href="#Dockerfile内容" class="headerlink" title="Dockerfile内容"></a>Dockerfile内容</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">FROM centos:7 <span class="comment">#使用centos7最新的官方镜像</span></span><br><span class="line">MAINTAINER samdockerdeveloper</span><br><span class="line">RUN mkdir  -p /usr/<span class="built_in">local</span>/tomcat7 \</span><br><span class="line">&amp;&amp;mkdir -p /usr/<span class="built_in">local</span>/jdk8</span><br><span class="line">WORKDIR   /usr/<span class="built_in">local</span>/src/  <span class="comment">#使用该目录作为工作目录</span></span><br><span class="line">COPY apache-tomcat-7.0.99.zip /usr/<span class="built_in">local</span>/src/</span><br><span class="line">COPY jdk-8u131-linux-x64.tar.gz /usr/<span class="built_in">local</span>/src/</span><br><span class="line">COPY my.cnf /usr/<span class="built_in">local</span>/src/</span><br><span class="line">RUN yum update -y \</span><br><span class="line">&amp;&amp;yum install -y unzip \</span><br><span class="line">&amp;&amp;unzip apache-tomcat-7.0.99.zip \</span><br><span class="line">&amp;&amp;rpm --import /etc/pki/rpm-gpg/RPM* \</span><br><span class="line">&amp;&amp;cp -R apache-tomcat-7.0.99/* /usr/<span class="built_in">local</span>/tomcat7 \</span><br><span class="line">&amp;&amp;chmod +x /usr/<span class="built_in">local</span>/tomcat7/bin/*.sh \</span><br><span class="line">&amp;&amp;tar -xf jdk-8u131-linux-x64.tar.gz  -C /usr/<span class="built_in">local</span>/jdk8 --strip-components 1 <span class="comment"># 放弃上级目录解压到/usr/local/jdk8目录下</span></span><br><span class="line">ENV JAVA_HOME /usr/<span class="built_in">local</span>/jdk8</span><br><span class="line">ENV CLASSPATH <span class="variable">$JAVA_HOME</span>/lib/dt.jar:<span class="variable">$JAVA_HOME</span>/lib/tools.jar</span><br><span class="line">ENV CATALINA_HOME /usr/<span class="built_in">local</span>/tomcat7</span><br><span class="line">ENV CATALINA_BASE /usr/<span class="built_in">local</span>/tomcat7</span><br><span class="line">ENV PATH <span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$CATALINA_HOME</span>/lib:<span class="variable">$CATALINA_HOME</span>/bin</span><br><span class="line">EXPOSE 8080 <span class="comment">#暴露8080端口</span></span><br><span class="line">ENTRYPOINT [<span class="string">"/usr/local/tomcat7/bin/catalina.sh"</span>,<span class="string">"run"</span>]</span><br></pre></td></tr></table></figure>
 <p>上下文路径，是指 docker 在构建镜像，有时候想要使用到本机的文件（比如复制），docker build 命令得知这个路径后，会将路径下的所有内容打包。</p>
 <p>解析：由于 docker 的运行模式是 C/S。我们本机是 C，docker引擎是S。实际的构建过程是在docker引擎下完成的，所以这个时候无法用到我们本机的文件。这就需要把我们本机的指定目录下的文件一起打包提供给 docker 引擎使用。</p>
@@ -159,7 +158,7 @@
     <strong>作者:  </strong>Sam</a>
     </li>
     <li><span>发布时间: </span>2020-01-13 22:00:51</li>
-    <li><span>最后更新: </span>2020-01-13 23:05:28</li>
+    <li><span>最后更新: </span>2020-01-14 22:10:29</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
     <a href="/post/c9b0a620.html" target="_blank" title="我常用的docker基本命令">https://blog.ydstudio.net/post/c9b0a620.html</a>
@@ -173,7 +172,7 @@
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/post/c9b0a620.html" data-id="ck5ckxc910056mv0q4z2h17mw" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/post/c9b0a620.html" data-id="ck5dyfaqq0056eo0q22zq91x5" class="article-share-link">Share</a>
       
       
     </footer>
