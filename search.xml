@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>Spring配置文件中的classpath:和classpath*:的区别</title>
+      <link href="/post/38b6491c.html"/>
+      <url>/post/38b6491c.html</url>
+      
+        <content type="html"><![CDATA[<p> classpath是spring的写法，classpath是指WEB-INF文件夹下的classes目录，对应源代码src目录，用于存放从src中拷贝过去的各种配置文件，以及编译过后的class文件。Spring可以通过指定classpath*:与classpath:前缀加上路径的方式从classpath加载配置文件。</p><a id="more"></a><h5 id="classpath-的具体含义"><a href="#classpath-的具体含义" class="headerlink" title="classpath: 的具体含义"></a>classpath: 的具体含义</h5><p>classpath:表示从类路径中加载资源，classpath:和classpath:/是等价的，都是相对于类的根路径。资源文件库标准的在文件系统中，也可以在JAR或ZIP的类包中。</p><h5 id="classpath-的具体含义-1"><a href="#classpath-的具体含义-1" class="headerlink" title="classpath*: 的具体含义"></a>classpath*: 的具体含义</h5><p>classpath*:：假设多个JAR包或文件系统类路径都有一个相同的配置文件，classpath:只会在第一个加载的类路径下查找，而classpath:会扫描所有这些JAR包及类路径下出现的同名文件。</p><h5 id="具体例子如下"><a href="#具体例子如下" class="headerlink" title="具体例子如下"></a>具体例子如下</h5><ul><li>classpath:applicationContext.xml，匹配classpath下的指定文件         </li><li>classpath:/spring/applicationContext.xml，匹配classpath子目录下的指定文件</li><li>classpath:spring-*.xml，匹配classpath下的指定前缀的文件</li><li>classpath:<em>*/spring-</em>.xml，匹配classpath下所有目录下的指定前缀的文件</li><li>classpath<em>:**/spring-</em>.xml，匹配当前classpath和jar中classpath下所有目录下的指定前缀的文件</li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> spring </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>利用Docker Compose管理服务</title>
       <link href="/post/a5d4c4d4.html"/>
       <url>/post/a5d4c4d4.html</url>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.ydstudio.net/"/>
-  <updated>2020-01-14T14:57:32.000Z</updated>
+  <updated>2020-01-28T14:53:41.000Z</updated>
   <id>https://blog.ydstudio.net/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Spring配置文件中的classpath:和classpath*:的区别</title>
+    <link href="https://blog.ydstudio.net/post/38b6491c.html"/>
+    <id>https://blog.ydstudio.net/post/38b6491c.html</id>
+    <published>2020-01-28T22:46:48.000Z</published>
+    <updated>2020-01-28T14:53:41.000Z</updated>
+    
+    <content type="html"><![CDATA[<p> classpath是spring的写法，classpath是指WEB-INF文件夹下的classes目录，对应源代码src目录，用于存放从src中拷贝过去的各种配置文件，以及编译过后的class文件。Spring可以通过指定classpath*:与classpath:前缀加上路径的方式从classpath加载配置文件。</p><a id="more"></a><h5 id="classpath-的具体含义"><a href="#classpath-的具体含义" class="headerlink" title="classpath: 的具体含义"></a>classpath: 的具体含义</h5><p>classpath:表示从类路径中加载资源，classpath:和classpath:/是等价的，都是相对于类的根路径。资源文件库标准的在文件系统中，也可以在JAR或ZIP的类包中。</p><h5 id="classpath-的具体含义-1"><a href="#classpath-的具体含义-1" class="headerlink" title="classpath*: 的具体含义"></a>classpath*: 的具体含义</h5><p>classpath*:：假设多个JAR包或文件系统类路径都有一个相同的配置文件，classpath:只会在第一个加载的类路径下查找，而classpath:会扫描所有这些JAR包及类路径下出现的同名文件。</p><h5 id="具体例子如下"><a href="#具体例子如下" class="headerlink" title="具体例子如下"></a>具体例子如下</h5><ul><li>classpath:applicationContext.xml，匹配classpath下的指定文件         </li><li>classpath:/spring/applicationContext.xml，匹配classpath子目录下的指定文件</li><li>classpath:spring-*.xml，匹配classpath下的指定前缀的文件</li><li>classpath:<em>*/spring-</em>.xml，匹配classpath下所有目录下的指定前缀的文件</li><li>classpath<em>:**/spring-</em>.xml，匹配当前classpath和jar中classpath下所有目录下的指定前缀的文件</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; classpath是spring的写法，classpath是指WEB-INF文件夹下的classes目录，对应源代码src目录，用于存放从src中拷贝过去的各种配置文件，以及编译过后的class文件。Spring可以通过指定classpath*:与classpath:前缀加上路径的方式从classpath加载配置文件。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="spring" scheme="https://blog.ydstudio.net/tags/spring/"/>
+    
+  </entry>
   
   <entry>
     <title>利用Docker Compose管理服务</title>
@@ -445,27 +466,6 @@
       <category term="spring" scheme="https://blog.ydstudio.net/tags/spring/"/>
     
       <category term="bean" scheme="https://blog.ydstudio.net/tags/bean/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>idea自动生成方法注释（含参数及返回值）</title>
-    <link href="https://blog.ydstudio.net/post/526abd46.html"/>
-    <id>https://blog.ydstudio.net/post/526abd46.html</id>
-    <published>2019-04-22T23:35:02.000Z</published>
-    <updated>2019-12-09T15:03:26.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>程序员到新的公司上班，拿到新电脑当然要第一时间配置好各种开发环境和开发工具。</p><a id="more"></a><h4 id="在idea中打开设置，选择File-gt-settings-gt-Editor-gt-Live-Templates"><a href="#在idea中打开设置，选择File-gt-settings-gt-Editor-gt-Live-Templates" class="headerlink" title="在idea中打开设置，选择File-&gt;settings-&gt;Editor-&gt;Live Templates"></a>在idea中打开设置，选择File-&gt;settings-&gt;Editor-&gt;Live Templates</h4><p>点击”+”-&gt;选择template group ，然后输入group的name，如annotation。<br>然后，选中刚才创建的myGroup，然后再次点击右侧的绿色+，这次选择的是Live Template。取名（Abbreviation）为*。Description中填写”方法注释”</p><h4 id="配置模板"><a href="#配置模板" class="headerlink" title="配置模板"></a>配置模板</h4><p>选择刚刚添加的Live Template，在下面的Text Template中添加下面的内容，注意不要整理下面的格式。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">*</span><br><span class="line"> * </span><br><span class="line"> * $VAR1$ </span><br><span class="line"> $params$ </span><br><span class="line"> * <span class="meta">@return</span> $returns$</span><br><span class="line"> * <span class="meta">@author</span> <span class="number">19037900</span><span class="meta">@xx</span>.cn</span><br><span class="line"> * <span class="meta">@date</span> $date$ $time$</span><br><span class="line"> */</span><br></pre></td></tr></table></figure><p>注意：此处一定要为刚刚的模板指定使用范围,选择全部就行了。</p><h4 id="配置variables，点击-Edit-variables"><a href="#配置variables，点击-Edit-variables" class="headerlink" title="配置variables，点击 Edit variables"></a>配置variables，点击 Edit variables</h4><p>VAR1参数不用管<br>params (网上好多都不行，这个是我正在用的)</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">groovyScript(<span class="string">"def result=''; def params=\"$&#123;_1&#125;\".replaceAll('[\\\\[|\\\\]|\\\\s]', '').split(',').toList(); for(i = 0; i &lt; params.size(); i++) &#123;result+='* @'+'param: ' + params[i] + ((i &lt; params.size() - 1) ? '\\n'+'\\b' : '')&#125;; return result"</span>, methodParameters())</span><br></pre></td></tr></table></figure><p>returns参数可以下拉，选择methodReturnType();<br>date参数可以下拉，选择date();<br>time参数可以下拉，选择time();</p><h4 id="配置快捷键，点击Edit-variables下面的Options中的Expand-with下拉选择Enter。"><a href="#配置快捷键，点击Edit-variables下面的Options中的Expand-with下拉选择Enter。" class="headerlink" title="配置快捷键，点击Edit variables下面的Options中的Expand with下拉选择Enter。"></a>配置快捷键，点击Edit variables下面的Options中的Expand with下拉选择Enter。</h4><h4 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h4><p>输入 /**，然后Enter，大功告成</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;程序员到新的公司上班，拿到新电脑当然要第一时间配置好各种开发环境和开发工具。&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="idea" scheme="https://blog.ydstudio.net/tags/idea/"/>
     
   </entry>
   
