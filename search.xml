@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>JVM配置参数的类型</title>
+      <link href="/post/ea8be9c5.html"/>
+      <url>/post/ea8be9c5.html</url>
+      
+        <content type="html"><![CDATA[<h5 id="参数名称的说明"><a href="#参数名称的说明" class="headerlink" title="参数名称的说明"></a>参数名称的说明</h5><p>JVM配置参数分别用于跟踪监控JVM状态，分配堆内存以及分配栈内存。按照类型分为三类标准参数、非标准参数和非稳定参数</p><a id="more"></a><h6 id="标准参数"><a href="#标准参数" class="headerlink" title="标准参数(-)"></a>标准参数(-)</h6><p>所有 JVM 都必须支持这些参数的功能, 而且向后兼容, 如:</p><ul><li><p>-client : 设置 JVM 使用 client 模式, 特点是启动速度比较快, 但运行时性能和内存管理效率不高. 通常用于客户端应用程序或开发调试; 在32位环境下直接运行 Java 程序默认启用该模式.</p></li><li><p>-server : 设置 JVM 使 server 模式, 特点是启动速度比较慢, 但运行时性能和内存管理效率很高, 适用于生产环境; 在具有64位能力的JDK环境下默认启用该模式.</p></li></ul><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Sam-Mac:hexo-blog Sam$ java -version</span><br><span class="line">java version <span class="string">"1.8.0_74"</span></span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_74-b02)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.74-b02, mixed mode)</span><br><span class="line">Sam-Mac:hexo-blog Sam$</span><br></pre></td></tr></table></figure><h6 id="非标准参数-X"><a href="#非标准参数-X" class="headerlink" title="非标准参数(-X)"></a>非标准参数(-X)</h6><p>各 JVM 厂商应该都实现这些参数的功能, 但是并不保证所有的 JVM 实现都满足, 且不保证向后兼容。这些用的不多，看看就好。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 解释执行</span><br><span class="line">-Xint</span><br><span class="line"></span><br><span class="line">// 第一次使用就编译成本地代码</span><br><span class="line">-Xcomp</span><br><span class="line"></span><br><span class="line">// 混合模式</span><br><span class="line">-Xmixed</span><br></pre></td></tr></table></figure><h6 id="非稳定参数-XX"><a href="#非稳定参数-XX" class="headerlink" title="非稳定参数(-XX)"></a>非稳定参数(-XX)</h6><p>此类参数各个JVM实现会有所不同, 将来可能会不被支持, 需要慎重使用。这种类型的参数自己又可分为两种，分别如下：</p><ul><li><p>布尔类型。 -XX:+ 或者 - 某个属性值，+ 表示开启，-表示关闭。例如：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 打印GC详细信息</span><br><span class="line">-XX:+PrintGCDetails</span><br><span class="line"></span><br><span class="line">// 不打印GC详细信息</span><br><span class="line">-XX:-PrintGCDetails</span><br></pre></td></tr></table></figure></li><li><p>KV类型。-XX:属性key=属性值value，例如：</p></li></ul><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 设置Metaspace的大小</span><br><span class="line">-XX:MetaspaceSize=1024m</span><br></pre></td></tr></table></figure><p>注意: 在”-XX:”后的参数若不需要赋值, 即只是用来配置开启或关闭相应选项, 则需要有 “+” (开启) 或 “-“ (禁止) , 否则应用程序将在日志文件 (如 Tomcat 的日志文件 catalina.out ) 中抛出如下错误:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Missing +/- setting <span class="keyword">for</span> VM option <span class="string">'UseConcMarkSweepGC'</span>. </span><br><span class="line">Error: Could not create the Java Virtual Machine.</span><br><span class="line">Error: A fatal exception has occurred. Program will <span class="built_in">exit</span>.</span><br></pre></td></tr></table></figure><p>可以看出, 这里缺少了 “+/-“ 符号, 导致虚拟机启动异常, 修改后即可正常启动.</p><p>我们常设置的JVM参数Xms和Xmx,属于哪种类型的JVM参数？-Xms等价于-XX:InitialHeapSize,-Xmx等价于-XX:MaxHeapSize，所以他们都是XX类型参数。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Jvm </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Spring配置文件中的classpath:和classpath*:的区别</title>
       <link href="/post/38b6491c.html"/>
       <url>/post/38b6491c.html</url>
