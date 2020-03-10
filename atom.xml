@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.ydstudio.net/"/>
-  <updated>2020-02-06T07:57:04.000Z</updated>
+  <updated>2020-03-10T06:06:42.000Z</updated>
   <id>https://blog.ydstudio.net/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>利用Mac电脑自带应用将iPhone投屏到Mac电脑的教程</title>
+    <link href="https://blog.ydstudio.net/post/29afd8a9.html"/>
+    <id>https://blog.ydstudio.net/post/29afd8a9.html</id>
+    <published>2020-03-10T12:40:32.000Z</published>
+    <updated>2020-03-10T06:06:42.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>你只需要准备一根USB数据线，也就是手机的充电线即可，最好是原装的USB线。</p><h4 id="手机通过USB线连接电脑"><a href="#手机通过USB线连接电脑" class="headerlink" title="手机通过USB线连接电脑"></a>手机通过USB线连接电脑</h4><p>如果手机是第一次插上这台电脑可能会弹出信任等弹框，手机端点击【信任】，电脑端点击【继续】。<br>总的来说，就是允许电脑访问手机。</p><h4 id="打开Mac-系统自带的播放器QuickTime-Player"><a href="#打开Mac-系统自带的播放器QuickTime-Player" class="headerlink" title="打开Mac 系统自带的播放器QuickTime Player"></a>打开Mac 系统自带的播放器QuickTime Player</h4><p>直接command + 空格键 调出SpotLight 搜索 “QuickTime”，即可调出QuickTime Player播放器。</p><h4 id="菜单栏【文件】–-gt-【新建影片录制】"><a href="#菜单栏【文件】–-gt-【新建影片录制】" class="headerlink" title="菜单栏【文件】–&gt;【新建影片录制】"></a>菜单栏【文件】–&gt;【新建影片录制】</h4><p>打开【QuickTime Player】后，在左上角的菜单栏中【文件】菜单，找到第一项【新建影片录制】。</p><h4 id="更改摄像头选项，选中手机即可。"><a href="#更改摄像头选项，选中手机即可。" class="headerlink" title="更改摄像头选项，选中手机即可。"></a>更改摄像头选项，选中手机即可。</h4><p>点击【新建影片录制】后，此时默认是打开的电脑自带的摄像头，此时可以更新摄像头的来源和麦克风来源。<br>推荐相机选择iPhone的，麦克风选择内置麦克风。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;你只需要准备一根USB数据线，也就是手机的充电线即可，最好是原装的USB线。&lt;/p&gt;
+&lt;h4 id=&quot;手机通过USB线连接电脑&quot;&gt;&lt;a href=&quot;#手机通过USB线连接电脑&quot; class=&quot;headerlink&quot; title=&quot;手机通过USB线连接电脑&quot;&gt;&lt;/a&gt;手机通过
+      
+    
+    </summary>
+    
+    
+    
+      <category term="MAC" scheme="https://blog.ydstudio.net/tags/MAC/"/>
+    
+      <category term="iPhone" scheme="https://blog.ydstudio.net/tags/iPhone/"/>
+    
+      <category term="投屏" scheme="https://blog.ydstudio.net/tags/%E6%8A%95%E5%B1%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>JVM配置参数的类型</title>
@@ -439,31 +468,6 @@
     
     
       <category term="dubbo" scheme="https://blog.ydstudio.net/tags/dubbo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java中ListIterator和Iterator的异同</title>
-    <link href="https://blog.ydstudio.net/post/5da32797.html"/>
-    <id>https://blog.ydstudio.net/post/5da32797.html</id>
-    <published>2019-05-08T23:37:09.000Z</published>
-    <updated>2019-12-09T15:03:26.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>在使用Java集合的时候，都需要使用Iterator。但是java集合中还有一个迭代器ListIterator,在使用List、ArrayList、LinkedList和Vector的时候可以使用。这两种迭代器有什么区别呢？下面我们详细分析。这里有一点需要明确的时候，迭代器指向的位置是元素之前的位置。</p><a id="more"></a><p>首先看一下Iterator和ListIterator迭代器的方法有哪些。</p><p>Iterator迭代器包含的方法有：</p><p>hasNext()：如果迭代器指向位置后面还有元素，则返回 true，否则返回false</p><p>next()：返回集合中Iterator指向位置后面的元素</p><p>remove()：删除集合中Iterator指向位置后面的元素</p><p>ListIterator迭代器包含的方法有：</p><p>add(E e): 将指定的元素插入列表，插入位置为迭代器当前位置之前</p><p>hasNext()：以正向遍历列表时，如果列表迭代器后面还有元素，则返回 true，否则返回false</p><p>hasPrevious():如果以逆向遍历列表，列表迭代器前面还有元素，则返回 true，否则返回false</p><p>next()：返回列表中ListIterator指向位置后面的元素</p><p>nextIndex():返回列表中ListIterator所需位置后面元素的索引</p><p>previous():返回列表中ListIterator指向位置前面的元素</p><p>previousIndex()：返回列表中ListIterator所需位置前面元素的索引</p><p>remove():从列表中删除next()或previous()返回的最后一个元素（有点拗口，意思就是对迭代器使用hasNext()方法时，删除ListIterator指向位置后面的元素；当对迭代器使用hasPrevious()方法时，删除ListIterator指向位置前面的元素）</p><p>set(E e)：从列表中将next()或previous()返回的最后一个元素返回的最后一个元素更改为指定元素e</p><h4 id="相同点"><a href="#相同点" class="headerlink" title="相同点"></a>相同点</h4><p>都是迭代器，当需要对集合中元素进行遍历不需要干涉其遍历过程时，这两种迭代器都可以使用。</p><h4 id="不同点"><a href="#不同点" class="headerlink" title="不同点"></a>不同点</h4><ul><li><p>使用范围不同，Iterator可以应用于所有的集合，Set、List和Map和这些集合的子类型。而ListIterator只能用于List及其子类型。</p></li><li><p>ListIterator有add方法，可以向List中添加对象，而Iterator不能。</p></li><li><p>ListIterator和Iterator都有hasNext()和next()方法，可以实现顺序向后遍历，但是ListIterator有hasPrevious()和previous()方法，可以实现逆向（顺序向前）遍历。Iterator不可以。</p></li><li><p>ListIterator可以定位当前索引的位置，nextIndex()和previousIndex()可以实现。Iterator没有此功能。</p></li><li><p>都可实现删除操作，但是ListIterator可以实现对象的修改，set()方法可以实现。Iterator仅能遍历，不能修改。</p></li></ul><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">ArrayList&lt;String&gt; stringArrayList1 = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">        ArrayList&lt;String&gt; stringArrayList2 = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line"></span><br><span class="line">        stringArrayList1.add(<span class="string">"ok"</span>);</span><br><span class="line">        stringArrayList1.add(<span class="string">"hello"</span>);</span><br><span class="line">        stringArrayList1.add(<span class="string">"world"</span>);</span><br><span class="line"></span><br><span class="line">        stringArrayList2.add(<span class="string">"好的"</span>);</span><br><span class="line">        stringArrayList2.add(<span class="string">"你好"</span>);</span><br><span class="line">        stringArrayList2.add(<span class="string">"世界"</span>);</span><br><span class="line"></span><br><span class="line">        stringArrayList1.addAll(stringArrayList2);</span><br><span class="line">        ListIterator&lt;String&gt; iterator = stringArrayList1.listIterator();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"从前往后输出:"</span>);</span><br><span class="line">        <span class="keyword">while</span> (iterator.hasNext())&#123;</span><br><span class="line">            System.out.println(<span class="string">"next="</span>+iterator.next());</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"\r\n从后往前输出:"</span>);</span><br><span class="line">        <span class="keyword">while</span> (iterator.hasPrevious())&#123;</span><br><span class="line">            System.out.println(<span class="string">"previous="</span>+iterator.previous());</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure><h4 id="注意：一定要先进行由前向后输出，之后才能进行由后向前的输出。"><a href="#注意：一定要先进行由前向后输出，之后才能进行由后向前的输出。" class="headerlink" title="注意：一定要先进行由前向后输出，之后才能进行由后向前的输出。"></a>注意：一定要先进行由前向后输出，之后才能进行由后向前的输出。</h4>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在使用Java集合的时候，都需要使用Iterator。但是java集合中还有一个迭代器ListIterator,在使用List、ArrayList、LinkedList和Vector的时候可以使用。这两种迭代器有什么区别呢？下面我们详细分析。这里有一点需要明确的时候，迭代器指向的位置是元素之前的位置。&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="java" scheme="https://blog.ydstudio.net/tags/java/"/>
-    
-      <category term="ListIterator" scheme="https://blog.ydstudio.net/tags/ListIterator/"/>
-    
-      <category term="Iterator" scheme="https://blog.ydstudio.net/tags/Iterator/"/>
     
   </entry>
   
