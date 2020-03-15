@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.ydstudio.net/"/>
-  <updated>2020-03-15T06:44:43.000Z</updated>
+  <updated>2020-03-15T08:07:19.000Z</updated>
   <id>https://blog.ydstudio.net/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MySQL的bin-log</title>
+    <link href="https://blog.ydstudio.net/post/d1d9a9.html"/>
+    <id>https://blog.ydstudio.net/post/d1d9a9.html</id>
+    <published>2020-03-15T15:22:12.000Z</published>
+    <updated>2020-03-15T08:07:19.000Z</updated>
+    
+    <content type="html"><![CDATA[<h6 id="什么是bin-log？"><a href="#什么是bin-log？" class="headerlink" title="什么是bin-log？"></a>什么是bin-log？</h6><p>mysql-binlog是MySQL数据库的二进制日志，用于记录用户对数据库操作的SQL语句（除了数据查询语句，即记录insert、update、delete的sql）信息。<br>可以使用mysqlbin命令查看二进制日志的内容。</p><a id="more"></a><h6 id="MySQL-bin-log-的格式"><a href="#MySQL-bin-log-的格式" class="headerlink" title="MySQL bin-log 的格式"></a>MySQL bin-log 的格式</h6><p>binlog的格式也有三种：STATEMENT、ROW、MIXED </p><ul><li><p>1、 STATMENT模式：基于SQL语句的复制(statement-based replication, SBR)，每一条会修改数据的sql语句会记录到binlog中。<br>优点：不需要记录每一条SQL语句与每行的数据变化，这样子binlog的日志也会比较少，减少了磁盘IO，提高性能。<br>缺点：在某些情况下会导致master-slave中的数据不一致(如sleep()函数， last_insert_id()，以及user-defined functions(udf)等会出现问题)</p></li><li><p>2、ROW模式：基于行的复制(row-based replication, RBR)：不记录每一条SQL语句的上下文信息，仅需记录哪条数据被修改了，修改成了什么样子了。<br>优点：不会出现某些特定情况下的存储过程、或function、或trigger的调用和触发无法被正确复制的问题。<br>缺点：会产生大量的日志，尤其是alter table的时候会让日志暴涨。</p></li><li><p>3、MIXED模式：混合模式复制(mixed-based replication, MBR)：以上两种模式的混合使用，一般的复制使用STATEMENT模式保存binlog，对于STATEMENT模式无法复制的操作使用ROW模式保存binlog，MySQL会根据执行的SQL语句选择日志保存方式。</p></li></ul><h6 id="服务器上用哪种模式好呢？"><a href="#服务器上用哪种模式好呢？" class="headerlink" title="服务器上用哪种模式好呢？"></a>服务器上用哪种模式好呢？</h6><p>我们来举例子说明：</p><ul><li><ol><li>insert into xxtable values (x,y,z)为例</li></ol></li></ul><p>影响：1行,且为新增1行, 对于其他行没有影响. 这个情况,用row格式,直接复制磁盘上1行的新增变化。</p><ul><li><ol start="2"><li>update xxtable set age=21 where name=’sss’为例<br>影响：一般也只是影响1行. 用row也比较合适。</li></ol></li><li><ol start="3"><li>过年发红包,全公司的人,都涨薪100元.<br>update xxtable set salary=salary+100;<br>影响: 这个语句带来的影响是针对每一行的, 因此磁盘上很多row都发生了变化.此处适合用statment格式的日志.</li></ol></li></ul><p>MySQL后来又提供了一个新的混合模式（MIXED），很好理解为上述两种的模式的自由切换。Mysql会根据执行SQL来选择使用STATEMENT还是ROW模式。<br>所以我们用这种模式是最好的，能兼顾两者的优点。</p><h6 id="MySQL如何配置bin-log"><a href="#MySQL如何配置bin-log" class="headerlink" title="MySQL如何配置bin-log"></a>MySQL如何配置bin-log</h6><p>在MySQL配置文件my.cnf文件中的mysqld节中添加下面的配置文件：</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line"><span class="comment">#设置日志格式</span></span><br><span class="line">binlog_format = mixed</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置日志路径，注意路经需要mysql用户有权限写</span></span><br><span class="line">log-bin = /data/mysql/logs/mysql-bin.log</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置binlog清理时间</span></span><br><span class="line">expire_logs_days = 7</span><br><span class="line"></span><br><span class="line"><span class="comment">#binlog每个日志文件大小</span></span><br><span class="line">max_binlog_size = 100m</span><br><span class="line"></span><br><span class="line"><span class="comment">#binlog缓存大小</span></span><br><span class="line">binlog_cache_size = 4m</span><br><span class="line"></span><br><span class="line"><span class="comment">#最大binlog缓存大小</span></span><br><span class="line">max_binlog_cache_size = 512m</span><br></pre></td></tr></table></figure><p>重启MySQL生效，如果不方便重启服务，也可以直接修改对应的变量即可。</p><h6 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h6><p>无论是增量备份还是主从复制，都是需要开启mysql-binlog日志，最好跟数据目录设置到不同的磁盘分区，可以降低io等待，提升性能；并且在磁盘故障的时候<br>可以利用mysql-binlog恢复数据。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h6 id=&quot;什么是bin-log？&quot;&gt;&lt;a href=&quot;#什么是bin-log？&quot; class=&quot;headerlink&quot; title=&quot;什么是bin-log？&quot;&gt;&lt;/a&gt;什么是bin-log？&lt;/h6&gt;&lt;p&gt;mysql-binlog是MySQL数据库的二进制日志，用于记录用户对数据库操作的SQL语句（除了数据查询语句，即记录insert、update、delete的sql）信息。&lt;br&gt;可以使用mysqlbin命令查看二进制日志的内容。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="MySQL" scheme="https://blog.ydstudio.net/tags/MySQL/"/>
+    
+      <category term="bin-log" scheme="https://blog.ydstudio.net/tags/bin-log/"/>
+    
+  </entry>
   
   <entry>
     <title>MySQL 删除 relay log 的方法</title>
@@ -444,27 +467,6 @@
     
     
       <category term="dubbo" scheme="https://blog.ydstudio.net/tags/dubbo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MyBatis Generator配置文件--指定生成实体类使用实际的表列名作为实体类的属性名</title>
-    <link href="https://blog.ydstudio.net/post/f1ed0391.html"/>
-    <id>https://blog.ydstudio.net/post/f1ed0391.html</id>
-    <published>2019-05-13T23:40:33.000Z</published>
-    <updated>2019-12-09T15:03:26.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>今天在用MyBatis Generator生成表实体的时候，发现数据库中的表字段使用的是小驼峰命名规则，生成出来的实体属性都是小写了，没有转成小驼峰，一番搜索得知可以在MyBatis Generator的配置文件中修改。</p><a id="more"></a><p>table标签下的设置属性useActualColumnNames用于指定生成实体类时是否使用实际的列名作为实体类的属性名，取值true或false。</p><p>true：MyBatis Generator会使用数据库中实际的字段名字作为生成的实体类的属性名。</p><p>false：这是默认值。如果设置为false,则MyBatis Generator会将数据库中实际的字段名字转换为Camel Case风格作为生成的实体类的属性名。</p><p>如果明确的使用columnOverride元素指定了字段对应的实体的属性名,那么useActualColumnNames会被忽略。</p><p>假设表有一个字段名为start_date,如果这个属性设置为true,则生成的实体类的属性名为start_date,生成的setter/getter为　setStart_date/getStart_date。如果useActualColumnNames设置为false,则生成的实体类的属性名为startDate,生成的setter/getter为setStartDate/getStartDate。</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">table</span> <span class="attr">tableName</span>=<span class="string">"dobbo_goods_order"</span> <span class="attr">domainObjectName</span>=<span class="string">"GoodsOrder"</span> <span class="attr">enableCountByExample</span>=<span class="string">"false"</span> <span class="attr">enableUpdateByExample</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">enableDeleteByExample</span>=<span class="string">"false"</span> <span class="attr">enableSelectByExample</span>=<span class="string">"false"</span> <span class="attr">selectByExampleQueryId</span>=<span class="string">"false"</span> &gt;</span></span><br><span class="line">           <span class="comment">&lt;!-- table标签下的设置属性useActualColumnNames用于指定生成实体类时是否使用实际的列名作为实体类的属性名，取值true或false--&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"useActualColumnNames"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;今天在用MyBatis Generator生成表实体的时候，发现数据库中的表字段使用的是小驼峰命名规则，生成出来的实体属性都是小写了，没有转成小驼峰，一番搜索得知可以在MyBatis Generator的配置文件中修改。&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="mybatis" scheme="https://blog.ydstudio.net/tags/mybatis/"/>
     
   </entry>
   
