@@ -1,18 +1,211 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Spring Boot 1.x 中整合Sharding-JDBC实现读写分离 | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="国庆期间研究了数据库中间件例如Mycat和Sharding JDBC，Sharding-jdbc和Mycat使用不同的理念，Sharding-jdbc目前是基于Jdbc驱动，无需额外的proxy，因此也无需关注proxy本身的高可用。Mycat 是基于 Proxy，它复写了 MySQL 协议，将 Mycat Server 伪装成一个 MySQL 数据库，而 Sharding-JDBC 是基于 JD">
+<meta name="keywords" content="spring boot,sharding-jdbc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot 1.x 中整合Sharding-JDBC实现读写分离">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;post&#x2F;6d3d362b.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="国庆期间研究了数据库中间件例如Mycat和Sharding JDBC，Sharding-jdbc和Mycat使用不同的理念，Sharding-jdbc目前是基于Jdbc驱动，无需额外的proxy，因此也无需关注proxy本身的高可用。Mycat 是基于 Proxy，它复写了 MySQL 协议，将 Mycat Server 伪装成一个 MySQL 数据库，而 Sharding-JDBC 是基于 JD">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-09T15:03:26.000Z">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.ydstudio.net"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Spring-Boot-1-x-中整合Sharding-JDBC实现读写分离" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/6d3d362b.html" class="article-date">
+  <time datetime="2018-10-06T23:14:30.000Z" itemprop="datePublished">2018-10-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Spring Boot 1.x 中整合Sharding-JDBC实现读写分离
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>国庆期间研究了数据库中间件例如Mycat和Sharding JDBC，Sharding-jdbc和Mycat使用不同的理念，Sharding-jdbc目前是基于Jdbc驱动，无需额外的proxy，因此也无需关注proxy本身的高可用。Mycat 是基于 Proxy，它复写了 MySQL 协议，将 Mycat Server 伪装成一个 MySQL 数据库，而 Sharding-JDBC 是基于 JDBC 接口的扩展，是以jar包的形式提供轻量级服务的。</p>
+<a id="more"></a>
+<p>先介绍一下整合过程中用到的主要软件的版本：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Spring Boot: <span class="number">1.5</span><span class="number">.8</span>.RELEASE</span><br><span class="line">Sharding-JDBC: <span class="number">2.0</span><span class="number">.3</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong> 实现读写分离我们自己要先配置好MySQL的主从复制，我自己已经配置好了一主两从。配置的步骤可以参考<a href="/archives/19.html">【实现MySQL主从复制】</a></p>
+<h4 id="pom-xml-依赖"><a href="#pom-xml-依赖" class="headerlink" title="pom.xml 依赖"></a>pom.xml 依赖</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">		<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">		<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.shardingjdbc<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>sharding-jdbc-core-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>druid<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.1.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="application配置文件"><a href="#application配置文件" class="headerlink" title="application配置文件"></a>application配置文件</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">server.port=<span class="number">8080</span></span><br><span class="line"></span><br><span class="line">sharding.jdbc.datasource.names=ds_master,ds_slave_1,ds_slave_2</span><br><span class="line"></span><br><span class="line"># 主数据源</span><br><span class="line">sharding.jdbc.datasource.ds_master.type=com.alibaba.druid.pool.DruidDataSource</span><br><span class="line">sharding.jdbc.datasource.ds_master.driver-<span class="class"><span class="keyword">class</span>-<span class="title">name</span></span>=com.mysql.jdbc.Driver</span><br><span class="line">sharding.jdbc.datasource.ds_master.url=jdbc:mysql:<span class="comment">//localhost:3306/db1?characterEncoding=utf-8</span></span><br><span class="line">sharding.jdbc.datasource.ds_master.username=root</span><br><span class="line">sharding.jdbc.datasource.ds_master.password=<span class="number">123456</span></span><br><span class="line">sharding.jdbc.datasource.ds_master.maxPoolSize=<span class="number">20</span></span><br><span class="line"></span><br><span class="line"># 从数据源 ds_slave_1</span><br><span class="line">sharding.jdbc.datasource.ds_slave_1.type=com.alibaba.druid.pool.DruidDataSource</span><br><span class="line">sharding.jdbc.datasource.ds_slave_1.driver-<span class="class"><span class="keyword">class</span>-<span class="title">name</span></span>=com.mysql.jdbc.Driver</span><br><span class="line">sharding.jdbc.datasource.ds_slave_1.url=jdbc:mysql:<span class="comment">//localhost:3307/db1?characterEncoding=utf-8</span></span><br><span class="line">sharding.jdbc.datasource.ds_slave_1.username=root</span><br><span class="line">sharding.jdbc.datasource.ds_slave_1.password=<span class="number">123456</span></span><br><span class="line">sharding.jdbc.datasource.ds_slave_1.maxPoolSize=<span class="number">20</span></span><br><span class="line"></span><br><span class="line"># 从数据源 ds_slave_2</span><br><span class="line">sharding.jdbc.datasource.ds_slave_2.type=com.alibaba.druid.pool.DruidDataSource</span><br><span class="line">sharding.jdbc.datasource.ds_slave_2.driver-<span class="class"><span class="keyword">class</span>-<span class="title">name</span></span>=com.mysql.jdbc.Driver</span><br><span class="line">sharding.jdbc.datasource.ds_slave_2.url=jdbc:mysql:<span class="comment">//localhost:3308/db1?characterEncoding=utf-8</span></span><br><span class="line">sharding.jdbc.datasource.ds_slave_2.username=root</span><br><span class="line">sharding.jdbc.datasource.ds_slave_2.password=<span class="number">123456</span></span><br><span class="line">sharding.jdbc.datasource.ds_slave_2.maxPoolSize=<span class="number">20</span></span><br><span class="line"></span><br><span class="line"># 读写分离配置</span><br><span class="line">sharding.jdbc.config.masterslave.load-balance-algorithm-type=round_robin</span><br><span class="line">sharding.jdbc.config.masterslave.name=dataSource</span><br><span class="line">sharding.jdbc.config.masterslave.master-data-source-name=ds_master</span><br><span class="line">sharding.jdbc.config.masterslave.slave-data-source-names=ds_slave_1,ds_slave_2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mybatis.config-location=classpath:mybatis-config.xml</span><br><span class="line">mybatis.mapper-locations=classpath:mapper<span class="comment">/*.xml</span></span><br><span class="line"><span class="comment">mybatis.typeAliasesPackage=net.ydstuio.shardingjdbc.repository</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>sharding.jdbc.config.masterslave.load-balance-algorithm-type<br>查询时的负载均衡算法，目前有2种算法，round_robin（轮询）和random（随机）。</p>
+</li>
+<li><p>算法接口是：io.shardingjdbc.core.api.algorithm.masterslave.MasterSlaveLoadBalanceAlgorithm。</p>
+</li>
+<li><p>实现类有RandomMasterSlaveLoadBalanceAlgorithm和RoundRobinMasterSlaveLoadBalanceAlgorithm。</p>
+</li>
+<li><p>sharding.jdbc.config.masterslave.master-data-source-name 主数据源名称。</p>
+</li>
+<li><p>sharding.jdbc.config.masterslave.slave-data-source-names 从数据源名称，多个用逗号隔开。</p>
+</li>
+</ul>
+<p>到此，Sharing-Jdbc的读写分离就已经就配置好了，看看是不是很简单。如果对数据的及时性要求很高，可以使用下面的代码，使得读取也落到主库上。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 强制路由主库</span></span><br><span class="line">HintManager.getInstance().setMasterRouteOnly();</span><br></pre></td></tr></table></figure>
+      
+    </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2018-10-06 23:14:30</li>
+    <li><span>最后更新: </span>2019-12-09 23:03:26</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/6d3d362b.html" target="_blank" title="Spring Boot 1.x 中整合Sharding-JDBC实现读写分离">https://blog.ydstudio.net/post/6d3d362b.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a>
+      许可协议，转载请保留原文链接及作者!
+    </li>
+  </ul>
+<div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/6d3d362b.html" data-id="ck7socf93003e8ey1bum21hpa" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sharding-jdbc/" rel="tag">sharding-jdbc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/8f4c3efa.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          使用Nginx做反向代理,设置请求返回时带上被代理机器的信息
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/53410e91.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older << </strong>
+      <div class="article-nav-title">Spring Boot 1.5.8整合Dubbo</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
   </div>
 </body>
 </html>

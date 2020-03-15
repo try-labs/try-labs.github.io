@@ -1,18 +1,230 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>实现MySQL主从复制 | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="实验准备：在Pc上安装两个MySQL，分别监听3307和3308端口，在centos7上也安装一个MySQL，这样我们就有三个slave！首先我们要保证4个MySQL上的数据一致，并且配置好各个的日志，这样即使出错了，也容易找出错误。">
+<meta name="keywords" content="linux,mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实现MySQL主从复制">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;post&#x2F;34c3deb2.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="实验准备：在Pc上安装两个MySQL，分别监听3307和3308端口，在centos7上也安装一个MySQL，这样我们就有三个slave！首先我们要保证4个MySQL上的数据一致，并且配置好各个的日志，这样即使出错了，也容易找出错误。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-03-15T06:10:35.000Z">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.ydstudio.net"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-实现MySQL主从复制" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/34c3deb2.html" class="article-date">
+  <time datetime="2017-11-17T22:28:06.000Z" itemprop="datePublished">2017-11-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      实现MySQL主从复制
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="实验准备："><a href="#实验准备：" class="headerlink" title="实验准备："></a>实验准备：</h3><p>在Pc上安装两个MySQL，分别监听3307和3308端口，在centos7上也安装一个MySQL，这样我们就有三个slave！首先我们要保证4个MySQL上的数据一致，并且配置好各个的日志，这样即使出错了，也容易找出错误。</p>
+<a id="more"></a>
+<ul>
+<li>Slave1：MySQL3307</li>
+<li>Slave2：MySQL3308</li>
+<li>Slave3：Centos7上的MySQL</li>
+<li>Master: 运行在3306端口的MySQL</li>
+</ul>
+<h3 id="修改Master的配置"><a href="#修改Master的配置" class="headerlink" title="修改Master的配置"></a>修改Master的配置</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">server-id=1      //[必须]服务器唯一ID，默认是1，可以随便配置，只要不重复即可</span><br><span class="line">binlog-do-db = xxx // 同步的数据库名，如有多个写多行</span><br><span class="line">binlog-ignore-db =mysql // 不需要备份的数据库，如有多个写多行</span><br><span class="line">read-only =0  // 主机，读写都可以</span><br><span class="line">log-bin=mysql-bin   //[必须]启用二进制日志 </span><br><span class="line">binlog-format =mixed // bin的格式</span><br><span class="line">relay-log=mysql-relay // 中继日志文件名</span><br><span class="line">expire-logs-days=20 // 日志最长保存时间</span><br><span class="line">max_binlog_size = 100M // 日志最大容量</span><br><span class="line">slave-skip-errors=all // 跳过所有错误</span><br></pre></td></tr></table></figure>
+<h3 id="修改Slave的配置"><a href="#修改Slave的配置" class="headerlink" title="修改Slave的配置"></a>修改Slave的配置</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">MySQL3307</span></span><br><span class="line"> [mysqld]</span><br><span class="line"> log-bin=mysql-bin   //[不是必须]启用二进制日志</span><br><span class="line"> server-id=3307      //[必须]服务器唯一ID，默认是1，可以随便配置，只要不重复即可</span><br><span class="line"> replicate-do-db =test // 复制某个库,如有多个写多行</span><br><span class="line"> replicate-ignore-db=mysql // 不复制某个库,如有多个写多行</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">MySQL3308</span></span><br><span class="line">[mysqld]</span><br><span class="line"> log-bin=mysql-bin   //[不是必须]启用二进制日志</span><br><span class="line"> server-id=3308      //[必须]服务器唯一ID，默认是1，可以随便配置，只要不重复即可</span><br><span class="line"> replicate-do-db =test // 复制某个库,如有多个写多行</span><br><span class="line"> replicate-ignore-db=mysql // 不复制某个库,如有多个写多行</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">Centos7</span></span><br><span class="line">[mysqld]</span><br><span class="line"> log-bin=mysql-bin   //[不是必须]启用二进制日志</span><br><span class="line"> server-id=3      //[必须]服务器唯一ID，默认是1，可以随便配置，只要不重复即可</span><br><span class="line"> replicate-do-db =test // 复制某个库,如有多个写多行</span><br><span class="line"> replicate-ignore-db=mysql // 不复制某个库,如有多个写多行</span><br></pre></td></tr></table></figure>
+<h3 id="保存修改后重启4个MySQL服务"><a href="#保存修改后重启4个MySQL服务" class="headerlink" title="保存修改后重启4个MySQL服务"></a>保存修改后重启4个MySQL服务</h3><h3 id="在Master创建3个MySQL用户"><a href="#在Master创建3个MySQL用户" class="headerlink" title="在Master创建3个MySQL用户"></a>在Master创建3个MySQL用户</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">grant replication client,replication slave on *.* to slave3307@'%' identified by 'slave3307';</span><br><span class="line"></span><br><span class="line">grant replication client,replication slave on *.* to slave3308@'%' identified by 'slave3308';</span><br><span class="line"></span><br><span class="line">grant replication client,replication slave on *.* to centos7@'%' identified by 'centos7'; </span><br><span class="line"></span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+<h3 id="登录Master执行命令查看log-pos和log-file"><a href="#登录Master执行命令查看log-pos和log-file" class="headerlink" title="登录Master执行命令查看log_pos和log_file"></a>登录Master执行命令查看log_pos和log_file</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">show master status;</span><br><span class="line">   +------------------+----------+--------------+------------------+</span><br><span class="line">   | File             | Position | Binlog_Do_DB | Binlog_Ignore_DB |</span><br><span class="line">   +------------------+----------+--------------+------------------+</span><br><span class="line">   | mysql-bin.000062 |      8233|              |                  |</span><br><span class="line">   +------------------+----------+--------------+------------------+</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong> 执行完此步骤后不要再操作主服务器MYSQL，防止主服务器状态值变化</p>
+<h3 id="配置从服务器Slave，下面的命令分别在3个MySQL上执行："><a href="#配置从服务器Slave，下面的命令分别在3个MySQL上执行：" class="headerlink" title="配置从服务器Slave，下面的命令分别在3个MySQL上执行："></a>配置从服务器Slave，下面的命令分别在3个MySQL上执行：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">change master to master_host=&apos;192.168.19.254&apos;,master_port=3306,master_user=&apos;slave3307&apos;,</span><br><span class="line">master_password=&apos;slave3307&apos;,master_log_file=&apos;mysql-bin.000062&apos;,master_log_pos=8233;</span><br><span class="line"></span><br><span class="line">start slave #启动从服务器复制功能</span><br><span class="line"></span><br><span class="line">change master to master_host=&apos;192.168.19.254&apos;,master_port=3306,master_user=&apos;slave3308&apos;,</span><br><span class="line">master_password=&apos;slave3308&apos;,master_log_file=&apos;mysql-bin.000062&apos;,master_log_pos=8233;</span><br><span class="line"></span><br><span class="line">start slave #启动从服务器复制功能</span><br><span class="line"></span><br><span class="line">change master to master_host=&apos;192.168.19.254&apos;,master_port=3306,master_user=&apos;centos7&apos;,</span><br><span class="line">master_password=&apos;centos7&apos;,master_log_file=&apos;mysql-bin.000087&apos;,master_log_pos=8233;</span><br><span class="line"></span><br><span class="line">start slave #启动从服务器复制功能</span><br></pre></td></tr></table></figure>
+<h3 id="检查Slave复制功能的状态"><a href="#检查Slave复制功能的状态" class="headerlink" title="检查Slave复制功能的状态"></a>检查Slave复制功能的状态</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show slave status\G</span><br></pre></td></tr></table></figure>
+<p><em>注意</em> Slave_IO及Slave_SQL进程必须正常运行，即YES状态，否则都是错误的状态(如：其中一个NO或者出现Connection)。有时候是server-id配置错误、防火墙拦截或账户没有权限，仔细检查各个的错误日志，就能很快找到问题所在。</p>
+<h3 id="END-以上操作过程，主从服务器配置完成"><a href="#END-以上操作过程，主从服务器配置完成" class="headerlink" title="END 以上操作过程，主从服务器配置完成"></a>END 以上操作过程，主从服务器配置完成</h3><h5 id="附"><a href="#附" class="headerlink" title="附"></a>附</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">在Windows上注册MySQL添加服务</span></span><br><span class="line"></span><br><span class="line">C:\phpStudy\MySQL3307\bin\mysqld install mysql3307 --defaults-file="C:\phpStudy\MySQL3307\my.ini"</span><br><span class="line">C:\phpStudy\MySQL3308\bin\mysqld install mysql3308 --defaults-file="C:\phpStudy\MySQL3308\my.ini"</span><br></pre></td></tr></table></figure>
+
+<p><em>MySQL主从复制跳过错误两种方式：</em></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1.跳过指定数量的事务：</span><br><span class="line"></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash">stop slave ;</span></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash">SET GLOBAL SQL_SLAVE_SKIP_COUNTER = 1;  <span class="comment">#跳过一个事务</span></span></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash">start slave;</span></span><br><span class="line"></span><br><span class="line">2.修改mysql的配置文件，通过slave_skip_errors参数来跳所有错误或指定类型的错误</span><br><span class="line">vi /etc/my.cnf</span><br><span class="line">[mysqld]</span><br><span class="line">slave-skip-errors=1062,1053,1146 #跳过指定error no类型的错误</span><br><span class="line">slave-skip-errors=all #跳过所有错误</span><br></pre></td></tr></table></figure>
+<p>2018年10月3号更新：<br><strong>注意：</strong><br>如果你是直接复制MySQL的安装目录，而你的MySQL的版本又是5.6及以后的版本，那你有可能出现下面的问题：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Fatal error: The slave I/O thread stops because master and slave have equal MySQL server UUIDs; these UUIDs must be different for replication to work.</span><br></pre></td></tr></table></figure>
+<p>mysql 5.6的复制引入了uuid的概念，各个复制结构中的server_uuid得保证不一样，但是查看到直接复制data文件夹后server_uuid是相同的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show variables like &apos;%server_uuid%&apos;;</span><br></pre></td></tr></table></figure>
+<p>解决方法：<br>找到data文件夹下的auto.cnf文件，修改里面的uuid值，保证各个db的uuid不一样，重启db即可</p>
+<p>附一个正确slave status的信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mysql&gt; show slave status\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">               Slave_IO_State: Waiting for master to send event</span><br><span class="line">                  Master_Host: 127.0.0.1</span><br><span class="line">                  Master_User: slave3307</span><br><span class="line">                  Master_Port: 3306</span><br><span class="line">                Connect_Retry: 60</span><br><span class="line">              Master_Log_File: mysql-bin.000007</span><br><span class="line">          Read_Master_Log_Pos: 602</span><br><span class="line">               Relay_Log_File: mysql-relay.000005</span><br><span class="line">                Relay_Log_Pos: 765</span><br><span class="line">        Relay_Master_Log_File: mysql-bin.000007</span><br><span class="line">             Slave_IO_Running: Yes</span><br><span class="line">            Slave_SQL_Running: Yes</span><br><span class="line">              Replicate_Do_DB:</span><br><span class="line">          Replicate_Ignore_DB:</span><br><span class="line">           Replicate_Do_Table:</span><br><span class="line">       Replicate_Ignore_Table:</span><br><span class="line">      Replicate_Wild_Do_Table:</span><br><span class="line">  Replicate_Wild_Ignore_Table:</span><br><span class="line">                   Last_Errno: 0</span><br><span class="line">                   Last_Error:</span><br><span class="line">                 Skip_Counter: 0</span><br><span class="line">          Exec_Master_Log_Pos: 602</span><br><span class="line">              Relay_Log_Space: 1384</span><br><span class="line">              Until_Condition: None</span><br><span class="line">               Until_Log_File:</span><br><span class="line">                Until_Log_Pos: 0</span><br><span class="line">           Master_SSL_Allowed: No</span><br><span class="line">           Master_SSL_CA_File:</span><br><span class="line">           Master_SSL_CA_Path:</span><br><span class="line">              Master_SSL_Cert:</span><br><span class="line">            Master_SSL_Cipher:</span><br><span class="line">               Master_SSL_Key:</span><br><span class="line">        Seconds_Behind_Master: 0</span><br><span class="line">Master_SSL_Verify_Server_Cert: No</span><br><span class="line">                Last_IO_Errno: 0</span><br><span class="line">                Last_IO_Error:</span><br><span class="line">               Last_SQL_Errno: 0</span><br><span class="line">               Last_SQL_Error:</span><br><span class="line">  Replicate_Ignore_Server_Ids:</span><br><span class="line">             Master_Server_Id: 1</span><br><span class="line">                  Master_UUID: fe1b230d-6ee9-11e8-b0c6-9c5c8e103115</span><br><span class="line">             Master_Info_File: C:\phpStudy\MySQL3307\data\master.info</span><br><span class="line">                    SQL_Delay: 0</span><br><span class="line">          SQL_Remaining_Delay: NULL</span><br><span class="line">      Slave_SQL_Running_State: Slave has read all relay log; waiting for the slave I/O thread to update it</span><br><span class="line">           Master_Retry_Count: 86400</span><br><span class="line">                  Master_Bind:</span><br><span class="line">      Last_IO_Error_Timestamp:</span><br><span class="line">     Last_SQL_Error_Timestamp:</span><br><span class="line">               Master_SSL_Crl:</span><br><span class="line">           Master_SSL_Crlpath:</span><br><span class="line">           Retrieved_Gtid_Set:</span><br><span class="line">            Executed_Gtid_Set:</span><br><span class="line">                Auto_Position: 0</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p><strong>2020年03月15号更新:</strong></p>
+<p>binlog_do_db是指定binlog日志记录那些库的二进制日志。replicate_do_db则在slave库中指定同步那些库的binlog日志。<br>在主从互备环境中，有没有必要每个服务器都同时配置binlog_do_db和replicate_do_db?理由是什么？</p>
+<p>binlog-do-db：指定mysql的binlog日志记录哪个db<br>replicate_do_db：参数是在slave上配置，指定slave要复制哪个库</p>
+<p>在master上设置binlog_do_弊端：<br>1、过滤操作带来的负载都在master上<br>2、无法做基于时间点的复制（利用binlog）</p>
+<p>如何删除日志?<br>利用 RESET MASTER 或者 purge</p>
+<p>reset master ：删除所有的binglog日志文件，并将日志索引文件清空，重新开始所有新的日志文件。用于第一次进行搭建主从库时，进行主库binlog初始化工作</p>
+<p>注意reset master 不同于 purge binary log的两处地方</p>
+<ol>
+<li>reset master 将删除日志索引文件中记录的所有binlog文件，创建一个新的日志文件起始值从000001 开始，然而purge binary log 命令并不会修改记录binlog的顺序的数值</li>
+<li>reset master 不能用于有任何slave 正在运行的主从关系的主库。因为在slave 运行时刻 reset master 命令不被支持，reset master 将master 的binlog从000001 开始记录,slave 记录的master log 则是reset master 时主库的最新的binlog,从库会报错无法找的指定的binlog文件</li>
+</ol>
+<p>purge使用事例</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 清除mysql-bin.010日志</span></span><br><span class="line"><span class="keyword">purge</span> <span class="keyword">master</span> <span class="keyword">logs</span> <span class="keyword">to</span> <span class="string">'mysql-bin.010’; </span></span><br><span class="line"><span class="string"># 清除2016-02-28 13:00:00前的日志</span></span><br><span class="line"><span class="string">purge master logs before '</span><span class="number">2016</span><span class="number">-02</span><span class="number">-28</span> <span class="number">13</span>:<span class="number">00</span>:<span class="number">00</span><span class="string">'; </span></span><br><span class="line"><span class="string"># 清除3天前的bin日志</span></span><br><span class="line"><span class="string">purge master logs before date_sub(now(), interval 3 day);</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2017-11-17 22:28:06</li>
+    <li><span>最后更新: </span>2020-03-15 14:10:35</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/34c3deb2.html" target="_blank" title="实现MySQL主从复制">https://blog.ydstudio.net/post/34c3deb2.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a>
+      许可协议，转载请保留原文链接及作者!
+    </li>
+  </ul>
+<div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/34c3deb2.html" data-id="ck7socfai005d8ey18k2ihs0l" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/56117af9.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          Mycat 数据库分库分表中的安装与使用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/6933ee4e.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older << </strong>
+      <div class="article-nav-title">Linux Crontab 安装使用详细说明</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
   </div>
 </body>
 </html>
