@@ -1,18 +1,219 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Java学习系列文章第四篇：说说Java的三大特性 | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Java语言提供类、接口和继承等面向对象的特性，为了简单起见，只支持类之间的单继承，但支持接口之间的多继承，并支持类与接口之间的实现机制（关键字为implements）。Java语言全面支持动态绑定，而C++语言只对虚函数使用动态绑定。总之，Java语言是一个纯的面向对象程序设计语言。">
+<meta name="keywords" content="java,oop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java学习系列文章第四篇：说说Java的三大特性">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;post&#x2F;2b809338.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="Java语言提供类、接口和继承等面向对象的特性，为了简单起见，只支持类之间的单继承，但支持接口之间的多继承，并支持类与接口之间的实现机制（关键字为implements）。Java语言全面支持动态绑定，而C++语言只对虚函数使用动态绑定。总之，Java语言是一个纯的面向对象程序设计语言。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-09T15:03:26.000Z">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.ydstudio.net"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Java学习系列文章第四篇：说说Java的三大特性" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/2b809338.html" class="article-date">
+  <time datetime="2018-06-29T21:58:31.000Z" itemprop="datePublished">2018-06-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java学习系列文章第四篇：说说Java的三大特性
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Java语言提供类、接口和继承等面向对象的特性，为了简单起见，只支持类之间的单继承，但支持接口之间的多继承，并支持类与接口之间的实现机制（关键字为implements）。Java语言全面支持动态绑定，而C++语言只对虚函数使用动态绑定。总之，Java语言是一个纯的面向对象程序设计语言。</p>
+<a id="more"></a>
+
+<p>说到面向对象编程，那就不得不提面向对象编程的三大特性：继承、封装和多态。那下面我们先来说一说封装。</p>
+<p>封装隐藏了类的内部实现机制，可以在不想影响使用的情况下改变类的内部结构，同时也保护了数据。对外界也可以隐藏内部的细节，只暴露给外界访问的方法。</p>
+<p>继承可以复用父类的代码。两个类之间若存在is-a的关系，就可以使用继承，从而达到代码的复用，同时也给多态的实现做了铺垫。</p>
+<p>下面我们只要说说面向对象编程中的多态。所谓的多态就是指程序中定义的引用变量所指向的具体类型和通过该引用变量发出的方法调用在编程时并不确定，而是在程序的运行期间才确定，即一个引用变量到底会指向哪个类的实例对象，该引用变量发出的方法调用到底是哪个类中实现的方法，必须在程序运行期间才能确定，这就是所谓的动态绑定（dynamic binding）。</p>
+<p>既然多态那么重要，那么多态到底有什么好处呢？</p>
+<ol>
+<li>可替换性</li>
+<li>消除类型之间的耦合关系</li>
+<li>可扩充性</li>
+<li>接口性</li>
+<li>灵活性</li>
+<li>简化性</li>
+</ol>
+<p><strong>Java实现多态有三个必要的条件：继承、重写、向上转型</strong></p>
+<ol>
+<li>继承：在多态中必须存在有继承关系的子类和父类。</li>
+<li>重写：子类对父类中某些方法进行重写定义，在调用这些方法时就会调用子类的方法。</li>
+<li>向上转型：在多态中需要将父类的引用指向子类，只有这样该引用才能够具备调用父类和子类的方法。</li>
+</ol>
+<p>多态的实现方式</p>
+<h4 id="1-继承重写"><a href="#1-继承重写" class="headerlink" title="1. 继承重写"></a>1. 继承重写</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Cat</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"吃鱼"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"抓老鼠"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dog</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"吃骨头"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"看家"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        Animal a = <span class="keyword">new</span> Cat();  <span class="comment">// 向上转型</span></span><br><span class="line">        a.eat();               <span class="comment">// 调用的是 Cat 的 eat</span></span><br><span class="line"></span><br><span class="line">        Animal b = <span class="keyword">new</span> Dog();  <span class="comment">// 向上转型</span></span><br><span class="line">        b.eat();               <span class="comment">// 调用的是 Dog 的 eat</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所以基于继承实现的多态可以总结如下：对于引用子类的父类类型，在处理该引用时，它适用于继承该父类的所有子类，子类对象的不同，对方法的实现也就不同，执行相同动作产生的行为也就不同。<br>如果父类是抽象类，那么子类必须要实现父类中所有的抽象方法，这样该父类所有的子类一定存在统一的对外接口，但其内部的具体实现可以各异。这样我们就可以使用顶层类提供的统一接口来处理该层次的方法。</p>
+<h4 id="2-基于接口实现多态"><a href="#2-基于接口实现多态" class="headerlink" title="2.基于接口实现多态"></a>2.基于接口实现多态</h4><p>继承是通过重写父类的同一方法的几个不同子类来体现的，那么就可就是通过实现接口并覆盖接口中同一方法的几不同的类体现的。</p>
+<p>在接口的多态中，指向接口的引用必须是指定这实现了该接口的一个类的实例程序，在运行时，根据对象引用的实际类型来执行对应的方法。</p>
+<p>继承都是单继承，只能为一组相关的类提供一致的服务接口。但是接口可以是多继承多实现，它能够利用一组相关或者不相关的接口进行组合与扩充，能够对外提供一致的服务接口。所以它相对于继承来说有更好的灵活性。</p>
+
+      
+    </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2018-06-29 21:58:31</li>
+    <li><span>最后更新: </span>2019-12-09 23:03:26</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/2b809338.html" target="_blank" title="Java学习系列文章第四篇：说说Java的三大特性">https://blog.ydstudio.net/post/2b809338.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a>
+      许可协议，转载请保留原文链接及作者!
+    </li>
+  </ul>
+<div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/2b809338.html" data-id="ck7sre48x001f0uy12g0f9b9t" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/oop/" rel="tag">oop</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/4b7e7a69.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          Java学习系列文章第五篇：说说Java中的异常
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/28107323.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older << </strong>
+      <div class="article-nav-title">Java学习系列文章第三篇：说说equals和==</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
   </div>
 </body>
 </html>

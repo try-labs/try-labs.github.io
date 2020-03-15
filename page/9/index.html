@@ -1,18 +1,562 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一个程序员的成长记录">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sam的个人博客">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;page&#x2F;9&#x2F;index.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="一个程序员的成长记录">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.ydstudio.net"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-MySQL出现1267的错误" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/75a1fb40.html" class="article-date">
+  <time datetime="2017-12-04T23:21:47.000Z" itemprop="datePublished">2017-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/75a1fb40.html">MySQL出现1267的错误</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>执行SQL的时候，MySQL出现了下面的1267的错误，提示与字符集有关系。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1267 - Illegal mix of collations (utf8_unicode_ci,IMPLICIT) and (utf8_general_ci,IMPLICIT) <span class="keyword">for</span> operation <span class="string">'='</span></span><br></pre></td></tr></table></figure>
+        
+          <p class="article-more-link">
+            <a href="/post/75a1fb40.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/75a1fb40.html" data-id="ck7sre49n002d0uy1hofdbrjr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-修改ssh的默认22端口" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/68417c42.html" class="article-date">
+  <time datetime="2017-12-04T23:20:41.000Z" itemprop="datePublished">2017-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/68417c42.html">修改ssh的默认22端口</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在国外买的vps防止别人扫描端口，于是我把ssh默认的22端口修改一下。<br>1.修改配置文件：/etc/ssh/sshd_config ，找到</p>
+        
+          <p class="article-more-link">
+            <a href="/post/68417c42.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/68417c42.html" data-id="ck7sre4bp00510uy10yy9hyeo" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-迅搜-xunsearch-多值属性的处理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/10379547.html" class="article-date">
+  <time datetime="2017-12-04T23:18:36.000Z" itemprop="datePublished">2017-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/10379547.html">迅搜(xunsearch) 多值属性的处理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我之前使用Yii2框架做了一个电影网站<a href="http://www.dy360.net" target="_blank" rel="noopener">dy360.net</a>,网站的搜索是通过MySQL的like实现，搜索的条件很多，担心以后数据越来越多，会拖垮网站的速度，于是想通过搜索引擎来解决！ 开始准备使用sphinx，研究发现不太好使。后发现迅搜(xunsearch)，文档比较清楚，上手比较简单，并且有Yii2的composer包，于是决定使用迅搜。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/10379547.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/10379547.html" data-id="ck7sre4ck00640uy1f3zidmqz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xunsearch/" rel="tag">xunsearch</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Centos6-9上搭建lnmp环境" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/123335f3.html" class="article-date">
+  <time datetime="2017-11-29T23:17:13.000Z" itemprop="datePublished">2017-11-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/123335f3.html">Centos6.9上搭建lnmp环境</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我准备把之前做的<a href="http://www.dy360.net" target="_blank" rel="noopener">www.dy360.net</a>重新搞起来，就在vultr上买了vps，于是乎有了下面这篇文章。<br>在vps上系统是Centos6.9，至于为什么使用Centos，那是因为我个人比较熟悉Centos！</p>
+        
+          <p class="article-more-link">
+            <a href="/post/123335f3.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/123335f3.html" data-id="ck7sre47r00070uy1cgev4pjo" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-tar-分卷压缩和解压" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/4aac2ff2.html" class="article-date">
+  <time datetime="2017-11-27T23:16:14.000Z" itemprop="datePublished">2017-11-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/4aac2ff2.html">tar 分卷压缩和解压</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>tar 本身为一个打包工具，可以把目录打包成一个文件，它的好处是它把所有文件整合成一个大文件整体，方便拷贝或者移动。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/4aac2ff2.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/4aac2ff2.html" data-id="ck7sre4be004m0uy13id4esd6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-如何强制全站https访问" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/773d918c.html" class="article-date">
+  <time datetime="2017-11-23T23:12:52.000Z" itemprop="datePublished">2017-11-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/773d918c.html">如何强制全站https访问</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天在阿里云上搞了一个免费的https证书，于是就在自己的服务器上安装了一下，配置好证书之后，如何强制全站https访问呢？其实方法有很多，这里只给出两个比较简单的方法：</p>
+        
+          <p class="article-more-link">
+            <a href="/post/773d918c.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/773d918c.html" data-id="ck7sre4bv005a0uy12nvibha4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Linux下chkconfig命令详解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/a5b69b88.html" class="article-date">
+  <time datetime="2017-11-19T23:11:31.000Z" itemprop="datePublished">2017-11-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/a5b69b88.html">Linux下chkconfig命令详解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>chkconfig命令检查、设置系统的各种服务。这是Red Hat公司遵循GPL规则所开发的程序，它可查询操作系统在每一个执行等级中会执行哪些系统服务，其中包括各类常驻服务。谨记chkconfig不是立即自动禁止或激活一个服务，它只是简单的改变了符号连接。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/a5b69b88.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/a5b69b88.html" data-id="ck7sre496001o0uy15i9t3f8x" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Mycat-数据库分库分表中的安装与使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/56117af9.html" class="article-date">
+  <time datetime="2017-11-19T23:02:47.000Z" itemprop="datePublished">2017-11-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/56117af9.html">Mycat 数据库分库分表中的安装与使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Mycat需要jdk的支持，而我的Mac中的jdk已经安装好了，所以此步骤省略，需要安装jdk的童鞋请自行安装jdk。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/56117af9.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/56117af9.html" data-id="ck7sre49u002n0uy1bcd109p5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/" rel="tag">database</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mycat/" rel="tag">mycat</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-实现MySQL主从复制" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/34c3deb2.html" class="article-date">
+  <time datetime="2017-11-17T22:28:06.000Z" itemprop="datePublished">2017-11-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/34c3deb2.html">实现MySQL主从复制</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="实验准备："><a href="#实验准备：" class="headerlink" title="实验准备："></a>实验准备：</h3><p>在Pc上安装两个MySQL，分别监听3307和3308端口，在centos7上也安装一个MySQL，这样我们就有三个slave！首先我们要保证4个MySQL上的数据一致，并且配置好各个的日志，这样即使出错了，也容易找出错误。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/34c3deb2.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/34c3deb2.html" data-id="ck7sre4c1005f0uy1ghnfglo6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Linux-Crontab-安装使用详细说明" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/6933ee4e.html" class="article-date">
+  <time datetime="2017-11-15T23:28:38.000Z" itemprop="datePublished">2017-11-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/6933ee4e.html">Linux Crontab 安装使用详细说明</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>crontab命令常见于Unix和Linux的操作系统之中，用于设置周期性被执行的指令。该命令从标准输入设备读取指令，并将其存放于“crontab”文件中，以供之后读取和执行。通常，crontab储存的指令被守护进程激活。crond 常常在后台运行，每一分钟检查是否有预定的作业需要执行。这类作业一般称为cron jobs。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/6933ee4e.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/6933ee4e.html" data-id="ck7sre492001l0uy15566ao5q" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/" rel="tag">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/8/">&lt;&lt;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/10/">下一页 &gt;&gt;</a>
+  </nav>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
   </div>
 </body>
 </html>

@@ -1,18 +1,221 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>JavaScript如何面向对象 | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="关于JavaScript编写类的方式，总结一下JavaScript编写类的几种写法以及这几种写法的优缺点。">
+<meta name="keywords" content="JavaScript,oop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript如何面向对象">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;post&#x2F;d7445999.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="关于JavaScript编写类的方式，总结一下JavaScript编写类的几种写法以及这几种写法的优缺点。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-09T15:03:26.000Z">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.ydstudio.net"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-JavaScript如何面向对象" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/d7445999.html" class="article-date">
+  <time datetime="2019-05-23T23:47:08.000Z" itemprop="datePublished">2019-05-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JavaScript如何面向对象
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>关于JavaScript编写类的方式，总结一下JavaScript编写类的几种写法以及这几种写法的优缺点。</p>
+<a id="more"></a>
+<h4 id="构造函数方式"><a href="#构造函数方式" class="headerlink" title="构造函数方式"></a>构造函数方式</h4><p>基本语法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">function</span> 类名(<span class="params"></span>)</span>&#123;</span><br><span class="line">     <span class="keyword">this</span>.属性名;<span class="comment">//公共属性</span></span><br><span class="line">     <span class="keyword">var</span> 属性名;<span class="comment">//私有属性</span></span><br><span class="line">    <span class="comment">/*凡是定义类的公共属性和公共方法都要使用this*/</span></span><br><span class="line">    <span class="comment">//定义类的公共函数</span></span><br><span class="line">    <span class="keyword">this</span>.函数名=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            ..... </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//定义类的私有函数</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> 函数名(<span class="params"></span>)</span>&#123;</span><br><span class="line">　　　　......</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*定义一个Person类*/</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">_name,_age,_salary</span>)</span>&#123;</span><br><span class="line">        <span class="comment">//Person类的公开属性，类的公开属性的定义方式是：”this.属性名“</span></span><br><span class="line">        <span class="keyword">this</span>.name=_name;</span><br><span class="line">        <span class="comment">//Person类的私有属性，类的私有属性的定义方式是：”var 属性名“</span></span><br><span class="line">        <span class="keyword">var</span> age=_age;<span class="comment">//私有属性</span></span><br><span class="line">        <span class="keyword">var</span> salary=_salary;<span class="comment">//私有属性</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/*定义私有属性Age的对外公开访问方法*/</span></span><br><span class="line">        <span class="keyword">this</span>.setAge = <span class="function"><span class="keyword">function</span>(<span class="params">intAge</span>) </span>&#123;</span><br><span class="line">            age = intAge;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">/*定义私有属性Age的对外公开访问方法*/</span></span><br><span class="line">        <span class="keyword">this</span>.getAge = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> age;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//定义Person类的公开方法(特权方法)，类的公开方法的定义方式是：”this.functionName=function()&#123;.....&#125;“</span></span><br><span class="line">        <span class="keyword">this</span>.Show=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">document</span>.writeln(<span class="string">"在公开方法里面访问类的私有属性是允许的，age="</span>+age+<span class="string">"\t"</span>+<span class="string">"salary="</span>+salary);<span class="comment">//在公开方法里面访问类的私有属性是允许的</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//公共方法</span></span><br><span class="line">        <span class="keyword">this</span>.publicMethod = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">document</span>.writeln(<span class="string">"在公开方法里面访问类的私有方法是允许的"</span>);</span><br><span class="line">            privateFn();<span class="comment">//在公开方法里面调用类的私有方法</span></span><br><span class="line">            privateFn2();<span class="comment">//在公开方法里面调用类的私有方法</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        定义Person类的私有方法(内部方法)，</span></span><br><span class="line"><span class="comment">        类的私有方法的定义方式是：”function functionName()&#123;.....&#125;“，</span></span><br><span class="line"><span class="comment">        或者 var functionName=function()&#123;....&#125;</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">privateFn</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">document</span>.writeln(<span class="string">"我是Person类的私有函数privateFn"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> privateFn2=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">document</span>.writeln(<span class="string">"我是Person类的私有函数privateFn2"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>测试Person类</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> p1 = <span class="keyword">new</span> Person(<span class="string">"孤傲苍狼"</span>,<span class="number">24</span>,<span class="number">2300</span>);</span><br><span class="line">    <span class="keyword">var</span> p2 = <span class="keyword">new</span> Person(<span class="string">"白虎神皇"</span>,<span class="number">24</span>,<span class="number">2300</span>);</span><br><span class="line">    <span class="built_in">document</span>.write(<span class="string">"&lt;pre&gt;"</span>);</span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p1 instanceof Person的结果是："</span>+(p1 <span class="keyword">instanceof</span> Person));<span class="comment">//p1是Person类的实例，结果是true</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p2 instanceof Person的结果是："</span>+(p2 <span class="keyword">instanceof</span> Person));<span class="comment">//p2是Person类的实例，结果是true</span></span><br><span class="line">    <span class="comment">//当==两边的内容是对象或者是对象的函数属性时，则比较内存地址是否相等</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"当==两边的内容是对象或者是对象的函数属性时，则比较内存地址是否相等"</span>);</span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"比较p1和p2这两个对象的show方法的内存地址是否一样：p1.show== p2.show的结果是："</span>+(p1.show == p2.show));<span class="comment">//false</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p1.show == p2.show的结果是："</span>+(p1.show == p2.show)+<span class="string">"，这证明p1对象和p2对象不是共享一个show方法，在内存中show方法的代码有2份，存放在两块内存区域"</span>);</span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"name是Person类定义的public属性，可以使用类的对象去直接访问类的public属性"</span>);</span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p1.name="</span>+p1.name);<span class="comment">//访问公有属性，这是可以正常访问的</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"age和salary是Person类定义的private属性，不能使用类的对象去直接访问类私有属性，这是访问不了的，结果都是undefined"</span>);</span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p1.age="</span>+p1.age+<span class="string">"，"</span>+<span class="string">"p1.salary="</span>+p1.salary)<span class="comment">//不能使用类的对象去直接访问类私有属性，这是访问不了的，结果都是undefined</span></span><br><span class="line">    p1.show();<span class="comment">//调用类的公共函数，这次允许的</span></span><br><span class="line">    p1.publicMethod();<span class="comment">//调用类的公共函数，这次允许的</span></span><br><span class="line">    p1.setAge(<span class="number">24</span>);<span class="comment">//使用public方法setAge方法为私有属性age赋值</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"使用public方法getAge方法获取私有属性age的值，p1.getAge()="</span>+p1.getAge());<span class="comment">//使用getAge方法获取私有属性age的值</span></span><br><span class="line">    <span class="comment">//document.writeln("p1.privateFn()："+p1.privateFn()+"&amp;nbsp;p1.privateFn2()："+p1.privateFn2());//不能使用类的对象去调用类的私有方法，这里会报错”对象不支持此属性或者方法</span></span><br><span class="line">    <span class="built_in">document</span>.write(<span class="string">"&lt;/pre&gt;"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这种方式的优点是：可以根据参数来构造不同的对象实例 ，每个对象的属性一般是不相同的，缺点是构造每个实例对象时，方法不能共享，Person类里面定义的那些方法，p1对象有一份，p2也有一份，那么在内存中就得开辟两块内存空间来分别存储p1的方法和p2的方法，这样就造成了内存的浪费。对于一个类的不同实例对象，这些对象的属性一般是不相同的，但是方法是相同的，所以节约内存的做法就是把方法放到内存的一块区域中存放，然后每个实例对象都从这块内存中取出方法。</p>
+<h4 id="原型方式"><a href="#原型方式" class="headerlink" title="原型方式"></a>原型方式</h4><p>需要说明的是，使用原型方式编写JavaScript类是无法给类添加私有属性和私有方法的，使用原型方式添加的属性和方法都是public的。</p>
+<ul>
+<li><p>写法一</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*定义一个Person类*/</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">_name,_age,_weight,_height</span>)</span>&#123;</span><br><span class="line">       <span class="keyword">this</span>.init(_name,_age,_weight,_height);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*使用原型的方式定义Person类的public属性：name,age,weight,height，使用原型的方式添加的属性都是public的*/</span></span><br><span class="line">    Person.prototype.name;</span><br><span class="line">    Person.prototype.age;</span><br><span class="line">    Person.prototype.weight;</span><br><span class="line">    Person.prototype.height;</span><br><span class="line">    <span class="comment">/*使用原型的方式给Person类添加public方法，使用原型的方式添加的方法都是public的*/</span></span><br><span class="line">    <span class="comment">/*使用原型的方式给Person类添加init方法*/</span></span><br><span class="line">    Person.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params">_name,_age,_weight,_height</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(_name != <span class="literal">undefined</span> &amp;&amp; _age!=<span class="literal">undefined</span> &amp;&amp; _weight!=<span class="literal">undefined</span> &amp;&amp; _height!=<span class="literal">undefined</span>)&#123;</span><br><span class="line">            <span class="keyword">this</span>.name = _name;</span><br><span class="line">            <span class="keyword">this</span>.age = _age;</span><br><span class="line">            <span class="keyword">this</span>.weight=_weight;</span><br><span class="line">            <span class="keyword">this</span>.height=_height;</span><br><span class="line">            <span class="built_in">document</span>.writeln(<span class="string">"this.name="</span>+<span class="keyword">this</span>.name+<span class="string">",this.age="</span>+<span class="keyword">this</span>.age+<span class="string">",this.weight="</span>+<span class="keyword">this</span>.weight+<span class="string">",this.height="</span>+<span class="keyword">this</span>.height);</span><br><span class="line">        &#125;</span><br><span class="line">         </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*使用原型的方式给Person类添加show方法*/</span></span><br><span class="line">    Person.prototype.show = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">document</span>.writeln(<span class="string">"show method"</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>测试</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.write(<span class="string">"&lt;pre&gt;"</span>);</span><br><span class="line">    <span class="keyword">var</span> p1 = <span class="keyword">new</span> Person(<span class="string">"孤傲苍狼"</span>,<span class="number">24</span>,<span class="number">115</span>,<span class="number">160</span>);</span><br><span class="line">    <span class="keyword">var</span> p2 = <span class="keyword">new</span> Person(<span class="string">"白虎神皇"</span>,<span class="number">25</span>,<span class="number">120</span>,<span class="number">170</span>);</span><br><span class="line">    <span class="keyword">var</span> p3 = <span class="keyword">new</span> Person();</span><br><span class="line">    p3.init(<span class="string">"玄天邪帝"</span>,<span class="number">26</span>,<span class="number">130</span>,<span class="number">180</span>);<span class="comment">//调用public方法init初始化p3对象</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p1 instanceof Person的结果是："</span>+(p1 <span class="keyword">instanceof</span> Person));<span class="comment">//p1是Person类的实例，结果是true</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p2 instanceof Person的结果是："</span>+(p2 <span class="keyword">instanceof</span> Person));<span class="comment">//p2是Person类的实例，结果是true</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p3 instanceof Person的结果是："</span>+(p3 <span class="keyword">instanceof</span> Person));<span class="comment">//p3是Person类的实例，结果是true</span></span><br><span class="line">    <span class="comment">//当==两边的内容是对象或者是对象的函数属性时，则比较内存地址是否相等</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"当==两边的内容是对象或者是对象的函数属性时，则比较内存地址是否相等"</span>);</span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"比较p1和p2这两个对象的show方法的内存地址是否一样：p1.show == p2.show的结果是："</span>+(p1.show == p2.show));<span class="comment">//true</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p1.show == p2.show的结果是："</span>+(p1.show == p2.show)+<span class="string">"，这证明p1对象和p2对象共享一个show方法，在内存中show方法的代码只有一份，存放在内存的一块区域"</span>);<span class="comment">//true</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p1.name="</span>+p1.name+<span class="string">"，p1.age="</span>+p1.age+<span class="string">"，p1.weight="</span>+p1.weight+<span class="string">"，p1.height="</span>+p1.height);<span class="comment">//访问公有属性，这是可以正常访问的</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p2.name="</span>+p2.name+<span class="string">"，p2.age="</span>+p2.age+<span class="string">"，p2.weight="</span>+p2.weight+<span class="string">"，p2.height="</span>+p2.height);<span class="comment">//访问公有属性，这是可以正常访问的</span></span><br><span class="line">    p3.name=<span class="string">"灭世魔尊"</span>;<span class="comment">//为公共属性重新赋值</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p3.name="</span>+p3.name);<span class="comment">//访问公有属性，这是可以正常访问的</span></span><br><span class="line">    p1.show();<span class="comment">//调用类的公共函数，这次允许的</span></span><br><span class="line">    <span class="built_in">document</span>.write(<span class="string">"&lt;/pre&gt;"</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>写法二<br>使用原型方式给类定义public属性和public方法更加优雅的写法，我个人推荐使用这种方式，这种方式看起来比较舒服</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*定义类Person2*/</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Person2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*使用原型方式给类定义public属性和public方法更加优雅的写法*/</span></span><br><span class="line">    Person2.prototype = &#123;</span><br><span class="line">        name:<span class="string">""</span>,<span class="comment">//public属性</span></span><br><span class="line">        age:<span class="number">0</span>,<span class="comment">//public属性</span></span><br><span class="line">        weight:<span class="number">0</span>,<span class="comment">//public属性</span></span><br><span class="line">        height:<span class="number">0</span>,<span class="comment">//public属性</span></span><br><span class="line">        <span class="comment">/*public方法*/</span></span><br><span class="line">        init:<span class="function"><span class="keyword">function</span>(<span class="params">_name,_age,_weight,_height</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.name = _name;</span><br><span class="line">            <span class="keyword">this</span>.age = _age;</span><br><span class="line">            <span class="keyword">this</span>.weight=_weight;</span><br><span class="line">            <span class="keyword">this</span>.height=_height;</span><br><span class="line">            <span class="built_in">document</span>.writeln(<span class="string">"this.name="</span>+<span class="keyword">this</span>.name+<span class="string">",this.age="</span>+<span class="keyword">this</span>.age+<span class="string">",this.weight="</span>+<span class="keyword">this</span>.weight+<span class="string">",this.height="</span>+<span class="keyword">this</span>.height);</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="comment">/*public方法*/</span></span><br><span class="line">        show:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">document</span>.writeln(<span class="string">"show method"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+<p>测试代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">document</span>.write(<span class="string">"&lt;pre&gt;"</span>);</span><br><span class="line">    <span class="keyword">var</span> p2_1 = <span class="keyword">new</span> Person2();</span><br><span class="line">    <span class="keyword">var</span> p2_2 = <span class="keyword">new</span> Person2();</span><br><span class="line">    p2_1.init(<span class="string">"孤傲苍狼"</span>,<span class="number">24</span>,<span class="number">115</span>,<span class="number">160</span>);</span><br><span class="line">    p2_2.init(<span class="string">"白虎神皇"</span>,<span class="number">25</span>,<span class="number">120</span>,<span class="number">170</span>);</span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p2_1.name="</span>+p2_1.name+<span class="string">"，p2_1.age="</span>+p2_1.age+<span class="string">"，p2_1.weight="</span>+p2_1.weight+<span class="string">"，p2_1.height="</span>+p2_1.height);<span class="comment">//访问公有属性，这是可以正常访问的</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p2_2.name="</span>+p2_2.name+<span class="string">"，p2_2.age="</span>+p2_2.age+<span class="string">"，p2_2.weight="</span>+p2_2.weight+<span class="string">"，p2_2.height="</span>+p2_2.height);<span class="comment">//访问公有属性，这是可以正常访问的</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p2_1 instanceof Person2的结果是："</span>+(p2_1 <span class="keyword">instanceof</span> Person2));<span class="comment">//p2_1是Person2类的实例，结果是true</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p2_2 instanceof Person2的结果是："</span>+(p2_2 <span class="keyword">instanceof</span> Person2));<span class="comment">//p2_2是Person2类的实例，结果是true</span></span><br><span class="line">    <span class="comment">//当==两边的内容是对象或者是对象的函数属性时，则比较内存地址是否相等</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"当==两边的内容是对象或者是对象的函数属性时，则比较内存地址是否相等"</span>);</span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"比较p2_1和p2_2这两个对象的init方法的内存地址是否一样：p2_1.init == p2_2.init的结果是："</span>+(p2_1.init == p2_2.init));<span class="comment">//true</span></span><br><span class="line">    p2_1.name=<span class="string">"灭世魔尊"</span>;<span class="comment">//为公共属性重新赋值</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p2_1.name="</span>+p2_1.name);<span class="comment">//访问公有属性，这是可以正常访问的</span></span><br><span class="line">    p2_1.show();<span class="comment">//调用类的公共函数，这次允许的</span></span><br><span class="line">    <span class="built_in">document</span>.write(<span class="string">"&lt;/pre&gt;"</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="构造函数-原型"><a href="#构造函数-原型" class="headerlink" title="构造函数+原型"></a>构造函数+原型</h4><p>　构造函数方式和原型方式都有各自的优缺点，因此可以把这两种方式合并起来，用构造函数方式来定义类的属性(public属性，private属性)，用原型方式来定义类的方法(public方法)。互补不足，这就有了第三种写法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*定义一个Person类*/</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">_name,_age,_salary</span>)</span>&#123;</span><br><span class="line">        <span class="comment">//在Person类内部定义类的public属性和private属性以及private方法</span></span><br><span class="line">        <span class="comment">//Person类的公开属性，类的公开属性的定义方式是：”this.属性名“</span></span><br><span class="line">        <span class="keyword">this</span>.name=_name;</span><br><span class="line">        <span class="comment">//Person类的私有属性，类的私有属性的定义方式是：”var 属性名“</span></span><br><span class="line">        <span class="keyword">var</span> age=_age;<span class="comment">//私有属性，只能在类内部使用</span></span><br><span class="line">        <span class="keyword">var</span> salary=_salary;<span class="comment">//私有属性，只能在类内部使用</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        定义Person类的私有方法(内部方法)，只能在类内部使用</span></span><br><span class="line"><span class="comment">        类的私有方法的定义方式是：”function functionName()&#123;.....&#125;“，</span></span><br><span class="line"><span class="comment">        或者 var functionName=function()&#123;....&#125;</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">privateFn</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">document</span>.write(<span class="string">"&lt;pre&gt;"</span>);</span><br><span class="line">            <span class="built_in">document</span>.writeln(<span class="string">"我是Person类的私有属性age，只能在Person类内部使用，初始化后age="</span>+age);</span><br><span class="line">            <span class="built_in">document</span>.writeln(<span class="string">"我是Person类的私有函数privateFn，只能在Person类内部使用"</span>);</span><br><span class="line">            <span class="built_in">document</span>.write(<span class="string">"&lt;/pre&gt;"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> privateFn2=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">document</span>.write(<span class="string">"&lt;pre&gt;"</span>);</span><br><span class="line">            <span class="built_in">document</span>.writeln(<span class="string">"我是Person类的私有属性salary，只能在Person类内部使用，初始化后salary="</span>+salary);</span><br><span class="line">            <span class="built_in">document</span>.writeln(<span class="string">"我是Person类的私有函数privateFn2，只能在Person类内部使用"</span>);</span><br><span class="line">            <span class="built_in">document</span>.write(<span class="string">"&lt;/pre&gt;"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        privateFn();<span class="comment">//在Person类内部调用私有方法</span></span><br><span class="line">        privateFn2();<span class="comment">//在Person类内部调用私有方法</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//使用prototype原型方式定义的方法(public方法)是无法访问类的私有属性和私有方法的</span></span><br><span class="line">    <span class="comment">//使用prototype原型方式定义Person类的方public方法</span></span><br><span class="line">    Person.prototype=&#123;</span><br><span class="line">        setName:<span class="function"><span class="keyword">function</span>(<span class="params">_name</span>)</span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.name = _name;</span><br><span class="line">            <span class="comment">//privateFn();//不能调用Person类定义的私有方法privateFn()，会报错：缺少对象</span></span><br><span class="line">        &#125;,</span><br><span class="line">        getName:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">        &#125;,</span><br><span class="line">        show:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">document</span>.writeln(<span class="string">"公开方法show"</span>);</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="comment">//公共方法</span></span><br><span class="line">        publicMethod:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">document</span>.writeln(<span class="string">"公开方法publicMethod"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+<p>测试代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> p1 = <span class="keyword">new</span> Person(<span class="string">"孤傲苍狼"</span>,<span class="number">24</span>,<span class="number">2300</span>);</span><br><span class="line">    <span class="keyword">var</span> p2 = <span class="keyword">new</span> Person(<span class="string">"白虎神皇"</span>,<span class="number">25</span>,<span class="number">3000</span>);</span><br><span class="line">    <span class="built_in">document</span>.write(<span class="string">"&lt;pre&gt;"</span>);</span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p1 instanceof Person的结果是："</span>+(p1 <span class="keyword">instanceof</span> Person));<span class="comment">//p1是Person类的实例，结果是true</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p2 instanceof Person的结果是："</span>+(p2 <span class="keyword">instanceof</span> Person));<span class="comment">//p2是Person类的实例，结果是true</span></span><br><span class="line">    <span class="comment">//当==两边的内容是对象或者是对象的函数属性时，则比较内存地址是否相等</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"当==两边的内容是对象或者是对象的函数属性时，则比较内存地址是否相等"</span>);</span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"比较p1和p2这两个对象的show方法的内存地址是否一样：p1.show== p2.show的结果是："</span>+(p1.show == p2.show));<span class="comment">//true</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p1.show == p2.show的结果是："</span>+(p1.show == p2.show)+<span class="string">"，这证明p1对象和p2对象共享一个show方法，在内存中show方法的代码有1份，存放在1块内存区域"</span>);</span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"name是Person类定义的public属性，可以使用类的对象去直接访问类的public属性"</span>);</span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p1.name="</span>+p1.name);<span class="comment">//访问公有属性，这是可以正常访问的</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"age和salary是Person类定义的private属性，不能使用类的对象去直接访问类私有属性，这是访问不了的，结果都是undefined"</span>);</span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p1.age="</span>+p1.age+<span class="string">"，"</span>+<span class="string">"p1.salary="</span>+p1.salary)<span class="comment">//不能使用类的对象去直接访问类私有属性，这是访问不了的，结果都是undefined</span></span><br><span class="line">    p1.show();<span class="comment">//调用类的公共函数，这次允许的</span></span><br><span class="line">    p1.publicMethod();<span class="comment">//调用类的公共函数，这次允许的</span></span><br><span class="line">    p1.setName(<span class="string">"玄天邪帝"</span>);<span class="comment">//调用类的公共函数设置为name属性重新赋值</span></span><br><span class="line">    <span class="built_in">document</span>.writeln(<span class="string">"p1.getName="</span>+p1.getName());</span><br><span class="line">    <span class="comment">//document.writeln("p1.privateFn()："+p1.privateFn()+"&amp;nbsp;p1.privateFn2()："+p1.privateFn2());//不能使用类的对象去调用类的私有方法，这里会报错”对象不支持此属性或者方法</span></span><br><span class="line">    <span class="built_in">document</span>.write(<span class="string">"&lt;/pre&gt;"</span>);</span><br></pre></td></tr></table></figure>
+<p>第三种方式通过前两种方式的结合，算是达到了一个比较理想的写法了，可以通过传参构造对象实例，对象实例都共享同一份方法不造成内存浪费。第三种方式在开发中用得最多，我本人也是采用这种方式来编写JavaScript类。</p>
+<p><a href="https://www.cnblogs.com/xdp-gacl/p/3700840.html" target="_blank" rel="noopener">查看原文</a></p>
+
+      
+    </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2019-05-23 23:47:08</li>
+    <li><span>最后更新: </span>2019-12-09 23:03:26</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/d7445999.html" target="_blank" title="JavaScript如何面向对象">https://blog.ydstudio.net/post/d7445999.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a>
+      许可协议，转载请保留原文链接及作者!
+    </li>
+  </ul>
+<div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/d7445999.html" data-id="ck7sre48b000q0uy1fmg53sgd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/oop/" rel="tag">oop</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/35c3eddf.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          IDEA下tomcat启动后 server乱码，Tomcat Catalina Log和Tomcat Localhost Log乱码问题的解决 
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/2e0453a7.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older << </strong>
+      <div class="article-nav-title">Dubbo消费者consumer捕捉服务提供者provider抛出的自定义异常</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
   </div>
 </body>
 </html>

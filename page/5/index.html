@@ -1,18 +1,563 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一个程序员的成长记录">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sam的个人博客">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;page&#x2F;5&#x2F;index.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="一个程序员的成长记录">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.ydstudio.net"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-php-fpm的进程池相关参数说明" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/c1dfde53.html" class="article-date">
+  <time datetime="2018-09-17T22:59:19.000Z" itemprop="datePublished">2018-09-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/c1dfde53.html">php-fpm的进程池相关参数说明</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近公司的官网据业务说时不时的卡，而负责维护官网的人请假去德国跑马拉松了（<strong>ps:有钱真好</strong>），我又苦逼的帮他处理官网的事情。</p>
+<p>php-fpm进程池开启进程有两种方式，一种是static，直接开启指定数量的php-fpm进程，不再增加或者减少；<br>另一种则是dynamic，开始时开启一定数量的php-fpm进程，当请求量变大时，动态的增加php-fpm进程数到上限，当空闲时自动释放空闲的进程数到一个下限。这两种不同的执行方式，可以根据服务器的实际需求来进行调整。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/c1dfde53.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/c1dfde53.html" data-id="ck7sre4bc004j0uy11edi5k9t" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php-fpm/" rel="tag">php-fpm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Spring-Cloud-Config客户端报错Could-not-locate-PropertySource-I-O-error-on-GET-request-xxx" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/29fad61b.html" class="article-date">
+  <time datetime="2018-09-15T23:46:48.000Z" itemprop="datePublished">2018-09-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/29fad61b.html">Spring Cloud Config客户端报错Could not locate PropertySource: I/O error on GET request xxx</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天在研究Spring Cloud Config配置中心，出了一个很让人恼火的问题，我先贴一下我的相关配置信息：</p>
+        
+          <p class="article-more-link">
+            <a href="/post/29fad61b.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/29fad61b.html" data-id="ck7sre4as003v0uy1bgsz2u9c" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-cloud/" rel="tag">spring cloud</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-cloud-config/" rel="tag">spring cloud config</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Spring-Cloud整合配置中心Eureka中的服务状态显示UNKOWN" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/5e4a0e78.html" class="article-date">
+  <time datetime="2018-09-09T23:42:27.000Z" itemprop="datePublished">2018-09-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/5e4a0e78.html">Spring Cloud整合配置中心Eureka中的服务状态显示UNKOWN</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天在研究Spring Cloud的配置中心的时候，发现将应用的配置移到git上，启动应用后发现，在Euraka注册中心上这个应用的状态始终为UNKOWN，可是这个应用是可以提供服务的。下面是应用的bootstrap的配置：</p>
+        
+          <p class="article-more-link">
+            <a href="/post/5e4a0e78.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/5e4a0e78.html" data-id="ck7sre4at003x0uy1egxt6wyd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/eureka/" rel="tag">eureka</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-cloud/" rel="tag">spring cloud</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Elastic-Search搜索数据Terms聚合返回的不正确的问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/39992895.html" class="article-date">
+  <time datetime="2018-08-30T23:37:03.000Z" itemprop="datePublished">2018-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/39992895.html">Elastic Search搜索数据Terms聚合返回的不正确的问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>项目中使用Elastic Search做搜索，在聚合产品的标签的时候，我发现标签的种类有很多超过了10个（这一点很重要），但是聚合标签出来的数据只有10个，缺少了很多标签，查询的语句如下：</p>
+        
+          <p class="article-more-link">
+            <a href="/post/39992895.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/39992895.html" data-id="ck7sre483000i0uy18928f63x" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-IntelliJ-Idea-常用快捷键列表" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/fea71f82.html" class="article-date">
+  <time datetime="2018-08-28T23:34:44.000Z" itemprop="datePublished">2018-08-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/fea71f82.html">IntelliJ Idea 常用快捷键列表</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>加粗的是我常用的快捷键</p>
+        
+          <p class="article-more-link">
+            <a href="/post/fea71f82.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/fea71f82.html" data-id="ck7sre489000p0uy1e1o880ea" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ide/" rel="tag">ide</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-BigDecimal运算出现Non-terminating-decimal-expansion-no-exact-representable-decimal-result" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/77a90911.html" class="article-date">
+  <time datetime="2018-08-24T23:28:55.000Z" itemprop="datePublished">2018-08-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/77a90911.html">BigDecimal运算出现Non-terminating decimal expansion; no exact representable decimal result</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们都知道Java提供了两个高精度计算的类:BigInteger和BigDeciaml。虽然它们大体上属于“包装器类”的范畴，但两者都没有对应的基本类型。BigDeciaml支持任意精度的定点数。例如，可以用它进行精确的货币计算。（以上摘自Java编程思想第4版）</p>
+        
+          <p class="article-more-link">
+            <a href="/post/77a90911.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/77a90911.html" data-id="ck7sre47g00010uy18ppb9kqu" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BigDecimal/" rel="tag">BigDecimal</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Nginx实现反向代理-Node-js" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/45183e9d.html" class="article-date">
+  <time datetime="2018-08-07T23:25:53.000Z" itemprop="datePublished">2018-08-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/45183e9d.html">Nginx实现反向代理 Node.js</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>公司有项目前端是用node.js进行服务器渲染，然后再返回给浏览器，进而解决单页面的SEO问题。项目部署的时候，使用Nginx反向代理Node.js。具体的步骤如下：</p>
+        
+          <p class="article-more-link">
+            <a href="/post/45183e9d.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/45183e9d.html" data-id="ck7sre4a1002w0uy19g3j31dv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/proxy/" rel="tag">proxy</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Java学习系列文章第九篇：Java中泛型的学习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/d9ad2c86.html" class="article-date">
+  <time datetime="2018-08-04T23:03:24.000Z" itemprop="datePublished">2018-08-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/d9ad2c86.html">Java学习系列文章第九篇：Java中泛型的学习</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="什么是泛型"><a href="#什么是泛型" class="headerlink" title="什么是泛型"></a>什么是泛型</h3><p>Java 泛型（generics）是 JDK5 中引入的一个新特性, 泛型提供了编译时类型安全检测机制，该机制允许程序员在编译时检测到非法的类型。<strong>泛型的本质是参数化类型</strong>，也就是说所操作的数据类型被指定为一个参数。(PHP就不需要泛型，哈哈)</p>
+        
+          <p class="article-more-link">
+            <a href="/post/d9ad2c86.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/d9ad2c86.html" data-id="ck7sre48m00140uy16ra36q8j" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Centos-6-x-安装git" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/7226e685.html" class="article-date">
+  <time datetime="2018-08-03T23:01:47.000Z" itemprop="datePublished">2018-08-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/7226e685.html">Centos 6.x 安装git</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在Centos上安装软件时，我都是先更新一下系统的yum源，保持yum源是比较新的。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/7226e685.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/7226e685.html" data-id="ck7sre47q00060uy1741ffqcp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Maven跳过单元测试-Dmaven-test-skip和skipTests的区别" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/64d34904.html" class="article-date">
+  <time datetime="2018-08-01T22:46:25.000Z" itemprop="datePublished">2018-08-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/64d34904.html">Maven跳过单元测试-Dmaven.test.skip和skipTests的区别</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Maven中有两种方式跳过单元测试，其实这两种方式是有一点不同的，其具体不同如下：</p>
+<p>-DskipTests，不执行测试用例，但编译测试用例类生成相应的class文件至target/test-classes下。<br>-Dmaven.test.skip=true，不执行测试用例，也不编译测试用例类。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/64d34904.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/64d34904.html" data-id="ck7sre49e00200uy14b3ucwhi" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/" rel="tag">maven</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/4/">&lt;&lt;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/6/">下一页 &gt;&gt;</a>
+  </nav>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
   </div>
 </body>
 </html>

@@ -1,18 +1,569 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一个程序员的成长记录">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sam的个人博客">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.ydstudio.net&#x2F;index.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="一个程序员的成长记录">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.ydstudio.net"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-MySQL的bin-log" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/d1d9a9.html" class="article-date">
+  <time datetime="2020-03-15T15:22:12.000Z" itemprop="datePublished">2020-03-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/d1d9a9.html">MySQL的bin-log</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h6 id="什么是bin-log？"><a href="#什么是bin-log？" class="headerlink" title="什么是bin-log？"></a>什么是bin-log？</h6><p>mysql-binlog是MySQL数据库的二进制日志，用于记录用户对数据库操作的SQL语句（除了数据查询语句，即记录insert、update、delete的sql）信息。<br>可以使用mysqlbin命令查看二进制日志的内容。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/d1d9a9.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/d1d9a9.html" data-id="ck7sre49o002f0uy1d3gofvb7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bin-log/" rel="tag">bin-log</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-MySQL-删除-relay-log-的方法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/da13f861.html" class="article-date">
+  <time datetime="2020-03-15T14:35:19.000Z" itemprop="datePublished">2020-03-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/da13f861.html">MySQL 删除 relay log 的方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h6 id="方法1-：自动-设置参数-relay-log-purge-1"><a href="#方法1-：自动-设置参数-relay-log-purge-1" class="headerlink" title="方法1 ：自动 设置参数 relay_log_purge = 1"></a>方法1 ：自动 设置参数 relay_log_purge = 1</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> SET GLOBAL relay_log_purge = 1;</span></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line">或者在/etc/my.cnf [mysqld]模块下面增加以下内容</span><br><span class="line">relay-log-purge = 1</span><br></pre></td></tr></table></figure>
+        
+          <p class="article-more-link">
+            <a href="/post/da13f861.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/da13f861.html" data-id="ck7sre49j00280uy19imcacqf" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-利用Mac电脑自带应用将iPhone投屏到Mac电脑的教程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/29afd8a9.html" class="article-date">
+  <time datetime="2020-03-10T12:40:32.000Z" itemprop="datePublished">2020-03-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/29afd8a9.html">利用Mac电脑自带应用将iPhone投屏到Mac电脑的教程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>你只需要准备一根USB数据线，也就是手机的充电线即可，最好是原装的USB线。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/29afd8a9.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/29afd8a9.html" data-id="ck7sre4br00550uy1h8l645g0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MAC/" rel="tag">MAC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iPhone/" rel="tag">iPhone</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%95%E5%B1%8F/" rel="tag">投屏</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-JVM配置参数的类型" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/ea8be9c5.html" class="article-date">
+  <time datetime="2020-02-06T15:55:13.000Z" itemprop="datePublished">2020-02-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/ea8be9c5.html">JVM配置参数的类型</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="参数名称的说明"><a href="#参数名称的说明" class="headerlink" title="参数名称的说明"></a>参数名称的说明</h5><p>JVM配置参数分别用于跟踪监控JVM状态，分配堆内存以及分配栈内存。按照类型分为三类标准参数、非标准参数和非稳定参数</p>
+        
+          <p class="article-more-link">
+            <a href="/post/ea8be9c5.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/ea8be9c5.html" data-id="ck7sre48c000r0uy1bni4dc8k" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jvm/" rel="tag">Jvm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Spring配置文件中的classpath-和classpath-的区别" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/38b6491c.html" class="article-date">
+  <time datetime="2020-01-28T22:46:48.000Z" itemprop="datePublished">2020-01-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/38b6491c.html">Spring配置文件中的classpath:和classpath*:的区别</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p> classpath是spring的写法，classpath是指WEB-INF文件夹下的classes目录，对应源代码src目录，用于存放从src中拷贝过去的各种配置文件，以及编译过后的class文件。Spring可以通过指定classpath*:与classpath:前缀加上路径的方式从classpath加载配置文件。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/38b6491c.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/38b6491c.html" data-id="ck7sre4ax00420uy1ctvb04f9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/" rel="tag">spring</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-利用Docker-Compose管理服务" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/a5d4c4d4.html" class="article-date">
+  <time datetime="2020-01-14T22:17:18.000Z" itemprop="datePublished">2020-01-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/a5d4c4d4.html">利用Docker Compose管理服务</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="docker-compose-简介"><a href="#docker-compose-简介" class="headerlink" title="docker-compose 简介"></a>docker-compose 简介</h5><p>Compose是用于定义和运行多容器Docker应用程序的工具。通过Compose，您可以使用YML文件来配置应用程序需要的所有服务。然后，使用一个命令，就可以从 YML 文件配置中创建并启动所有服务。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/a5d4c4d4.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/a5d4c4d4.html" data-id="ck7sre4bq00530uy11py28qyn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker-compose/" rel="tag">docker-compose</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-我常用的docker基本命令" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/c9b0a620.html" class="article-date">
+  <time datetime="2020-01-13T22:00:51.000Z" itemprop="datePublished">2020-01-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/c9b0a620.html">我常用的docker基本命令</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>docker 客户端非常简单 ,我们可以直接输入 docker 命令来查看到 Docker 客户端的所有命令选项。可以通过命令 docker command –help 更深入的了解指定的 Docker 命令使用方法。<br>例如我们要查看 docker stats 指令的具体使用方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stats --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
+        
+          <p class="article-more-link">
+            <a href="/post/c9b0a620.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/c9b0a620.html" data-id="ck7sre4c4005k0uy1dxo16p1v" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-以centos7镜像为基础构建一个jdk8和tomcat7的镜像" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/97b746d3.html" class="article-date">
+  <time datetime="2020-01-04T23:22:55.000Z" itemprop="datePublished">2020-01-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/97b746d3.html">以centos7镜像为基础构建一个jdk8和tomcat7的镜像</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>首先我简单说一下容器的一些知识点</p>
+<ul>
+<li>一个容器只跑一个进程，并且该进程只能前台运行。</li>
+<li>容器有层的概念，如果需要定制容器，应该尽量通过Dockerfile来构建容器。
+        
+          <p class="article-more-link">
+            <a href="/post/97b746d3.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/97b746d3.html" data-id="ck7sre4bi004r0uy1c1ni8dpl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-SpringMvc使用-Async注解实现有返回值和无返回值的异步处理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/e7e78673.html" class="article-date">
+  <time datetime="2020-01-03T23:12:21.000Z" itemprop="datePublished">2020-01-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/e7e78673.html">SpringMvc使用@Async注解实现有返回值和无返回值的异步处理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="SpringMvc使用-Async注解实现有返回值和无返回值的异步处理"><a href="#SpringMvc使用-Async注解实现有返回值和无返回值的异步处理" class="headerlink" title="SpringMvc使用@Async注解实现有返回值和无返回值的异步处理"></a>SpringMvc使用@Async注解实现有返回值和无返回值的异步处理</h5><p> 异步调用对应的是同步调用，同步调用指程序按照定义顺序依次执行，每一行程序都必须等待上一行程序执行完成之后才能执行；异步调用指程序在顺序执行时，不等待异步调用的语句返回结果就执行后面的程序。<br>
+        
+          <p class="article-more-link">
+            <a href="/post/e7e78673.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/e7e78673.html" data-id="ck7sre4av00400uy1bqzzf7ac" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Async/" rel="tag">Async</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SpringMvc/" rel="tag">SpringMvc</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-在CentOS7上使用yum安装Docker" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/ef24ce2b.html" class="article-date">
+  <time datetime="2019-12-23T22:30:18.000Z" itemprop="datePublished">2019-12-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/ef24ce2b.html">在CentOS7上使用yum安装Docker</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>目前在 Linux 操作系统上安装 Docker，对系统版本有以下要求：</p>
+<ul>
+<li>CentOS：7</li>
+<li>Debian：7.7（Wheezy LTS）、8.0（Jessie LTS）、9（Stretch）</li>
+<li>Fedora：24、25</li>
+<li>Ubuntu：16.04（Xenial LTS）、14.04（Trusty LTS）、17.04（Zesty）</li>
+</ul>
+        
+          <p class="article-more-link">
+            <a href="/post/ef24ce2b.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://blog.ydstudio.net/post/ef24ce2b.html" data-id="ck7sre4bt00580uy15vkd1ex8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/centos/" rel="tag">centos</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/">下一页 &gt;&gt;</a>
+  </nav>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
   </div>
 </body>
 </html>
