@@ -16,7 +16,7 @@
 <meta property="og:description" content="责任链模式顾名思义，责任链模式（Chain of Responsibility Pattern）为请求创建了一个接收者对象的链。这种模式给予请求的类型，对请求的发送者和接收者进行解耦。这种类型的设计模式属于行为型模式。在这种模式中，通常每个接收者都包含对另一个接收者的引用。如果一个对象不能处理该请求，那么它会把相同的请求传给下一个接收者，依此类推。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20200512224609.jpg">
-<meta property="og:updated_time" content="2020-05-12T15:04:10.000Z">
+<meta property="og:updated_time" content="2020-05-12T15:12:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20200512224609.jpg">
   
@@ -167,7 +167,7 @@
 <p>网上流传的代码都是直接在抽象处理器中包含下一个处理器的引用，这样导致在客户端使用的时候，就需要手动去逐个set下级处理器，手误很容易造成处理器死循环的情况，也可能出现缺失某个处理器的情况，因而本文参照Tomcat源码中Filter的作法，引入了Chain类，统一对处理器封装为链，减少客户端使用时出错的可能。</p>
 <p>链式处理的好处在于增加减少新的处理器不会影响其他处理器的逻辑，各个处理器之间相互独立，可以减小耦合带来的影响。</p>
 <blockquote>
-<p>参考<a href="http://nullpointer.pw/design-patterns-chain-responsibility.html" target="_blank" rel="noopener">设计模式之责任链模式实战-http://nullpointer.pw/design-patterns-chain-responsibility.html</a></p>
+<p>参考<a href="http://nullpointer.pw/design-patterns-chain-responsibility.html" target="_blank" rel="noopener">设计模式之责任链模式实战</a></p>
 </blockquote>
 
       
@@ -179,7 +179,7 @@
     <strong>作者:  </strong>Sam</a>
     </li>
     <li><span>发布时间: </span>2020-05-12 22:36:21</li>
-    <li><span>最后更新: </span>2020-05-12 23:04:10</li>
+    <li><span>最后更新: </span>2020-05-12 23:12:37</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
     <a href="/post/8ec2718b.html" target="_blank" title="设计模式学习之责任链模式">https://blog.ydstudio.net/post/8ec2718b.html</a>
@@ -193,7 +193,7 @@
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/post/8ec2718b.html" data-id="cka41rd5j0062hsy1a1mlh5qn" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/post/8ec2718b.html" data-id="cka420u11005zjly10lhcgnmk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
