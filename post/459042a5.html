@@ -17,7 +17,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201002121423.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201002124611.png">
-<meta property="og:updated_time" content="2020-10-02T05:16:06.000Z">
+<meta property="og:updated_time" content="2020-10-02T05:25:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201002121423.png">
   
@@ -99,8 +99,8 @@
         <p>RocketMQ是阿里巴巴2016年MQ中间件，使用Java语言开发，在阿里内部，RocketMQ承接了例如“双11”等高并发场景的消息流转，能够处理万亿级别的消息。我们今天就在 windows下搭建RocketMQ多Master多Slave模式（同步）的集群。</p>
 <a id="more"></a>
 
-<h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1 准备工作"></a>1 准备工作</h2><h3 id="1-1-下载RocketMQ"><a href="#1-1-下载RocketMQ" class="headerlink" title="1.1 下载RocketMQ"></a>1.1 下载RocketMQ</h3><p>RocketMQ版本：4.5.1</p>
-<p><a href="https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.5.1/rocketmq-all-4.5.1-bin-release.zip" target="_blank" rel="noopener">下载地址</a></p>
+<h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1 准备工作"></a>1 准备工作</h2><h3 id="1-1-下载RocketMQ"><a href="#1-1-下载RocketMQ" class="headerlink" title="1.1 下载RocketMQ"></a>1.1 下载RocketMQ</h3><p>RocketMQ版本：4.7.1</p>
+<p><a href="https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.7.1/rocketmq-all-4.7.1-source-release.zip" target="_blank" rel="noopener">下载地址</a></p>
 <h3 id="1-2-环境要求"><a href="#1-2-环境要求" class="headerlink" title="1.2 环境要求"></a>1.2 环境要求</h3><ul>
 <li><p>Linux64位系统</p>
 </li>
@@ -152,7 +152,7 @@
 <p>启动rocketmq-console：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar rocketmq-console-ng-1.0.0.jar</span><br></pre></td></tr></table></figure>
 <p><em>注意</em>  你执行上述命令之后可能得到的 jar 包的名字和我的不一样，毕竟人家也是一直在更新版本，注意看自己对应目录下的文件，适当替换就行。</p>
-<p>启动成功后，我们就可以通过浏览器访问<code>http://localhost:9980</code>进入集群界面了，如下图：<br><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20201002124611.png" alt="集群"></p>
+<p>启动成功后，我们就可以通过浏览器访问<code>http://localhost:9980</code>进入集群界面了，(由于我是在 windows 上部署的，写这篇文章是在我的 mac 上，所以临时找了个别人的图，部分细节可能对不上)如下图：<br><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20201002124611.png" alt="集群"></p>
 <h2 id="6-在搭建过程中出现的问题"><a href="#6-在搭建过程中出现的问题" class="headerlink" title="6 在搭建过程中出现的问题"></a>6 在搭建过程中出现的问题</h2><h3 id="6-1-Lock-failed-MQ-already-started"><a href="#6-1-Lock-failed-MQ-already-started" class="headerlink" title="6.1 Lock failed,MQ already started"></a>6.1 Lock failed,MQ already started</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java.lang.RuntimeException: Lock failed,MQ already started</span><br><span class="line">        at org.apache.rocketmq.store.DefaultMessageStore.start(DefaultMessageStore.java:227)</span><br><span class="line">        at org.apache.rocketmq.broker.BrokerController.start(BrokerController.java:853)</span><br><span class="line">        at org.apache.rocketmq.broker.BrokerStartup.start(BrokerStartup.java:64)</span><br><span class="line">        at org.apache.rocketmq.broker.BrokerStartup.main(BrokerStartup.java:58)</span><br></pre></td></tr></table></figure>
 
 <p>出现这个问题 是因为我们在集群中master和slave共用一个storePath造成的，这个时候我们要启动的每一个broker要指定不一样的storePath 路径就行，也就是在我们的配置文件中修改即可，完美解决。</p>
@@ -174,7 +174,7 @@
     <strong>作者:  </strong>Sam</a>
     </li>
     <li><span>发布时间: </span>2020-10-02 11:06:35</li>
-    <li><span>最后更新: </span>2020-10-02 13:16:06</li>
+    <li><span>最后更新: </span>2020-10-02 13:25:28</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
     <a href="/post/459042a5.html" target="_blank" title="Windows下搭建RocketMQ双主双从集群">https://blog.ydstudio.net/post/459042a5.html</a>
@@ -188,7 +188,7 @@
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://blog.ydstudio.net/post/459042a5.html" data-id="ckfrsoka40046j3y1eta37kbq" class="article-share-link">Share</a>
+      <a data-url="https://blog.ydstudio.net/post/459042a5.html" data-id="ckfrt0i720046kyy18k5c4e3r" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RocketMQ/" rel="tag">RocketMQ</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8F%8C%E4%B8%BB%E5%8F%8C%E4%BB%8E%E9%9B%86%E7%BE%A4/" rel="tag">双主双从集群</a></li></ul>
