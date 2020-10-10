@@ -5,9 +5,9 @@
   <subtitle>一个程序员的成长记录</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="https://blog.ydstudio.net/"/>
-  <updated>2020-10-02T05:25:28.000Z</updated>
-  <id>https://blog.ydstudio.net/</id>
+  <link href="https://ydstudios.gitee.io/"/>
+  <updated>2020-10-10T14:02:12.000Z</updated>
+  <id>https://ydstudios.gitee.io/</id>
   
   <author>
     <name>Sam</name>
@@ -18,12 +18,12 @@
   
   <entry>
     <title>Windows下搭建RocketMQ双主双从集群</title>
-    <link href="https://blog.ydstudio.net/post/459042a5.html"/>
-    <id>https://blog.ydstudio.net/post/459042a5.html</id>
+    <link href="https://ydstudios.gitee.io/post/459042a5.html"/>
+    <id>https://ydstudios.gitee.io/post/459042a5.html</id>
     <published>2020-10-02T11:06:35.000Z</published>
-    <updated>2020-10-02T05:25:28.000Z</updated>
+    <updated>2020-10-10T14:02:12.000Z</updated>
     
-    <content type="html"><![CDATA[<p>RocketMQ是阿里巴巴2016年MQ中间件，使用Java语言开发，在阿里内部，RocketMQ承接了例如“双11”等高并发场景的消息流转，能够处理万亿级别的消息。我们今天就在 windows下搭建RocketMQ多Master多Slave模式（同步）的集群。</p><a id="more"></a><h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1 准备工作"></a>1 准备工作</h2><h3 id="1-1-下载RocketMQ"><a href="#1-1-下载RocketMQ" class="headerlink" title="1.1 下载RocketMQ"></a>1.1 下载RocketMQ</h3><p>RocketMQ版本：4.7.1</p><p><a href="https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.7.1/rocketmq-all-4.7.1-source-release.zip" target="_blank" rel="noopener">下载地址</a></p><h3 id="1-2-环境要求"><a href="#1-2-环境要求" class="headerlink" title="1.2 环境要求"></a>1.2 环境要求</h3><ul><li><p>Linux64位系统</p></li><li><p>JDK1.8(64位)</p></li><li><p>源码安装需要安装Maven 3.2.x</p></li></ul><h2 id="2-安装RocketMQ"><a href="#2-安装RocketMQ" class="headerlink" title="2 安装RocketMQ"></a>2 安装RocketMQ</h2><h3 id="2-1-安装步骤"><a href="#2-1-安装步骤" class="headerlink" title="2.1 安装步骤"></a>2.1 安装步骤</h3><p>本教程以二进制包方式安装</p><ol><li>解压安装包</li><li>进入安装目录</li></ol><h3 id="2-2-目录介绍"><a href="#2-2-目录介绍" class="headerlink" title="2.2 目录介绍"></a>2.2 目录介绍</h3><ul><li>bin：启动脚本，包括shell脚本和CMD脚本</li><li>conf：实例配置文件 ，包括broker配置文件、logback配置文件等</li><li>lib：依赖jar包，包括Netty、commons-lang、FastJSON等</li></ul><h2 id="3-配置mqnamesrv双主"><a href="#3-配置mqnamesrv双主" class="headerlink" title="3 配置mqnamesrv双主"></a>3 配置mqnamesrv双主</h2><p>在RocketMQ 的配置文件夹的目录下，分别创建文件namesrv-a.properties、namesrv-b.properties</p><p><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20201002121423.png" alt="namesrv配置文件"></p><p>内容分别是</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">listenPort=9876</span><br><span class="line"></span><br><span class="line">listenPort=9870</span><br></pre></td></tr></table></figure><p>即表示namesrv-a监听端口是9876，namesrv-b监听端口是9870.</p><h3 id="3-1-启动双主namesrv"><a href="#3-1-启动双主namesrv" class="headerlink" title="3.1 启动双主namesrv"></a>3.1 启动双主namesrv</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">start mqnamesrv.cmd -c D:/ProgramFiles/rocketmq-all-4.7.1/conf/namesrv/namesrv-a.properties</span><br><span class="line"></span><br><span class="line">start mqnamesrv.cmd -c D:/ProgramFiles/rocketmq-all-4.7.1/conf/namesrv/namesrv-b.properties</span><br></pre></td></tr></table></figure><p>启动成功会在终端打印</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The Name Server boot success serializeType=JSON</span><br></pre></td></tr></table></figure><h2 id="4-配置broker双主双从"><a href="#4-配置broker双主双从" class="headerlink" title="4 配置broker双主双从"></a>4 配置broker双主双从</h2><p>此次我们采用多Master多Slave模式（同步）的方式，每个Master配置一个Slave，有多对Master-Slave，HA采用同步双写方式，即只有主备都写成功，才向应用返回成功，这种模式的优缺点如下：</p><ul><li>优点：数据与服务都无单点故障，Master宕机情况下，消息无延迟，服务可用性与数据可用性都非常高；</li><li>缺点：性能比异步复制模式略低（大约低10%左右），发送单个消息的RT会略高，且目前版本在主节点宕机后，备机不能自动切换为主机。</li></ul><p>namesrvAddr 我们就不直接写到配置文件里，我们采用在命令行的形式来指定 namesrvAddr</p><h3 id="4-1-broker-a-的配置"><a href="#4-1-broker-a-的配置" class="headerlink" title="4.1 broker-a 的配置"></a>4.1 broker-a 的配置</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> broker<span class="_">-a</span> 的配置</span></span><br><span class="line">brokerClusterName=DefaultCluster</span><br><span class="line"><span class="meta">#</span><span class="bash"> broker名字，注意此处不同的配置文件填写的不一样</span></span><br><span class="line">brokerName=broker-a</span><br><span class="line">brokerId=0</span><br><span class="line"><span class="meta">#</span><span class="bash">nameServer地址，分号分割</span></span><br><span class="line"><span class="meta">#</span><span class="bash">namesrvAddr=127.0.0.1:9876;127.0.0.1:9870</span></span><br><span class="line"><span class="meta">#</span><span class="bash">在发送消息时，自动创建服务器不存在的topic，默认创建的队列数</span></span><br><span class="line">defaultTopicQueueNums=4</span><br><span class="line"><span class="meta">#</span><span class="bash">是否允许 Broker 自动创建Topic，建议线下开启，线上关闭</span></span><br><span class="line">autoCreateTopicEnable=true</span><br><span class="line"><span class="meta">#</span><span class="bash">是否允许 Broker 自动创建订阅组，建议线下开启，线上关闭</span></span><br><span class="line">autoCreateSubscriptionGroup=true</span><br><span class="line"><span class="meta">#</span><span class="bash">Broker 对外服务的监听端口,</span></span><br><span class="line">listenPort=10911</span><br><span class="line">brokerIP1=127.0.0.1</span><br><span class="line">brokerIP2=127.0.0.1</span><br><span class="line">deleteWhen=04</span><br><span class="line">fileReservedTime=48</span><br><span class="line">brokerRole=SYNC_MASTER</span><br><span class="line">flushDiskType=ASYNC_FLUSH</span><br><span class="line">waitTimeMillsInSendQueue=500</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">存储路径</span></span><br><span class="line">storePathRootDir=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a/broker-a</span><br><span class="line"><span class="meta">#</span><span class="bash">commitLog 存储路径</span></span><br><span class="line">storePathCommitLog=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a/broker-a/commitlog</span><br><span class="line"><span class="meta">#</span><span class="bash">消费队列存储路径存储路径</span></span><br><span class="line">storePathConsumeQueue=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a/broker-a/consumequeue</span><br><span class="line"><span class="meta">#</span><span class="bash">消息索引存储路径</span></span><br><span class="line">storePathIndex=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a/broker-a/index</span><br><span class="line"><span class="meta">#</span><span class="bash">checkpoint 文件存储路径</span></span><br><span class="line">storeCheckpoint=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a/broker-a/checkpoint</span><br><span class="line"><span class="meta">#</span><span class="bash">abort 文件存储路径</span></span><br><span class="line">abortFile=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a/broker-a/abort</span><br></pre></td></tr></table></figure><h3 id="4-2-broker-a-s-的配置"><a href="#4-2-broker-a-s-的配置" class="headerlink" title="4.2 broker-a-s 的配置"></a>4.2 broker-a-s 的配置</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> broker<span class="_">-a</span><span class="_">-s</span> 的配置</span></span><br><span class="line">brokerClusterName=DefaultCluster</span><br><span class="line">brokerName=broker-a</span><br><span class="line">brokerId=1</span><br><span class="line">listenPort=10931</span><br><span class="line"><span class="meta">#</span><span class="bash">nameServer地址，分号分割</span></span><br><span class="line"><span class="meta">#</span><span class="bash">namesrvAddr=127.0.0.1:9876;127.0.0.1:9870</span></span><br><span class="line">brokerIP1=127.0.0.1</span><br><span class="line">brokerIP2=127.0.0.1</span><br><span class="line">deleteWhen=04</span><br><span class="line">fileReservedTime=48</span><br><span class="line">brokerRole=SLAVE</span><br><span class="line">flushDiskType=ASYNC_FLUSH</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">存储路径</span></span><br><span class="line">storePathRootDir=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a-s/broker-a-s</span><br><span class="line"><span class="meta">#</span><span class="bash">commitLog 存储路径</span></span><br><span class="line">storePathCommitLog=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a-s/broker-a-s/commitlog</span><br><span class="line"><span class="meta">#</span><span class="bash">消费队列存储路径存储路径</span></span><br><span class="line">storePathConsumeQueue=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a-s/broker-a-s/consumequeue</span><br><span class="line"><span class="meta">#</span><span class="bash">消息索引存储路径</span></span><br><span class="line">storePathIndex=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a-s/broker-a-s/index</span><br><span class="line"><span class="meta">#</span><span class="bash">checkpoint 文件存储路径</span></span><br><span class="line">storeCheckpoint=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a-s/broker-a-s/checkpoint</span><br><span class="line"><span class="meta">#</span><span class="bash">abort 文件存储路径</span></span><br><span class="line">abortFile=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a-s/broker-a-s/abort</span><br></pre></td></tr></table></figure><h3 id="4-3-broker-b-的配置"><a href="#4-3-broker-b-的配置" class="headerlink" title="4.3 broker-b 的配置"></a>4.3 broker-b 的配置</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> broker-b 的配置</span></span><br><span class="line">brokerClusterName=DefaultCluster</span><br><span class="line">brokerName=broker-b</span><br><span class="line">brokerId=0</span><br><span class="line"><span class="meta">#</span><span class="bash">nameServer地址，分号分割</span></span><br><span class="line"><span class="meta">#</span><span class="bash">namesrvAddr=127.0.0.1:9876;127.0.0.1:9870</span></span><br><span class="line"><span class="meta">#</span><span class="bash">在发送消息时，自动创建服务器不存在的topic，默认创建的队列数</span></span><br><span class="line">defaultTopicQueueNums=4</span><br><span class="line"><span class="meta">#</span><span class="bash">是否允许 Broker 自动创建Topic，建议线下开启，线上关闭</span></span><br><span class="line">autoCreateTopicEnable=true</span><br><span class="line"><span class="meta">#</span><span class="bash">是否允许 Broker 自动创建订阅组，建议线下开启，线上关闭</span></span><br><span class="line">autoCreateSubscriptionGroup=true</span><br><span class="line"><span class="meta">#</span><span class="bash">Broker 对外服务的监听端口,</span></span><br><span class="line">listenPort=10951</span><br><span class="line">brokerIP1=127.0.0.1</span><br><span class="line">brokerIP2=127.0.0.1</span><br><span class="line">deleteWhen=04</span><br><span class="line">fileReservedTime=48</span><br><span class="line">brokerRole=SYNC_MASTER</span><br><span class="line">flushDiskType=ASYNC_FLUSH</span><br><span class="line">waitTimeMillsInSendQueue=500</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">存储路径</span></span><br><span class="line">storePathRootDir=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b/broker-b</span><br><span class="line"><span class="meta">#</span><span class="bash">commitLog 存储路径</span></span><br><span class="line">storePathCommitLog=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b/broker-b/commitlog</span><br><span class="line"><span class="meta">#</span><span class="bash">消费队列存储路径存储路径</span></span><br><span class="line">storePathConsumeQueue=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b/broker-b/consumequeue</span><br><span class="line"><span class="meta">#</span><span class="bash">消息索引存储路径</span></span><br><span class="line">storePathIndex=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b/broker-b/index</span><br><span class="line"><span class="meta">#</span><span class="bash">checkpoint 文件存储路径</span></span><br><span class="line">storeCheckpoint=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b/broker-b/checkpoint</span><br><span class="line"><span class="meta">#</span><span class="bash">abort 文件存储路径</span></span><br><span class="line">abortFile=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b/broker-b/abort</span><br></pre></td></tr></table></figure><h3 id="4-4-broker-b-s-的配置"><a href="#4-4-broker-b-s-的配置" class="headerlink" title="4.4 broker-b-s 的配置"></a>4.4 broker-b-s 的配置</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> broker-b<span class="_">-s</span> 的配置</span></span><br><span class="line"></span><br><span class="line">brokerClusterName=DefaultCluster</span><br><span class="line">brokerName=broker-b</span><br><span class="line">brokerId=1</span><br><span class="line">listenPort=10971</span><br><span class="line"><span class="meta">#</span><span class="bash">nameServer地址，分号分割</span></span><br><span class="line"><span class="meta">#</span><span class="bash">namesrvAddr=127.0.0.1:9876;127.0.0.1:9870</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 可以不配置</span></span><br><span class="line">brokerIP1=127.0.0.1</span><br><span class="line">brokerIP2=127.0.0.1</span><br><span class="line">deleteWhen=04</span><br><span class="line">fileReservedTime=48</span><br><span class="line">brokerRole=SLAVE</span><br><span class="line">flushDiskType=ASYNC_FLUSH</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">存储路径</span></span><br><span class="line">storePathRootDir=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b-s/broker-b-s</span><br><span class="line"><span class="meta">#</span><span class="bash">commitLog 存储路径</span></span><br><span class="line">storePathCommitLog=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b-s/broker-b-s/commitlog</span><br><span class="line"><span class="meta">#</span><span class="bash">消费队列存储路径存储路径</span></span><br><span class="line">storePathConsumeQueue=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b-s/broker-b-s/consumequeue</span><br><span class="line"><span class="meta">#</span><span class="bash">消息索引存储路径</span></span><br><span class="line">storePathIndex=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b-s/broker-b-s/index</span><br><span class="line"><span class="meta">#</span><span class="bash">checkpoint 文件存储路径</span></span><br><span class="line">storeCheckpoint=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b-s/broker-b-s/checkpoint</span><br><span class="line"><span class="meta">#</span><span class="bash">abort 文件存储路径</span></span><br><span class="line">abortFile=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b-s/broker-b-s/abort</span><br></pre></td></tr></table></figure><h3 id="4-5-启动双主双从boker"><a href="#4-5-启动双主双从boker" class="headerlink" title="4.5 启动双主双从boker"></a>4.5 启动双主双从boker</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">start mqbroker.cmd -c D:/ProgramFiles/rocketmq-all-4.7.1/conf/2m-2s-sync/broker-a.properties  -n "127.0.0.1:9876;127.0.0.1:9870"</span><br><span class="line"></span><br><span class="line">start mqbroker.cmd -c D:/ProgramFiles/rocketmq-all-4.7.1/conf/2m-2s-sync/broker-a-s.properties -n "127.0.0.1:9876;127.0.0.1:9870"</span><br><span class="line"></span><br><span class="line">start mqbroker.cmd -c D:/ProgramFiles/rocketmq-all-4.7.1/conf/2m-2s-sync/broker-b.properties  -n "127.0.0.1:9876;127.0.0.1:9870"</span><br><span class="line"></span><br><span class="line">start mqbroker.cmd -c D:/ProgramFiles/rocketmq-all-4.7.1/conf/2m-2s-sync/broker-b-s.properties -n "127.0.0.1:9876;127.0.0.1:9870"</span><br></pre></td></tr></table></figure><h2 id="5-配置rocketmq-console"><a href="#5-配置rocketmq-console" class="headerlink" title="5 配置rocketmq-console"></a>5 配置rocketmq-console</h2><p><code>RocketMQ</code>有一个对其扩展的开源项目<a href="https://github.com/apache/rocketmq-externals" target="_blank" rel="noopener">incubator-rocketmq-externals</a>，这个项目中有一个子模块叫<code>rocketmq-console</code>，这个便是管理控制台项目了，先将<a href="https://github.com/apache/rocketmq-externals" target="_blank" rel="noopener">incubator-rocketmq-externals</a>拉到本地，因为我们需要自己对<code>rocketmq-console</code>进行编译打包运行。</p><h3 id="5-1-下载并编译打包"><a href="#5-1-下载并编译打包" class="headerlink" title="5.1 下载并编译打包"></a>5.1 下载并编译打包</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/apache/rocketmq-externals</span><br><span class="line">cd rocketmq-console</span><br><span class="line">mvn clean package -Dmaven.test.skip=true</span><br></pre></td></tr></table></figure><p>注意：打包前在<code>rocketmq-console</code>中配置<code>namesrv</code>集群地址：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">server.port=9980</span><br><span class="line">rocketmq.config.namesrvAddr=127.0.0.1:9876;192.168.25.138:9870</span><br></pre></td></tr></table></figure><p>启动rocketmq-console：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar rocketmq-console-ng-1.0.0.jar</span><br></pre></td></tr></table></figure><p><em>注意</em>  你执行上述命令之后可能得到的 jar 包的名字和我的不一样，毕竟人家也是一直在更新版本，注意看自己对应目录下的文件，适当替换就行。</p><p>启动成功后，我们就可以通过浏览器访问<code>http://localhost:9980</code>进入集群界面了，(由于我是在 windows 上部署的，写这篇文章是在我的 mac 上，所以临时找了个别人的图，部分细节可能对不上)如下图：<br><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20201002124611.png" alt="集群"></p><h2 id="6-在搭建过程中出现的问题"><a href="#6-在搭建过程中出现的问题" class="headerlink" title="6 在搭建过程中出现的问题"></a>6 在搭建过程中出现的问题</h2><h3 id="6-1-Lock-failed-MQ-already-started"><a href="#6-1-Lock-failed-MQ-already-started" class="headerlink" title="6.1 Lock failed,MQ already started"></a>6.1 Lock failed,MQ already started</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java.lang.RuntimeException: Lock failed,MQ already started</span><br><span class="line">        at org.apache.rocketmq.store.DefaultMessageStore.start(DefaultMessageStore.java:227)</span><br><span class="line">        at org.apache.rocketmq.broker.BrokerController.start(BrokerController.java:853)</span><br><span class="line">        at org.apache.rocketmq.broker.BrokerStartup.start(BrokerStartup.java:64)</span><br><span class="line">        at org.apache.rocketmq.broker.BrokerStartup.main(BrokerStartup.java:58)</span><br></pre></td></tr></table></figure><p>出现这个问题 是因为我们在集群中master和slave共用一个storePath造成的，这个时候我们要启动的每一个broker要指定不一样的storePath 路径就行，也就是在我们的配置文件中修改即可，完美解决。</p><h3 id="6-2-集群状态-SLAVE-NOT-AVAILABLE"><a href="#6-2-集群状态-SLAVE-NOT-AVAILABLE" class="headerlink" title="6.2 集群状态 SLAVE_NOT_AVAILABLE"></a>6.2 集群状态 SLAVE_NOT_AVAILABLE</h3><p>主从的brokerName 一定要设置成一样的，主brokerName=broker-a 那么从的brokerName=broker-a，不然发送消息会出现 SLAVE_NOT_AVAILABLE</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> broker名字，注意此处不同的配置文件填写的不一样</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> broker<span class="_">-a</span> 的配置</span></span><br><span class="line"></span><br><span class="line">brokerClusterName=DefaultCluster</span><br><span class="line">brokerName=broker-a</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> broker<span class="_">-a</span><span class="_">-s</span> 的配置</span></span><br><span class="line"></span><br><span class="line">brokerClusterName=DefaultCluster</span><br><span class="line">brokerName=broker-a</span><br></pre></td></tr></table></figure><h3 id="6-3-消息发送出现-TIMEOUT-CLEAN-QUEUE-broker-busy"><a href="#6-3-消息发送出现-TIMEOUT-CLEAN-QUEUE-broker-busy" class="headerlink" title="6.3 消息发送出现 [TIMEOUT_CLEAN_QUEUE]broker busy"></a>6.3 消息发送出现 [TIMEOUT_CLEAN_QUEUE]broker busy</h3> <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.apache.rocketmq.client.exception.MQBrokerException: CODE: 2  DESC: [TIMEOUT_CLEAN_QUEUE]broker busy, start flow control for a while, period in queue: 205ms, size of queue: 2</span><br></pre></td></tr></table></figure><p> 解决方式就是合理设置waitTimeMillsInSendQueue的值</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 清除发送线程池任务队列的等待时间。如果系统时间减去任务放入队列中的时间小于waitTimeMillsInSendQueue，本次请求任务暂时不移除该任务 默认200ms</span></span><br><span class="line">waitTimeMillsInSendQueue=200</span><br></pre></td></tr></table></figure><p>到此RocketMQ双主双从集群就搭建完毕。</p><p><em>参考资料</em><br><a href="https://blog.csdn.net/chenzhong2010/article/details/106749258" target="_blank" rel="noopener">参考1</a><br><a href="https://blog.csdn.net/vucko/article/details/107487675" target="_blank" rel="noopener">参考2</a><br><a href="https://blog.csdn.net/jianghuiyun/article/details/77971583" target="_blank" rel="noopener">参考3</a></p>]]></content>
+    <content type="html"><![CDATA[<p>RocketMQ是阿里巴巴2016年MQ中间件，使用Java语言开发，在阿里内部，RocketMQ承接了例如“双11”等高并发场景的消息流转，能够处理万亿级别的消息。我们今天就在 windows下搭建RocketMQ多Master多Slave模式（同步）的集群。</p><a id="more"></a><h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1 准备工作"></a>1 准备工作</h2><h3 id="1-1-下载RocketMQ"><a href="#1-1-下载RocketMQ" class="headerlink" title="1.1 下载RocketMQ"></a>1.1 下载RocketMQ</h3><p>RocketMQ版本：4.7.1</p><p><a href="https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.7.1/rocketmq-all-4.7.1-source-release.zip" target="_blank" rel="noopener">下载地址</a></p><h3 id="1-2-环境要求"><a href="#1-2-环境要求" class="headerlink" title="1.2 环境要求"></a>1.2 环境要求</h3><ul><li><p>Linux64位系统</p></li><li><p>JDK1.8(64位)</p></li><li><p>源码安装需要安装Maven 3.2.x</p></li></ul><h2 id="2-安装RocketMQ"><a href="#2-安装RocketMQ" class="headerlink" title="2 安装RocketMQ"></a>2 安装RocketMQ</h2><h3 id="2-1-安装步骤"><a href="#2-1-安装步骤" class="headerlink" title="2.1 安装步骤"></a>2.1 安装步骤</h3><p>本教程以二进制包方式安装</p><ol><li>解压安装包</li><li>进入安装目录</li></ol><h3 id="2-2-目录介绍"><a href="#2-2-目录介绍" class="headerlink" title="2.2 目录介绍"></a>2.2 目录介绍</h3><ul><li>bin：启动脚本，包括shell脚本和CMD脚本</li><li>conf：实例配置文件 ，包括broker配置文件、logback配置文件等</li><li>lib：依赖jar包，包括Netty、commons-lang、FastJSON等</li></ul><h2 id="3-配置mqnamesrv双主"><a href="#3-配置mqnamesrv双主" class="headerlink" title="3 配置mqnamesrv双主"></a>3 配置mqnamesrv双主</h2><p>在RocketMQ 的配置文件夹的目录下，分别创建文件namesrv-a.properties、namesrv-b.properties</p><p><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20201010215427.png" alt="namesrv配置文件"></p><p>内容分别是</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">listenPort=9876</span><br><span class="line"></span><br><span class="line">listenPort=9870</span><br></pre></td></tr></table></figure><p>即表示namesrv-a监听端口是9876，namesrv-b监听端口是9870.</p><h3 id="3-1-启动双主namesrv"><a href="#3-1-启动双主namesrv" class="headerlink" title="3.1 启动双主namesrv"></a>3.1 启动双主namesrv</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">start mqnamesrv.cmd -c D:/ProgramFiles/rocketmq-all-4.7.1/conf/namesrv/namesrv-a.properties</span><br><span class="line"></span><br><span class="line">start mqnamesrv.cmd -c D:/ProgramFiles/rocketmq-all-4.7.1/conf/namesrv/namesrv-b.properties</span><br></pre></td></tr></table></figure><p>启动成功会在终端打印</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The Name Server boot success serializeType=JSON</span><br></pre></td></tr></table></figure><h2 id="4-配置broker双主双从"><a href="#4-配置broker双主双从" class="headerlink" title="4 配置broker双主双从"></a>4 配置broker双主双从</h2><p>此次我们采用多Master多Slave模式（同步）的方式，每个Master配置一个Slave，有多对Master-Slave，HA采用同步双写方式，即只有主备都写成功，才向应用返回成功，这种模式的优缺点如下：</p><ul><li>优点：数据与服务都无单点故障，Master宕机情况下，消息无延迟，服务可用性与数据可用性都非常高；</li><li>缺点：性能比异步复制模式略低（大约低10%左右），发送单个消息的RT会略高，且目前版本在主节点宕机后，备机不能自动切换为主机。</li></ul><p>namesrvAddr 我们就不直接写到配置文件里，我们采用在命令行的形式来指定 namesrvAddr</p><p><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20201010215545.png" alt="队列的文件保存路径"></p><h3 id="4-1-broker-a-的配置"><a href="#4-1-broker-a-的配置" class="headerlink" title="4.1 broker-a 的配置"></a>4.1 broker-a 的配置</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> broker<span class="_">-a</span> 的配置</span></span><br><span class="line">brokerClusterName=DefaultCluster</span><br><span class="line"><span class="meta">#</span><span class="bash"> broker名字，注意此处不同的配置文件填写的不一样</span></span><br><span class="line">brokerName=broker-a</span><br><span class="line">brokerId=0</span><br><span class="line"><span class="meta">#</span><span class="bash">nameServer地址，分号分割</span></span><br><span class="line"><span class="meta">#</span><span class="bash">namesrvAddr=127.0.0.1:9876;127.0.0.1:9870</span></span><br><span class="line"><span class="meta">#</span><span class="bash">在发送消息时，自动创建服务器不存在的topic，默认创建的队列数</span></span><br><span class="line">defaultTopicQueueNums=4</span><br><span class="line"><span class="meta">#</span><span class="bash">是否允许 Broker 自动创建Topic，建议线下开启，线上关闭</span></span><br><span class="line">autoCreateTopicEnable=true</span><br><span class="line"><span class="meta">#</span><span class="bash">是否允许 Broker 自动创建订阅组，建议线下开启，线上关闭</span></span><br><span class="line">autoCreateSubscriptionGroup=true</span><br><span class="line"><span class="meta">#</span><span class="bash">Broker 对外服务的监听端口,</span></span><br><span class="line">listenPort=10911</span><br><span class="line">brokerIP1=127.0.0.1</span><br><span class="line">brokerIP2=127.0.0.1</span><br><span class="line">deleteWhen=04</span><br><span class="line">fileReservedTime=48</span><br><span class="line">brokerRole=SYNC_MASTER</span><br><span class="line">flushDiskType=ASYNC_FLUSH</span><br><span class="line">waitTimeMillsInSendQueue=500</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">存储路径</span></span><br><span class="line">storePathRootDir=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a/broker-a</span><br><span class="line"><span class="meta">#</span><span class="bash">commitLog 存储路径</span></span><br><span class="line">storePathCommitLog=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a/broker-a/commitlog</span><br><span class="line"><span class="meta">#</span><span class="bash">消费队列存储路径存储路径</span></span><br><span class="line">storePathConsumeQueue=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a/broker-a/consumequeue</span><br><span class="line"><span class="meta">#</span><span class="bash">消息索引存储路径</span></span><br><span class="line">storePathIndex=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a/broker-a/index</span><br><span class="line"><span class="meta">#</span><span class="bash">checkpoint 文件存储路径</span></span><br><span class="line">storeCheckpoint=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a/broker-a/checkpoint</span><br><span class="line"><span class="meta">#</span><span class="bash">abort 文件存储路径</span></span><br><span class="line">abortFile=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a/broker-a/abort</span><br></pre></td></tr></table></figure><h3 id="4-2-broker-a-s-的配置"><a href="#4-2-broker-a-s-的配置" class="headerlink" title="4.2 broker-a-s 的配置"></a>4.2 broker-a-s 的配置</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> broker<span class="_">-a</span><span class="_">-s</span> 的配置</span></span><br><span class="line">brokerClusterName=DefaultCluster</span><br><span class="line">brokerName=broker-a</span><br><span class="line">brokerId=1</span><br><span class="line">listenPort=10931</span><br><span class="line"><span class="meta">#</span><span class="bash">nameServer地址，分号分割</span></span><br><span class="line"><span class="meta">#</span><span class="bash">namesrvAddr=127.0.0.1:9876;127.0.0.1:9870</span></span><br><span class="line">brokerIP1=127.0.0.1</span><br><span class="line">brokerIP2=127.0.0.1</span><br><span class="line">deleteWhen=04</span><br><span class="line">fileReservedTime=48</span><br><span class="line">brokerRole=SLAVE</span><br><span class="line">flushDiskType=ASYNC_FLUSH</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">存储路径</span></span><br><span class="line">storePathRootDir=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a-s/broker-a-s</span><br><span class="line"><span class="meta">#</span><span class="bash">commitLog 存储路径</span></span><br><span class="line">storePathCommitLog=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a-s/broker-a-s/commitlog</span><br><span class="line"><span class="meta">#</span><span class="bash">消费队列存储路径存储路径</span></span><br><span class="line">storePathConsumeQueue=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a-s/broker-a-s/consumequeue</span><br><span class="line"><span class="meta">#</span><span class="bash">消息索引存储路径</span></span><br><span class="line">storePathIndex=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a-s/broker-a-s/index</span><br><span class="line"><span class="meta">#</span><span class="bash">checkpoint 文件存储路径</span></span><br><span class="line">storeCheckpoint=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a-s/broker-a-s/checkpoint</span><br><span class="line"><span class="meta">#</span><span class="bash">abort 文件存储路径</span></span><br><span class="line">abortFile=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-a-s/broker-a-s/abort</span><br></pre></td></tr></table></figure><h3 id="4-3-broker-b-的配置"><a href="#4-3-broker-b-的配置" class="headerlink" title="4.3 broker-b 的配置"></a>4.3 broker-b 的配置</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> broker-b 的配置</span></span><br><span class="line">brokerClusterName=DefaultCluster</span><br><span class="line">brokerName=broker-b</span><br><span class="line">brokerId=0</span><br><span class="line"><span class="meta">#</span><span class="bash">nameServer地址，分号分割</span></span><br><span class="line"><span class="meta">#</span><span class="bash">namesrvAddr=127.0.0.1:9876;127.0.0.1:9870</span></span><br><span class="line"><span class="meta">#</span><span class="bash">在发送消息时，自动创建服务器不存在的topic，默认创建的队列数</span></span><br><span class="line">defaultTopicQueueNums=4</span><br><span class="line"><span class="meta">#</span><span class="bash">是否允许 Broker 自动创建Topic，建议线下开启，线上关闭</span></span><br><span class="line">autoCreateTopicEnable=true</span><br><span class="line"><span class="meta">#</span><span class="bash">是否允许 Broker 自动创建订阅组，建议线下开启，线上关闭</span></span><br><span class="line">autoCreateSubscriptionGroup=true</span><br><span class="line"><span class="meta">#</span><span class="bash">Broker 对外服务的监听端口,</span></span><br><span class="line">listenPort=10951</span><br><span class="line">brokerIP1=127.0.0.1</span><br><span class="line">brokerIP2=127.0.0.1</span><br><span class="line">deleteWhen=04</span><br><span class="line">fileReservedTime=48</span><br><span class="line">brokerRole=SYNC_MASTER</span><br><span class="line">flushDiskType=ASYNC_FLUSH</span><br><span class="line">waitTimeMillsInSendQueue=500</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">存储路径</span></span><br><span class="line">storePathRootDir=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b/broker-b</span><br><span class="line"><span class="meta">#</span><span class="bash">commitLog 存储路径</span></span><br><span class="line">storePathCommitLog=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b/broker-b/commitlog</span><br><span class="line"><span class="meta">#</span><span class="bash">消费队列存储路径存储路径</span></span><br><span class="line">storePathConsumeQueue=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b/broker-b/consumequeue</span><br><span class="line"><span class="meta">#</span><span class="bash">消息索引存储路径</span></span><br><span class="line">storePathIndex=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b/broker-b/index</span><br><span class="line"><span class="meta">#</span><span class="bash">checkpoint 文件存储路径</span></span><br><span class="line">storeCheckpoint=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b/broker-b/checkpoint</span><br><span class="line"><span class="meta">#</span><span class="bash">abort 文件存储路径</span></span><br><span class="line">abortFile=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b/broker-b/abort</span><br></pre></td></tr></table></figure><h3 id="4-4-broker-b-s-的配置"><a href="#4-4-broker-b-s-的配置" class="headerlink" title="4.4 broker-b-s 的配置"></a>4.4 broker-b-s 的配置</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> broker-b<span class="_">-s</span> 的配置</span></span><br><span class="line"></span><br><span class="line">brokerClusterName=DefaultCluster</span><br><span class="line">brokerName=broker-b</span><br><span class="line">brokerId=1</span><br><span class="line">listenPort=10971</span><br><span class="line"><span class="meta">#</span><span class="bash">nameServer地址，分号分割</span></span><br><span class="line"><span class="meta">#</span><span class="bash">namesrvAddr=127.0.0.1:9876;127.0.0.1:9870</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 可以不配置</span></span><br><span class="line">brokerIP1=127.0.0.1</span><br><span class="line">brokerIP2=127.0.0.1</span><br><span class="line">deleteWhen=04</span><br><span class="line">fileReservedTime=48</span><br><span class="line">brokerRole=SLAVE</span><br><span class="line">flushDiskType=ASYNC_FLUSH</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">存储路径</span></span><br><span class="line">storePathRootDir=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b-s/broker-b-s</span><br><span class="line"><span class="meta">#</span><span class="bash">commitLog 存储路径</span></span><br><span class="line">storePathCommitLog=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b-s/broker-b-s/commitlog</span><br><span class="line"><span class="meta">#</span><span class="bash">消费队列存储路径存储路径</span></span><br><span class="line">storePathConsumeQueue=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b-s/broker-b-s/consumequeue</span><br><span class="line"><span class="meta">#</span><span class="bash">消息索引存储路径</span></span><br><span class="line">storePathIndex=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b-s/broker-b-s/index</span><br><span class="line"><span class="meta">#</span><span class="bash">checkpoint 文件存储路径</span></span><br><span class="line">storeCheckpoint=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b-s/broker-b-s/checkpoint</span><br><span class="line"><span class="meta">#</span><span class="bash">abort 文件存储路径</span></span><br><span class="line">abortFile=D:/ProgramFiles/rocketmq-all-4.7.1/store-broker-b-s/broker-b-s/abort</span><br></pre></td></tr></table></figure><h3 id="4-5-启动双主双从boker"><a href="#4-5-启动双主双从boker" class="headerlink" title="4.5 启动双主双从boker"></a>4.5 启动双主双从boker</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">start mqbroker.cmd -c D:/ProgramFiles/rocketmq-all-4.7.1/conf/2m-2s-sync/broker-a.properties  -n "127.0.0.1:9876;127.0.0.1:9870"</span><br><span class="line"></span><br><span class="line">start mqbroker.cmd -c D:/ProgramFiles/rocketmq-all-4.7.1/conf/2m-2s-sync/broker-a-s.properties -n "127.0.0.1:9876;127.0.0.1:9870"</span><br><span class="line"></span><br><span class="line">start mqbroker.cmd -c D:/ProgramFiles/rocketmq-all-4.7.1/conf/2m-2s-sync/broker-b.properties  -n "127.0.0.1:9876;127.0.0.1:9870"</span><br><span class="line"></span><br><span class="line">start mqbroker.cmd -c D:/ProgramFiles/rocketmq-all-4.7.1/conf/2m-2s-sync/broker-b-s.properties -n "127.0.0.1:9876;127.0.0.1:9870"</span><br></pre></td></tr></table></figure><h2 id="5-配置rocketmq-console"><a href="#5-配置rocketmq-console" class="headerlink" title="5 配置rocketmq-console"></a>5 配置rocketmq-console</h2><p><code>RocketMQ</code>有一个对其扩展的开源项目<a href="https://github.com/apache/rocketmq-externals" target="_blank" rel="noopener">incubator-rocketmq-externals</a>，这个项目中有一个子模块叫<code>rocketmq-console</code>，这个便是管理控制台项目了，先将<a href="https://github.com/apache/rocketmq-externals" target="_blank" rel="noopener">incubator-rocketmq-externals</a>拉到本地，因为我们需要自己对<code>rocketmq-console</code>进行编译打包运行。</p><h3 id="5-1-下载并编译打包"><a href="#5-1-下载并编译打包" class="headerlink" title="5.1 下载并编译打包"></a>5.1 下载并编译打包</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/apache/rocketmq-externals</span><br><span class="line">cd rocketmq-console</span><br><span class="line">mvn clean package -Dmaven.test.skip=true</span><br></pre></td></tr></table></figure><p>注意：打包前在<code>rocketmq-console</code>中配置<code>namesrv</code>集群地址：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">server.port=80</span><br><span class="line">rocketmq.config.namesrvAddr=127.0.0.1:9876;192.168.25.138:9870</span><br></pre></td></tr></table></figure><p>启动rocketmq-console：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar rocketmq-console-ng-2.0.0.jar</span><br></pre></td></tr></table></figure><p><em>注意</em>  你执行上述命令之后可能得到的 jar 包的名字和我的不一样，毕竟人家也是一直在更新版本，注意看自己对应目录下的文件，适当替换就行。</p><p>启动成功后，我们就可以通过浏览器访问<code>http://localhost:80</code>进入集群界面了如下图：<br><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20201010215859.png" alt="消息队列集群"></p><h2 id="6-在搭建过程中出现的问题"><a href="#6-在搭建过程中出现的问题" class="headerlink" title="6 在搭建过程中出现的问题"></a>6 在搭建过程中出现的问题</h2><h3 id="6-1-Lock-failed-MQ-already-started"><a href="#6-1-Lock-failed-MQ-already-started" class="headerlink" title="6.1 Lock failed,MQ already started"></a>6.1 Lock failed,MQ already started</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java.lang.RuntimeException: Lock failed,MQ already started</span><br><span class="line">        at org.apache.rocketmq.store.DefaultMessageStore.start(DefaultMessageStore.java:227)</span><br><span class="line">        at org.apache.rocketmq.broker.BrokerController.start(BrokerController.java:853)</span><br><span class="line">        at org.apache.rocketmq.broker.BrokerStartup.start(BrokerStartup.java:64)</span><br><span class="line">        at org.apache.rocketmq.broker.BrokerStartup.main(BrokerStartup.java:58)</span><br></pre></td></tr></table></figure><p>出现这个问题 是因为我们在集群中master和slave共用一个storePath造成的，这个时候我们要启动的每一个broker要指定不一样的storePath 路径就行，也就是在我们的配置文件中修改即可，完美解决。</p><h3 id="6-2-集群状态-SLAVE-NOT-AVAILABLE"><a href="#6-2-集群状态-SLAVE-NOT-AVAILABLE" class="headerlink" title="6.2 集群状态 SLAVE_NOT_AVAILABLE"></a>6.2 集群状态 SLAVE_NOT_AVAILABLE</h3><p>主从的brokerName 一定要设置成一样的，主brokerName=broker-a 那么从的brokerName=broker-a，不然发送消息会出现 SLAVE_NOT_AVAILABLE</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> broker名字，注意此处不同的配置文件填写的不一样</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> broker<span class="_">-a</span> 的配置</span></span><br><span class="line"></span><br><span class="line">brokerClusterName=DefaultCluster</span><br><span class="line">brokerName=broker-a</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> broker<span class="_">-a</span><span class="_">-s</span> 的配置</span></span><br><span class="line"></span><br><span class="line">brokerClusterName=DefaultCluster</span><br><span class="line">brokerName=broker-a</span><br></pre></td></tr></table></figure><h3 id="6-3-消息发送出现-TIMEOUT-CLEAN-QUEUE-broker-busy"><a href="#6-3-消息发送出现-TIMEOUT-CLEAN-QUEUE-broker-busy" class="headerlink" title="6.3 消息发送出现 [TIMEOUT_CLEAN_QUEUE]broker busy"></a>6.3 消息发送出现 [TIMEOUT_CLEAN_QUEUE]broker busy</h3> <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.apache.rocketmq.client.exception.MQBrokerException: CODE: 2  DESC: [TIMEOUT_CLEAN_QUEUE]broker busy, start flow control for a while, period in queue: 205ms, size of queue: 2</span><br></pre></td></tr></table></figure><p> 解决方式就是合理设置waitTimeMillsInSendQueue的值</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 清除发送线程池任务队列的等待时间。如果系统时间减去任务放入队列中的时间小于waitTimeMillsInSendQueue，本次请求任务暂时不移除该任务 默认200ms</span></span><br><span class="line">waitTimeMillsInSendQueue=200</span><br></pre></td></tr></table></figure><p>到此RocketMQ双主双从集群就搭建完毕。</p><p><em>参考资料</em><br><a href="https://blog.csdn.net/chenzhong2010/article/details/106749258" target="_blank" rel="noopener">参考1</a><br><a href="https://blog.csdn.net/vucko/article/details/107487675" target="_blank" rel="noopener">参考2</a><br><a href="https://blog.csdn.net/jianghuiyun/article/details/77971583" target="_blank" rel="noopener">参考3</a></p>]]></content>
     
     <summary type="html">
     
@@ -33,18 +33,18 @@
     
     
     
-      <category term="Windows" scheme="https://blog.ydstudio.net/tags/Windows/"/>
+      <category term="Windows" scheme="https://ydstudios.gitee.io/tags/Windows/"/>
     
-      <category term="RocketMQ" scheme="https://blog.ydstudio.net/tags/RocketMQ/"/>
+      <category term="RocketMQ" scheme="https://ydstudios.gitee.io/tags/RocketMQ/"/>
     
-      <category term="双主双从集群" scheme="https://blog.ydstudio.net/tags/%E5%8F%8C%E4%B8%BB%E5%8F%8C%E4%BB%8E%E9%9B%86%E7%BE%A4/"/>
+      <category term="双主双从集群" scheme="https://ydstudios.gitee.io/tags/%E5%8F%8C%E4%B8%BB%E5%8F%8C%E4%BB%8E%E9%9B%86%E7%BE%A4/"/>
     
   </entry>
   
   <entry>
     <title>JavaScript接收后端Long类型数据精度丢失问题</title>
-    <link href="https://blog.ydstudio.net/post/175ad151.html"/>
-    <id>https://blog.ydstudio.net/post/175ad151.html</id>
+    <link href="https://ydstudios.gitee.io/post/175ad151.html"/>
+    <id>https://ydstudios.gitee.io/post/175ad151.html</id>
     <published>2020-08-26T22:30:22.000Z</published>
     <updated>2020-08-27T14:30:42.000Z</updated>
     
@@ -58,18 +58,18 @@
     
     
     
-      <category term="java" scheme="https://blog.ydstudio.net/tags/java/"/>
+      <category term="java" scheme="https://ydstudios.gitee.io/tags/java/"/>
     
-      <category term="JavaScript" scheme="https://blog.ydstudio.net/tags/JavaScript/"/>
+      <category term="JavaScript" scheme="https://ydstudios.gitee.io/tags/JavaScript/"/>
     
-      <category term="数据精度" scheme="https://blog.ydstudio.net/tags/%E6%95%B0%E6%8D%AE%E7%B2%BE%E5%BA%A6/"/>
+      <category term="数据精度" scheme="https://ydstudios.gitee.io/tags/%E6%95%B0%E6%8D%AE%E7%B2%BE%E5%BA%A6/"/>
     
   </entry>
   
   <entry>
     <title>编程过程中抽象类和接口的抉择</title>
-    <link href="https://blog.ydstudio.net/post/665bcc51.html"/>
-    <id>https://blog.ydstudio.net/post/665bcc51.html</id>
+    <link href="https://ydstudios.gitee.io/post/665bcc51.html"/>
+    <id>https://ydstudios.gitee.io/post/665bcc51.html</id>
     <published>2020-08-24T21:51:35.000Z</published>
     <updated>2020-08-24T14:28:51.000Z</updated>
     
@@ -83,18 +83,18 @@
     
     
     
-      <category term="编程" scheme="https://blog.ydstudio.net/tags/%E7%BC%96%E7%A8%8B/"/>
+      <category term="编程" scheme="https://ydstudios.gitee.io/tags/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="抽象类" scheme="https://blog.ydstudio.net/tags/%E6%8A%BD%E8%B1%A1%E7%B1%BB/"/>
+      <category term="抽象类" scheme="https://ydstudios.gitee.io/tags/%E6%8A%BD%E8%B1%A1%E7%B1%BB/"/>
     
-      <category term="接口" scheme="https://blog.ydstudio.net/tags/%E6%8E%A5%E5%8F%A3/"/>
+      <category term="接口" scheme="https://ydstudios.gitee.io/tags/%E6%8E%A5%E5%8F%A3/"/>
     
   </entry>
   
   <entry>
     <title>设计模式学习之责任链模式</title>
-    <link href="https://blog.ydstudio.net/post/8ec2718b.html"/>
-    <id>https://blog.ydstudio.net/post/8ec2718b.html</id>
+    <link href="https://ydstudios.gitee.io/post/8ec2718b.html"/>
+    <id>https://ydstudios.gitee.io/post/8ec2718b.html</id>
     <published>2020-05-12T22:36:21.000Z</published>
     <updated>2020-05-12T15:12:37.000Z</updated>
     
@@ -108,14 +108,14 @@
     
     
     
-      <category term="设计模式" scheme="https://blog.ydstudio.net/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+      <category term="设计模式" scheme="https://ydstudios.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
     
   </entry>
   
   <entry>
     <title>MySQL的bin-log</title>
-    <link href="https://blog.ydstudio.net/post/d1d9a9.html"/>
-    <id>https://blog.ydstudio.net/post/d1d9a9.html</id>
+    <link href="https://ydstudios.gitee.io/post/d1d9a9.html"/>
+    <id>https://ydstudios.gitee.io/post/d1d9a9.html</id>
     <published>2020-03-15T15:22:12.000Z</published>
     <updated>2020-03-15T09:53:06.000Z</updated>
     
@@ -129,16 +129,16 @@
     
     
     
-      <category term="MySQL" scheme="https://blog.ydstudio.net/tags/MySQL/"/>
+      <category term="MySQL" scheme="https://ydstudios.gitee.io/tags/MySQL/"/>
     
-      <category term="bin-log" scheme="https://blog.ydstudio.net/tags/bin-log/"/>
+      <category term="bin-log" scheme="https://ydstudios.gitee.io/tags/bin-log/"/>
     
   </entry>
   
   <entry>
     <title>MySQL 删除 relay log 的方法</title>
-    <link href="https://blog.ydstudio.net/post/da13f861.html"/>
-    <id>https://blog.ydstudio.net/post/da13f861.html</id>
+    <link href="https://ydstudios.gitee.io/post/da13f861.html"/>
+    <id>https://ydstudios.gitee.io/post/da13f861.html</id>
     <published>2020-03-15T14:35:19.000Z</published>
     <updated>2020-03-15T08:17:02.000Z</updated>
     
@@ -152,16 +152,16 @@
     
     
     
-      <category term="MySQL" scheme="https://blog.ydstudio.net/tags/MySQL/"/>
+      <category term="MySQL" scheme="https://ydstudios.gitee.io/tags/MySQL/"/>
     
-      <category term="relay-log" scheme="https://blog.ydstudio.net/tags/relay-log/"/>
+      <category term="relay-log" scheme="https://ydstudios.gitee.io/tags/relay-log/"/>
     
   </entry>
   
   <entry>
     <title>利用Mac电脑自带应用将iPhone投屏到Mac电脑的教程</title>
-    <link href="https://blog.ydstudio.net/post/29afd8a9.html"/>
-    <id>https://blog.ydstudio.net/post/29afd8a9.html</id>
+    <link href="https://ydstudios.gitee.io/post/29afd8a9.html"/>
+    <id>https://ydstudios.gitee.io/post/29afd8a9.html</id>
     <published>2020-03-10T12:40:32.000Z</published>
     <updated>2020-03-10T07:01:03.000Z</updated>
     
@@ -175,18 +175,18 @@
     
     
     
-      <category term="MAC" scheme="https://blog.ydstudio.net/tags/MAC/"/>
+      <category term="MAC" scheme="https://ydstudios.gitee.io/tags/MAC/"/>
     
-      <category term="iPhone" scheme="https://blog.ydstudio.net/tags/iPhone/"/>
+      <category term="iPhone" scheme="https://ydstudios.gitee.io/tags/iPhone/"/>
     
-      <category term="投屏" scheme="https://blog.ydstudio.net/tags/%E6%8A%95%E5%B1%8F/"/>
+      <category term="投屏" scheme="https://ydstudios.gitee.io/tags/%E6%8A%95%E5%B1%8F/"/>
     
   </entry>
   
   <entry>
     <title>JVM配置参数的类型</title>
-    <link href="https://blog.ydstudio.net/post/ea8be9c5.html"/>
-    <id>https://blog.ydstudio.net/post/ea8be9c5.html</id>
+    <link href="https://ydstudios.gitee.io/post/ea8be9c5.html"/>
+    <id>https://ydstudios.gitee.io/post/ea8be9c5.html</id>
     <published>2020-02-06T15:55:13.000Z</published>
     <updated>2020-02-06T07:57:04.000Z</updated>
     
@@ -200,14 +200,14 @@
     
     
     
-      <category term="Jvm" scheme="https://blog.ydstudio.net/tags/Jvm/"/>
+      <category term="Jvm" scheme="https://ydstudios.gitee.io/tags/Jvm/"/>
     
   </entry>
   
   <entry>
     <title>Spring配置文件中的classpath:和classpath*:的区别</title>
-    <link href="https://blog.ydstudio.net/post/38b6491c.html"/>
-    <id>https://blog.ydstudio.net/post/38b6491c.html</id>
+    <link href="https://ydstudios.gitee.io/post/38b6491c.html"/>
+    <id>https://ydstudios.gitee.io/post/38b6491c.html</id>
     <published>2020-01-28T22:46:48.000Z</published>
     <updated>2020-01-28T14:53:41.000Z</updated>
     
@@ -221,14 +221,14 @@
     
     
     
-      <category term="spring" scheme="https://blog.ydstudio.net/tags/spring/"/>
+      <category term="spring" scheme="https://ydstudios.gitee.io/tags/spring/"/>
     
   </entry>
   
   <entry>
     <title>利用Docker Compose管理服务</title>
-    <link href="https://blog.ydstudio.net/post/a5d4c4d4.html"/>
-    <id>https://blog.ydstudio.net/post/a5d4c4d4.html</id>
+    <link href="https://ydstudios.gitee.io/post/a5d4c4d4.html"/>
+    <id>https://ydstudios.gitee.io/post/a5d4c4d4.html</id>
     <published>2020-01-14T22:17:18.000Z</published>
     <updated>2020-01-14T14:57:32.000Z</updated>
     
@@ -242,16 +242,16 @@
     
     
     
-      <category term="docker" scheme="https://blog.ydstudio.net/tags/docker/"/>
+      <category term="docker" scheme="https://ydstudios.gitee.io/tags/docker/"/>
     
-      <category term="docker-compose" scheme="https://blog.ydstudio.net/tags/docker-compose/"/>
+      <category term="docker-compose" scheme="https://ydstudios.gitee.io/tags/docker-compose/"/>
     
   </entry>
   
   <entry>
     <title>我常用的docker基本命令</title>
-    <link href="https://blog.ydstudio.net/post/c9b0a620.html"/>
-    <id>https://blog.ydstudio.net/post/c9b0a620.html</id>
+    <link href="https://ydstudios.gitee.io/post/c9b0a620.html"/>
+    <id>https://ydstudios.gitee.io/post/c9b0a620.html</id>
     <published>2020-01-13T22:00:51.000Z</published>
     <updated>2020-01-14T14:45:55.000Z</updated>
     
@@ -266,14 +266,14 @@
     
     
     
-      <category term="docker" scheme="https://blog.ydstudio.net/tags/docker/"/>
+      <category term="docker" scheme="https://ydstudios.gitee.io/tags/docker/"/>
     
   </entry>
   
   <entry>
     <title>以centos7镜像为基础构建一个jdk8和tomcat7的镜像</title>
-    <link href="https://blog.ydstudio.net/post/97b746d3.html"/>
-    <id>https://blog.ydstudio.net/post/97b746d3.html</id>
+    <link href="https://ydstudios.gitee.io/post/97b746d3.html"/>
+    <id>https://ydstudios.gitee.io/post/97b746d3.html</id>
     <published>2020-01-04T23:22:55.000Z</published>
     <updated>2020-01-05T03:14:41.000Z</updated>
     
@@ -290,16 +290,16 @@
     
     
     
-      <category term="linux" scheme="https://blog.ydstudio.net/tags/linux/"/>
+      <category term="linux" scheme="https://ydstudios.gitee.io/tags/linux/"/>
     
-      <category term="docker" scheme="https://blog.ydstudio.net/tags/docker/"/>
+      <category term="docker" scheme="https://ydstudios.gitee.io/tags/docker/"/>
     
   </entry>
   
   <entry>
     <title>SpringMvc使用@Async注解实现有返回值和无返回值的异步处理</title>
-    <link href="https://blog.ydstudio.net/post/e7e78673.html"/>
-    <id>https://blog.ydstudio.net/post/e7e78673.html</id>
+    <link href="https://ydstudios.gitee.io/post/e7e78673.html"/>
+    <id>https://ydstudios.gitee.io/post/e7e78673.html</id>
     <published>2020-01-03T23:12:21.000Z</published>
     <updated>2020-10-02T10:34:35.000Z</updated>
     
@@ -313,16 +313,16 @@
     
     
     
-      <category term="SpringMvc" scheme="https://blog.ydstudio.net/tags/SpringMvc/"/>
+      <category term="SpringMvc" scheme="https://ydstudios.gitee.io/tags/SpringMvc/"/>
     
-      <category term="Async" scheme="https://blog.ydstudio.net/tags/Async/"/>
+      <category term="Async" scheme="https://ydstudios.gitee.io/tags/Async/"/>
     
   </entry>
   
   <entry>
     <title>在CentOS7上使用yum安装Docker</title>
-    <link href="https://blog.ydstudio.net/post/ef24ce2b.html"/>
-    <id>https://blog.ydstudio.net/post/ef24ce2b.html</id>
+    <link href="https://ydstudios.gitee.io/post/ef24ce2b.html"/>
+    <id>https://ydstudios.gitee.io/post/ef24ce2b.html</id>
     <published>2019-12-23T22:30:18.000Z</published>
     <updated>2020-01-13T14:39:01.000Z</updated>
     
@@ -342,16 +342,16 @@
     
     
     
-      <category term="docker" scheme="https://blog.ydstudio.net/tags/docker/"/>
+      <category term="docker" scheme="https://ydstudios.gitee.io/tags/docker/"/>
     
-      <category term="centos" scheme="https://blog.ydstudio.net/tags/centos/"/>
+      <category term="centos" scheme="https://ydstudios.gitee.io/tags/centos/"/>
     
   </entry>
   
   <entry>
     <title>Mac下安装zookeeper</title>
-    <link href="https://blog.ydstudio.net/post/d97b6c63.html"/>
-    <id>https://blog.ydstudio.net/post/d97b6c63.html</id>
+    <link href="https://ydstudios.gitee.io/post/d97b6c63.html"/>
+    <id>https://ydstudios.gitee.io/post/d97b6c63.html</id>
     <published>2019-12-07T22:15:07.000Z</published>
     <updated>2019-12-15T15:50:49.000Z</updated>
     
@@ -365,16 +365,16 @@
     
     
     
-      <category term="zookeeper" scheme="https://blog.ydstudio.net/tags/zookeeper/"/>
+      <category term="zookeeper" scheme="https://ydstudios.gitee.io/tags/zookeeper/"/>
     
-      <category term="mac" scheme="https://blog.ydstudio.net/tags/mac/"/>
+      <category term="mac" scheme="https://ydstudios.gitee.io/tags/mac/"/>
     
   </entry>
   
   <entry>
     <title>Hello World</title>
-    <link href="https://blog.ydstudio.net/post/4a17b156.html"/>
-    <id>https://blog.ydstudio.net/post/4a17b156.html</id>
+    <link href="https://ydstudios.gitee.io/post/4a17b156.html"/>
+    <id>https://ydstudios.gitee.io/post/4a17b156.html</id>
     <published>2019-11-10T13:19:35.000Z</published>
     <updated>2019-12-09T15:03:26.000Z</updated>
     
@@ -392,8 +392,8 @@
   
   <entry>
     <title>解决nested exception is java.lang.IllegalArgumentException Could not resolve placeholder alipay.appId in string value  $ {alipay.appId}</title>
-    <link href="https://blog.ydstudio.net/post/cf36aee2.html"/>
-    <id>https://blog.ydstudio.net/post/cf36aee2.html</id>
+    <link href="https://ydstudios.gitee.io/post/cf36aee2.html"/>
+    <id>https://ydstudios.gitee.io/post/cf36aee2.html</id>
     <published>2019-09-18T23:52:05.000Z</published>
     <updated>2019-12-09T15:03:26.000Z</updated>
     
@@ -408,16 +408,16 @@
     
     
     
-      <category term="java" scheme="https://blog.ydstudio.net/tags/java/"/>
+      <category term="java" scheme="https://ydstudios.gitee.io/tags/java/"/>
     
-      <category term="spring" scheme="https://blog.ydstudio.net/tags/spring/"/>
+      <category term="spring" scheme="https://ydstudios.gitee.io/tags/spring/"/>
     
   </entry>
   
   <entry>
     <title>Java获取一天的最大时间23:59:59和最小时间00:00:00</title>
-    <link href="https://blog.ydstudio.net/post/1ef2d20f.html"/>
-    <id>https://blog.ydstudio.net/post/1ef2d20f.html</id>
+    <link href="https://ydstudios.gitee.io/post/1ef2d20f.html"/>
+    <id>https://ydstudios.gitee.io/post/1ef2d20f.html</id>
     <published>2019-09-04T23:49:24.000Z</published>
     <updated>2019-12-09T15:03:26.000Z</updated>
     
@@ -431,14 +431,14 @@
     
     
     
-      <category term="java" scheme="https://blog.ydstudio.net/tags/java/"/>
+      <category term="java" scheme="https://ydstudios.gitee.io/tags/java/"/>
     
   </entry>
   
   <entry>
     <title>IDEA下tomcat启动后 server乱码，Tomcat Catalina Log和Tomcat Localhost Log乱码问题的解决 </title>
-    <link href="https://blog.ydstudio.net/post/35c3eddf.html"/>
-    <id>https://blog.ydstudio.net/post/35c3eddf.html</id>
+    <link href="https://ydstudios.gitee.io/post/35c3eddf.html"/>
+    <id>https://ydstudios.gitee.io/post/35c3eddf.html</id>
     <published>2019-06-03T23:48:03.000Z</published>
     <updated>2019-12-09T15:03:26.000Z</updated>
     
@@ -454,16 +454,16 @@
     
     
     
-      <category term="tomcat" scheme="https://blog.ydstudio.net/tags/tomcat/"/>
+      <category term="tomcat" scheme="https://ydstudios.gitee.io/tags/tomcat/"/>
     
-      <category term="idea" scheme="https://blog.ydstudio.net/tags/idea/"/>
+      <category term="idea" scheme="https://ydstudios.gitee.io/tags/idea/"/>
     
   </entry>
   
   <entry>
     <title>JavaScript如何面向对象</title>
-    <link href="https://blog.ydstudio.net/post/d7445999.html"/>
-    <id>https://blog.ydstudio.net/post/d7445999.html</id>
+    <link href="https://ydstudios.gitee.io/post/d7445999.html"/>
+    <id>https://ydstudios.gitee.io/post/d7445999.html</id>
     <published>2019-05-23T23:47:08.000Z</published>
     <updated>2019-12-09T15:03:26.000Z</updated>
     
@@ -477,9 +477,9 @@
     
     
     
-      <category term="JavaScript" scheme="https://blog.ydstudio.net/tags/JavaScript/"/>
+      <category term="JavaScript" scheme="https://ydstudios.gitee.io/tags/JavaScript/"/>
     
-      <category term="oop" scheme="https://blog.ydstudio.net/tags/oop/"/>
+      <category term="oop" scheme="https://ydstudios.gitee.io/tags/oop/"/>
     
   </entry>
   
