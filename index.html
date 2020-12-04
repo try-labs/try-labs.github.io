@@ -71,6 +71,95 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-设计模式学习之模板和策略模式实战" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/c14af19a.html" class="article-date">
+  <time datetime="2020-12-04T21:41:34.000Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/c14af19a.html">设计模式学习之模板和策略模式实战</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>前面文章由抽奖活动赠送不同的奖励从而引出了策略模式，定义一个策略接口，不同的奖励发放实现不同的策略。即使后续新增加奖励种类，只要重新实现一个策略即可，符合了设计模式中的<em>开闭原则-对扩展开放对修改关闭</em>。我在一次订单活动功能开发中使用到了策略模式，在开发的过程中发现，订单符合活动条件的判断、发放奖励给用户，可以提升到父类实现，具体的条件判断逻辑可以延迟到子类去实现，从而引出本篇文章的主题：模板模式。</p>
+<h6 id="模板模式"><a href="#模板模式" class="headerlink" title="模板模式"></a>模板模式</h6><p>在模板模式（Template Pattern）中，一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行，这种类型的设计模式属于行为型模式。模板模式中涉及到在父类实现算法骨架，具体步骤在子类实现，所以必须要有抽象类（Java8中的接口的 default 方法貌似也可以实现）。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/c14af19a.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/c14af19a.html" data-id="ckiaeprhb0067niy199fzfpj9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF%E6%A8%A1%E5%BC%8F/" rel="tag">模板模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/" rel="tag">策略模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-IDEA-隐藏-idea与-iml文件" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/c41bdbee.html" class="article-date">
+  <time datetime="2020-12-04T20:56:58.000Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/c41bdbee.html">IDEA 隐藏.idea与.iml文件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在 IDEA 中会自动帮我们创建.idea 和.iml 文件，其实这两个文件对我们没啥用的，但是也不能删掉(项目需要而且删了只好还会自动创建)，那我们只好想法子给他隐藏掉。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/c41bdbee.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/c41bdbee.html" data-id="ckiaeprdc000kniy1hwp70i0n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/idea/" rel="tag">idea</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" rel="tag">开发工具</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-设计模式学习之策略模式" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/post/170b3d6a.html" class="article-date">
@@ -103,7 +192,7 @@
     </div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/170b3d6a.html" data-id="ckgp7lpgz006453y18gfjfu2h" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/170b3d6a.html" data-id="ckiaeprhc0069niy1elkie7s2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/" rel="tag">策略模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
@@ -147,7 +236,7 @@
     </div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/459042a5.html" data-id="ckgp7lpfp004c53y17yb37c6a" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/459042a5.html" data-id="ckiaeprg0004aniy10l8s84pw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RocketMQ/" rel="tag">RocketMQ</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8F%8C%E4%B8%BB%E5%8F%8C%E4%BB%8E%E9%9B%86%E7%BE%A4/" rel="tag">双主双从集群</a></li></ul>
@@ -191,7 +280,7 @@
     </div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/175ad151.html" data-id="ckgp7lpcx000v53y11wpxhm0z" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/175ad151.html" data-id="ckiaeprdk000uniy1cnex12gx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%B2%BE%E5%BA%A6/" rel="tag">数据精度</a></li></ul>
@@ -235,7 +324,7 @@
     </div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/665bcc51.html" data-id="ckgp7lpgv005z53y1b69h79fw" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/665bcc51.html" data-id="ckiaeprh7005zniy11lcqcx0o" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%BD%E8%B1%A1%E7%B1%BB/" rel="tag">抽象类</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8E%A5%E5%8F%A3/" rel="tag">接口</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag">编程</a></li></ul>
@@ -279,7 +368,7 @@
     </div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/8ec2718b.html" data-id="ckgp7lph6006c53y1atntc30e" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/8ec2718b.html" data-id="ckiaeprhe006cniy16k6r459j" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F/" rel="tag">责任链模式</a></li></ul>
@@ -323,7 +412,7 @@
     </div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/d1d9a9.html" data-id="ckgp7lpec002k53y1eeuu6qel" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/d1d9a9.html" data-id="ckiaepreu002iniy100xe53h9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bin-log/" rel="tag">bin-log</a></li></ul>
@@ -367,7 +456,7 @@
     </div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/da13f861.html" data-id="ckgp7lpe9002f53y1f3ry7eat" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/da13f861.html" data-id="ckiaepreq002bniy1hnsyax21" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/relay-log/" rel="tag">relay-log</a></li></ul>
@@ -411,98 +500,10 @@
     </div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/29afd8a9.html" data-id="ckgp7lpgf005d53y17dhfass4" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/29afd8a9.html" data-id="ckiaeprgt005bniy11a1h1od2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MAC/" rel="tag">MAC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iPhone/" rel="tag">iPhone</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%95%E5%B1%8F/" rel="tag">投屏</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-JVM配置参数的类型" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/post/ea8be9c5.html" class="article-date">
-  <time datetime="2020-02-06T15:55:13.000Z" itemprop="datePublished">2020-02-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/post/ea8be9c5.html">JVM配置参数的类型</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h5 id="参数名称的说明"><a href="#参数名称的说明" class="headerlink" title="参数名称的说明"></a>参数名称的说明</h5><p>JVM配置参数分别用于跟踪监控JVM状态，分配堆内存以及分配栈内存。按照类型分为三类标准参数、非标准参数和非稳定参数</p>
-        
-          <p class="article-more-link">
-            <a href="/post/ea8be9c5.html#more">Read More</a>
-          </p>
-        
-      
-    </div>
-         
-    <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/ea8be9c5.html" data-id="ckgp7lpcs000q53y15mz07x7c" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jvm/" rel="tag">Jvm</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Spring配置文件中的classpath-和classpath-的区别" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/post/38b6491c.html" class="article-date">
-  <time datetime="2020-01-28T22:46:48.000Z" itemprop="datePublished">2020-01-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/post/38b6491c.html">Spring配置文件中的classpath:和classpath*:的区别</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p> classpath是spring的写法，classpath是指WEB-INF文件夹下的classes目录，对应源代码src目录，用于存放从src中拷贝过去的各种配置文件，以及编译过后的class文件。Spring可以通过指定classpath*:与classpath:前缀加上路径的方式从classpath加载配置文件。</p>
-        
-          <p class="article-more-link">
-            <a href="/post/38b6491c.html#more">Read More</a>
-          </p>
-        
-      
-    </div>
-         
-    <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/38b6491c.html" data-id="ckgp7lpfl004553y12lxl3d6s" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/" rel="tag">spring</a></li></ul>
 
     </footer>
   </div>
