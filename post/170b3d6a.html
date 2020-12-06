@@ -16,7 +16,7 @@
 <meta property="og:description" content="策略模式（Strategy Pattern）我觉得在23中常见的设计模式里面是一种比较简单的，使用场景也很多。在策略模式中，一个类的行为或其算法可以在运行时更改。这种类型的设计模式属于行为型模式。在策略模式中，我们创建表示各种策略的对象和一个行为随着策略对象改变而改变的 context 对象,策略对象改变 context 对象的执行算法。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201025114859.png">
-<meta property="og:updated_time" content="2020-10-25T14:30:13.000Z">
+<meta property="og:updated_time" content="2020-12-06T14:04:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201025114859.png">
   
@@ -122,7 +122,9 @@
 <li>一个系统需要动态地在几种算法中选择一种。 </li>
 <li>如果一个对象有很多的行为，如果不用恰当的模式，这些行为就只好使用多重的条件选择语句来实现。</li>
 </ul>
-<p><strong>注意事项：</strong> 如果一个系统的策略多于四个，就需要考虑使用混合模式，解决策略类膨胀的问题。</p>
+<blockquote>
+<p>注意： 如果一个系统的策略多于四个，就需要考虑使用混合模式，解决策略类膨胀的问题。</p>
+</blockquote>
 <h4 id="业务场景"><a href="#业务场景" class="headerlink" title="业务场景"></a>业务场景</h4><p>以抽奖活动发奖为例，奖品多种多样，可能是现金奖，话费奖品，实物奖等等，每种奖品的发放方式都不一样，比如现金是直接转账，话费奖品是调用运营商提供接口发放，实物奖需要人工快递寄送。在未采用策略模式之前，少不了使用 if…else…来判断发放，当增加一种奖品类型时，就需要增加 if 判断。而采取策略模式之后，只需实现一个策略类即可，对原来的逻辑无需做任何改动，也不会影响其他策略的正常逻辑。</p>
 <h4 id="UML图"><a href="#UML图" class="headerlink" title="UML图"></a>UML图</h4><p><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20201025114859.png" alt="策略模式UML图"></p>
 <h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><p>客户端需要判断要使用哪一个具体的策略类，若还是按照传统的方法 if…else…来判断策略模式就没有意义了，因此策略模式一般都是结合其他模式共同使用。本文中策略类使用 Byte 来标识，也可以在策略类中增加抽象方法，返回值为枚举类型。</p>
@@ -179,7 +181,7 @@
     <strong>作者:  </strong>Sam</a>
     </li>
     <li><span>发布时间: </span>2020-10-24 11:58:02</li>
-    <li><span>最后更新: </span>2020-10-25 22:30:13</li>
+    <li><span>最后更新: </span>2020-12-06 22:04:33</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
     <a href="/post/170b3d6a.html" target="_blank" title="设计模式学习之策略模式">https://ydstudios.gitee.io/post/170b3d6a.html</a>
@@ -193,7 +195,7 @@
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/170b3d6a.html" data-id="ckiaeprhc0069niy1elkie7s2" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/170b3d6a.html" data-id="ckid5i5v1006dy5y1fd4e2npa" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/" rel="tag">策略模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
