@@ -8,7 +8,7 @@
   <title>设计模式学习之模板和策略模式实战 | Sam的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="前面文章由抽奖活动赠送不同的奖励从而引出了策略模式，定义一个策略接口，不同的奖励发放实现不同的策略。即使后续新增加奖励种类，只要重新实现一个策略即可，符合了设计模式中的开闭原则-对扩展开放对修改关闭。我在一次订单活动功能开发中使用到了策略模式，在开发的过程中发现，订单符合活动条件的判断、发放奖励给用户，可以提升到父类实现，具体的条件判断逻辑可以延迟到子类去实现，从而引出本篇文章的主题：模板模式。">
-<meta name="keywords" content="java,设计模式,策略模式,模板模式">
+<meta name="keywords" content="java,设计模式,模板模式,策略模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式学习之模板和策略模式实战">
 <meta property="og:url" content="https:&#x2F;&#x2F;ydstudios.gitee.io&#x2F;post&#x2F;c14af19a.html">
@@ -16,7 +16,8 @@
 <meta property="og:description" content="前面文章由抽奖活动赠送不同的奖励从而引出了策略模式，定义一个策略接口，不同的奖励发放实现不同的策略。即使后续新增加奖励种类，只要重新实现一个策略即可，符合了设计模式中的开闭原则-对扩展开放对修改关闭。我在一次订单活动功能开发中使用到了策略模式，在开发的过程中发现，订单符合活动条件的判断、发放奖励给用户，可以提升到父类实现，具体的条件判断逻辑可以延迟到子类去实现，从而引出本篇文章的主题：模板模式。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201204224522.png">
-<meta property="og:updated_time" content="2020-12-06T05:13:05.000Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201207220104.png">
+<meta property="og:updated_time" content="2020-12-07T14:02:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201204224522.png">
   
@@ -127,6 +128,7 @@
 </blockquote>
 <h6 id="本文示例UML图"><a href="#本文示例UML图" class="headerlink" title="本文示例UML图"></a>本文示例UML图</h6><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20201204224522.png" alt="模板、策略模式 UML 图" style="zoom:40%;" />
 
+<h6 id="代码结构图"><a href="#代码结构图" class="headerlink" title="代码结构图"></a>代码结构图</h6><p><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20201207220104.png" alt="代码结构图"></p>
 <h6 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h6><p>1、策略接口，定义了一个活动策略需要实现的方法</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.ydstudio.flashsale.<span class="keyword">module</span>.pattern.service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.ydstudio.flashsale.common.Result;</span><br><span class="line"><span class="keyword">import</span> com.ydstudio.flashsale.<span class="keyword">module</span>.pattern.dto.ActiveOrderDto;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 活动接口</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Sam</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2020/11/26</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.7.3</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IActiveHandle</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回活动的类型</span></span><br><span class="line"><span class="comment">     * ActiveCategoryEnum 枚举</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">String <span class="title">getCategory</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回活动的详细类型</span></span><br><span class="line"><span class="comment">     * ActiveCategoryDetailEnum 枚举</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">String <span class="title">getCategoryDetail</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 订单检查</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> temporaryOrderDto 临时订单</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> Result</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">Result <span class="title">checkOrder</span><span class="params">(ActiveOrderDto temporaryOrderDto)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -158,7 +160,7 @@
     <strong>作者:  </strong>Sam</a>
     </li>
     <li><span>发布时间: </span>2020-12-04 21:41:34</li>
-    <li><span>最后更新: </span>2020-12-06 13:13:05</li>
+    <li><span>最后更新: </span>2020-12-07 22:02:17</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
     <a href="/post/c14af19a.html" target="_blank" title="设计模式学习之模板和策略模式实战">https://ydstudios.gitee.io/post/c14af19a.html</a>
@@ -172,7 +174,7 @@
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/c14af19a.html" data-id="ckid7ebd4006f8ty1do151mvo" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/c14af19a.html" data-id="ckiemk9qu0063pvy1eucr1l9e" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF%E6%A8%A1%E5%BC%8F/" rel="tag">模板模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/" rel="tag">策略模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
