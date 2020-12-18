@@ -7,13 +7,13 @@
   
   <title>MySQL的IGNORE关键字在避免重复插入记录时存在的问题及最佳实践 | Sam的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="来现在的公司已经1年8个月，这个说长不长说短不短的时间里，发生了很多事情。总想着对目前的工作生活状态和之前几年的 IT 生涯做一下总结，每次想了很多但是真是要去写的话，似乎又没啥头绪！于是我知道我又再一次的对未来的要走的路失去了方向，仿佛又回到了大三那一年每日恍惚的时光。还是那首老歌《水手》唱的好”总是拿着微不足道的成就来骗自己，总是莫名其妙感到一阵的空虚”，感觉这个就是我目前的生活状态，，我要真">
+  <meta name="description" content="我们在实际开发中总有这样的需求，表里的数据要保持唯一，所以我们开发中经常都是先查询这样的数据有没有，有的话跳过，没有的话再插入，然后在能表示数据记录唯一的列上加上唯一索引进行兜底。但是有的同学基本上也是这么做的，但是又稍微的做了一点其他的骚操作😄😄😄。">
 <meta name="keywords" content="mysql,ignore">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL的IGNORE关键字在避免重复插入记录时存在的问题及最佳实践">
 <meta property="og:url" content="https:&#x2F;&#x2F;ydstudios.gitee.io&#x2F;post&#x2F;cef7abb0.html">
 <meta property="og:site_name" content="Sam的个人博客">
-<meta property="og:description" content="来现在的公司已经1年8个月，这个说长不长说短不短的时间里，发生了很多事情。总想着对目前的工作生活状态和之前几年的 IT 生涯做一下总结，每次想了很多但是真是要去写的话，似乎又没啥头绪！于是我知道我又再一次的对未来的要走的路失去了方向，仿佛又回到了大三那一年每日恍惚的时光。还是那首老歌《水手》唱的好”总是拿着微不足道的成就来骗自己，总是莫名其妙感到一阵的空虚”，感觉这个就是我目前的生活状态，，我要真">
+<meta property="og:description" content="我们在实际开发中总有这样的需求，表里的数据要保持唯一，所以我们开发中经常都是先查询这样的数据有没有，有的话跳过，没有的话再插入，然后在能表示数据记录唯一的列上加上唯一索引进行兜底。但是有的同学基本上也是这么做的，但是又稍微的做了一点其他的骚操作😄😄😄。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201218232257.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201218232602.png">
@@ -21,7 +21,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201218233357.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201218233623.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201218233929.png">
-<meta property="og:updated_time" content="2020-12-18T15:49:13.000Z">
+<meta property="og:updated_time" content="2020-12-18T15:52:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201218232257.png">
   
@@ -100,9 +100,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>来现在的公司已经1年8个月，这个说长不长说短不短的时间里，发生了很多事情。总想着对目前的工作生活状态和之前几年的 IT 生涯做一下总结，每次想了很多但是真是要去写的话，似乎又没啥头绪！于是我知道我又再一次的对未来的要走的路失去了方向，仿佛又回到了大三那一年每日恍惚的时光。还是那首老歌《水手》唱的好”总是拿着微不足道的成就来骗自己，总是莫名其妙感到一阵的空虚”，感觉这个就是我目前的生活状态，，我要真正的好好想想了！</p>
-<p>我们在实际开发中总有这样的需求，表里的数据要保持唯一，所以我们开发中经常都是先查询这样的数据有没有，有的话跳过，没有的话再插入，然后在能表示数据记录唯一的列上加上唯一索引进行兜底。但是有的同学基本上也是这么做的，但是又稍微的做了一点其他的骚操作😄😄😄。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 当有重复记录就会忽略错误返回影响行数0</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">IGNORE</span> XXX</span><br></pre></td></tr></table></figure>
+        <p>我们在实际开发中总有这样的需求，表里的数据要保持唯一，所以我们开发中经常都是先查询这样的数据有没有，有的话跳过，没有的话再插入，然后在能表示数据记录唯一的列上加上唯一索引进行兜底。但是有的同学基本上也是这么做的，但是又稍微的做了一点其他的骚操作😄😄😄。</p>
+<a id="more"></a>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 😄😄😄 骚操作, 当有重复记录就会忽略错误返回影响行数0</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">IGNORE</span> tableName <span class="keyword">VALUES</span> ()</span><br></pre></td></tr></table></figure>
 
 <p>有的同学是这么想的，在高并发的情况下，先查询再插入的话是有并发的问题的，我直接在重复插入的时候屏蔽错误，用 insert 的返回影响行数来判断插入是否成功。这样的做法看上去感觉没啥问题，但是还是有很大的问题的。</p>
 <h6 id="语义上的不正确"><a href="#语义上的不正确" class="headerlink" title="语义上的不正确"></a>语义上的不正确</h6><p>你在表中定义了唯一索引，插入重复的记录直接屏蔽了错误，这就造成异常被吞掉了，导致功能有数据重复的问题就无法通过异常日志来发现。</p>
@@ -156,7 +157,7 @@
     <strong>作者:  </strong>Sam</a>
     </li>
     <li><span>发布时间: </span>2020-12-16 21:57:39</li>
-    <li><span>最后更新: </span>2020-12-18 23:49:13</li>
+    <li><span>最后更新: </span>2020-12-18 23:52:01</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
     <a href="/post/cef7abb0.html" target="_blank" title="MySQL的IGNORE关键字在避免重复插入记录时存在的问题及最佳实践">https://ydstudios.gitee.io/post/cef7abb0.html</a>
@@ -170,7 +171,7 @@
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/cef7abb0.html" data-id="ckiug7im3002m1fy16y7f15j0" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/cef7abb0.html" data-id="ckiugaygi002f2jy1a18e9re4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ignore/" rel="tag">ignore</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
