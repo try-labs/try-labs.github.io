@@ -5,16 +5,16 @@
   
 
   
-  <title>解决git默认不区分文件名大小写的问题 | Sam的个人博客</title>
+  <title>Redis的Geo实现附近的人功能 | Sam的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="当你创建一个文件后,叫 readme.md 写入内容后 提交到线上代码仓库.然后你在本地修改文件名为 Readme.md 接着你去提交,发现代码没有变化.">
+  <meta name="description" content="一个程序员的成长记录">
 <meta property="og:type" content="article">
-<meta property="og:title" content="解决git默认不区分文件名大小写的问题">
-<meta property="og:url" content="https:&#x2F;&#x2F;ydstudios.gitee.io&#x2F;post&#x2F;8598d574.html">
+<meta property="og:title" content="Redis的Geo实现附近的人功能">
+<meta property="og:url" content="https:&#x2F;&#x2F;ydstudios.gitee.io&#x2F;post&#x2F;3c363844.html">
 <meta property="og:site_name" content="Sam的个人博客">
-<meta property="og:description" content="当你创建一个文件后,叫 readme.md 写入内容后 提交到线上代码仓库.然后你在本地修改文件名为 Readme.md 接着你去提交,发现代码没有变化.">
+<meta property="og:description" content="一个程序员的成长记录">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-09T15:03:26.000Z">
+<meta property="og:updated_time" content="2020-12-08T15:19:27.000Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
@@ -70,10 +70,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-解决git默认不区分文件名大小写的问题" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Redis的Geo实现附近的人功能" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/post/8598d574.html" class="article-date">
-  <time datetime="2017-11-13T22:46:50.000Z" itemprop="datePublished">2017-11-13</time>
+    <a href="/post/3c363844.html" class="article-date">
+  <time datetime="2020-12-08T23:19:27.000Z" itemprop="datePublished">2020-12-08</time>
 </a>
     
   </div>
@@ -84,7 +84,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      解决git默认不区分文件名大小写的问题
+      Redis的Geo实现附近的人功能
     </h1>
   
 
@@ -92,20 +92,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>当你创建一个文件后,叫 readme.md 写入内容后 提交到线上代码仓库.<br>然后你在本地修改文件名为 Readme.md 接着你去提交,发现代码没有变化.</p>
-<a id="more"></a>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
-<p>你会无任何提示信息,其实 git 默认对于文件名大小写是不敏感的,所以上面你修改了首字母大写,但是git 并没有发现代码任何改动.那么如何才能让 git 识别文件名大小写变化.</p>
-<p>一  配置git 使其对文件名大小写敏感</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config core.ignorecase false</span><br></pre></td></tr></table></figure>
-<p>二 从git 本地仓库删除此文件,然后添加再提交<br>(1) 删除</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm readme.md</span><br></pre></td></tr></table></figure>
-<p>(2) 重新添加</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add Readme.md</span><br></pre></td></tr></table></figure>
-<p>(3)提交</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m 'Readme.md'</span><br></pre></td></tr></table></figure>
-<p>这样git不区分文件名大小写的问题就解决了！</p>
-
+        
       
     </div>
          
@@ -114,11 +101,11 @@
     <li class="post-copyright-author">
     <strong>作者:  </strong>Sam</a>
     </li>
-    <li><span>发布时间: </span>2017-11-13 22:46:50</li>
-    <li><span>最后更新: </span>2019-12-09 23:03:26</li>
+    <li><span>发布时间: </span>2020-12-08 23:19:27</li>
+    <li><span>最后更新: </span>2020-12-08 23:19:27</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
-    <a href="/post/8598d574.html" target="_blank" title="解决git默认不区分文件名大小写的问题">https://ydstudios.gitee.io/post/8598d574.html</a>
+    <a href="/post/3c363844.html" target="_blank" title="Redis的Geo实现附近的人功能">https://ydstudios.gitee.io/post/3c363844.html</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
@@ -129,7 +116,7 @@
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/8598d574.html" data-id="ckiug6nyh00650jy18ndu3i34" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/3c363844.html" data-id="ckiu9jvy7003jj3y15w82a73h" class="article-share-link">Share</a>
       
       
     </footer>
@@ -138,19 +125,10 @@
     
 <nav id="article-nav">
   
-    <a href="/post/fa0692b8.html" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer >> </strong>
-      <div class="article-nav-title">
-        
-          PHP目前比较常见的五大运行模式
-        
-      </div>
-    </a>
   
-  
-    <a href="/post/adb014f8.html" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/post/3f85b44a.html" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older << </strong>
-      <div class="article-nav-title">隐藏Nginx或Apache以及PHP的版本号</div>
+      <div class="article-nav-title">Redis位图BitMap实现用户签到功能</div>
     </a>
   
 </nav>
