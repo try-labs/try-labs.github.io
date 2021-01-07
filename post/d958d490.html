@@ -7,16 +7,16 @@
   
   <title>Lua脚本在秒杀场景下的使用 | Sam的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在秒杀这种高并发、大流量的场景下，利用数据库进行库存扣减、数据查询这种想法就不要考虑了。你要是有这种想法，劝你早点放弃，P0事故一定在等着你。之前用Lua脚本实现秒杀场景下的库存扣减感觉很不错，语言的特性保证了操作的原子性，配合redis秒杀效果杠杠的！Redis 脚本使用 Lua 解释器来执行脚本，Redis 2.6 版本通过内嵌支持 Lua 环境。">
+  <meta name="description" content="在秒杀这种高并发、大流量的场景下，利用数据库进行库存扣减、数据查询这种想法就不要考虑了。你要是有这种想法，劝你早点放弃，P0事故一定在等着你。之前用Lua脚本实现秒杀场景下的库存扣减感觉很不错，配合Redis秒杀效果杠杠的！Redis 2.6 版本通过内嵌支持 Lua 环境，会单线程原子性执行 Lua 脚本，保证 Lua 脚本在处理的过程中不会被任意其它请求打断。">
 <meta name="keywords" content="redis,lua,秒杀">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Lua脚本在秒杀场景下的使用">
 <meta property="og:url" content="https:&#x2F;&#x2F;ydstudios.gitee.io&#x2F;post&#x2F;d958d490.html">
 <meta property="og:site_name" content="Sam的个人博客">
-<meta property="og:description" content="在秒杀这种高并发、大流量的场景下，利用数据库进行库存扣减、数据查询这种想法就不要考虑了。你要是有这种想法，劝你早点放弃，P0事故一定在等着你。之前用Lua脚本实现秒杀场景下的库存扣减感觉很不错，语言的特性保证了操作的原子性，配合redis秒杀效果杠杠的！Redis 脚本使用 Lua 解释器来执行脚本，Redis 2.6 版本通过内嵌支持 Lua 环境。">
+<meta property="og:description" content="在秒杀这种高并发、大流量的场景下，利用数据库进行库存扣减、数据查询这种想法就不要考虑了。你要是有这种想法，劝你早点放弃，P0事故一定在等着你。之前用Lua脚本实现秒杀场景下的库存扣减感觉很不错，配合Redis秒杀效果杠杠的！Redis 2.6 版本通过内嵌支持 Lua 环境，会单线程原子性执行 Lua 脚本，保证 Lua 脚本在处理的过程中不会被任意其它请求打断。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201224234757.png">
-<meta property="og:updated_time" content="2020-12-24T15:57:55.000Z">
+<meta property="og:updated_time" content="2021-01-06T13:07:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201224234757.png">
   
@@ -95,10 +95,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在秒杀这种高并发、大流量的场景下，利用数据库进行库存扣减、数据查询这种想法就不要考虑了。你要是有这种想法，劝你早点放弃，P0事故一定在等着你。之前用Lua脚本实现秒杀场景下的库存扣减感觉很不错，语言的特性保证了操作的原子性，配合redis秒杀效果杠杠的！Redis 脚本使用 Lua 解释器来执行脚本，Redis 2.6 版本通过内嵌支持 Lua 环境。</p>
+        <p>在秒杀这种高并发、大流量的场景下，利用数据库进行库存扣减、数据查询这种想法就不要考虑了。你要是有这种想法，劝你早点放弃，P0事故一定在等着你。之前用Lua脚本实现秒杀场景下的库存扣减感觉很不错，配合Redis秒杀效果杠杠的！Redis 2.6 版本通过内嵌支持 Lua 环境，会单线程原子性执行 Lua 脚本，保证 Lua 脚本在处理的过程中不会被任意其它请求打断。</p>
 <a id="more"></a>
 
-<p>先说一下大概的情况，在上秒杀的商品的时候，就直接将产品的库存、用户每人的限购的数量等信息直接用Hash数据类型保存在redis的键goods_商品ID中，不设置缓存有效时间。用户的购买记录用zset保存purchase_goods_商品id中，用商品的ID作为key，用户唯一标识为member,购买的数量为score。相关的命令如下：</p>
+<p>先说一下大概的情况，在上秒杀的商品的时候，就直接将产品的库存、用户每人的限购的数量等信息直接用Hash数据类型保存在Redis的键goods_商品ID中，不设置缓存有效时间。用户的购买记录用zset保存purchase_goods_商品id中，用商品的ID作为key，用户唯一标识为member,购买的数量为score。相关的命令如下：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 初始化一些秒杀产品</span></span><br><span class="line">hmset seckill:goods:1000 goodsId 1000 name 戴森吸尘器V10Motorhead入门款,性价比之选 stock 10 purchaseLimit 1   price 999.99 startSaleTime 1614137304000 endSaleTime 1614140904000  coverImage https://dss2.bdstatic.com/8_V1bjqh_Q23odCf/pacific/1955446237.png</span><br><span class="line"></span><br><span class="line">hmset seckill:goods:2000 goodsId 2000 name 戴森无叶风扇 stock 15 purchaseLimit 1  price 1999.99 startSaleTime 1640406504000 endSaleTime 1614140904000  coverImage https://dss2.bdstatic.com/8_V1bjqh_Q23odCf/pacific/1957729018.png</span><br><span class="line"></span><br><span class="line">hmset seckill:goods:3000 goodsId 3000 name 戴森智能照明灯 stock 32 purchaseLimit 1 price 299.99 startSaleTime 1640406504000 endSaleTime 1614140904000  coverImage https://dss2.bdstatic.com/8_V1bjqh_Q23odCf/pacific/1947896752.jpg</span><br><span class="line"></span><br><span class="line">hmset seckill:goods:4000 goodsId 4000 name 戴森AM10除菌加湿器 stock 15  purchaseLimit 1   price 1299.99 startSaleTime 1640752104000 endSaleTime 1610166504000 coverImage https://dss2.bdstatic.com/8_V1bjqh_Q23odCf/pacific/1947896752.jpg</span><br><span class="line"></span><br><span class="line">hmset seckill:goods:5000 goodsId 5000 name 苹果AirPodsMax  stock 13 purchaseLimit 1   price 2099.99 startSaleTime 1640752104000 endSaleTime 1610166504000 coverImage  https://dss2.bdstatic.com/8_V1bjqh_Q23odCf/pacific/1983533493.jpg</span><br></pre></td></tr></table></figure>
 
 <p>具体的Lua脚本编写过程比较简单，稍微熟悉一下就能看懂了，具体内容如下（临时重写的没有优化，凑合着看吧）：</p>
@@ -120,13 +120,13 @@
 </li>
 <li><p>/Users/sam/Downloads/seckill.lua 是脚本的位置，后面跟着是传给Lua脚本的参数。</p>
 </li>
-<li><p>逗号”,”前的purchase_goods_3000 seckill:goods:1000 是要操作的键，可以在脚本中用KEYS[1]获取，逗号”,”后面的202和1是参数，在脚本中能够使用ARGV[1]和ARGV[2]获得。</p>
+<li><p>逗号”,”前的purchase_goods_3000 seckill:goods:1000 是要操作的键，可以在脚本中用KEYS[1]、KEYS[2]获取，逗号”,”后面的202和1是参数，在脚本中能够使用ARGV[1]和ARGV[2]获得。</p>
 </li>
 </ul>
 <blockquote>
 <p>注意”,”逗号两边的空格不能省略，否则会出错</p>
 </blockquote>
-<p>在redis中调用Lua脚本，也是可以调试的。redis 从 v3.2.0 开始支持 lua debugger，可以加断点、print 变量信息、展示正在执行的代码。可以在命令中添加–ldb进行调试，这个参数是开启 lua dubegger 的意思，这个模式下 redis 会 fork 一个进程进入隔离环境，不会影响 redis 正常提供服务，但调试期间，原始 redis 执行命令、脚本的结果也不会体现到 fork 之后的隔离环境之中。因此呢，还有另外一种调试模式 –ldb-sync-mode，也就是前面提到的同步模式，这个模式下，会阻塞 redis 上所有的命令、脚本，直到脚本退出，完全模拟了正式环境使用时候的情况，使用的时候务必注意这点。</p>
+<p>在Redis中调用Lua脚本，也是可以调试的。Redis 从 v3.2.0 开始支持 Lua debugger，可以加断点、print 变量信息、展示正在执行的代码。可以在命令中添加–ldb进行调试，这个参数是开启 Lua dubegger 的意思，这个模式下Redis会 fork 一个进程进入隔离环境，不会影响Redis正常提供服务，但调试期间，原始 redis 执行命令、脚本的结果也不会体现到 fork 之后的隔离环境之中。因此呢，还有另外一种调试模式 –ldb-sync-mode，也就是前面提到的同步模式，这个模式下，会阻塞 redis 上所有的命令、脚本，直到脚本退出，完全模拟了正式环境使用时候的情况，使用的时候务必注意这点。</p>
 <p>添加和删除断点很简单，只需使用<code>b 1 2 3 4</code>在第1,2,3,4行添加<code>b 0</code>断点。该命令将删除所有断点。可以使用as参数删除选定的断点，即我们要删除的断点所在的行，但前缀为减号。例如<code>b -3</code>，从第3行中删除断点。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sam-Mac:Downloads Sam$ rediscli --ldb --eval  /Users/sam/Downloads/seckill.lua  purchase_goods_3000 seckill:goods:1000 , 202 1</span><br></pre></td></tr></table></figure>
 
@@ -142,7 +142,7 @@
     <strong>作者:  </strong>Sam</a>
     </li>
     <li><span>发布时间: </span>2020-12-24 22:40:10</li>
-    <li><span>最后更新: </span>2020-12-24 23:57:55</li>
+    <li><span>最后更新: </span>2021-01-06 21:07:07</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
     <a href="/post/d958d490.html" target="_blank" title="Lua脚本在秒杀场景下的使用">https://ydstudios.gitee.io/post/d958d490.html</a>
@@ -156,7 +156,7 @@
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/d958d490.html" data-id="ckj3148k70023hzy14bf215cs" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/d958d490.html" data-id="ckjmzsymc0025dly1e5pg2tad" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lua/" rel="tag">lua</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%A7%92%E6%9D%80/" rel="tag">秒杀</a></li></ul>
@@ -166,6 +166,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/post/b7145215.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          巧用二进制表示不同的状态
+        
+      </div>
+    </a>
   
   
     <a href="/post/cef7abb0.html" id="article-nav-older" class="article-nav-link-wrap">
@@ -185,7 +194,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2020 Sam<br>
+      &copy; 2021 Sam<br>
       <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
       <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
     </div>

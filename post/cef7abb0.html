@@ -21,7 +21,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201218233357.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201218233623.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201218233929.png">
-<meta property="og:updated_time" content="2020-12-19T01:56:54.000Z">
+<meta property="og:updated_time" content="2021-01-06T13:30:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20201218232257.png">
   
@@ -107,7 +107,7 @@
 
 <p>有的同学是这么想的，在高并发的情况下，先查询再插入的话是有并发的问题的，我直接在重复插入的时候屏蔽错误，不用捕获或者抛出异常，直接用 insert 的返回影响行数来判断插入是否成功。这样的做法看上去感觉没啥问题，其实还是有很大的问题的。</p>
 <h6 id="语义上的不正确"><a href="#语义上的不正确" class="headerlink" title="语义上的不正确"></a>语义上的不正确</h6><p>你在表中定义了唯一索引，插入重复的记录直接屏蔽了错误，这就造成异常被吞掉了，导致功能有数据重复的bug就无法通过异常日志来定位。</p>
-<h6 id="导致MySQL-主从数据不一致"><a href="#导致MySQL-主从数据不一致" class="headerlink" title="导致MySQL 主从数据不一致"></a>导致MySQL 主从数据不一致</h6><p>在说这个IGNORE是如何造成 MySQL 主从数据不一致的原因之前，我们先说说 MySQL 中的一个作为开发很少听说的一个表级锁：<strong>AUTO-INC锁</strong>（即自增锁）。</p>
+<h6 id="破坏MySQL主从的数据一致性"><a href="#破坏MySQL主从的数据一致性" class="headerlink" title="破坏MySQL主从的数据一致性"></a>破坏MySQL主从的数据一致性</h6><p>在说这个IGNORE是如何造成 MySQL 主从数据不一致的原因之前，我们先说说 MySQL 中的一个作为开发很少听说的一个表级锁：<strong>AUTO-INC锁</strong>（即自增锁）。</p>
 <p>在使用 MySQL 的过程中，我们可以为表的某一列添加 AUTO_INCREMENT属性，在插入记录时该列可以不指定，MySQL 会自动为该列赋予一个递增的值。MySQL 自动给AUTO_INCREMENT修饰的列进行递增赋值的实现方式主要有以下两个：</p>
 <ul>
 <li><p>采用 AUTO_INC锁，在执行插入语句时就加一个表级别的AUTO_INC锁，然后为每条待插入的记录分配递增值。在语句执行结束后，再把AUTO_INC锁释放。所以在一个事务持有AUTO_INC锁的过程中，其他插入语句都要阻塞，从而保证一个语句分配的递增值是连续的。</p>
@@ -157,7 +157,7 @@
     <strong>作者:  </strong>Sam</a>
     </li>
     <li><span>发布时间: </span>2020-12-16 21:57:39</li>
-    <li><span>最后更新: </span>2020-12-19 09:56:54</li>
+    <li><span>最后更新: </span>2021-01-06 21:30:50</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
     <a href="/post/cef7abb0.html" target="_blank" title="MySQL的IGNORE关键字在避免重复插入记录时存在的问题及最佳实践">https://ydstudios.gitee.io/post/cef7abb0.html</a>
@@ -171,7 +171,7 @@
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/cef7abb0.html" data-id="ckj3148ks002nhzy1g3qc6tfw" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/cef7abb0.html" data-id="ckjmzsyms002pdly16o2v10wh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ignore/" rel="tag">ignore</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
@@ -209,7 +209,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2020 Sam<br>
+      &copy; 2021 Sam<br>
       <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
       <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
     </div>
