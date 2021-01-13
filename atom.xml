@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://ydstudios.gitee.io/"/>
-  <updated>2021-01-07T15:21:55.000Z</updated>
+  <updated>2021-01-13T14:41:10.000Z</updated>
   <id>https://ydstudios.gitee.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2020年的年终小结</title>
+    <link href="https://ydstudios.gitee.io/post/b4e52eb3.html"/>
+    <id>https://ydstudios.gitee.io/post/b4e52eb3.html</id>
+    <published>2021-01-11T20:06:57.000Z</published>
+    <updated>2021-01-13T14:41:10.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>2020年真的是一个神奇年度，这一年作为吃瓜群众的我，见到了太多牛鬼蛇神。</p><a id="more"></a><h5 id="周边环境的不平凡"><a href="#周边环境的不平凡" class="headerlink" title="周边环境的不平凡"></a>周边环境的不平凡</h5><p>新冠疫情席卷全球，中国政府的封闭管理效果显著，生产活动得到了有序恢复。6月16日在加勒万河谷地区中印发生摩擦事件，印军被威武的解放军暴揍后死亡20人。老美的经济波动，股市破纪录的四次熔断，川建国的美国总统之旅在11月结束。北京时间12月17日1时59分，嫦娥五号返回器在内蒙古四子王旗成功着陆，标志着我国首次地外天体采样返回任务圆满完成。</p><p><strong>国内疫情概览</strong><br><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210111215555.png" alt="国内疫情概览" style="zoom:50%;" /></p><p><strong>国外疫情概览</strong></p><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210111215635.png" alt="国外疫情概览" style="zoom:50%;" /><h5 id="个人生活"><a href="#个人生活" class="headerlink" title="个人生活"></a>个人生活</h5><p>趁着国庆放假和女朋友去了黄山市旅游，爬了莲花峰、去了大峡谷还吃了臭鳜鱼。黄山的风景真是不错，山峰陡峭、景色秀丽。因为想看看黄山的日出，所以我们在山上住了一晚。第二天早上我们急急忙忙的起床，穿上酒店里面厚厚大大棉衣，外面下着小雨、刮着冷风还有大雾，自然也就没有看到日出。听宾馆的服务人员说山上365天有360天都在下雨，你要是能看到日出，证明你的运气真是爆棚！<br><strong>莲花峰拍照留念</strong><br><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210113221351.png" alt="莲花峰拍照留念" style="zoom:50%;" /></p><h5 id="工作"><a href="#工作" class="headerlink" title="工作"></a>工作</h5><p>在2020年的最后几天和几位大佬聊了聊，发现大佬就是大佬，不管是在技术上还是在思想上都远远超过我。大佬有句话关于系统设计的话，我甚是赞同，话的内容大致如下：</p><blockquote><p> 业务的诉求转化成产品的需求，产品的需求转化成技术的要求，最终转换成系统的能力。</p></blockquote><p>一句话就说出了系统设计的过程和目的，言简意赅呀！谈话中大佬还指出了我的一些问题，让我以后多多关注一下系统设计，要想法子去提高自己的核心竞争力。我事后也想了想，我在知识总结、系统设计和语言组织能力上都有不足，新的一年要注意这几个方面的锻炼。知识总结这方面，我决定后面多多总结，把知识串联起来，多输出一些博客。语言组织能力我想我平时多注意一下，然后适当的锻炼锻炼后面应该会渐渐变好。系统设计能力这方面的话，只能看看工作上有没有类似的机会了，这个光靠想应该不行，还是得实践见真知！</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;2020年真的是一个神奇年度，这一年作为吃瓜群众的我，见到了太多牛鬼蛇神。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="年终" scheme="https://ydstudios.gitee.io/tags/%E5%B9%B4%E7%BB%88/"/>
+    
+      <category term="感悟" scheme="https://ydstudios.gitee.io/tags/%E6%84%9F%E6%82%9F/"/>
+    
+  </entry>
   
   <entry>
     <title>巧用二进制表示不同的状态</title>
@@ -466,35 +489,6 @@
       <category term="SpringMvc" scheme="https://ydstudios.gitee.io/tags/SpringMvc/"/>
     
       <category term="Async" scheme="https://ydstudios.gitee.io/tags/Async/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>在CentOS7上使用yum安装Docker</title>
-    <link href="https://ydstudios.gitee.io/post/ef24ce2b.html"/>
-    <id>https://ydstudios.gitee.io/post/ef24ce2b.html</id>
-    <published>2019-12-23T22:30:18.000Z</published>
-    <updated>2020-01-13T14:39:01.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>目前在 Linux 操作系统上安装 Docker，对系统版本有以下要求：</p><ul><li>CentOS：7</li><li>Debian：7.7（Wheezy LTS）、8.0（Jessie LTS）、9（Stretch）</li><li>Fedora：24、25</li><li>Ubuntu：16.04（Xenial LTS）、14.04（Trusty LTS）、17.04（Zesty）</li></ul><a id="more"></a><h5 id="使用-yum-进行安装"><a href="#使用-yum-进行安装" class="headerlink" title="使用 yum 进行安装"></a>使用 yum 进行安装</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># step 1: 安装必要的一些系统工具</span></span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"><span class="comment"># Step 2: 添加软件源信息</span></span><br><span class="line">sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"><span class="comment"># Step 3: 更新并安装Docker-CE</span></span><br><span class="line">sudo yum makecache fast</span><br><span class="line">sudo yum -y install docker-ce</span><br><span class="line"><span class="comment"># Step 4: 开启Docker服务</span></span><br><span class="line">sudo service docker start</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开机启动</span></span><br><span class="line">systemctl <span class="built_in">enable</span> docker</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 注意：</span></span><br><span class="line"><span class="comment"># 官方软件源默认启用了最新的软件，您可以通过编辑软件源的方式获取各个版本的软件包。</span></span><br><span class="line"><span class="comment"># 例如官方并没有将测试版本的软件源置为可用，您可以通过以下方式开启。同理可以开启各种测试版本等。</span></span><br><span class="line"><span class="comment"># vim /etc/yum.repos.d/docker-ee.repo</span></span><br><span class="line"><span class="comment">#   将[docker-ce-test]下方的enabled=0修改为enabled=1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 安装指定版本的Docker-CE:</span></span><br><span class="line"><span class="comment"># Step 1: 查找Docker-CE的版本:</span></span><br><span class="line"><span class="comment"># yum list docker-ce.x86_64 --showduplicates | sort -r</span></span><br><span class="line"><span class="comment">#   Loading mirror speeds from cached hostfile</span></span><br><span class="line"><span class="comment">#   Loaded plugins: branch, fastestmirror, langpacks</span></span><br><span class="line"><span class="comment">#   docker-ce.x86_64            17.03.1.ce-1.el7.centos            docker-ce-stable</span></span><br><span class="line"><span class="comment">#   docker-ce.x86_64            17.03.1.ce-1.el7.centos            @docker-ce-stable</span></span><br><span class="line"><span class="comment">#   docker-ce.x86_64            17.03.0.ce-1.el7.centos            docker-ce-stable</span></span><br><span class="line"><span class="comment">#   Available Packages</span></span><br><span class="line"><span class="comment"># Step2: 安装指定版本的Docker-CE: (VERSION例如上面的17.03.0.ce.1-1.el7.centos)</span></span><br><span class="line"><span class="comment"># sudo yum -y install docker-ce-[VERSION]</span></span><br></pre></td></tr></table></figure><h5 id="安装校验"><a href="#安装校验" class="headerlink" title="安装校验"></a>安装校验</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">[root@izuf6gp8l1zfgu3hmvia6gz ~]<span class="comment"># docker version</span></span><br><span class="line">Client: Docker Engine - Community</span><br><span class="line"> Version:           19.03.5</span><br><span class="line"> API version:       1.40</span><br><span class="line"> Go version:        go1.12.12</span><br><span class="line"> Git commit:        633a0ea</span><br><span class="line"> Built:             Wed Nov 13 07:25:41 2019</span><br><span class="line"> OS/Arch:           linux/amd64</span><br><span class="line"> Experimental:      <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">Server: Docker Engine - Community</span><br><span class="line"> Engine:</span><br><span class="line">  Version:          19.03.5</span><br><span class="line">  API version:      1.40 (minimum version 1.12)</span><br><span class="line">  Go version:       go1.12.12</span><br><span class="line">  Git commit:       633a0ea</span><br><span class="line">  Built:            Wed Nov 13 07:24:18 2019</span><br><span class="line">  OS/Arch:          linux/amd64</span><br><span class="line">  Experimental:     <span class="literal">false</span></span><br><span class="line"> containerd:</span><br><span class="line">  Version:          1.2.10</span><br><span class="line">  GitCommit:        b34a5c8af56e510852c35414db4c1f4fa6172339</span><br><span class="line"> runc:</span><br><span class="line">  Version:          1.0.0-rc8+dev</span><br><span class="line">  GitCommit:        3e425f80a8c931f88e6d94a8c831b9d5aa481657</span><br><span class="line"> docker-init:</span><br><span class="line">  Version:          0.18.0</span><br><span class="line">  GitCommit:        fec3683</span><br></pre></td></tr></table></figure><p>至此docker安装完成。</p><p><a href="https://help.aliyun.com/document_detail/60742.html#title-8ov-nf9-t1l" target="_blank" rel="noopener">参考资料</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;目前在 Linux 操作系统上安装 Docker，对系统版本有以下要求：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;CentOS：7&lt;/li&gt;
-&lt;li&gt;Debian：7.7（Wheezy LTS）、8.0（Jessie LTS）、9（Stretch）&lt;/li&gt;
-&lt;li&gt;Fedora：24、25&lt;/li&gt;
-&lt;li&gt;Ubuntu：16.04（Xenial LTS）、14.04（Trusty LTS）、17.04（Zesty）&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="docker" scheme="https://ydstudios.gitee.io/tags/docker/"/>
-    
-      <category term="centos" scheme="https://ydstudios.gitee.io/tags/centos/"/>
     
   </entry>
   
