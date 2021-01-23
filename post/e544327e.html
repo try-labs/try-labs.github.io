@@ -16,7 +16,8 @@
 <meta property="og:description" content="作为一名程序员，你是不是经常在很多场景，例如看博客、聊天吹水等等时候听到这样一个词”系统数据一致性”，是不是有时候感觉到了迷糊，不知道这个”系统数据一致性”到底是在说什么？其实，你可能只是不明白这个词，但是你肯定在实际工作中发现、解决过这样的问题。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210117223211.png">
-<meta property="og:updated_time" content="2021-01-18T15:42:35.000Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210123224514.png">
+<meta property="og:updated_time" content="2021-01-23T15:31:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210117223211.png">
   
@@ -107,7 +108,17 @@
 <p>3、如果操作order和sku表成功，order_item操作失败，则这个订单数据丢失，订单后续的操作肯定也是操作不了了。</p>
 <p>上面只是简单的举了三种可能出现的情况，也可能会有其他的情况发生。那我们怎么避免这些情况的发生呢？其实这种问题稍微有的开发经验的同学都会想到解决方案，那就是使用数据库的事务，事务的原子性保证上述的步骤成功则一起成功，失败则一起失败。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">BEGIN</span>;</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">order</span>;</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> order_item;</span><br><span class="line"><span class="keyword">UPDATE</span> sku;</span><br><span class="line"><span class="keyword">COMMIT</span>; <span class="comment"># ROLLBACK</span></span><br></pre></td></tr></table></figure>
+<p><strong>在单体架构的系统下解决内部模块的数据一致性的问题，用数据库的ACID特性就能保证。</strong></p>
+<p>单体架构的优点就是相对分布式来说开发简单，功能可以集中管理，模块之间通信没有损耗。但随着业务越来越复杂、需求越来越庞大，人们对系统响应时间、吞吐量和出现故障的时候的系统可用性的要求也越来越高！传统的单体架构系统在这种情况下暴露的缺点也越来越多，人们开始寻求转变。既然部署在一个服务器上的单体架构系统搞不定，那就多部署几台，即用多台单机节点组成集群，再用负载均衡向外提供服务。</p>
+<img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210123224514.png" alt="负载均衡" style="zoom:50%;" />
 
+<p>但是这样做还是解决不了单体架构存在的一些问题：</p>
+<ul>
+<li>只能使用同种语言开发，不能针对不同业务场景利用不同语言的优势开发对应的模块。</li>
+<li>系统模块耦合性太强，系统中某一个模块出现问题，例如高并发、大数据场景或者出现bug，整个系统都会受到牵连。</li>
+<li>某个模块发布，整个系统都要停机发布，系统所有模块都不能对外提供发布，这样无法快速响应市场需求。</li>
+<li>集群负担大，如果想要集群，只能对整个系统进行集群，即使只有一个模块有压力。</li>
+</ul>
 <p>未完……</p>
 
       
@@ -119,7 +130,7 @@
     <strong>作者:  </strong>Sam</a>
     </li>
     <li><span>发布时间: </span>2021-01-17 11:58:02</li>
-    <li><span>最后更新: </span>2021-01-18 23:42:35</li>
+    <li><span>最后更新: </span>2021-01-23 23:31:26</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
     <a href="/post/e544327e.html" target="_blank" title="系统的数据一致性到底是在说什么">https://ydstudios.gitee.io/post/e544327e.html</a>
@@ -133,7 +144,7 @@
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/e544327e.html" data-id="ckk2qm4x20061c1y13dre9th5" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/e544327e.html" data-id="ckk9vf5a5006aciy1hfvc5dkv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%80%E8%87%B4%E6%80%A7/" rel="tag">一致性</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li></ul>
