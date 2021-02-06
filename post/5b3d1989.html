@@ -7,13 +7,13 @@
   
   <title>解耦神器之观察者模式 | Sam的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="大家是不是会经常听到有人说写代码要“高内聚、低耦合”，但是什么是高内聚低耦合（waht）？为什么要高内聚、低耦合(why)？怎么做才能高内聚、低耦合(how)? 这些问题就不一定都能回答的了！">
+  <meta name="description" content="大家是不是会经常听到有人说写代码要“高内聚、低耦合”，但是你要是问他什么是高内聚低耦合（waht）？为什么要高内聚、低耦合(why)？怎么做才能高内聚、低耦合(how)? 这些问题就不一定都能回答的了！">
 <meta name="keywords" content="spring,设计模式,观察者模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="解耦神器之观察者模式">
 <meta property="og:url" content="https:&#x2F;&#x2F;ydstudios.gitee.io&#x2F;post&#x2F;5b3d1989.html">
 <meta property="og:site_name" content="Sam的个人博客">
-<meta property="og:description" content="大家是不是会经常听到有人说写代码要“高内聚、低耦合”，但是什么是高内聚低耦合（waht）？为什么要高内聚、低耦合(why)？怎么做才能高内聚、低耦合(how)? 这些问题就不一定都能回答的了！">
+<meta property="og:description" content="大家是不是会经常听到有人说写代码要“高内聚、低耦合”，但是你要是问他什么是高内聚低耦合（waht）？为什么要高内聚、低耦合(why)？怎么做才能高内聚、低耦合(how)? 这些问题就不一定都能回答的了！">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210206152451.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210204230758.png">
@@ -23,7 +23,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210204222111.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210204230251.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210204230429.png">
-<meta property="og:updated_time" content="2021-02-06T07:49:38.000Z">
+<meta property="og:updated_time" content="2021-02-06T08:01:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210206152451.png">
   
@@ -102,7 +102,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>大家是不是会经常听到有人说写代码要“高内聚、低耦合”，但是什么是高内聚低耦合（waht）？为什么要高内聚、低耦合(why)？怎么做才能高内聚、低耦合(how)? 这些问题就不一定都能回答的了！</p>
+        <p>大家是不是会经常听到有人说写代码要“高内聚、低耦合”，但是你要是问他什么是高内聚低耦合（waht）？为什么要高内聚、低耦合(why)？怎么做才能高内聚、低耦合(how)? 这些问题就不一定都能回答的了！</p>
 <a id="more"></a>
 
 <blockquote>
@@ -263,7 +263,7 @@
 <img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210204230429.png" alt="优化后的注册流程" style="zoom:30%;" />
 
 
-<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>用户数据写入数据表成功，发布注册成功事件，通知相关的短信、优惠券、积分模块。用观察者模式实现之后，注册逻辑和其他的逻辑分离开，即使后续新加一个邮件通知或者去掉一个发送积分的操作,只是修改了对应的代码逻辑，不用回滚测试所有场景。这符合对修改关闭对扩展开放的规则，有效的降低了各个模块之间耦合度，使得代码的可维护性大大提高。有些同学可能会抱怨，自己的项目简单用不到这些看似高大上的设计模式，其实不然，你只是没有认真研究自己的项目，还有就是对自己的写的代码没有太高的要求。如果你看到了本文，而且看到此处，你回想一下你所做的项目，难道没有一个业务场景都不满足观察者模式么？你想想是不是！</p>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>用户数据写入数据表成功，发布注册成功事件，通知相关的短信、优惠券、积分模块。用观察者模式实现之后，注册逻辑和其他的逻辑分离开，即使后续新加一个邮件通知或者去掉一个发送积分的操作,只是修改了对应的代码逻辑，不用回滚测试所有场景。这符合对修改关闭对扩展开放的规则，有效的降低了各个模块之间耦合度，使得代码的可维护性大大提高。有些同学可能会抱怨，自己的项目简单用不到这些看似高大上的设计模式，其实不然，你只是没有认真研究自己的项目，还有就是对自己的写的代码没有太高的要求。如果你看到了本文，而且看到此处，你回想一下你所做的项目，难道没有一个业务场景满足观察者模式条件么？你想想是不是！</p>
 
       
     </div>
@@ -274,7 +274,7 @@
     <strong>作者:  </strong>Sam</a>
     </li>
     <li><span>发布时间: </span>2021-02-04 23:49:32</li>
-    <li><span>最后更新: </span>2021-02-06 15:49:38</li>
+    <li><span>最后更新: </span>2021-02-06 16:01:46</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
     <a href="/post/5b3d1989.html" target="_blank" title="解耦神器之观察者模式">https://ydstudios.gitee.io/post/5b3d1989.html</a>
@@ -288,7 +288,7 @@
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/5b3d1989.html" data-id="ckktf3p0o006vpqy14dpu82vo" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/5b3d1989.html" data-id="ckktfiwjl006nrny1gp9611wk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/" rel="tag">观察者模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
