@@ -7,14 +7,15 @@
   
   <title>解耦神器之观察者模式 | Sam的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="大家是不是会经常听到有些程序员把“高内聚、低耦合”的词语挂在嘴边，但是什么是高内聚低耦合？为什么要高内聚、低耦合？怎么做才能高内聚、低耦合?">
+  <meta name="description" content="大家是不是会经常听到有人说写代码要“高内聚、低耦合”，但是什么是高内聚低耦合（waht）？为什么要高内聚、低耦合(why)？怎么做才能高内聚、低耦合(how)? 这些问题就不一定都能回答的了！  百度百科：在软件设计中通常用耦合度和内聚度作为衡量模块独立程度的标准。划分模块的一个准则是高内聚低耦合。从模块粒度来看，高内聚：尽可能类的每个成员方法只完成一件事（最大限度的聚合）； 低耦合：减少类内部，">
 <meta name="keywords" content="spring,设计模式,观察者模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="解耦神器之观察者模式">
 <meta property="og:url" content="https:&#x2F;&#x2F;ydstudios.gitee.io&#x2F;post&#x2F;5b3d1989.html">
 <meta property="og:site_name" content="Sam的个人博客">
-<meta property="og:description" content="大家是不是会经常听到有些程序员把“高内聚、低耦合”的词语挂在嘴边，但是什么是高内聚低耦合？为什么要高内聚、低耦合？怎么做才能高内聚、低耦合?">
+<meta property="og:description" content="大家是不是会经常听到有人说写代码要“高内聚、低耦合”，但是什么是高内聚低耦合（waht）？为什么要高内聚、低耦合(why)？怎么做才能高内聚、低耦合(how)? 这些问题就不一定都能回答的了！  百度百科：在软件设计中通常用耦合度和内聚度作为衡量模块独立程度的标准。划分模块的一个准则是高内聚低耦合。从模块粒度来看，高内聚：尽可能类的每个成员方法只完成一件事（最大限度的聚合）； 低耦合：减少类内部，">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210206152451.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210204230758.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210204230024.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210204225825.png">
@@ -22,9 +23,9 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210204222111.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210204230251.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210204230429.png">
-<meta property="og:updated_time" content="2021-02-04T15:19:51.000Z">
+<meta property="og:updated_time" content="2021-02-06T07:40:27.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210204230758.png">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210206152451.png">
   
     <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
   
@@ -79,10 +80,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-解耦神器之观察者模式的副本" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-解耦神器之观察者模式" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/post/5b3d1989.html" class="article-date">
-  <time datetime="2021-02-04T20:44:34.000Z" itemprop="datePublished">2021-02-04</time>
+  <time datetime="2021-02-04T23:49:32.000Z" itemprop="datePublished">2021-02-04</time>
 </a>
     
   </div>
@@ -101,17 +102,25 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>大家是不是会经常听到有些程序员把“高内聚、低耦合”的词语挂在嘴边，但是什么是高内聚低耦合？为什么要高内聚、低耦合？怎么做才能高内聚、低耦合?</p>
+        <p>大家是不是会经常听到有人说写代码要“高内聚、低耦合”，但是什么是高内聚低耦合（waht）？为什么要高内聚、低耦合(why)？怎么做才能高内聚、低耦合(how)? 这些问题就不一定都能回答的了！</p>
+<blockquote>
+<p>百度百科：在软件设计中通常用耦合度和内聚度作为衡量模块独立程度的标准。划分模块的一个准则是高内聚低耦合。<br>从模块粒度来看，高内聚：尽可能类的每个成员方法只完成一件事（最大限度的聚合）； 低耦合：减少类内部，一个成员方法调用另一个成员方法。<br>从类角度来看， 高内聚低耦合：减少类内部，对其他类的调用；<br>从功能块来看，高内聚低耦合：减少模块之间的交互复杂度（接口数量，参数数据）即横向：类与类之间、模块与模块之间；纵向：层次之间；尽可能，内容内聚，数据耦合。</p>
+</blockquote>
 <a id="more"></a>
 
-<h6 id="参与角色"><a href="#参与角色" class="headerlink" title="参与角色"></a>参与角色</h6><h5 id="抽象主题-Subject"><a href="#抽象主题-Subject" class="headerlink" title="抽象主题(Subject)"></a>抽象主题(Subject)</h5><p>它把所有观察者对象的引用保存到一个容器里，每个主题都可以有任何数量的观察者。抽象主题提供一个接口，可以增加和删除观察者对象。</p>
+<p>我本人特别喜欢李连杰演的这一版霍元甲，他年少轻狂，好勇斗狠，弱过，强过，痛苦过，挣扎过，世事一场大梦，洗净铅华，悟出侠的真谛，破茧重生，成为真正的侠士。当然我不太希望我的一生这么波荡起伏，因为我没有他那么厉害。我特别喜欢剧中的一句话就是“<strong>功夫是需要时间去磨练出来的，两三年的猫脚功夫，这一拳20年的功夫，你们挡得住么？</strong>”，作为一位程序员，我们对业务的理解、系统的设计、代码实现这些能力也是需要磨练的，而且也要日复一日的练习，不然你怎么挡得住面试官20年的功夫。😄😄</p>
+<img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210206152451.png" alt="霍元甲" style="zoom:20%;" />
+
+
+<p>本文对于什么是高内聚低耦合（waht）？为什么要高内聚、低耦合(why)？按下不表，就先说说一种能够让你的代码高内聚低耦合的方法： <strong>观察者模式</strong>,这种设计模式我认为就和策略模式一样的常用，这两种设计模式不仅实现起来简单，而且效果还好！那接下来就先说说观察者模式组成角色：</p>
+<h5 id="抽象主题-Subject"><a href="#抽象主题-Subject" class="headerlink" title="抽象主题(Subject)"></a>抽象主题(Subject)</h5><p>它把所有观察者对象的引用保存到一个容器里，每个主题都可以有任何数量的观察者。抽象主题提供一个接口，可以增加和删除观察者对象。</p>
 <h5 id="具体主题-ConcreteSubject"><a href="#具体主题-ConcreteSubject" class="headerlink" title="具体主题(ConcreteSubject)"></a>具体主题(ConcreteSubject)</h5><p>将有关状态存入具体观察者对象；在具体主题内部状态改变时，给所有登记过的观察者发出通知。</p>
 <h5 id="抽象抽象观察者-Observer"><a href="#抽象抽象观察者-Observer" class="headerlink" title="抽象抽象观察者(Observer)"></a>抽象抽象观察者(Observer)</h5><p>为所有的具体观察者定义一个接口，在得到主题通知时更新自己。</p>
 <h5 id="具体观察者-ConcreteObserver"><a href="#具体观察者-ConcreteObserver" class="headerlink" title="具体观察者(ConcreteObserver)"></a>具体观察者(ConcreteObserver)</h5><p>实现抽象观察者角色所要求的更新接口，以便使本身的状态与主题状态协调。</p>
-<h6 id="Java原生实现"><a href="#Java原生实现" class="headerlink" title="Java原生实现"></a>Java原生实现</h6><p>Java从JDK1.0开始就自带了 <code>java.util.Observer</code> 和 <code>java.util.Observable</code> 相关接口、类来实现观察者模式，由此可见Java对于观察者模式的重视，也从另一方面说明观察者模式是多么重要。那么接下来我们开始用Java自带的来实现观察者模式的编码。</p>
+<h6 id="Java原生实现"><a href="#Java原生实现" class="headerlink" title="Java原生实现"></a>Java原生实现</h6><p>Java从JDK1.0开始就自带了 <code>java.util.Observer</code> 和 <code>java.util.Observable</code> ,相关接口、类来实现观察者模式，由此可见Java对于观察者模式的重视，也从另一方面说明观察者模式是多么重要。那么接下来我们开始用Java自带的来实现观察者模式的编码。</p>
 <p>在这里我们以一个下单的场景来举例描述，用户创建完订单，要发送一个消息通知用户订单创建成功，还要发送一个消息给仓库，检查对应的订单商品。具体代码如下。</p>
 <h4 id="1-继承java-util-Observable定义主题"><a href="#1-继承java-util-Observable定义主题" class="headerlink" title="1. 继承java.util.Observable定义主题"></a>1. 继承<code>java.util.Observable</code>定义主题</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderSubject</span> <span class="keyword">extends</span> <span class="title">Observable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 订单状态发生变化通知其他，</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String status;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getStatus</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStatus</span><span class="params">(String status)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.status = status;</span><br><span class="line">        <span class="comment">// 通知其他</span></span><br><span class="line">        <span class="keyword">this</span>.setChanged();</span><br><span class="line">        <span class="comment">// 这里是可以携带一些额外的参数</span></span><br><span class="line">        <span class="keyword">this</span>.notifyObservers();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="2-实现java-util-Observer接口定义观察者"><a href="#2-实现java-util-Observer接口定义观察者" class="headerlink" title="2. 实现java.util.Observer接口定义观察者"></a>2. 实现<code>java.util.Observer</code>接口定义观察者</h4><p><code>java.util.Observer</code> 是一个接口，接口中只有一个<code>update</code>方法。每当更改被观察对象时，都会调用此方法。 应用程序调用Observable对象的 <code>notifyObservers</code>方法，以将更改通知给所有对象的观察者。在这个例子中通知模块、仓库模块就是扮演观察者的角色，具体的代码实现如下：</p>
+<h4 id="2-实现java-util-Observer接口定义观察者"><a href="#2-实现java-util-Observer接口定义观察者" class="headerlink" title="2. 实现java.util.Observer接口定义观察者"></a>2. 实现<code>java.util.Observer</code>接口定义观察者</h4><p><code>java.util.Observer</code> 是一个接口，接口中只有一个 <code>update</code> 方法。每当更改被观察对象时，都会调用此方法。 应用程序调用Observable对象的 <code>notifyObservers</code>方法，以将更改通知给所有对象的观察者。在这个例子中通知模块、仓库模块就是扮演观察者的角色，具体的代码实现如下：</p>
 <ul>
 <li>通知模块实现<code>java.util.Observer</code>接口</li>
 </ul>
@@ -138,7 +147,7 @@
 </ul>
 <p>既然JDK中实现不够完美，我们就看看有没有其他的实现方式。Google的Guava工具包提供了EventBus可以实现、Spring框架中也提供了相应的支持，由于我们使用Spring框架比较多，今天我们就先来说说Spring框架中是如何实现对观察者模式的支持吧！</p>
 <h6 id="Spring中的实现"><a href="#Spring中的实现" class="headerlink" title="Spring中的实现"></a>Spring中的实现</h6><p>Spring框架中提供了相当多的组件可以实现观察者模式，文章后面会一一向大家介绍。这里我引入一个新的业务场景，用户注册之后发送短信通知、积分还有优惠券。这种业务场景非常的常见，我展示一下小伙伴们一般是怎么样实现这样的功能的。因为篇幅有限，这里就展示一下伪代码吧！</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MemberService</span></span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Autowired</span></span><br><span class="line">   <span class="keyword">private</span> MemberDao memberDao;</span><br><span class="line">  </span><br><span class="line">   <span class="meta">@Autowired</span></span><br><span class="line">   <span class="keyword">private</span> CouponService couponService;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Autowired</span></span><br><span class="line">   <span class="keyword">private</span> SmsService smsService;</span><br><span class="line">   </span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 完成用户注册，成功之后发送优惠券、短信通知</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> memberName 查询条件</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> phone 分页信息</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> Result <span class="title">normalRegister</span><span class="params">(String memberName,String phone)</span></span>&#123;</span><br><span class="line">        <span class="comment">// 1、 ... 执行注册逻辑</span></span><br><span class="line">        log.info(<span class="string">"[register][执行用户(&#123;&#125;) 的注册逻辑]"</span>, phone);</span><br><span class="line">        <span class="comment">// 保存用户</span></span><br><span class="line">        Long memberId = memberDao.saveMember();</span><br><span class="line">        <span class="comment">// 发送优惠券</span></span><br><span class="line">        couponService.sendCoupon(memberId);</span><br><span class="line">        <span class="comment">// 发送短信</span></span><br><span class="line">        smsService.sendSms(phone);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Result();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MemberService</span></span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Autowired</span></span><br><span class="line">   <span class="keyword">private</span> MemberDao memberDao;</span><br><span class="line">  </span><br><span class="line">   <span class="meta">@Autowired</span></span><br><span class="line">   <span class="keyword">private</span> CouponService couponService;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Autowired</span></span><br><span class="line">   <span class="keyword">private</span> SmsService smsService;</span><br><span class="line">   </span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 完成用户注册，成功之后发送优惠券、短信通知</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> memberName 查询条件</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> phone 分页信息</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> Result <span class="title">normalRegister</span><span class="params">(String memberName,String phone)</span></span>&#123;</span><br><span class="line">        <span class="comment">// 1、执行注册逻辑</span></span><br><span class="line">        log.info(<span class="string">"[register][执行用户(&#123;&#125;) 的注册逻辑]"</span>, phone);</span><br><span class="line">        <span class="comment">// 保存用户</span></span><br><span class="line">        Long memberId = memberDao.saveMember();</span><br><span class="line">        <span class="comment">// 2、发送优惠券</span></span><br><span class="line">        couponService.sendCoupon(memberId);</span><br><span class="line">        <span class="comment">// 3、发送短信</span></span><br><span class="line">        smsService.sendSms(phone);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Result();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>大家对这部分代码怎么看？</strong></p>
 <p>对于用户注册功能来说，保障用户成功注册，这是个业务的核心诉求，其他的都是锦上添花，所以这个地方不应该掺杂其他的业务。用户注册与发送短信、优惠券功能应该分隔开，这样也符合解耦的设计规则。不然后续业务增加需求，需要用户注册完成之后给用户发送积分，你是不是还要在这个 <code>normalRegister</code>方法中增加发送积分的逻辑，那这个岂不是又违背了开闭原则。</p>
@@ -247,10 +256,15 @@
 
 <p>代码修改之后执行，运行截图如下：</p>
 <p><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210204222111.png" alt="运行截图"><br>我们可以发现代码分别main、taskExecutor-1和taskExecutor-2 三个线程执行的，完美的解决了上面提到的问题。</p>
-<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210204230251.png" alt="优化后的注册流程" style="zoom:50%;" />
+<p>使用观察者模式之前的用户注册流程：</p>
+<img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210204230251.png" alt="优化后的注册流程" style="zoom:50%;" />
 
 <p>使用观察者模式之后的用户注册流程：</p>
 <img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210204230429.png" alt="优化后的注册流程" style="zoom:50%;" />
+
+
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>用户数据写入数据表成功，发布注册成功事件，通知相关的短信、优惠券、积分模块。用观察者模式实现之后，注册逻辑和其他的逻辑分离开，即使后续新加一个邮件通知或者去掉一个发送积分的操作,只是修改了对应的代码逻辑，不用回滚测试所有场景。这符合对修改关闭对扩展开放的规则，有效的降低了各个模块之间耦合度，使得代码的可维护性大大提高。有些同学可能会抱怨，自己的项目简单用不到这些看似高大上的设计模式，其实不然，你只是没有认真研究自己的项目，还有就是对自己的写的代码没有太高的要求。如果你看到了本文，而且看到此处，你回想一下你所做的项目，难道没有一个业务场景都不满足观察者模式么？你想想是不是！</p>
+
       
     </div>
          
@@ -259,8 +273,8 @@
     <li class="post-copyright-author">
     <strong>作者:  </strong>Sam</a>
     </li>
-    <li><span>发布时间: </span>2021-02-04 20:44:34</li>
-    <li><span>最后更新: </span>2021-02-04 23:19:51</li>
+    <li><span>发布时间: </span>2021-02-04 23:49:32</li>
+    <li><span>最后更新: </span>2021-02-06 15:40:27</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
     <a href="/post/5b3d1989.html" target="_blank" title="解耦神器之观察者模式">https://ydstudios.gitee.io/post/5b3d1989.html</a>
@@ -274,7 +288,7 @@
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/5b3d1989.html" data-id="ckkr19epr006qkay1gvszd91w" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/5b3d1989.html" data-id="ckktesu8r006kn4y100zgeqg5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/" rel="tag">观察者模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
