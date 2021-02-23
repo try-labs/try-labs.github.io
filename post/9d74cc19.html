@@ -16,10 +16,13 @@
 <meta property="og:description" content="在系统是单体架构时，系统是和单个数据库进行交互，所以如果有多表操作的时候，可以使用数据库的事务实现数据的一致性，这种事务可以称之为本地事务。随着业务的发展，系统的压力越来越大，单体数据库的性能也达到了瓶颈，不可避免的进行数据库的拆分，还有系统模块的拆分，跨服务、跨数据库的事务场景就越来越多，这样解决分布式的事务的需求就出现了。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210216202911.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210221221017.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210221221204.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210221224825.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210219215301.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210219215158.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210221165243.png">
-<meta property="og:updated_time" content="2021-02-21T11:40:01.000Z">
+<meta property="og:updated_time" content="2021-02-21T14:51:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210216202911.jpg">
   
@@ -112,13 +115,13 @@
 </ul>
 <p>在最开始的准备阶段就锁定资源，这是一个重量级的操作，可以保证强一致性。但是实现起来却有很多的缺点：</p>
 <ul>
-<li><p>阻塞，没有超时机制。如果在整个流程中，任何一个参与者或者协调者由于可能的网络延迟问题，导致协调者的指令不能发出或者参与者接受不到指令，整个流程也不能继续下去，且资源一直被锁定。</p>
-</li>
-<li><p>协调者有单点问题。协调者发出指令之后宕机，整个流程无法继续进行。</p>
-</li>
-<li><p>会有数据不一致的问题。协调者发出提交指令，部分参与者接受到了指令，执行了所有操作，但是有参与者宕机了，无法执行提交操作。</p>
-</li>
+<li>阻塞，没有超时机制。如果在整个流程中，任何一个参与者或者协调者由于可能的网络延迟问题，导致协调者的指令不能发出或者参与者接受不到指令，整个流程也不能继续下去，且资源一直被锁定。</li>
+<li>协调者有单点问题。协调者发出指令之后宕机，整个流程无法继续进行。</li>
+<li>会有数据不一致的问题。协调者发出提交指令，部分参与者接受到了指令，执行了所有操作，但是有参与者宕机了，无法执行提交操作。</li>
 </ul>
+<p><strong>两阶段提交协议成功场景的示意图</strong></p>
+<img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210221221017.png" alt="两阶段提交协议成功场景的示意图" style="zoom:45%;" />
+
 <h4 id="三阶段提交协议（3PC）"><a href="#三阶段提交协议（3PC）" class="headerlink" title="三阶段提交协议（3PC）"></a>三阶段提交协议（3PC）</h4><p>针对两阶段提交协议（2PC）的缺点进行改进提出三阶段提交协议（3PC，three phase commit protcol），也是基于数据库资源层面的。增加了一个询问的阶段，增加协调者、参与者超时机制，一旦发生超时则默认提交事务，其他的步骤就和2PC相同。</p>
 <ul>
 <li><p>询问阶段：协调者想参与者询问能否完成指令，参与者只需要回答是和否，无需做其他的操作。</p>
@@ -129,6 +132,9 @@
 </li>
 </ul>
 <p>三阶段提交协议增加了询问阶段，这样可以确保尽可能早的发现参与者无法进行准备操作，但是不能完全避免这种情况，增加了超时机制可以减少资源的锁定时间。但是仍然会有数据不一致的问题。假设在提交阶段，协调者发出中止命令，由于发生网络分区等问题，部分参与者没有接受到命令则按照超时默认提交事务的规则，导致部分参与者回滚了事务，部分参与者提交了事务，数据一致性被破坏。（其实你就是超时默认中止操作还是会发生数据不一致的情况，真是太难啦😄）</p>
+<p><strong>三阶段提交协议成功场景流程图</strong></p>
+<img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210221221204.png" alt="三阶段提交协议成功场景流程图" style="zoom:45%;" />
+
 <h4 id="TCC（Try-Confirm-Cancel）"><a href="#TCC（Try-Confirm-Cancel）" class="headerlink" title="TCC（Try-Confirm-Cancel）"></a>TCC（Try-Confirm-Cancel）</h4><p>其实大家看了2PC和3PC的执行流程，就可以感觉到他们的实现，会出现资源阻塞、数据不一致的问题，性能效率也不高。在实际项目中也少有使用2PC和3PC实现分布式事务。后来又有大神提出TCC（Try-Confirm-Cancel）协议，协议是基于业务层面实现。这个协议将任务拆分成Try、Confirm、Cancel三个阶段,每个阶段都要保证各自操作幂等。</p>
 <ul>
 <li>Try（预处理阶段）：参与者完成所有业务检查（一致性），预留业务资源(准隔离性)，所有参与者预留都成功，try阶段才算成功。此阶段仅是一个初步操作，它和后续的Confirm 一起才能真正构成一个完整的业务逻辑。</li>
@@ -142,6 +148,9 @@
 <li><p>Cancel（取消阶段）：取消Try阶段预留的业务资源。如果某个业务资源没有预留成功，则取消所有业务资源预留请求。通常情况下，采用TCC则认为Cancel阶段也是一定成功的。若Cancel阶段真的出错了，需引入重试机制或人工处理。 </p>
 </li>
 </ul>
+<p><strong>TCC示意图</strong></p>
+<img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210221224825.png" alt="TCC示意图" style="zoom:45%;" />
+
 <p>2PC(3PC)是追求的数据的强一致性，是一种强一致性事务，而TCC在Confirm、Cancel阶段允许重试，这就意味着数据在一段时间内一致性被破坏，TCC符合BASE理论则可称作一种柔性事务。</p>
 <p>如果拿TCC事务的处理流程与2PC两阶段提交做比较，2PC通常都是在跨库的DB层面实现，而TCC在应用层处理，通过业务逻辑来实现。这种分布式事务的实现方式的优势可以让应用自己定义数据操作的粒度，使得降低资源锁冲突、提高系统吞吐量成为可能。TCC的不足之处则在于对应用的代码侵入性非常强，业务逻辑的每个分支都需要实现try、confirm、cancel三个操作，增大了开发的成本。</p>
 <p>目前业界已经有很多开源的TCC协议的分布式事务框架，例如Hmily、ByteTCC、TCC-transaction。使用这些框架就可以很大程度上节约时间，将更多的时间和注意力放到到具体业务中。</p>
@@ -207,7 +216,7 @@
 <img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210221165243.png" alt="事务消息方案流程图" style="zoom:45%;" />
 
 <p>以上面提到的下单场景为例，伪代码实现如下：<br><strong>发送事务消息</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Result <span class="title">buildOrder</span><span class="params">(OrderDto orderDto)</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">    TransactionListener transactionListener = <span class="keyword">new</span> OrderTransactionListenerImpl();</span><br><span class="line">    TransactionMQProducer producer = <span class="keyword">new</span> TransactionMQProducer(<span class="string">""</span>);</span><br><span class="line">    producer.setTransactionListener(transactionListener);</span><br><span class="line">    </span><br><span class="line">    TransactionListener transactionListener = <span class="keyword">new</span> OrderTransactionListenerImpl();</span><br><span class="line">    TransactionMQProducer producer = <span class="keyword">new</span> TransactionMQProducer(<span class="string">""</span>);</span><br><span class="line">    producer.setTransactionListener(transactionListener);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 1. 生成唯一业务bizId，将bizId和其他相关信息组装到消息体中</span></span><br><span class="line">    Message message = <span class="keyword">new</span> Message();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 调用消息客户端API，发送事务prepare消息</span></span><br><span class="line">    SendResult sendResult = producer.send(message);</span><br><span class="line">    <span class="keyword">if</span> (SendStatus.SEND_OK.equals(sendResult.getSendStatus())) &#123;</span><br><span class="line">        <span class="comment">// 消息发送成功，返回前端告知用户订单处理中</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Result();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 反之失败，返回前端告知用户下单失败</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Result(<span class="string">""</span>,<span class="string">"下单失败"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Result <span class="title">buildOrder</span><span class="params">(OrderDto orderDto)</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">    TransactionListener transactionListener = <span class="keyword">new</span> OrderTransactionListenerImpl();</span><br><span class="line">    TransactionMQProducer producer = <span class="keyword">new</span> TransactionMQProducer(<span class="string">""</span>);</span><br><span class="line">    producer.setTransactionListener(transactionListener);</span><br><span class="line">    </span><br><span class="line">    TransactionListener transactionListener = <span class="keyword">new</span> OrderTransactionListenerImpl();</span><br><span class="line">    TransactionMQProducer producer = <span class="keyword">new</span> TransactionMQProducer(<span class="string">""</span>);</span><br><span class="line">    producer.setTransactionListener(transactionListener);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 1. 生成唯一业务bizId，将bizId和其他相关信息组装到消息体中</span></span><br><span class="line">    Message message = <span class="keyword">new</span> Message();</span><br><span class="line">    orderDto.setBizId(<span class="string">""</span>);</span><br><span class="line">    String orderString = JSON.toJSONString(orderDto);</span><br><span class="line">    message.setBody(orderString.getBytes(StandardCharsets.UTF_8));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 调用消息客户端API，发送事务prepare消息</span></span><br><span class="line">    SendResult sendResult = producer.send(message);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 根据不同情况返回不同的结果</span></span><br><span class="line">    <span class="keyword">if</span> (SendStatus.SEND_OK.equals(sendResult.getSendStatus())) &#123;</span><br><span class="line">        <span class="comment">// 消息发送成功，可以返回前端告知用户订单处理中</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Result();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 反之失败，返回前端告知用户下单失败</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Result(<span class="string">""</span>,<span class="string">"下单失败"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 <p><strong>执行本地事务和RocketMQ检查接口实现</strong></p>
@@ -219,6 +228,7 @@
 <p>在分布式架构的情况下，将之前的关系型数据库提供的事务称之为<strong>本地事务</strong>，解决分布式系统中存在事务方案进而称之为<strong>分布式事务</strong>（重新定义下概念）。2PC、3PC方案实现的事务能保证强一致性，我们称之为<strong>刚性事务</strong>；TCC和可靠消息方案实现的事务只能保证最终一致性，那么我们称之为<strong>柔性事务</strong>。</p>
 <p>由于CAP理论太过于乐观导致对于构建分布式系统没有全面的指导作用，大牛们对CAP理论的缺点进行改进提出了BASE理论。相比之下BASE理论更符合实际的情况，更加的接地气。BASE理论的指导我们在发生消息丢失或者网络分区的问题情况下，分布式系统可以根据自身业务特点，采取是<strong>保大（Consistency）还是保小（Availability）</strong>😄😄，然后使得系统在一定时间内达到最终一致性。</p>
 <p>刚性事务可以实现强一致性，但性能不高；柔性事务性能较高，但是只能实现弱一致性。所以大家在构建自己的分布式系统遇到分布式事务问题时，根据自己的需求场景和业务承受情况，自行选择吧！</p>
+<p>[参考资料：《分布式服务架构 原理、设计与实践》 李艳鹏 杨彪 著 ]</p>
 
       
     </div>
@@ -229,7 +239,7 @@
     <strong>作者:  </strong>Sam</a>
     </li>
     <li><span>发布时间: </span>2021-02-16 19:58:33</li>
-    <li><span>最后更新: </span>2021-02-21 19:40:01</li>
+    <li><span>最后更新: </span>2021-02-21 22:51:43</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
     <a href="/post/9d74cc19.html" target="_blank" title="分布式事务解决方案到底有哪些">https://ydstudios.gitee.io/post/9d74cc19.html</a>
@@ -243,7 +253,7 @@
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/9d74cc19.html" data-id="cklf2xyp2005lnsy1dred04t9" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/9d74cc19.html" data-id="ckli0nhol005v57y15mub4trt" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/2pc/" rel="tag">2pc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/3pc/" rel="tag">3pc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rocketmq%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF/" rel="tag">rocketmq事务消息</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tcc/" rel="tag">tcc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/" rel="tag">分布式事务</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8F%AF%E9%9D%A0%E6%B6%88%E6%81%AF%E6%9C%80%E7%BB%88%E4%B8%80%E8%87%B4%E6%80%A7%E6%96%B9%E6%A1%88/" rel="tag">可靠消息最终一致性方案</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%AC%E5%9C%B0%E6%B6%88%E6%81%AF%E8%A1%A8/" rel="tag">本地消息表</a></li></ul>
@@ -253,6 +263,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/post/d06ff354.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          孔乙己“茴”字四种写法引起我对策略模式实现的思考
+        
+      </div>
+    </a>
   
   
     <a href="/post/5b3d1989.html" id="article-nav-older" class="article-nav-link-wrap">
