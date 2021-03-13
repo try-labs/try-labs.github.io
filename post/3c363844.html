@@ -7,17 +7,17 @@
   
   <title>分布式锁实现方案到底有哪些 | Sam的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言前面几篇文章从系统架构方式的演进，谈到了单体架构、分布式架构的优缺点，其中特意说到了分布式架构由于功能的拆分，导致系统出现了不能保证数据一致性的问题，即分布式事务问题，从而引出了几种分布式事务的解决方案。文章的篇幅大都在说分布式事务，其实分布式系统中还有一个重要角色–分布式锁，一直没有提及。今天这篇文章我们就将光环移到分布式锁的身上，来说说分布式锁的那些事吧！ 什么是锁说分布式锁之前，我们先说">
+  <meta name="description" content="前言前面几篇文章从系统架构方式的演进，谈到了单体架构、分布式架构的优缺点，其中特意说到了分布式架构由于功能的拆分，导致系统出现了不能保证数据一致性的问题，即分布式事务问题，从而引出了几种分布式事务的解决方案。文章的篇幅大都在说分布式事务，其实分布式系统中还有一个重要角色–分布式锁，一直没有提及。今天这篇文章我们就将光环移到分布式锁的身上，来说说分布式锁的那些事吧！">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式锁实现方案到底有哪些">
 <meta property="og:url" content="https:&#x2F;&#x2F;ydstudios.gitee.io&#x2F;post&#x2F;3c363844.html">
 <meta property="og:site_name" content="Sam的个人博客">
-<meta property="og:description" content="前言前面几篇文章从系统架构方式的演进，谈到了单体架构、分布式架构的优缺点，其中特意说到了分布式架构由于功能的拆分，导致系统出现了不能保证数据一致性的问题，即分布式事务问题，从而引出了几种分布式事务的解决方案。文章的篇幅大都在说分布式事务，其实分布式系统中还有一个重要角色–分布式锁，一直没有提及。今天这篇文章我们就将光环移到分布式锁的身上，来说说分布式锁的那些事吧！ 什么是锁说分布式锁之前，我们先说">
+<meta property="og:description" content="前言前面几篇文章从系统架构方式的演进，谈到了单体架构、分布式架构的优缺点，其中特意说到了分布式架构由于功能的拆分，导致系统出现了不能保证数据一致性的问题，即分布式事务问题，从而引出了几种分布式事务的解决方案。文章的篇幅大都在说分布式事务，其实分布式系统中还有一个重要角色–分布式锁，一直没有提及。今天这篇文章我们就将光环移到分布式锁的身上，来说说分布式锁的那些事吧！">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210228105900.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210228154747.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210228145255.png">
-<meta property="og:updated_time" content="2021-03-12T15:04:39.000Z">
+<meta property="og:updated_time" content="2021-03-13T07:09:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210228105900.png">
   
@@ -97,6 +97,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>前面几篇文章从系统架构方式的演进，谈到了单体架构、分布式架构的优缺点，其中特意说到了分布式架构由于功能的拆分，导致系统出现了不能保证数据一致性的问题，即分布式事务问题，从而引出了几种分布式事务的解决方案。文章的篇幅大都在说分布式事务，其实分布式系统中还有一个重要角色–分布式锁，一直没有提及。今天这篇文章我们就将光环移到分布式锁的身上，来说说分布式锁的那些事吧！</p>
+<a id="more"></a>
+
 <h3 id="什么是锁"><a href="#什么是锁" class="headerlink" title="什么是锁"></a>什么是锁</h3><p>说分布式锁之前，我们先说一说什么是锁、锁有什么作用？一般来说当代码中会有多个线程任务访问同一共享资源时,就会出现冲突或者错误，目前解决这种问题都是采用序列化访问共享资源的解决方案,即将共享资源放在某一代码块中并加锁,某一时刻只能有一个线程访问该代码块。从而我们可以得出结论，锁是一种方案，一种解决多线程访问共享资源不出问题的解决方案。</p>
 <h3 id="为什么需要分布式锁-distributed-lock"><a href="#为什么需要分布式锁-distributed-lock" class="headerlink" title="为什么需要分布式锁(distributed lock)"></a>为什么需要分布式锁(distributed lock)</h3><p>Java中提供了很多种类丰富的锁，每种锁因其特性的不同，可以在适当的场景下展现出非常高的效率，具体有哪些锁此处暂时也按下不表。Java中提供的锁，例如<code>synchronized</code>、<code>ReentrantLock</code>之类的锁，只能在单机JVM中使用，可以称之为<strong>单机锁</strong>。可在分布式系统环境下，一个功能可能会涉及到多个服务，不同的服务又部署在不同的服务器不同的JVM中，这样Java提供的单机锁就无能为力了。可是在分布式环境下，我们仍然需要有一个类似<code>synchronized</code>的锁，获得到锁的服务可以正确的访问共享资源。在分布式环境下能提供这样服务的我们称之为<strong>分布式锁</strong>。</p>
 <blockquote>
@@ -241,21 +243,21 @@
     <strong>作者:  </strong>Sam</a>
     </li>
     <li><span>发布时间: </span>2021-02-28 10:19:27</li>
-    <li><span>最后更新: </span>2021-03-12 23:04:39</li>
+    <li><span>最后更新: </span>2021-03-13 15:09:52</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
     <a href="/post/3c363844.html" target="_blank" title="分布式锁实现方案到底有哪些">https://ydstudios.gitee.io/post/3c363844.html</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
-      本网所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a>
-      许可协议，转载请保留原文链接及作者!
+      本网所有文章除特别声明外, 
+      禁止未经授权转载，违者依法追究相关法律责任!
     </li>
   </ul>
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/3c363844.html" data-id="ckm77ug7n005suxy1esybfv2l" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/3c363844.html" data-id="ckm7e3x9i005lbuy18yzc7z6v" class="article-share-link">Share</a>
       
       
     </footer>
