@@ -20,7 +20,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210312223315.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210312224045.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210312224101.png">
-<meta property="og:updated_time" content="2021-03-13T04:15:36.000Z">
+<meta property="og:updated_time" content="2021-03-14T09:55:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210313110021.jpeg">
   
@@ -204,6 +204,7 @@
 <p>四种集群方式优缺点都列出来了，很明显为了保证消息一定不会在Broker这个阶段丢失，生产环境一定要使用第四种集群方式：同步复制多Master多Slave模式。具体配置如下：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## master 节点配置</span></span><br><span class="line"><span class="string">brokerRole=SYNC_MASTER</span></span><br><span class="line"><span class="string">flushDiskType=SYNC_FLUSH</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## slave 节点配置</span></span><br><span class="line"><span class="string">brokerRole=SLAVE</span></span><br><span class="line"><span class="string">flushDiskType=ASYNC_FLUSH</span></span><br></pre></td></tr></table></figure>
 <p>加上前面的同步刷盘的配置，这样生产者发送消息给Broker，Master使用同步刷盘方式将消息保存到硬盘上，保存成功之后使用同步复制的方式将消息复制到Slave上，slave保存成功之后，Broker才返回给生产者ACK。</p>
+<h4 id="消息堆积"><a href="#消息堆积" class="headerlink" title="消息堆积"></a>消息堆积</h4><p>对于并发比较高的系统，如果下游的消费者宕机，则会导致大量的消息堆积在消息队列里，这样很容易会把服务器的硬盘撑爆，新的消息发送到消息队列，硬盘拒绝写入，这时消息很容易就会丢失。所以，部署消息队列的机器硬盘空间要比较充裕，且要有一定的监控，防止这种情况发生。</p>
 <h3 id="消费阶段"><a href="#消费阶段" class="headerlink" title="消费阶段"></a>消费阶段</h3><p>终于到了最后一个阶段，但是大家也不能大意。消费者拉取消息进行本地业务处理，业务处理完成才能提交ACK <code>ConsumeConcurrentlyStatus.CONSUME_SUCCESS</code>，切不可先提交ACK再进行业务处理。如果业务处理出现异常情况，可以先返回<code>ConsumeConcurrentlyStatus.RECONSUME_LATER</code>等待消息队列的下次重试。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"unique_group_name"</span>);</span><br><span class="line">consumer.subscribe(<span class="string">"TopicTest"</span>, <span class="string">"*"</span>);</span><br><span class="line">consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);</span><br><span class="line">consumer.setNamesrvAddr(<span class="string">"127.0.0.1:9876;127.0.0.1:9870"</span>);</span><br><span class="line">consumer.setConsumeMessageBatchMaxSize(<span class="number">1</span>);</span><br><span class="line">consumer.registerMessageListener((MessageListenerConcurrently) (msgs, context) -&gt; &#123;</span><br><span class="line"></span><br><span class="line">  MessageExt messageExt = msgs.get(<span class="number">0</span>);</span><br><span class="line">  <span class="comment">// 进行业务处理</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 处理失败返回ConsumeConcurrentlyStatus.RECONSUME_LATER</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 处理成功返回ConsumeConcurrentlyStatus.CONSUME_SUCCESS</span></span><br><span class="line">  <span class="keyword">return</span> ConsumeConcurrentlyStatus.CONSUME_SUCCESS;</span><br><span class="line">&#125;);</span><br><span class="line">consumer.start();</span><br></pre></td></tr></table></figure>
 
@@ -282,7 +283,7 @@
     <strong>作者:  </strong>Sam</a>
     </li>
     <li><span>发布时间: </span>2021-03-12 10:31:13</li>
-    <li><span>最后更新: </span>2021-03-13 12:15:36</li>
+    <li><span>最后更新: </span>2021-03-14 17:55:40</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
     <a href="/post/b6f085c7.html" target="_blank" title="如何保证RocketMQ消息不丢失">https://ydstudios.gitee.io/post/b6f085c7.html</a>
@@ -296,7 +297,7 @@
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/b6f085c7.html" data-id="ckm7e3x9n005tbuy10ux6eku6" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/b6f085c7.html" data-id="ckm8zfsp4005ljfy1dh9ib2in" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RocketMQ/" rel="tag">RocketMQ</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li></ul>
