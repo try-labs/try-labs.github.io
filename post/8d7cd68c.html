@@ -19,7 +19,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210320111207.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210320111201.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210320111152.png">
-<meta property="og:updated_time" content="2021-03-20T09:22:36.000Z">
+<meta property="og:updated_time" content="2021-03-22T15:09:32.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;gitee.com&#x2F;ydstudios&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;20210320172109.jpeg">
   
@@ -101,7 +101,7 @@
         <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本文是对之前开发中遇到的问题的一个总结，文章其实早就写好，但是觉得自己写的不够深入，就让文章一直躺在草稿箱里。昨天突然想起来了，就将文章重新修改了一下，还是发出来吧！</p>
 <a id="more"></a>
 
-<h3 id="问题1"><a href="#问题1" class="headerlink" title="问题1"></a>问题1</h3><p>当时我在开发一个异常日志记录接口，其实业务流程很简单，就是前端提交错误日志到后台，后台接受到信息处理一番，然后插入数据库。因为这个接口的并发量比较高，为了不影响其他业务，并且同时提高响应的速度。于是采用 @Async 注解+ Spring线程池的方案来实现。线程池的配置如下：</p>
+<h3 id="问题1：框架生成的SQL字段重复"><a href="#问题1：框架生成的SQL字段重复" class="headerlink" title="问题1：框架生成的SQL字段重复"></a>问题1：框架生成的SQL字段重复</h3><p>当时我在开发一个异常日志记录接口，其实业务流程很简单，就是前端提交错误日志到后台，后台接受到信息处理一番，然后插入数据库。因为这个接口的并发量比较高，为了不影响其他业务，并且同时提高响应的速度。于是采用 @Async 注解+ Spring线程池的方案来实现。线程池的配置如下：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">task:annotation-driven</span> <span class="attr">executor</span>=<span class="string">"jobExecutor"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">task:executor</span> <span class="attr">id</span>=<span class="string">"jobExecutor"</span> <span class="attr">pool-size</span>=<span class="string">"20"</span> <span class="attr">queue-capacity</span>=<span class="string">"500"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 
 <blockquote>
@@ -129,7 +129,7 @@
 </blockquote>
 <p>大佬已经将bug修复并发布了新版本到Maven仓库，项目中有发生上述问题的，直接升级对应的组件版本即可。既然官方已经给出了解决方案，我直接升级项目中的组件版本号就行了。结果我一更换项目中的版本，我的项目就再也没有启动起来。研究发现，组件版本相差太多，很多依赖发生了冲突。我项目中使用的是<code>1.1.6-RELEASE</code>,问题官方在版本<code>2.1.0-RELEASE</code>中修复。这组件版本差距太大贸然升级肯定是有很大的风险了，于是我放弃了！</p>
 <h5 id="另辟蹊径解决"><a href="#另辟蹊径解决" class="headerlink" title="另辟蹊径解决"></a>另辟蹊径解决</h5><p>既然你自带的插入方法有问题，我直接自定义一个插入方法不就得了。惹不起我还躲不起么！我最后又问了同事们最后都是怎么解决的，大家也都说是自定义SQL，而且都不再用框架自带的方法了，大家都很聪明呀！（其实这个还有后续，后面有一期开发过程中，需要用到批量插入的功能，我又偷懒用了框架自带的batch方法，又把我给坑了。从那之后，我再也没有用自带的方法了……）</p>
-<h3 id="问题2"><a href="#问题2" class="headerlink" title="问题2"></a>问题2</h3><p>我再排查上面的问题的时候，在框架里面看到了下面的代码：</p>
+<h3 id="问题2：主键数据溢出"><a href="#问题2：主键数据溢出" class="headerlink" title="问题2：主键数据溢出"></a>问题2：主键数据溢出</h3><p>我再排查上面的问题的时候，在框架里面看到了下面的代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Number <span class="title">execute4PrimaryKey</span><span class="params">(String sqlId, Map&lt;String, Object&gt; paramMap, KeyHolder keyHolder)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">long</span> startTimestamp = System.currentTimeMillis();</span><br><span class="line">    String sql = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    Object var8;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        MappedStatement mappedStatement = <span class="keyword">this</span>.configuration.getMappedStatement(sqlId, <span class="keyword">true</span>);</span><br><span class="line">        mappedStmtThreadLocal.set(mappedStatement);</span><br><span class="line">        sql = mappedStatement.getBoundSql(paramMap);</span><br><span class="line">        <span class="keyword">int</span> result = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">int</span> result;</span><br><span class="line">        <span class="keyword">if</span> (keyHolder != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.execution.update(sql, <span class="keyword">new</span> MapSqlParameterSource(DalUtils.mapIfNull(paramMap)), keyHolder);</span><br><span class="line">            result = keyHolder.getKey() == <span class="keyword">null</span> ? <span class="number">0</span> : keyHolder.getKey().intValue();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            result = <span class="keyword">this</span>.execution.update(sql, DalUtils.mapIfNull(paramMap));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Integer var9 = result;</span><br><span class="line">        <span class="keyword">return</span> var9;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception var13) &#123;</span><br><span class="line">        <span class="keyword">this</span>.throwException(var13);</span><br><span class="line">        var8 = <span class="keyword">null</span>;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        mappedStmtThreadLocal.remove();</span><br><span class="line">        logger.debug(<span class="string">"&#123;&#125; method:&#123;&#125;, sql:&#123;&#125;, param:&#123;&#125;"</span>, <span class="keyword">new</span> Object[]&#123;<span class="keyword">this</span>.logPrefix, <span class="string">"execute"</span>, sql, paramMap&#125;);</span><br><span class="line">        <span class="keyword">this</span>.logProfileLongTimeRunningSql(startTimestamp, sql, paramMap);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (Number)var8;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>大家仔细看看，这上面的代码有个不容易发现的问题。问题是这样的，我们系统中表的主键类型定义的都是<code>bigint</code>,这个类型对应的是Java中的<code>Long</code>类型，说到这大家明白了么？对了，就是数据溢出的问题。</p>
 <h4 id="复现问题-1"><a href="#复现问题-1" class="headerlink" title="复现问题"></a>复现问题</h4><p>我将表中的主键自增量设置为Java Int类型的最大值+1，也就是2147483648。然后数据库再新增一条记录，此时表中记录的主键是2147483648，但Java实体中的主键ID已经是个负数-2147483648了。</p>
@@ -138,7 +138,7 @@
 <p>使用Long类型时，要注意JavaScript接收后端Long类型数据精度丢失问题</p>
 </blockquote>
 <h4 id="解决问题-1"><a href="#解决问题-1" class="headerlink" title="解决问题"></a>解决问题</h4><p>这个问题还真不好另辟蹊径了，只能后面出现类似的问题，升级ORM框架的版本了。</p>
-<h3 id="问题3"><a href="#问题3" class="headerlink" title="问题3"></a>问题3</h3><p>其实这个问题我应该在看那篇内部文章的时候就应该发现的，但我当时就是没有看出来！此时的我留下了没有技术的泪水。对于问题1，当时那位大佬最终采用<code>synchronized</code>进行加锁解决多线程情况下共享变量读写问题，具体代码如下（敏感信息打码）：</p>
+<h3 id="问题3：共享变量并发问题"><a href="#问题3：共享变量并发问题" class="headerlink" title="问题3：共享变量并发问题"></a>问题3：共享变量并发问题</h3><p>其实这个问题我应该在看那篇内部文章的时候就应该发现的，但我当时就是没有看出来！此时的我留下了没有技术的泪水。对于问题1，当时那位大佬最终采用<code>synchronized</code>进行加锁解决多线程情况下共享变量读写问题，具体代码如下（敏感信息打码）：</p>
 <p>修改前的代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List&lt;DalColumn&gt; <span class="title">getDalColumnsWithoutId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.columnsWithoutId != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.columnsWithoutId;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.columnsWithoutId = <span class="keyword">new</span> ArrayList(<span class="keyword">this</span>.dalColumns.size() - <span class="number">1</span>);</span><br><span class="line">            Iterator var1 = <span class="keyword">this</span>.dalColumns.iterator();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span>(var1.hasNext()) &#123;</span><br><span class="line">                DalColumn column = (DalColumn)var1.next();</span><br><span class="line">                <span class="keyword">if</span> (!column.isIdColumn()) &#123;</span><br><span class="line">                    <span class="keyword">this</span>.columnsWithoutId.add(column);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.columnsWithoutId;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
@@ -173,7 +173,7 @@
     <strong>作者:  </strong>Sam</a>
     </li>
     <li><span>发布时间: </span>2021-03-20 11:08:58</li>
-    <li><span>最后更新: </span>2021-03-20 17:22:36</li>
+    <li><span>最后更新: </span>2021-03-22 23:09:32</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
     <a href="/post/8d7cd68c.html" target="_blank" title="一个SQL错误的问题让我找到了公司框架中三个bug">https://ydstudios.gitee.io/post/8d7cd68c.html</a>
@@ -187,7 +187,7 @@
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/8d7cd68c.html" data-id="ckmhixmwn0057f3y1h2zkht4c" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/8d7cd68c.html" data-id="ckmkssldl0057zky16xw59kte" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag">并发</a></li></ul>
@@ -197,6 +197,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/post/bf81348a.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          怎样做才能成为一个好的leader
+        
+      </div>
+    </a>
   
   
     <a href="/post/b6f085c7.html" id="article-nav-older" class="article-nav-link-wrap">
