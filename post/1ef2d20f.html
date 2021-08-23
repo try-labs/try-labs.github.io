@@ -1,18 +1,205 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Java获取一天的最大时间23:59:59和最小时间00:00:00 | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Java获取一天的最大时间23:59:59和最小时间00:00:00">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java获取一天的最大时间23:59:59和最小时间00:00:00">
+<meta property="og:url" content="https://ydstudios.gitee.io/post/1ef2d20f.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="Java获取一天的最大时间23:59:59和最小时间00:00:00">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-09-04T23:49:24.000Z">
+<meta property="article:modified_time" content="2019-12-09T15:03:26.000Z">
+<meta property="article:author" content="Sam">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ydstudios.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Java获取一天的最大时间23-59-59和最小时间00-00-00" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/1ef2d20f.html" class="article-date">
+  <time datetime="2019-09-04T23:49:24.000Z" itemprop="datePublished">2019-09-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java获取一天的最大时间23:59:59和最小时间00:00:00
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Java获取一天的最大时间23:59:59和最小时间00:00:00</p>
+<a id="more"></a>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span>  </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 加上毫秒数</span></span><br><span class="line">        SimpleDateFormat sDateFormat=<span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss.SSS"</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(sDateFormat.format(getAfterYearDateMaxTime(<span class="number">3</span>)));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 若干年之后的23:59:59</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> year</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Date <span class="title">getAfterYearDateMaxTime</span><span class="params">(<span class="keyword">int</span> year)</span></span>&#123;</span><br><span class="line">        Calendar calendarEnd = Calendar.getInstance();</span><br><span class="line">        calendarEnd.setTime(<span class="keyword">new</span> Date());</span><br><span class="line">        calendarEnd.add(Calendar.YEAR,year);</span><br><span class="line">        calendarEnd.set(Calendar.HOUR_OF_DAY, <span class="number">23</span>);</span><br><span class="line">        calendarEnd.set(Calendar.MINUTE, <span class="number">59</span>);</span><br><span class="line">        calendarEnd.set(Calendar.SECOND, <span class="number">59</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// MySQL数据库对于毫秒大于500的数据进行进位，所有就造成的MySQL中的时间多一秒,防止mysql自动加一秒,毫秒设为0</span></span><br><span class="line">        calendarEnd.set(Calendar.MILLISECOND, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> calendarEnd.getTime();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 当天的最大时间23:59:59</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Date <span class="title">getDayMaxTime</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Calendar calendarEnd = Calendar.getInstance();</span><br><span class="line">        calendarEnd.setTime(<span class="keyword">new</span> Date());</span><br><span class="line">        calendarEnd.set(Calendar.HOUR_OF_DAY, <span class="number">23</span>);</span><br><span class="line">        calendarEnd.set(Calendar.MINUTE, <span class="number">59</span>);</span><br><span class="line">        calendarEnd.set(Calendar.SECOND, <span class="number">59</span>);</span><br><span class="line"></span><br><span class="line">         <span class="comment">// MySQL数据库对于毫秒大于500的数据进行进位，所有就造成的MySQL中的时间多一秒,防止mysql自动加一秒,毫秒设为0</span></span><br><span class="line">        calendarEnd.set(Calendar.MILLISECOND, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> calendarEnd.getTime();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 当天的最小时间00:00:00</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Date <span class="title">getDayMinTime</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Calendar calendarEnd = Calendar.getInstance();</span><br><span class="line">        calendarEnd.setTime(<span class="keyword">new</span> Date());</span><br><span class="line">        calendarEnd.set(Calendar.HOUR_OF_DAY, <span class="number">00</span>);</span><br><span class="line">        calendarEnd.set(Calendar.MINUTE, <span class="number">00</span>);</span><br><span class="line">        calendarEnd.set(Calendar.SECOND, <span class="number">00</span>);</span><br><span class="line"></span><br><span class="line">         <span class="comment">// MySQL数据库对于毫秒大于500的数据进行进位，所有就造成的MySQL中的时间多一秒,防止mysql自动加一秒,毫秒设为0</span></span><br><span class="line">        calendarEnd.set(Calendar.MILLISECOND, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> calendarEnd.getTime();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>获取3年后的23:59:59，毫秒数设置成0</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2022</span>-<span class="number">09</span>-<span class="number">04</span> <span class="number">23</span>:<span class="number">59</span>:<span class="number">59.000</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2019-09-04 23:49:24</li>
+    <li><span>最后更新: </span>2019-12-09 23:03:26</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/1ef2d20f.html" target="_blank" title="Java获取一天的最大时间23:59:59和最小时间00:00:00">https://ydstudios.gitee.io/post/1ef2d20f.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外, 
+      禁止未经授权转载，违者依法追究相关法律责任!
+    </li>
+  </ul>
+<div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/1ef2d20f.html" data-id="ckso5qzrz001n3osz3vrs4osi" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/cf36aee2.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          解决nested exception is java.lang.IllegalArgumentException Could not resolve placeholder alipay.appId in string value  $ {alipay.appId}
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/35c3eddf.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older << </strong>
+      <div class="article-nav-title">IDEA下tomcat启动后 server乱码，Tomcat Catalina Log和Tomcat Localhost Log乱码问题的解决 </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
   </div>
 </body>
 </html>

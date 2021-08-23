@@ -1,18 +1,272 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>一个SQL错误的问题让我找到了公司框架中三个bug | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言本文是对之前开发中遇到的问题的一个总结，文章其实早就写好，但是觉得自己写的不够深入，就让文章一直躺在草稿箱里。昨天突然想起来了，就将文章重新修改了一下，还是发出来吧！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个SQL错误的问题让我找到了公司框架中三个bug">
+<meta property="og:url" content="https://ydstudios.gitee.io/post/8d7cd68c.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="前言本文是对之前开发中遇到的问题的一个总结，文章其实早就写好，但是觉得自己写的不够深入，就让文章一直躺在草稿箱里。昨天突然想起来了，就将文章重新修改了一下，还是发出来吧！">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20210320172109.jpeg">
+<meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20210320111207.png">
+<meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20210320111201.png">
+<meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20210320111152.png">
+<meta property="article:published_time" content="2021-03-20T11:08:58.000Z">
+<meta property="article:modified_time" content="2021-05-29T08:15:20.000Z">
+<meta property="article:author" content="Sam">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="并发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20210320172109.jpeg">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ydstudios.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-一个SQL错误的问题让我找到了公司框架中三个bug" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/8d7cd68c.html" class="article-date">
+  <time datetime="2021-03-20T11:08:58.000Z" itemprop="datePublished">2021-03-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      一个SQL错误的问题让我找到了公司框架中三个bug
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本文是对之前开发中遇到的问题的一个总结，文章其实早就写好，但是觉得自己写的不够深入，就让文章一直躺在草稿箱里。昨天突然想起来了，就将文章重新修改了一下，还是发出来吧！</p>
+<a id="more"></a>
+
+<h3 id="问题1：框架生成的SQL字段重复"><a href="#问题1：框架生成的SQL字段重复" class="headerlink" title="问题1：框架生成的SQL字段重复"></a>问题1：框架生成的SQL字段重复</h3><p>当时我在开发一个异常日志记录接口，其实业务流程很简单，就是前端提交错误日志到后台，后台接受到信息处理一番，然后插入数据库。因为这个接口的并发量比较高，为了不影响其他业务，并且同时提高响应的速度。于是采用 @Async 注解+ Spring线程池的方案来实现。线程池的配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">task:annotation-driven</span> <span class="attr">executor</span>=<span class="string">"jobExecutor"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">task:executor</span> <span class="attr">id</span>=<span class="string">"jobExecutor"</span> <span class="attr">pool-size</span>=<span class="string">"20"</span> <span class="attr">queue-capacity</span>=<span class="string">"500"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用<a href="task:annotation-driven/">task:annotation-driven/</a>开启异步时，一定要记得配置executor属性，不然异步使用的线程池其实是 <code>org.springframework.core.task.SimpleAsyncTaskExecutor</code>，但这个 SimpleAsyncTaskExecutor 不是真的线程池，这个类不重用线程，每次调用都会创建一个新的线程。</p>
+</blockquote>
+<p>关键部分伪代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Async</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">     ExceptionLogEntity exceptionLogEntity = <span class="keyword">new</span> ExceptionLogEntity();</span><br><span class="line">     exceptionLogEntity.setXX(<span class="string">""</span>);</span><br><span class="line">     exceptionLogEntity.setXXX(<span class="string">""</span>);</span><br><span class="line">     exceptionLogEntity.setIp(<span class="string">""</span>);</span><br><span class="line">     exceptionLogEntity.setUrl(<span class="string">""</span>);</span><br><span class="line">     exceptionLogEntity.setBusinessScene(<span class="string">""</span>);</span><br><span class="line">     exceptionLogEntity.setExceptionType(<span class="string">""</span>);</span><br><span class="line">     exceptionLogEntity.setExceptionDetailType(<span class="string">""</span>);</span><br><span class="line">     exceptionLogEntity.setExceptionMessage(<span class="string">""</span>);</span><br><span class="line">     exceptionLogEntity.setNoticeStatus(<span class="string">""</span>);</span><br><span class="line">     exceptionLogEntity.setCreateTime(<span class="keyword">new</span> Date());</span><br><span class="line">     exceptionLogEntity.setUpdateTime(<span class="keyword">new</span> Date());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     ExceptionLogEntity insert = exceptionLogDao.insert(exceptionLogEntity);</span><br><span class="line">     log.info(<span class="string">"实体的主键id=[&#123;&#125;]"</span>, insert.getId());</span><br><span class="line"></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>代码写完我简单的测试了一下，没啥问题后就告知前端可以对接了。可是奇怪的事情发生了，前端老铁告诉我接口有时会返回错误。我一听就感觉不对劲，心想这么简单的接口，我怎么可能有bug。于是我到日志平台上查询了一下日志，结果还真的是有问题。发现了一个SQL错误，具体错误如下(敏感信息已经处理)：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">Caused by: java.lang.reflect.InvocationTargetException</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`xx`</span>(<span class="string">`xx`</span>,<span class="string">`xx`</span>,<span class="string">`ip`</span>,<span class="string">`url`</span>,<span class="string">`business_scene`</span>,<span class="string">`exception_type`</span>,<span class="string">`exception_detail_type`</span>,<span class="string">`exception_message`</span>,<span class="string">`notice_status`</span>,<span class="string">`create_time`</span>,<span class="string">`update_time`</span>,<span class="string">`xx`</span>,<span class="string">`member_phone`</span>,<span class="string">`ip`</span>,<span class="string">`url`</span>,<span class="string">`business_scene`</span>,<span class="string">`exception_type`</span>,<span class="string">`exception_detail_type`</span>,<span class="string">`exception_message`</span>,<span class="string">`notice_status`</span>,<span class="string">`create_time`</span>,<span class="string">`update_time`</span>) <span class="keyword">VALUES</span>(<span class="string">''</span>,<span class="string">''</span>,<span class="string">''</span>,<span class="string">''</span>,<span class="string">''</span>,<span class="string">''</span>,<span class="string">''</span>,<span class="string">''</span>,<span class="string">''</span>,<span class="string">'2020-01-08 19</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">at sun.reflect.GeneratedMethodAccessor115.invoke(Unknown Source)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">--------------------------------------------</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">at java.lang.reflect.Method.invoke(Method.java:498)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">at coderead.mybatis.log.JdbcCommonCollects$PreparedStatementHandler.invoke(JdbcCommonCollects.java:118)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">... 21 more</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Caused by: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Column '</span>update_time<span class="string">' specified twice</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">at java.lang.reflect.Constructor.newInstance(Constructor.java:423)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210320172109.jpeg" alt="问题真多"></p>
+<h4 id="复现问题"><a href="#复现问题" class="headerlink" title="复现问题"></a>复现问题</h4><p>这个问题简单的来说就是SQL中的字段发生了重复，<code>Column &#39;update_time&#39; specified twice</code>。其实不止update_time字段发生了重复，是很多字段都发生了重复。因为这个接口除了并发高一点之外，和其他的接口没有什么特别之处！突然我脑子里灵光一闪，难道是这个接口并发较高，导致框架在生成INSERT类型的SQL发生了错误？？？要是这样的话，我直接创造一个这样的场景不就可以实现了嘛！然后我写下了下面的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++) &#123;</span><br><span class="line">            ExceptionLogEntity exceptionLogEntity = <span class="keyword">new</span> ExceptionLogEntity();</span><br><span class="line">            exceptionLogEntity.setXX(<span class="string">""</span>);</span><br><span class="line">            exceptionLogEntity.setXXX(<span class="string">""</span>);</span><br><span class="line">            exceptionLogEntity.setIp(<span class="string">""</span>);</span><br><span class="line">            exceptionLogEntity.setUrl(<span class="string">""</span>);</span><br><span class="line">            exceptionLogEntity.setBusinessScene(<span class="string">""</span>);</span><br><span class="line">            exceptionLogEntity.setExceptionType(<span class="string">""</span>);</span><br><span class="line">            exceptionLogEntity.setExceptionDetailType(<span class="string">""</span>);</span><br><span class="line">            exceptionLogEntity.setExceptionMessage(<span class="string">""</span>);</span><br><span class="line">            exceptionLogEntity.setNoticeStatus(<span class="string">""</span>);</span><br><span class="line">            exceptionLogEntity.setCreateTime(<span class="keyword">new</span> Date());</span><br><span class="line">            exceptionLogEntity.setUpdateTime(<span class="keyword">new</span> Date());</span><br><span class="line"></span><br><span class="line">            Thread thread = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                exceptionLogDao.insert(exceptionLogEntity);</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            thread.start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>代码写完直接重启项目，最后一触发上面的代码。果然，同样的错误又出现了。这里我先介绍下使用的ORM框架：</p>
+<blockquote>
+<p>此ORM框架是集团O2O研发中心研发的基础组件，提供同Mybatis一样的功能：只需定义接口，无需写实现类。此外，对单表操作还封装了一套常用的增删改查处理，连接口也无需再定义，对开发人员非常友好，大大降低了冗长的jdbc操作代码量，提升了开发效率。</p>
+</blockquote>
+<p>我问了问旁边的同事，在使用公司的ORM框架自带的INSERT方法时，有没有遇到SQL列重复的问题吗?嘿你还别说，大家异口同声说遇到过。那厉害了，看来这真的不是个别现象，真的是框架的bug。于是乎我花了一点时间来找找看到底是在哪个地方出现了问题，皇天不负有心人我还真的找到了，具体的代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List&lt;DalColumn&gt; <span class="title">getDalColumnsWithoutId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.columnsWithoutId != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.columnsWithoutId;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.columnsWithoutId = <span class="keyword">new</span> ArrayList(<span class="keyword">this</span>.dalColumns.size() - <span class="number">1</span>);</span><br><span class="line">        Iterator var1 = <span class="keyword">this</span>.dalColumns.iterator();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(var1.hasNext()) &#123;</span><br><span class="line">            DalColumn column = (DalColumn)var1.next();</span><br><span class="line">            <span class="keyword">if</span> (!column.isIdColumn()) &#123;</span><br><span class="line">                <span class="keyword">this</span>.columnsWithoutId.add(column);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.columnsWithoutId;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>问题就出在<code>columnsWithoutId</code>上，它的类型是<code>List</code>，是所在类的一个属性默认为null，保存的是一个表除主键ID之外的所有字段。上面的代码在单线程情况下没有问题，但是在多线程的情况下就问题大了。<code>columnsWithoutId</code>在多线程情况下就是一个<code>线程共享变量</code>，假设在某个时机有多个线程恰好执行到<code>if</code>代码块，发现<code>columnsWithoutId</code>的值为null，则就会同时执行<code>else</code>代码块，那这时就会执行多次循环，自然<code>columnsWithoutId</code>中的字段就会出现了重复。</p>
+<h4 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h4><p>这个问题已经找到，那接下来就差一个解决方案了。</p>
+<h5 id="官方修复"><a href="#官方修复" class="headerlink" title="官方修复"></a>官方修复</h5><p>我当时想既然这个框架是公司研发中心提供的基础组件，那就是说明在公司内部会有很多项目组使用，问题说不定早就被修复了。你还别说在公司的wiki上我还真的找到了，有位负责这个组件的大佬在wiki上分享了”单表插入偶发列重复问题定位与解决”的文章。(文章地址我就不发了，公司内部地址发出来你们也访问不了)文章里详细的描述了问题发生的场景（和我上面描述的差不多）、问题定位过程还有解决方案。摘选文章上的解决方案：</p>
+<blockquote>
+<p>明确了是线程安全的问题，解决方案就好确定了，解决线程安全有三种方案：<br>方案一：互斥同步——synchronized,ReentrantLock<br>方案二：非阻塞同步——CAS<br>方案三：无同步方案:——ThreadLocal<br>结合业务场景，综合分析，最终确认使用方案一，采用synchronized关键字，使用双重检查锁的方式解决此问题。</p>
+</blockquote>
+<p>大佬已经将bug修复并发布了新版本到Maven仓库，项目中有发生上述问题的，直接升级对应的组件版本即可。既然官方已经给出了解决方案，我直接升级项目中的组件版本号就行了。结果我一更换项目中的版本，我的项目就再也没有启动起来。研究发现，组件版本相差太多，很多依赖发生了冲突。我项目中使用的是<code>1.1.6-RELEASE</code>,问题官方在版本<code>2.1.0-RELEASE</code>中修复。这组件版本差距太大贸然升级肯定是有很大的风险了，于是我放弃了！</p>
+<h5 id="另辟蹊径解决"><a href="#另辟蹊径解决" class="headerlink" title="另辟蹊径解决"></a>另辟蹊径解决</h5><p>既然你自带的插入方法有问题，我直接自定义一个插入方法不就得了。惹不起我还躲不起么！我最后又问了同事们最后都是怎么解决的，大家也都说是自定义SQL，而且都不再用框架自带的方法了，大家都很聪明呀！（其实这个还有后续，后面有一期开发过程中，需要用到批量插入的功能，我又偷懒用了框架自带的batch方法，又把我给坑了。从那之后，我再也没有用自带的方法了……）</p>
+<h3 id="问题2：主键数据溢出"><a href="#问题2：主键数据溢出" class="headerlink" title="问题2：主键数据溢出"></a>问题2：主键数据溢出</h3><p>我再排查上面的问题的时候，在框架里面看到了下面的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Number <span class="title">execute4PrimaryKey</span><span class="params">(String sqlId, Map&lt;String, Object&gt; paramMap, KeyHolder keyHolder)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">long</span> startTimestamp = System.currentTimeMillis();</span><br><span class="line">    String sql = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    Object var8;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        MappedStatement mappedStatement = <span class="keyword">this</span>.configuration.getMappedStatement(sqlId, <span class="keyword">true</span>);</span><br><span class="line">        mappedStmtThreadLocal.set(mappedStatement);</span><br><span class="line">        sql = mappedStatement.getBoundSql(paramMap);</span><br><span class="line">        <span class="keyword">int</span> result = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">int</span> result;</span><br><span class="line">        <span class="keyword">if</span> (keyHolder != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.execution.update(sql, <span class="keyword">new</span> MapSqlParameterSource(DalUtils.mapIfNull(paramMap)), keyHolder);</span><br><span class="line">            result = keyHolder.getKey() == <span class="keyword">null</span> ? <span class="number">0</span> : keyHolder.getKey().intValue();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            result = <span class="keyword">this</span>.execution.update(sql, DalUtils.mapIfNull(paramMap));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Integer var9 = result;</span><br><span class="line">        <span class="keyword">return</span> var9;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception var13) &#123;</span><br><span class="line">        <span class="keyword">this</span>.throwException(var13);</span><br><span class="line">        var8 = <span class="keyword">null</span>;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        mappedStmtThreadLocal.remove();</span><br><span class="line">        logger.debug(<span class="string">"&#123;&#125; method:&#123;&#125;, sql:&#123;&#125;, param:&#123;&#125;"</span>, <span class="keyword">new</span> Object[]&#123;<span class="keyword">this</span>.logPrefix, <span class="string">"execute"</span>, sql, paramMap&#125;);</span><br><span class="line">        <span class="keyword">this</span>.logProfileLongTimeRunningSql(startTimestamp, sql, paramMap);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (Number)var8;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>大家仔细看看，这上面的代码有个不容易发现的问题。问题是这样的，我们系统中表的主键类型定义的都是<code>bigint</code>,这个类型对应的是Java中的<code>Long</code>类型，说到这大家明白了么？对了，就是数据溢出的问题。</p>
+<h4 id="复现问题-1"><a href="#复现问题-1" class="headerlink" title="复现问题"></a>复现问题</h4><p>我将表中的主键自增量设置为Java Int类型的最大值+1，也就是2147483648。然后数据库再新增一条记录，此时表中记录的主键是2147483648，但Java实体中的主键ID已经是个负数-2147483648了。</p>
+<p><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210320111207.png" alt="数据溢出"></p>
+<blockquote>
+<p>使用Long类型时，要注意JavaScript接收后端Long类型数据精度丢失问题</p>
+</blockquote>
+<h4 id="解决问题-1"><a href="#解决问题-1" class="headerlink" title="解决问题"></a>解决问题</h4><p>这个问题还真不好另辟蹊径了，只能后面出现类似的问题，升级ORM框架的版本了。</p>
+<h3 id="问题3：共享变量并发问题"><a href="#问题3：共享变量并发问题" class="headerlink" title="问题3：共享变量并发问题"></a>问题3：共享变量并发问题</h3><p>其实这个问题我应该在看那篇内部文章的时候就应该发现的，但我当时就是没有看出来！此时的我留下了没有技术的泪水。对于问题1，当时那位大佬最终采用<code>synchronized</code>进行加锁解决多线程情况下共享变量读写问题，具体代码如下（敏感信息打码）：</p>
+<p>修改前的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List&lt;DalColumn&gt; <span class="title">getDalColumnsWithoutId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.columnsWithoutId != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.columnsWithoutId;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.columnsWithoutId = <span class="keyword">new</span> ArrayList(<span class="keyword">this</span>.dalColumns.size() - <span class="number">1</span>);</span><br><span class="line">            Iterator var1 = <span class="keyword">this</span>.dalColumns.iterator();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span>(var1.hasNext()) &#123;</span><br><span class="line">                DalColumn column = (DalColumn)var1.next();</span><br><span class="line">                <span class="keyword">if</span> (!column.isIdColumn()) &#123;</span><br><span class="line">                    <span class="keyword">this</span>.columnsWithoutId.add(column);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.columnsWithoutId;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>修改后的代码(引用文章中的代码截图)：</p>
+<p><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210320111201.png" alt="共享变量共享问题代码"></p>
+<h4 id="问题复现"><a href="#问题复现" class="headerlink" title="问题复现"></a>问题复现</h4><p>这个问题要复现的话，不太好复现，因为情况是比较极端的，但是在复杂的生产环境还是很可能出现的。</p>
+<p>举例说明：</p>
+<p>假设有A、B两个线程，A线程执行到for循环处，B线程恰好执行到最开始的if判断处，由于此时的cloumnsWithId已经被A线程赋值，肯定不为null，然后线程B就直接返回了，导致B线程调用者获得了一个空的或者保存部分字段的cloumnsWithId。这种情况最终导致的结果是INSERT SQL中的字段缺失。</p>
+<h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h4><p>对于多线程下的共享变量，我们一定要坚持<code>读读可并行，读写要排队</code>的原则。当然能不加锁的话，也是不错的选择。</p>
+<p>我发现这个问题之后，就找到了前文中说的大佬，跟他反馈了我的想法，并提出我的解决方案。</p>
+<ol>
+<li><p>直接在<code>getDalColumnsWithoutId</code>方法上添加 <code>synchronized</code>。</p>
+</li>
+<li><p>修改第一个if判断逻辑，然后使用<code>synchronized</code>锁代码块。</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List&lt;DalColumn&gt; <span class="title">getDalColumnsWithoutId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> size = CollectionUtils.size(<span class="keyword">this</span>.dalColumns);</span><br><span class="line">    <span class="keyword">if</span> (CollectionUtils.size(<span class="keyword">this</span>.columnsWithoutId) == size &amp;&amp; size &gt; <span class="number">0</span> ) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.columnsWithoutId;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">synchronized</span>(lock)&#123;</span><br><span class="line">        <span class="keyword">if</span> (columnsWithoutId == <span class="keyword">null</span>) &#123;</span><br><span class="line">            columnsWithoutId = <span class="keyword">new</span> ArrayList&lt;&gt;(size*<span class="number">2</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (DalColumn column :  <span class="keyword">this</span>.dalColumns)&#123;</span><br><span class="line">            <span class="keyword">if</span> (!column.isIdColumn()) &#123;</span><br><span class="line">                <span class="keyword">this</span>.columnsWithoutId.add(column);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.columnsWithoutId;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当时与大佬的沟通截图，来自大佬的肯定：</p>
+<img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210320111152.png" alt="沟通反馈记录" style="zoom:35%;" />
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在遇到问题的时候不要着急，一定要学会大胆假设，然后小心求证。要勇敢的质疑权威，不要认为既然已经是框架了就没有bug。例如Spring从当初的1.0到现在版本号都超过5.0了，除了给Spring增加新的功能，其他的升级就是在修复Spring中的bug。做出自己的假设之后，就要进行场景复现，一个正常的bug是可以不断的被复现的。复现了问题那就是找到问题的症结所在，剩下的就是如何去解决啦！</p>
+
+      
+    </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2021-03-20 11:08:58</li>
+    <li><span>最后更新: </span>2021-05-29 16:15:20</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/8d7cd68c.html" target="_blank" title="一个SQL错误的问题让我找到了公司框架中三个bug">https://ydstudios.gitee.io/post/8d7cd68c.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外, 
+      禁止未经授权转载，违者依法追究相关法律责任!
+    </li>
+  </ul>
+<div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/8d7cd68c.html" data-id="ckso5qztt00963oszb2ws27cn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag">并发</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/bf81348a.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          怎样做才能成为一个好的leader
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/b6f085c7.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older << </strong>
+      <div class="article-nav-title">如何保证RocketMQ消息不丢失</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
   </div>
 </body>
 </html>
