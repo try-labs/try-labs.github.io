@@ -1,18 +1,206 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>如何正确的修改Python的pip自带的源 | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Python中的pip安装依赖包时默认访问https:&#x2F;&#x2F;pypi.python.org&#x2F;simple&#x2F;，但是经常出现不稳定以及访问速度非常慢的情况，国内厂商提供的pipy镜像目前可用的有： 1.http:&#x2F;&#x2F;pypi.douban.com&#x2F; 豆瓣2.http:&#x2F;&#x2F;pypi.mirrors.ustc.edu.cn&#x2F;simple&#x2F; 中国科学技术大学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何正确的修改Python的pip自带的源">
+<meta property="og:url" content="https://ydstudios.gitee.io/post/cf179e51.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="Python中的pip安装依赖包时默认访问https:&#x2F;&#x2F;pypi.python.org&#x2F;simple&#x2F;，但是经常出现不稳定以及访问速度非常慢的情况，国内厂商提供的pipy镜像目前可用的有： 1.http:&#x2F;&#x2F;pypi.douban.com&#x2F; 豆瓣2.http:&#x2F;&#x2F;pypi.mirrors.ustc.edu.cn&#x2F;simple&#x2F; 中国科学技术大学">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-11-13T22:06:56.000Z">
+<meta property="article:modified_time" content="2019-12-09T15:03:26.000Z">
+<meta property="article:author" content="Sam">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ydstudios.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-如何正确的修改Python的pip自带的源" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/cf179e51.html" class="article-date">
+  <time datetime="2017-11-13T22:06:56.000Z" itemprop="datePublished">2017-11-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      如何正确的修改Python的pip自带的源
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>  Python中的pip安装依赖包时默认访问<a href="https://pypi.python.org/simple/，但是经常出现不稳定以及访问速度非常慢的情况，国内厂商提供的pipy镜像目前可用的有：" target="_blank" rel="noopener">https://pypi.python.org/simple/，但是经常出现不稳定以及访问速度非常慢的情况，国内厂商提供的pipy镜像目前可用的有：</a></p>
+<h4 id="1-http-pypi-douban-com-豆瓣"><a href="#1-http-pypi-douban-com-豆瓣" class="headerlink" title="1.http://pypi.douban.com/ 豆瓣"></a>1.<a href="http://pypi.douban.com/" target="_blank" rel="noopener">http://pypi.douban.com/</a> 豆瓣</h4><h4 id="2-http-pypi-mirrors-ustc-edu-cn-simple-中国科学技术大学"><a href="#2-http-pypi-mirrors-ustc-edu-cn-simple-中国科学技术大学" class="headerlink" title="2.http://pypi.mirrors.ustc.edu.cn/simple/ 中国科学技术大学"></a>2.<a href="http://pypi.mirrors.ustc.edu.cn/simple/" target="_blank" rel="noopener">http://pypi.mirrors.ustc.edu.cn/simple/</a> 中国科学技术大学</h4><a id="more"></a>
+<p>有两种方式使用我们自己指定的镜像源，第一种是手动指定：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip -i http://pypi.douban.com/simple install Flask -- trusted-host pypi.douban.com</span><br></pre></td></tr></table></figure>
+
+<p>不过这种方式在每次安装时都要手动指定，所以第二种方法更加方便，在当前用户目录下创建.pip文件夹中，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">ini=<span class="string">"""[global]</span></span><br><span class="line"><span class="string">index-url = https://pypi.doubanio.com/simple/</span></span><br><span class="line"><span class="string">[install]</span></span><br><span class="line"><span class="string">trusted-host=pypi.doubanio.com</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">pippath=os.environ[<span class="string">"USERPROFILE"</span>]+<span class="string">"\\pip\\"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(pippath):</span><br><span class="line">    os.mkdir(pippath)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(pippath+<span class="string">"pip.ini"</span>,<span class="string">"w+"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(ini)</span><br></pre></td></tr></table></figure>
+<p>  个人觉得第二种方法最佳，一次执行终身无忧！</p>
+
+      
+    </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2017-11-13 22:06:56</li>
+    <li><span>最后更新: </span>2019-12-09 23:03:26</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/cf179e51.html" target="_blank" title="如何正确的修改Python的pip自带的源">https://ydstudios.gitee.io/post/cf179e51.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外, 
+      禁止未经授权转载，违者依法追究相关法律责任!
+    </li>
+  </ul>
+<div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/cf179e51.html" data-id="cksqx4w91008pdkszbco24xk9" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/adb014f8.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          隐藏Nginx或Apache以及PHP的版本号
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/6652f017.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older << </strong>
+      <div class="article-nav-title">Linux文件时间详解 ctime、mtime和atime</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
   </div>
 </body>
 </html>

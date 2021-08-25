@@ -1,18 +1,215 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>IDEA下tomcat启动后 server乱码，Tomcat Catalina Log和Tomcat Localhost Log乱码问题的解决  | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言不改的话，不影响使用，因为报错基本都是英文显示的。但是这几个中文字乱码的看着难受。 乱码的根本原因： Windows系统的cmd是GBK编码的，所以IDEA的下方log输出的部分的编码也是GBK的，然而Tomcat 9.0 版本默认log输出是UTF-8编码的，采用了两种不同的编码方式就会导致乱码。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IDEA下tomcat启动后 server乱码，Tomcat Catalina Log和Tomcat Localhost Log乱码问题的解决 ">
+<meta property="og:url" content="https://ydstudios.gitee.io/post/35c3eddf.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="前言不改的话，不影响使用，因为报错基本都是英文显示的。但是这几个中文字乱码的看着难受。 乱码的根本原因： Windows系统的cmd是GBK编码的，所以IDEA的下方log输出的部分的编码也是GBK的，然而Tomcat 9.0 版本默认log输出是UTF-8编码的，采用了两种不同的编码方式就会导致乱码。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-06-03T23:48:03.000Z">
+<meta property="article:modified_time" content="2019-12-09T15:03:26.000Z">
+<meta property="article:author" content="Sam">
+<meta property="article:tag" content="tomcat">
+<meta property="article:tag" content="idea">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ydstudios.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-IDEA下tomcat启动后-server乱码，Tomcat-Catalina-Log和Tomcat-Localhost-Log乱码问题的解决" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/35c3eddf.html" class="article-date">
+  <time datetime="2019-06-03T23:48:03.000Z" itemprop="datePublished">2019-06-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      IDEA下tomcat启动后 server乱码，Tomcat Catalina Log和Tomcat Localhost Log乱码问题的解决 
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>不改的话，不影响使用，因为报错基本都是英文显示的。但是这几个中文字乱码的看着难受。</p>
+<p>乱码的根本原因：</p>
+<p>Windows系统的cmd是GBK编码的，所以IDEA的下方log输出的部分的编码也是GBK的，然而Tomcat 9.0 版本默认log输出是UTF-8编码的，采用了两种不同的编码方式就会导致乱码。</p>
+<a id="more"></a>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><h5 id="方法一-修改Tomcat-日志输出为GBK编码"><a href="#方法一-修改Tomcat-日志输出为GBK编码" class="headerlink" title="方法一 修改Tomcat 日志输出为GBK编码"></a>方法一 修改Tomcat 日志输出为GBK编码</h5><p>先打开tomcat的安装目录</p>
+<p>编辑 conf 目录下的 logging.properties,把里面的UTF-8 通通改成 GBK,保存，重启Tomcat，即可生效。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"># Licensed to the Apache Software Foundation (ASF) under one or more</span><br><span class="line"># contributor license agreements.  See the NOTICE file distributed with</span><br><span class="line"># this work for additional information regarding copyright ownership.</span><br><span class="line"># The ASF licenses this file to You under the Apache License, Version 2.0</span><br><span class="line"># (the "License"); you may not use this file except in compliance with</span><br><span class="line"># the License.  You may obtain a copy of the License at</span><br><span class="line">#</span><br><span class="line">#     http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line">#</span><br><span class="line"># Unless required by applicable law or agreed to in writing, software</span><br><span class="line"># distributed under the License is distributed on an "AS IS" BASIS,</span><br><span class="line"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line"># See the License for the specific language governing permissions and</span><br><span class="line"># limitations under the License.</span><br><span class="line"></span><br><span class="line">handlers = 1catalina.org.apache.juli.FileHandler, 2localhost.org.apache.juli.FileHandler, 3manager.org.apache.juli.FileHandler, 4host-manager.org.apache.juli.FileHandler, java.util.logging.ConsoleHandler</span><br><span class="line"></span><br><span class="line">.handlers = 1catalina.org.apache.juli.FileHandler, java.util.logging.ConsoleHandler</span><br><span class="line"></span><br><span class="line">############################################################</span><br><span class="line"># Handler specific properties.</span><br><span class="line"># Describes specific configuration info for Handlers.</span><br><span class="line">############################################################</span><br><span class="line"></span><br><span class="line">1catalina.org.apache.juli.FileHandler.level = FINE</span><br><span class="line">1catalina.org.apache.juli.FileHandler.directory = $&#123;catalina.base&#125;/logs</span><br><span class="line">1catalina.org.apache.juli.FileHandler.prefix = catalina.</span><br><span class="line">1catalina.org.apache.juli.FileHandler.encoding = UTF-8</span><br><span class="line"></span><br><span class="line">2localhost.org.apache.juli.FileHandler.level = FINE</span><br><span class="line">2localhost.org.apache.juli.FileHandler.directory = $&#123;catalina.base&#125;/logs</span><br><span class="line">2localhost.org.apache.juli.FileHandler.prefix = localhost.</span><br><span class="line">2localhost.org.apache.juli.FileHandler.encoding = UTF-8</span><br><span class="line"></span><br><span class="line">3manager.org.apache.juli.FileHandler.level = FINE</span><br><span class="line">3manager.org.apache.juli.FileHandler.directory = $&#123;catalina.base&#125;/logs</span><br><span class="line">3manager.org.apache.juli.FileHandler.prefix = manager.</span><br><span class="line">3manager.org.apache.juli.FileHandler.encoding = UTF-8</span><br><span class="line"></span><br><span class="line">4host-manager.org.apache.juli.FileHandler.level = FINE</span><br><span class="line">4host-manager.org.apache.juli.FileHandler.directory = $&#123;catalina.base&#125;/logs</span><br><span class="line">4host-manager.org.apache.juli.FileHandler.prefix = host-manager.</span><br><span class="line">4host-manager.org.apache.juli.FileHandler.encoding = UTF-8</span><br><span class="line"></span><br><span class="line">java.util.logging.ConsoleHandler.level = FINE</span><br><span class="line">java.util.logging.ConsoleHandler.formatter = java.util.logging.SimpleFormatter</span><br><span class="line">java.util.logging.ConsoleHandler.encoding = UTF-8</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">############################################################</span><br><span class="line"># Facility specific properties.</span><br><span class="line"># Provides extra control for each logger.</span><br><span class="line">############################################################</span><br><span class="line"></span><br><span class="line">org.apache.catalina.core.ContainerBase.[Catalina].[localhost].level = INFO</span><br><span class="line">org.apache.catalina.core.ContainerBase.[Catalina].[localhost].handlers = 2localhost.org.apache.juli.FileHandler</span><br><span class="line"></span><br><span class="line">org.apache.catalina.core.ContainerBase.[Catalina].[localhost].[/manager].level = INFO</span><br><span class="line">org.apache.catalina.core.ContainerBase.[Catalina].[localhost].[/manager].handlers = 3manager.org.apache.juli.FileHandler</span><br><span class="line"></span><br><span class="line">org.apache.catalina.core.ContainerBase.[Catalina].[localhost].[/host-manager].level = INFO</span><br><span class="line">org.apache.catalina.core.ContainerBase.[Catalina].[localhost].[/host-manager].handlers = 4host-manager.org.apache.juli.FileHandler</span><br><span class="line"></span><br><span class="line"># For example, set the org.apache.catalina.util.LifecycleBase logger to log</span><br><span class="line"># each component that extends LifecycleBase changing state:</span><br><span class="line">#org.apache.catalina.util.LifecycleBase.level = FINE</span><br><span class="line"></span><br><span class="line"># To see debug messages in TldLocationsCache, uncomment the following line:</span><br><span class="line">#org.apache.jasper.compiler.TldLocationsCache.level = FINE</span><br><span class="line"></span><br><span class="line">java.util.logging.ConsoleHandler.encoding = UTF-8</span><br></pre></td></tr></table></figure>
+
+<h5 id="方法二-修改IDEA为UTF-8编码"><a href="#方法二-修改IDEA为UTF-8编码" class="headerlink" title="方法二 修改IDEA为UTF-8编码"></a>方法二 修改IDEA为UTF-8编码</h5><p>idea.exe.vmoptions、idea64.exe.vmoptions</p>
+<p>修改idea.exe.vmoptions和idea64.exe.vmoptions这两个文件</p>
+<p>分别在这两个文件的最后，添加一行 -Dfile.encoding=UTF-8</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-Xms128m</span><br><span class="line">-Xmx750m</span><br><span class="line">-XX:ReservedCodeCacheSize=<span class="number">240</span>m</span><br><span class="line">-XX:+UseConcMarkSweepGC</span><br><span class="line">-XX:SoftRefLRUPolicyMSPerMB=<span class="number">50</span></span><br><span class="line">-ea</span><br><span class="line">-Dsun.io.useCanonCaches=<span class="keyword">false</span></span><br><span class="line">-Djava.net.preferIPv4Stack=<span class="keyword">true</span></span><br><span class="line">-Djdk.http.auth.tunneling.disabledSchemes=<span class="string">""</span></span><br><span class="line">-XX:+HeapDumpOnOutOfMemoryError</span><br><span class="line">-XX:-OmitStackTraceInFastThrow</span><br><span class="line"></span><br><span class="line">-Dfile.encoding=UTF-<span class="number">8</span></span><br></pre></td></tr></table></figure>
+<p>这个参数的作用是强制系统文件使用UTF-8编码,改完之后保存，重启IDEA即可。</p>
+
+      
+    </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2019-06-03 23:48:03</li>
+    <li><span>最后更新: </span>2019-12-09 23:03:26</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/35c3eddf.html" target="_blank" title="IDEA下tomcat启动后 server乱码，Tomcat Catalina Log和Tomcat Localhost Log乱码问题的解决 ">https://ydstudios.gitee.io/post/35c3eddf.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外, 
+      禁止未经授权转载，违者依法追究相关法律责任!
+    </li>
+  </ul>
+<div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/35c3eddf.html" data-id="cksqx4w4f000pdksz64qacd8q" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/idea/" rel="tag">idea</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/1ef2d20f.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          Java获取一天的最大时间23:59:59和最小时间00:00:00
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/d7445999.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older << </strong>
+      <div class="article-nav-title">JavaScript如何面向对象</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
   </div>
 </body>
 </html>

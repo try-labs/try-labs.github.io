@@ -1,18 +1,220 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Mybatis方法传多个参数（三种解决方案） | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Mybatis的Mapper接口的参数，一般是一个对象，但如果不是对象，并且有多个参数的时候我们应该怎样做呢？ 我们的第一个想法是把参数封装成一个java.util.Map类型，然后在方法的注释上面写上map的key是什么，但是，这样的做法明显不够直观，不能够清楚的看出方法的参数是什么，而且影响到了java的多态性（方法名相同，参数数量或类型不同）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mybatis方法传多个参数（三种解决方案）">
+<meta property="og:url" content="https://ydstudios.gitee.io/post/98398c3d.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="Mybatis的Mapper接口的参数，一般是一个对象，但如果不是对象，并且有多个参数的时候我们应该怎样做呢？ 我们的第一个想法是把参数封装成一个java.util.Map类型，然后在方法的注释上面写上map的key是什么，但是，这样的做法明显不够直观，不能够清楚的看出方法的参数是什么，而且影响到了java的多态性（方法名相同，参数数量或类型不同）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-07-01T22:17:31.000Z">
+<meta property="article:modified_time" content="2019-12-09T15:03:26.000Z">
+<meta property="article:author" content="Sam">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="mybatis">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ydstudios.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Mybatis方法传多个参数（三种解决方案）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/98398c3d.html" class="article-date">
+  <time datetime="2018-07-01T22:17:31.000Z" itemprop="datePublished">2018-07-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Mybatis方法传多个参数（三种解决方案）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Mybatis的Mapper接口的参数，一般是一个对象，但如果不是对象，并且有多个参数的时候我们应该怎样做呢？</p>
+<p>我们的第一个想法是把参数封装成一个java.util.Map类型，然后在方法的注释上面写上map的key是什么，但是，这样的做法明显不够直观，不能够清楚的看出方法的参数是什么，而且影响到了java的多态性（方法名相同，参数数量或类型不同）。</p>
+<a id="more"></a>
+<p> 1.多个形参传递多参数<br>Dao层的函数方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">selectUser</span><span class="params">(String name,String area)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>对应的Mapper.xml文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"selectUser"</span> <span class="attr">resultMap</span>=<span class="string">"BaseResultMap"</span>&gt;</span></span><br><span class="line">    select *  from user_user  where user_name = #&#123;0&#125; and user_area=#&#123;1&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>其中，#{0}代表接收的是dao层中的第一个参数，#{1}代表dao层中第二参数，更多参数以此类推即可。<br> 2.采用Map传递多参数<br>Dao层的函数方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">selectUser</span><span class="params">(Map paramMap)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>对应的Mapper.xml文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"selectUser"</span> <span class="attr">resultMap</span>=<span class="string">"BaseResultMap"</span>&gt;</span></span><br><span class="line">   select *  from user_user   where user_name = #&#123;userName,jdbcType=VARCHAR&#125; and user_area=#&#123;userArea,jdbcType=VARCHAR&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Service层调用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> User <span class="title">SelectUser</span><span class="params">()</span></span>&#123;</span><br><span class="line">       Map paramMap = <span class="keyword">new</span> hashMap();</span><br><span class="line">       paramMap.put(“userName”,”对应具体的参数值”);</span><br><span class="line">       paramMap.put(“userArea”,”对应具体的参数值”);</span><br><span class="line">       User user = xxx.selectUser(paramMap);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>这种方法不够直观，看到接口方法不能直接的知道需要传递的参数有哪些？<br> 3.使用@param注解<br>Dao层的函数方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">selectUser</span><span class="params">(@Param(“userName”)</span>String name,@<span class="title">Param</span><span class="params">(“userArea”)</span>String area)</span>;</span><br></pre></td></tr></table></figure>
+<p>对应的Mapper.xml文件</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=<span class="string">"selectUser"</span> resultMap=<span class="string">"BaseResultMap"</span>&gt;</span><br><span class="line">   select *  from user_user   where user_name = #&#123;userName，jdbcType=VARCHAR&#125;and user_area=#&#123;userArea,jdbcType=VARCHAR&#125;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure>
+<p>这种方法最好，能让开发者看到dao层方法就知道该传什么样的参数，在xml中也相比其他两种方法清楚。</p>
+
+      
+    </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2018-07-01 22:17:31</li>
+    <li><span>最后更新: </span>2019-12-09 23:03:26</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/98398c3d.html" target="_blank" title="Mybatis方法传多个参数（三种解决方案）">https://ydstudios.gitee.io/post/98398c3d.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外, 
+      禁止未经授权转载，违者依法追究相关法律责任!
+    </li>
+  </ul>
+<div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/98398c3d.html" data-id="cksqx4w75005bdksz1g0ue430" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/54acd1d8.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          Spring Boot 1.x 使用Value注解给静态变量赋值
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/1c04f2f4.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older << </strong>
+      <div class="article-nav-title">Java学习系列文章第六篇：项目开发利器-Maven</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
   </div>
 </body>
 </html>
