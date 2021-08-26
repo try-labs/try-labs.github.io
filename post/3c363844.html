@@ -19,9 +19,9 @@
 <meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20210825154241.png">
 <meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20210825162524.png">
 <meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20210825163225.jpeg">
-<meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20210826161304.png">
+<meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20210826164521.png">
 <meta property="article:published_time" content="2021-02-28T10:19:27.000Z">
-<meta property="article:modified_time" content="2021-08-26T08:21:11.478Z">
+<meta property="article:modified_time" content="2021-08-26T08:47:26.322Z">
 <meta property="article:author" content="Sam">
 <meta property="article:tag" content="zookeeper">
 <meta property="article:tag" content="redis">
@@ -376,8 +376,9 @@
 <li><p>要维护一个Zookeeper集群，增大了运维难度。</p>
 </li>
 <li><p>网络故障或者GC停顿导致临时节点提前被删除。</p>
-<img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210826161304.png" alt="image-20210826161304065" style="zoom:50%;" />
+<img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210826164521.png" alt="image-20210826164521458" style="zoom:50%;" />
 
+<p>如果这个图不够形象，也可以看看前面Redis分布式锁服务的流程图，可能会更加形象。</p>
 </li>
 </ol>
 <h4 id="如何抉择"><a href="#如何抉择" class="headerlink" title="如何抉择"></a>如何抉择</h4><p>本文重点关注的是分布式锁各种实现方案的基础理论，而且是最简单的实现理论，尤其是RedLock也只是说了他的简单加锁流程，都没有给出具体的代码，有兴趣的同学可以自己去实现一下。对于各种方案的分布式锁如何去抉择，这个要看我们系统状况和业务的要求。一般情况下的系统，都会使用到Redis，所以推荐优先使用Redis实现的分布式锁，或者直接使用Redisson，他提供了多种锁的实现，可以让你像使用JVM中的<code>synchronized</code>、<code>ReentrantLock</code>那样简单;如果系统中有用到zookeeper，那在一些重要的业务场景可以考虑使用zookeeper，毕竟它比Redis更可靠。当然有些时候，加锁也许不是最好的选择，有时换个思路，分而治之可能会有不一样的效果。</p>
@@ -392,7 +393,7 @@
     <strong>作者:  </strong>Sam</a>
     </li>
     <li><span>发布时间: </span>2021-02-28 10:19:27</li>
-    <li><span>最后更新: </span>2021-08-26 16:21:11</li>
+    <li><span>最后更新: </span>2021-08-26 16:47:26</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
     <a href="/post/3c363844.html" target="_blank" title="分布式锁实现方案到底有哪些">https://ydstudios.gitee.io/post/3c363844.html</a>
@@ -406,7 +407,7 @@
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/3c363844.html" data-id="ckssnq2eh0060qssz0t9d2bxh" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/3c363844.html" data-id="ckssonrnu005xi0sz8ejvf8c9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%94%81/" rel="tag">锁</a></li></ul>
