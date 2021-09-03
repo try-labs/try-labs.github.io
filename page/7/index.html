@@ -74,6 +74,64 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-谈谈Java集合ArrayList" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/e6d29090.html" class="article-date">
+  <time datetime="2018-11-30T23:17:57.000Z" itemprop="datePublished">2018-11-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/e6d29090.html">谈谈Java集合ArrayList</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><a href="#arraylist简介">ArrayList简介</a></li>
+<li><a href="#arraylist核心源码">ArrayList核心源码</a></li>
+<li><a href="#arraylist源码分析">ArrayList源码分析</a><ul>
+<li><a href="#systemarraycopy和arrayscopyof方法">System.arraycopy()和Arrays.copyOf()方法</a><ul>
+<li><a href="#两者联系与区别">两者联系与区别</a></li>
+</ul>
+</li>
+<li><a href="#arraylist核心扩容技术">ArrayList核心扩容技术</a></li>
+<li><a href="#内部类">内部类</a></li>
+</ul>
+</li>
+<li><a href="#arraylist经典demo">ArrayList经典Demo</a></li>
+</ul>
+<h3 id="ArrayList简介"><a href="#ArrayList简介" class="headerlink" title="ArrayList简介"></a>ArrayList简介</h3><p>　　ArrayList 的底层是数组队列，相当于动态数组。与 Java 中的数组相比，它的容量能动态增长。在添加大量元素前，应用程序可以使用<code>ensureCapacity</code>操作来增加 ArrayList 实例的容量。这可以减少递增式再分配的数量。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/e6d29090.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/e6d29090.html" data-id="ckt2yf7r000bvz0sz7osgeh00" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/arrayList/" rel="tag">arrayList</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-使用Nginx做反向代理-设置请求返回时带上被代理机器的信息" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/post/8f4c3efa.html" class="article-date">
@@ -106,7 +164,7 @@
     </div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/8f4c3efa.html" data-id="ckssonrnr005li0szbyae09dm" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/8f4c3efa.html" data-id="ckt2yf7q4009tz0szc0qieftg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/proxy/" rel="tag">proxy</a></li></ul>
@@ -150,7 +208,7 @@
     </div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/6d3d362b.html" data-id="ckssonrnb003vi0sz6ych5727" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/6d3d362b.html" data-id="ckt2yf7nx003tz0sz1v51bhjl" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sharding-jdbc/" rel="tag">sharding-jdbc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
@@ -194,7 +252,7 @@
     </div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/53410e91.html" data-id="ckssonrnb003ti0sz39kw7sw5" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/53410e91.html" data-id="ckt2yf7ny003wz0sz9nv5fr06" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/" rel="tag">spring boot</a></li></ul>
@@ -238,7 +296,7 @@
     </div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/dcd836f7.html" data-id="ckssonrn2002yi0szeaa02btv" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/dcd836f7.html" data-id="ckt2yf7ni0030z0sz1odc83yk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mycat/" rel="tag">mycat</a></li></ul>
@@ -283,7 +341,7 @@
     </div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/4f6a533b.html" data-id="ckssonrm8000li0szhavufrdl" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/4f6a533b.html" data-id="ckt2yf7m8000jz0szfl76hll3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/feign/" rel="tag">feign</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
@@ -328,7 +386,7 @@
     </div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/c1dfde53.html" data-id="ckssonrnn0056i0szg3ewetqv" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/c1dfde53.html" data-id="ckt2yf7pz009fz0szd8gt62rh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php-fpm/" rel="tag">php-fpm</a></li></ul>
@@ -372,7 +430,7 @@
     </div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/29fad61b.html" data-id="ckssonrnf004ai0sz0ky3h9ra" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/29fad61b.html" data-id="ckt2yf7o30048z0szf9g09jer" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-cloud/" rel="tag">spring cloud</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-cloud-config/" rel="tag">spring cloud config</a></li></ul>
@@ -416,7 +474,7 @@
     </div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/5e4a0e78.html" data-id="ckssonrnf004ci0sz59a3h6ee" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/5e4a0e78.html" data-id="ckt2yf7o4004bz0szbcnk1xqn" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/eureka/" rel="tag">eureka</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-cloud/" rel="tag">spring cloud</a></li></ul>
@@ -460,54 +518,10 @@
     </div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/39992895.html" data-id="ckssonrma000pi0szbt633sop" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/39992895.html" data-id="ckt2yf7m9000lz0szb7vph3d4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticSearch/" rel="tag">elasticSearch</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-IntelliJ-Idea-常用快捷键列表" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/post/fea71f82.html" class="article-date">
-  <time datetime="2018-08-28T23:34:44.000Z" itemprop="datePublished">2018-08-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/post/fea71f82.html">IntelliJ Idea 常用快捷键列表</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>加粗的是我常用的快捷键</p>
-        
-          <p class="article-more-link">
-            <a href="/post/fea71f82.html#more">Read More</a>
-          </p>
-        
-      
-    </div>
-         
-    <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/fea71f82.html" data-id="ckssonrmb000ri0szf3ja60ua" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ide/" rel="tag">ide</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
 
     </footer>
   </div>
