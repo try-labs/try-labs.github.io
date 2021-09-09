@@ -1,18 +1,262 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>缓存之缓存穿透、击穿和雪崩 | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言在系统出现性能瓶颈，要进行性能优化的时候，我们可能会考虑使用如Redis这样的中间件实现缓存来提高系统的性能。当然这个肯定要考虑业务场景，不是所有的业务场景都是可以使用缓存的。本文重点不是引入缓存的时机，也不是缓存架构如何实现，今天只是来说说引入缓存之后带来的缓存穿透、缓存击穿和缓存雪崩这三个问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="缓存之缓存穿透、击穿和雪崩">
+<meta property="og:url" content="https://ydstudios.gitee.io/post/1d659c02.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="前言在系统出现性能瓶颈，要进行性能优化的时候，我们可能会考虑使用如Redis这样的中间件实现缓存来提高系统的性能。当然这个肯定要考虑业务场景，不是所有的业务场景都是可以使用缓存的。本文重点不是引入缓存的时机，也不是缓存架构如何实现，今天只是来说说引入缓存之后带来的缓存穿透、缓存击穿和缓存雪崩这三个问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20210823123516.png">
+<meta property="article:published_time" content="2021-08-20T17:59:52.000Z">
+<meta property="article:modified_time" content="2021-08-23T04:46:27.329Z">
+<meta property="article:author" content="Sam">
+<meta property="article:tag" content="缓存">
+<meta property="article:tag" content="缓存击穿">
+<meta property="article:tag" content="缓存雪崩">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20210823123516.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ydstudios.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-缓存之缓存穿透、击穿和雪崩" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/1d659c02.html" class="article-date">
+  <time datetime="2021-08-20T17:59:52.000Z" itemprop="datePublished">2021-08-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      缓存之缓存穿透、击穿和雪崩
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>在系统出现性能瓶颈，要进行性能优化的时候，我们可能会考虑使用如Redis这样的中间件实现缓存来提高系统的性能。当然这个肯定要考虑业务场景，不是所有的业务场景都是可以使用缓存的。本文重点不是引入缓存的时机，也不是缓存架构如何实现，今天只是来说说引入缓存之后带来的缓存穿透、缓存击穿和缓存雪崩这三个问题。</p>
+<a id="more"></a>
+
+<h4 id="使用缓存时数据访问的流程"><a href="#使用缓存时数据访问的流程" class="headerlink" title="使用缓存时数据访问的流程"></a>使用缓存时数据访问的流程</h4><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210823123516.png" alt="使用缓存时的流程" style="zoom:60%;" />
+
+<p>使用cache之后，访问数据的流程就不再像之前那样直接请求数据库，而是先请求cache，cache中没有数据，则再去请求数据库。</p>
+<h4 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h4><h5 id="什么是缓存穿透"><a href="#什么是缓存穿透" class="headerlink" title="什么是缓存穿透"></a>什么是缓存穿透</h5><p>当请求cache时，cache中对应的缓存不存在，然后去请求数据库，但是数据库中也没有对应的数据。这样的请求每次都无法命中缓存，缓存失去了他的用处。</p>
+<h5 id="有什么问题"><a href="#有什么问题" class="headerlink" title="有什么问题"></a>有什么问题</h5><p>假设在商品详情页，有人直接改动浏览器上地址，去访问id&lt;=0的商品，id&lt;=0的商品对应的数据无论是在cache还是在数据库中都不会有，那么如果有黑客利用此漏洞进行攻击，则有大可能压垮数据库。</p>
+<h4 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h4><h5 id="什么是缓存击穿"><a href="#什么是缓存击穿" class="headerlink" title="什么是缓存击穿"></a>什么是缓存击穿</h5><p>当请求cache时，cache中对应的缓存不存在，然后去请求数据库，数据库存在对应的数据。</p>
+<h5 id="有什么问题-1"><a href="#有什么问题-1" class="headerlink" title="有什么问题"></a>有什么问题</h5><p>如有高并发的场景下，在缓存失效的瞬间，有大量线程来重建缓存，造成后端负载加大，甚至可能会让数据库崩溃。</p>
+<h4 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h4><h5 id="什么是缓存雪崩"><a href="#什么是缓存雪崩" class="headerlink" title="什么是缓存雪崩"></a>什么是缓存雪崩</h5><p>缓存服务器重启或者缓存服务器中的缓存在同一时间失效。缓存击穿关注的是单个缓存key，缓存雪崩关注的是一大批缓存key。</p>
+<h5 id="有什么问题-2"><a href="#有什么问题-2" class="headerlink" title="有什么问题"></a>有什么问题</h5><p>缓存在同一时间失效，这时有高并发的场景，短时间内请求都打到了数据库上，也会压垮数据库。</p>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><h5 id="如何解决缓存穿透的问题"><a href="#如何解决缓存穿透的问题" class="headerlink" title="如何解决缓存穿透的问题"></a>如何解决缓存穿透的问题</h5><p>解决这个问题，我们可以看看小伙伴在使用缓存的时候代码是怎么写的，伪代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">findDataById</span><span class="params">(<span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">    Object data = Cache.get(id);</span><br><span class="line">    <span class="keyword">if</span> (data != <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span> data;</span><br><span class="line">    &#125;</span><br><span class="line">    Object data = DB.findById(id);</span><br><span class="line">    <span class="keyword">if</span> (data == <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    Cache.set(id,data,time);</span><br><span class="line">    <span class="keyword">return</span> data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我想小伙伴们差不多都是这么写的，这样写在正常的情况下是没有问题的，但是一旦id是一个小于0数或者id对应的数据在数据库中就是没有，系统在高并发、大流量的情况下，问题就随之而来了。那我们应该如何解决呢？</p>
+<ul>
+<li><p>进行一定的数据校验，其他的直接缓存null<br>对于商品id来说，这样的数据是肯定是没有小于0的，所以我们可以在方法的入口，增加对应的数据校验，id小于等于0的请求直接拦截。符合校验规则，但是数据库中确实没有的则也直接缓存，但是注意他的缓存时间设置的不会太长，具体时间看大家的业务要求。所以上面的伪代码可以优化如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">findDataById</span><span class="params">(<span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (id &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">       <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"id不合法"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    Object data = Cache.get(id);</span><br><span class="line">    <span class="keyword">if</span> (data != <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span> data;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> time = <span class="number">3</span>;</span><br><span class="line">    Object data = DB.findById(id);</span><br><span class="line">    <span class="keyword">if</span> (data == <span class="keyword">null</span>)&#123;</span><br><span class="line">        time = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    Cache.set(id,data,time);</span><br><span class="line">    <span class="keyword">return</span> data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样的写法不够优美，不符合单一原则，毕竟只是伪代码，大家凑活着</p>
+</blockquote>
+</li>
+<li><p>使用布隆过滤器拦截<br>利用布隆过滤器（Bloom Filter），它可以使用很小的内存空间内查找某个数据是否存在。我们可以将可能存在的key都保存到bitMap中，根据布隆过滤器的特点，一个数据如果判定为存在的时候，数据不一定存在，但是判定结果为不存在的时候，则数据一定不存在，这样我们就可以过滤那些不存在的key。</p>
+</li>
+</ul>
+<blockquote>
+<p>对比两种解决方案，我比较倾向于前一种，实现简单，一般场景下也是没有问题的。</p>
+</blockquote>
+<h5 id="如何解决缓存击穿的问题"><a href="#如何解决缓存击穿的问题" class="headerlink" title="如何解决缓存击穿的问题"></a>如何解决缓存击穿的问题</h5><ul>
+<li>key不设置过期时间</li>
+</ul>
+<p>我们将数据缓存到Cache中，一般都是会设定过期时间的，那对于发生了缓存击穿（热点）的key来说，我们可不可以不设置过期时间，即key永远不过期，如果数据有变动则直接删除key。</p>
+<blockquote>
+<p>如何发现热点key？这里给出两个简单的方法。1. 根据业务经验预估  2.使用redis自带的命令预估，如monitor命令进行分析或者redis-cli使用hotkeys参数</p>
+<p>如果数据有变动则直接删除key，这个要是拿来说一说，也是可以水一篇文章的。</p>
+</blockquote>
+<ul>
+<li>使用互斥锁</li>
+</ul>
+<p>伪代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">get</span><span class="params">(key)</span> </span>&#123;</span><br><span class="line">    Object value = redis.get(key);</span><br><span class="line">    <span class="keyword">if</span> (value != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">    String mutexKey = <span class="string">"mutex"</span> + key;</span><br><span class="line">    <span class="comment">// 设置3min的超时，防止del操作失败的时候，下次缓存过期一直不能load db</span></span><br><span class="line">    <span class="keyword">if</span> (redis.setnx(mutexKey, <span class="number">1</span>, <span class="number">3</span> * <span class="number">60</span>) == <span class="number">1</span>) &#123;</span><br><span class="line">        value = db.get(key);</span><br><span class="line">        redis.set(key, value, expire_secs);</span><br><span class="line">        redis.del(mutexKey);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 这个时候代表同时候的其他线程已经load db并回设到缓存了，这时候重试获取缓存值即可</span></span><br><span class="line">        TimeUnit.MILLISECONDS.sleep(randomTime);</span><br><span class="line">        <span class="comment">// 重试</span></span><br><span class="line">        value = get(key); </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>缓存预热</p>
+<p>缓存预热就是系统直接把缓存创建起来，不需要走之前那一套缓存建立的流程。这个方案适用于上架一个商品，业务在后台配置好之后，直接起一个线程处理好这个商品的相关缓存。</p>
+</li>
+</ul>
+<h5 id="如何解决缓存雪崩的问题"><a href="#如何解决缓存雪崩的问题" class="headerlink" title="如何解决缓存雪崩的问题"></a>如何解决缓存雪崩的问题</h5><p>缓存雪崩其实是缓存击穿的极端情况。前面说到了发生缓存雪崩的两个场景，一是因为服务发生了宕机导致缓存不可用，二是因为大批缓存的key在短时间内同时失效，所以针对这两种情况，我们可以给出以下的解决方案。</p>
+<ul>
+<li><p>缓存系统的高可用</p>
+<p>redis的支持多种高可用的方案，如哨兵模式、Redis Cluster等。</p>
+</li>
+<li><p>避免热点key的过期时间相同</p>
+<p>缓存key在设置过期时间时，在正常的过期时间上加上一个随机时间，这样可以让缓存失效的时间点尽量均匀。</p>
+</li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>前文说了本文的重点只是探讨缓存穿透、缓存击穿和缓存雪崩三个问题，缓存其他的问题都没有涉猎。再说一次缓存不是提高系统性能的万精油，而且解决上述问题的各种方案也是需要看自己系统情况和业务要求去灵活的运用。大家如有什么疑问或者不同的意见可以提出来我们讨论讨论。</p>
+
+      
+    </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2021-08-20 17:59:52</li>
+    <li><span>最后更新: </span>2021-08-23 12:46:27</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/1d659c02.html" target="_blank" title="缓存之缓存穿透、击穿和雪崩">https://ydstudios.gitee.io/post/1d659c02.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外, 
+      禁止未经授权转载，违者依法追究相关法律责任!
+    </li>
+  </ul>
+<div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/1d659c02.html" data-id="cktctubcl0071vksz3v181f02" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/" rel="tag">缓存击穿</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/" rel="tag">缓存雪崩</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/2b577ce1.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          Redis高可用之主从复制实践
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/4a17b156.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older << </strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
   </div>
 </body>
 </html>
