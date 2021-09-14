@@ -1,18 +1,570 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一个程序员的成长记录">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sam的个人博客">
+<meta property="og:url" content="https://ydstudios.gitee.io/page/3/index.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="一个程序员的成长记录">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Sam">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ydstudios.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-MySQL的IGNORE关键字在避免重复插入记录时存在的问题及最佳实践" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/cef7abb0.html" class="article-date">
+  <time datetime="2020-12-16T21:57:39.000Z" itemprop="datePublished">2020-12-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/cef7abb0.html">利用MySQL的IGNORE关键字避免重复插入的骚操作你见过么</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们在实际开发中总有这样的需求，表里的数据要保持唯一，所以我们开发中经常都是先查询这样的数据有没有，有的话跳过，没有的话再插入，然后在能表示数据记录唯一的列上加上唯一索引进行兜底。虽然有的同学基本上也是这么做的，但是又稍微的做了一点其他的骚操作😄😄😄。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/cef7abb0.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/cef7abb0.html" data-id="cktjj829a002uiksz583xg5lh" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ignore/" rel="tag">ignore</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-设计模式学习之模板和策略模式实战" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/c14af19a.html" class="article-date">
+  <time datetime="2020-12-04T21:41:34.000Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/c14af19a.html">设计模式学习之模板和策略模式实战</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>前面文章由抽奖活动赠送不同的奖励从而引出了策略模式，定义一个策略接口，不同的奖励发放实现不同的策略。即使后续新增加奖励种类，只要重新实现一个策略即可，符合了设计模式中的<em>开闭原则-对扩展开放对修改关闭</em>。我在一次订单活动功能开发中使用到了策略模式，在开发的过程中发现，订单符合活动条件的判断、发放奖励给用户，可以提升到父类实现，具体的条件判断逻辑可以延迟到子类去实现，从而引出本篇文章的主题：模板模式。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/c14af19a.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/c14af19a.html" data-id="cktjj82am007jikszcgyt0jhz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF%E6%A8%A1%E5%BC%8F/" rel="tag">模板模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/" rel="tag">策略模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-IDEA-隐藏-idea与-iml文件" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/c41bdbee.html" class="article-date">
+  <time datetime="2020-12-04T20:56:58.000Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/c41bdbee.html">IDEA 隐藏.idea与.iml文件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在 IDEA 中会自动帮我们创建.idea 和.iml 文件，其实这两个文件对我们没啥用的，但是也不能删掉(项目需要而且删了只好还会自动创建)，那我们只好想法子给他隐藏掉。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/c41bdbee.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/c41bdbee.html" data-id="cktjj828j000qiksz4h9b7ajw" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/idea/" rel="tag">idea</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" rel="tag">开发工具</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-设计模式学习之策略模式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/170b3d6a.html" class="article-date">
+  <time datetime="2020-10-24T11:58:02.000Z" itemprop="datePublished">2020-10-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/170b3d6a.html">设计模式学习之策略模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>策略模式（Strategy Pattern）我觉得在23中常见的设计模式里面是一种比较简单的，使用场景也很多。在策略模式中，一个类的行为或其算法可以在运行时更改。这种类型的设计模式属于行为型模式。在策略模式中，我们创建表示各种策略的对象和一个行为随着策略对象改变而改变的 context 对象,策略对象改变 context 对象的执行算法。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/170b3d6a.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/170b3d6a.html" data-id="cktjj82am007miksz4iy07qqx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/" rel="tag">策略模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Windows下搭建RocketMQ双主双从集群" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/459042a5.html" class="article-date">
+  <time datetime="2020-10-02T11:06:35.000Z" itemprop="datePublished">2020-10-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/459042a5.html">Windows下搭建RocketMQ双主双从集群</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>RocketMQ是阿里巴巴2016年MQ中间件，使用Java语言开发，在阿里内部，RocketMQ承接了例如“双11”等高并发场景的消息流转，能够处理万亿级别的消息。我们今天就在 windows下搭建RocketMQ多Master多Slave模式（同步）的集群。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/459042a5.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/459042a5.html" data-id="cktjj829u004vikszdpco9bnk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RocketMQ/" rel="tag">RocketMQ</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8F%8C%E4%B8%BB%E5%8F%8C%E4%BB%8E%E9%9B%86%E7%BE%A4/" rel="tag">双主双从集群</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-JavaScript接收后端Long类型数据精度丢失问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/175ad151.html" class="article-date">
+  <time datetime="2020-08-26T22:30:22.000Z" itemprop="datePublished">2020-08-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/175ad151.html">JavaScript接收后端Long类型数据精度丢失问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在开发过程中，通常我们的数据库主键会使用 bigint，它对应 Java 中的 Long，但是当Long的数值超过一定值时传到前端后会丢失精度。原因是JavaScript的number类型有个安全值，即2的53次方，为9007199254740991，如果超过这个值，那么JavaScript会出现不精确的问题。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/175ad151.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/175ad151.html" data-id="cktjj828n000xiksz9px87nmz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%B2%BE%E5%BA%A6/" rel="tag">数据精度</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-编程过程中抽象类和接口的抉择" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/665bcc51.html" class="article-date">
+  <time datetime="2020-08-24T21:51:35.000Z" itemprop="datePublished">2020-08-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/665bcc51.html">编程过程中抽象类和接口的抉择</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>作为一位程序员在编码的过程中，终会遇到这种情况：这个功能我到底是用接口呢？还是用抽象类呢？</p>
+        
+          <p class="article-more-link">
+            <a href="/post/665bcc51.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/665bcc51.html" data-id="cktjj82ah0074ikszbuy37h58" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%BD%E8%B1%A1%E7%B1%BB/" rel="tag">抽象类</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8E%A5%E5%8F%A3/" rel="tag">接口</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag">编程</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-设计模式学习之责任链模式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/8ec2718b.html" class="article-date">
+  <time datetime="2020-05-12T22:36:21.000Z" itemprop="datePublished">2020-05-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/8ec2718b.html">设计模式学习之责任链模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="责任链模式"><a href="#责任链模式" class="headerlink" title="责任链模式"></a>责任链模式</h5><p>顾名思义，责任链模式（Chain of Responsibility Pattern）为请求创建了一个接收者对象的链。这种模式给予请求的类型，对请求的发送者和接收者进行解耦。这种类型的设计模式属于行为型模式。在这种模式中，通常每个接收者都包含对另一个接收者的引用。如果一个对象不能处理该请求，那么它会把相同的请求传给下一个接收者，依此类推。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/8ec2718b.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/8ec2718b.html" data-id="cktjj82ap007oiksz6theedbf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F/" rel="tag">责任链模式</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-MySQL的bin-log" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/d1d9a9.html" class="article-date">
+  <time datetime="2020-03-15T15:22:12.000Z" itemprop="datePublished">2020-03-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/d1d9a9.html">MySQL的bin-log</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h6 id="什么是binlog？"><a href="#什么是binlog？" class="headerlink" title="什么是binlog？"></a>什么是binlog？</h6><p>mysql-binlog是MySQL数据库的二进制日志，用于记录用户对数据库操作的SQL语句（除了数据查询语句，即记录insert、update、delete的sql）信息。<br>可以使用mysqlbin命令查看二进制日志的内容。</p>
+        
+          <p class="article-more-link">
+            <a href="/post/d1d9a9.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/d1d9a9.html" data-id="cktjj829a002wikszeyce2vbh" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/binlog/" rel="tag">binlog</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-MySQL-删除-relay-log-的方法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/da13f861.html" class="article-date">
+  <time datetime="2020-03-15T14:35:19.000Z" itemprop="datePublished">2020-03-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/post/da13f861.html">MySQL 删除 relay log 的方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h6 id="方法1-：自动-设置参数-relay-log-purge-1"><a href="#方法1-：自动-设置参数-relay-log-purge-1" class="headerlink" title="方法1 ：自动 设置参数 relay_log_purge = 1"></a>方法1 ：自动 设置参数 relay_log_purge = 1</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> SET GLOBAL relay_log_purge = 1;</span></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line">或者在/etc/my.cnf [mysqld]模块下面增加以下内容</span><br><span class="line">relay-log-purge = 1</span><br></pre></td></tr></table></figure>
+        
+          <p class="article-more-link">
+            <a href="/post/da13f861.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/da13f861.html" data-id="cktjj8295002fikszaa0xbfbc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/relay-log/" rel="tag">relay-log</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/2/">&lt;&lt;上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/4/">下一页 &gt;&gt;</a>
+  </nav>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
   </div>
 </body>
 </html>

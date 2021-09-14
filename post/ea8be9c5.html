@@ -1,18 +1,231 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>JVM配置参数的类型 | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="参数名称的说明JVM配置参数分别用于跟踪监控JVM状态，分配堆内存以及分配栈内存。按照类型分为三类标准参数、非标准参数和非稳定参数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM配置参数的类型">
+<meta property="og:url" content="https://ydstudios.gitee.io/post/ea8be9c5.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="参数名称的说明JVM配置参数分别用于跟踪监控JVM状态，分配堆内存以及分配栈内存。按照类型分为三类标准参数、非标准参数和非稳定参数">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-06T15:55:13.000Z">
+<meta property="article:modified_time" content="2020-02-06T07:57:04.000Z">
+<meta property="article:author" content="Sam">
+<meta property="article:tag" content="Jvm">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ydstudios.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-JVM配置参数的类型" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/ea8be9c5.html" class="article-date">
+  <time datetime="2020-02-06T15:55:13.000Z" itemprop="datePublished">2020-02-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JVM配置参数的类型
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="参数名称的说明"><a href="#参数名称的说明" class="headerlink" title="参数名称的说明"></a>参数名称的说明</h5><p>JVM配置参数分别用于跟踪监控JVM状态，分配堆内存以及分配栈内存。按照类型分为三类标准参数、非标准参数和非稳定参数</p>
+<a id="more"></a>
+
+<h6 id="标准参数"><a href="#标准参数" class="headerlink" title="标准参数(-)"></a>标准参数(-)</h6><p>所有 JVM 都必须支持这些参数的功能, 而且向后兼容, 如:</p>
+<ul>
+<li><p>-client : 设置 JVM 使用 client 模式, 特点是启动速度比较快, 但运行时性能和内存管理效率不高. 通常用于客户端应用程序或开发调试; 在32位环境下直接运行 Java 程序默认启用该模式.</p>
+</li>
+<li><p>-server : 设置 JVM 使 server 模式, 特点是启动速度比较慢, 但运行时性能和内存管理效率很高, 适用于生产环境; 在具有64位能力的JDK环境下默认启用该模式.</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Sam-Mac:hexo-blog Sam$ java -version</span><br><span class="line">java version <span class="string">"1.8.0_74"</span></span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_74-b02)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.74-b02, mixed mode)</span><br><span class="line">Sam-Mac:hexo-blog Sam$</span><br></pre></td></tr></table></figure>
+
+
+<h6 id="非标准参数-X"><a href="#非标准参数-X" class="headerlink" title="非标准参数(-X)"></a>非标准参数(-X)</h6><p>各 JVM 厂商应该都实现这些参数的功能, 但是并不保证所有的 JVM 实现都满足, 且不保证向后兼容。这些用的不多，看看就好。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 解释执行</span><br><span class="line">-Xint</span><br><span class="line"></span><br><span class="line">// 第一次使用就编译成本地代码</span><br><span class="line">-Xcomp</span><br><span class="line"></span><br><span class="line">// 混合模式</span><br><span class="line">-Xmixed</span><br></pre></td></tr></table></figure>
+
+<h6 id="非稳定参数-XX"><a href="#非稳定参数-XX" class="headerlink" title="非稳定参数(-XX)"></a>非稳定参数(-XX)</h6><p>此类参数各个JVM实现会有所不同, 将来可能会不被支持, 需要慎重使用。这种类型的参数自己又可分为两种，分别如下：</p>
+<ul>
+<li><p>布尔类型。 -XX:+ 或者 - 某个属性值，+ 表示开启，-表示关闭。例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 打印GC详细信息</span><br><span class="line">-XX:+PrintGCDetails</span><br><span class="line"></span><br><span class="line">// 不打印GC详细信息</span><br><span class="line">-XX:-PrintGCDetails</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>KV类型。-XX:属性key=属性值value，例如：</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 设置Metaspace的大小</span><br><span class="line">-XX:MetaspaceSize=1024m</span><br></pre></td></tr></table></figure>
+
+<p>注意: 在”-XX:”后的参数若不需要赋值, 即只是用来配置开启或关闭相应选项, 则需要有 “+” (开启) 或 “-“ (禁止) , 否则应用程序将在日志文件 (如 Tomcat 的日志文件 catalina.out ) 中抛出如下错误:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Missing +/- setting <span class="keyword">for</span> VM option <span class="string">'UseConcMarkSweepGC'</span>. </span><br><span class="line">Error: Could not create the Java Virtual Machine.</span><br><span class="line">Error: A fatal exception has occurred. Program will <span class="built_in">exit</span>.</span><br></pre></td></tr></table></figure>
+<p>可以看出, 这里缺少了 “+/-“ 符号, 导致虚拟机启动异常, 修改后即可正常启动.</p>
+<p>我们常设置的JVM参数Xms和Xmx,属于哪种类型的JVM参数？-Xms等价于-XX:InitialHeapSize,-Xmx等价于-XX:MaxHeapSize，所以他们都是XX类型参数。</p>
+
+      
+    </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2020-02-06 15:55:13</li>
+    <li><span>最后更新: </span>2020-02-06 15:57:04</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/ea8be9c5.html" target="_blank" title="JVM配置参数的类型">https://ydstudios.gitee.io/post/ea8be9c5.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外, 
+      禁止未经授权转载，违者依法追究相关法律责任!
+    </li>
+  </ul>
+<div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/ea8be9c5.html" data-id="cktjj828m000viksz2izhcqyt" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jvm/" rel="tag">Jvm</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/29afd8a9.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          利用Mac电脑自带应用将iPhone投屏到Mac电脑的教程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/38b6491c.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older << </strong>
+      <div class="article-nav-title">Spring配置文件中的classpath:和classpath*:的区别</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
   </div>
 </body>
 </html>

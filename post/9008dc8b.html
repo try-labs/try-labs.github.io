@@ -1,18 +1,205 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Dubbo由于连接不上monitor监控中心报错 | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="dubbbo使用时候没有启动监控中心，不能配了监控地址。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dubbo由于连接不上monitor监控中心报错">
+<meta property="og:url" content="https://ydstudios.gitee.io/post/9008dc8b.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="dubbbo使用时候没有启动监控中心，不能配了监控地址。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-08T23:38:49.000Z">
+<meta property="article:modified_time" content="2019-12-09T15:03:26.000Z">
+<meta property="article:author" content="Sam">
+<meta property="article:tag" content="dubbo">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ydstudios.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Dubbo由于连接不上monitor监控中心报错" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/9008dc8b.html" class="article-date">
+  <time datetime="2019-05-08T23:38:49.000Z" itemprop="datePublished">2019-05-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Dubbo由于连接不上monitor监控中心报错
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>dubbbo使用时候没有启动监控中心，不能配了监控地址。</p>
+<a id="more"></a>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">com.alibaba.dubbo.rpc.RpcException: Failed to invoke the method collect in the service com.alibaba.dubbo.monitor.MonitorService. No provider available <span class="keyword">for</span> the service com.alibaba.dubbo.monitor.MonitorService from registry localhost:<span class="number">2181</span> on the consumer <span class="number">10.23</span><span class="number">.144</span><span class="number">.194</span> using the dubbo version <span class="number">2.6</span><span class="number">.2</span>. Please check <span class="keyword">if</span> the providers have been started and registered.</span><br><span class="line">	at com.alibaba.dubbo.rpc.cluster.support.AbstractClusterInvoker.checkInvokers(AbstractClusterInvoker.java:<span class="number">257</span>) ~[dubbo-<span class="number">2.6</span><span class="number">.2</span>.jar:<span class="number">2.6</span><span class="number">.2</span>]</span><br><span class="line">	at com.alibaba.dubbo.rpc.cluster.support.FailoverClusterInvoker.doInvoke(FailoverClusterInvoker.java:<span class="number">56</span>) ~[dubbo-<span class="number">2.6</span><span class="number">.2</span>.jar:<span class="number">2.6</span><span class="number">.2</span>]</span><br><span class="line">	at com.alibaba.dubbo.rpc.cluster.support.AbstractClusterInvoker.invoke(AbstractClusterInvoker.java:<span class="number">238</span>) ~[dubbo-<span class="number">2.6</span><span class="number">.2</span>.jar:<span class="number">2.6</span><span class="number">.2</span>]</span><br><span class="line">	at com.alibaba.dubbo.rpc.cluster.support.wrapper.MockClusterInvoker.invoke(MockClusterInvoker.java:<span class="number">75</span>) ~[dubbo-<span class="number">2.6</span><span class="number">.2</span>.jar:<span class="number">2.6</span><span class="number">.2</span>]</span><br><span class="line">	at com.alibaba.dubbo.rpc.proxy.InvokerInvocationHandler.invoke(InvokerInvocationHandler.java:<span class="number">52</span>) ~[dubbo-<span class="number">2.6</span><span class="number">.2</span>.jar:<span class="number">2.6</span><span class="number">.2</span>]</span><br><span class="line">	at com.alibaba.dubbo.common.bytecode.proxy0.collect(proxy0.java) ~[dubbo-<span class="number">2.6</span><span class="number">.2</span>.jar:<span class="number">2.6</span><span class="number">.2</span>]</span><br><span class="line">	at com.alibaba.dubbo.monitor.dubbo.DubboMonitor.send(DubboMonitor.java:<span class="number">112</span>) ~[dubbo-<span class="number">2.6</span><span class="number">.2</span>.jar:<span class="number">2.6</span><span class="number">.2</span>]</span><br><span class="line">	at com.alibaba.dubbo.monitor.dubbo.DubboMonitor$<span class="number">1</span>.run(DubboMonitor.java:<span class="number">69</span>) ~[dubbo-<span class="number">2.6</span><span class="number">.2</span>.jar:<span class="number">2.6</span><span class="number">.2</span>]</span><br><span class="line">	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:<span class="number">471</span>) [na:<span class="number">1.7</span><span class="number">.0_80</span>]</span><br><span class="line">	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:<span class="number">304</span>) [na:<span class="number">1.7</span><span class="number">.0_80</span>]</span><br><span class="line">	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$<span class="number">301</span>(ScheduledThreadPoolExecutor.java:<span class="number">178</span>) [na:<span class="number">1.7</span><span class="number">.0_80</span>]</span><br><span class="line">	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:<span class="number">293</span>) [na:<span class="number">1.7</span><span class="number">.0_80</span>]</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:<span class="number">1145</span>) [na:<span class="number">1.7</span><span class="number">.0_80</span>]</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:<span class="number">615</span>) [na:<span class="number">1.7</span><span class="number">.0_80</span>]</span><br><span class="line">	at java.lang.Thread.run(Thread.java:<span class="number">745</span>) [na:<span class="number">1.7</span><span class="number">.0_80</span>]</span><br></pre></td></tr></table></figure>
+<p>解决方案：<br>这是因为没有启动监控中心，却配了监控地址，把监控中心启动，或者把xml配置中的&lt;dubbo:monitor protocol=”registry”&gt;</dubbo:monitor>或properties配置中的dubbo.monitor.protocol=registry去掉，即可。</p>
+
+      
+    </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2019-05-08 23:38:49</li>
+    <li><span>最后更新: </span>2019-12-09 23:03:26</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/9008dc8b.html" target="_blank" title="Dubbo由于连接不上monitor监控中心报错">https://ydstudios.gitee.io/post/9008dc8b.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外, 
+      禁止未经授权转载，违者依法追究相关法律责任!
+    </li>
+  </ul>
+<div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/9008dc8b.html" data-id="cktjj828i000mikszhryt26p4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/f1ed0391.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          MyBatis Generator配置文件--指定生成实体类使用实际的表列名作为实体类的属性名
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/5da32797.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older << </strong>
+      <div class="article-nav-title">Java中ListIterator和Iterator的异同</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
   </div>
 </body>
 </html>
