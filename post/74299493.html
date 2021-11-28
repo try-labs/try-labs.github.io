@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Windows下搭建Vagrant+VirtualBox环境 | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言最近在折腾一些东西，需要使用docker，但是我的机器配置很神奇，无法直接安装docker，没得法子我只好曲线救国了—使用Vagrant+VirtualBox。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows下搭建Vagrant+VirtualBox环境">
+<meta property="og:url" content="https://ydstudios.gitee.io/post/74299493.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="前言最近在折腾一些东西，需要使用docker，但是我的机器配置很神奇，无法直接安装docker，没得法子我只好曲线救国了—使用Vagrant+VirtualBox。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20211128174839.png">
+<meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20211128183144.png">
+<meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20211128185010.png">
+<meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20211128185459.png">
+<meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20211128173448.png">
+<meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20211128174421.png">
+<meta property="article:published_time" content="2021-11-28T19:25:29.000Z">
+<meta property="article:modified_time" content="2021-11-28T11:50:48.467Z">
+<meta property="article:author" content="Sam">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="vagrant">
+<meta property="article:tag" content="virtualbox">
+<meta property="article:tag" content="windows">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20211128174839.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ydstudios.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Windows下搭建Vagrant-VirtualBox环境" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/74299493.html" class="article-date">
+  <time datetime="2021-11-28T19:25:29.000Z" itemprop="datePublished">2021-11-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Windows下搭建Vagrant+VirtualBox环境
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>最近在折腾一些东西，需要使用docker，但是我的机器配置很神奇，无法直接安装docker，没得法子我只好曲线救国了—使用Vagrant+VirtualBox。</p>
+<a id="more"></a>
+
+<h4 id="安装-VirtualBox"><a href="#安装-VirtualBox" class="headerlink" title="安装 VirtualBox"></a>安装 VirtualBox</h4><h5 id="下载-VirtualBox-安装包"><a href="#下载-VirtualBox-安装包" class="headerlink" title="下载 VirtualBox 安装包"></a>下载 VirtualBox 安装包</h5><p>VirtualBox 下载页面地址(不保证长期有效)：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.virtualbox.org/wiki/Downloads</span><br></pre></td></tr></table></figure>
+
+<p>我现在的是window版本，具体链接如下(不保证长期有效)：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://download.virtualbox.org/virtualbox/6.1.30/VirtualBox-6.1.30-148432-Win.exe</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>大家注意 vagrant 和 VirtualBox 的版本，不同的版本之间可能会出现兼容性问题，大家最好和我的保持一致，毕竟坑我已经趟过了。virtualbox：6.1.30版本；vagrant ：2.2.19</p>
+</blockquote>
+<h4 id="安装vagrant"><a href="#安装vagrant" class="headerlink" title="安装vagrant"></a>安装vagrant</h4><h5 id="下载vagrant-安装包"><a href="#下载vagrant-安装包" class="headerlink" title="下载vagrant 安装包"></a>下载vagrant 安装包</h5><p>vagrant下载页面地址：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.vagrantup.com/downloads</span><br></pre></td></tr></table></figure>
+
+
+<img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20211128174839.png" style="zoom:50%;" alt="下载界面"/>
+
+<p>直接下载64位的即可，我下载时的版本为vagrant_2.2.19，具体链接如下(不保证长期有效)：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://releases.hashicorp.com/vagrant/2.2.19/vagrant_2.2.19_x86_64.msi</span><br></pre></td></tr></table></figure>
+
+<h5 id="安装vagrant-1"><a href="#安装vagrant-1" class="headerlink" title="安装vagrant"></a>安装vagrant</h5><p>没啥特别的直接next下一步下一步就行，当然可以自行选择安装地址，这个看自己的意愿。</p>
+<h5 id="下载虚拟机镜像"><a href="#下载虚拟机镜像" class="headerlink" title="下载虚拟机镜像"></a>下载虚拟机镜像</h5><p>这个虚拟机镜像下载的速度真的是很感人！所以我们要先下好镜像，然后直接用命令添加到vagrant的box中就可以了。下载页面的地址如下(不保证长期有效)：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://app.vagrantup.com/centos/boxes/7</span><br></pre></td></tr></table></figure>
+
+<p>我下载的是centos7镜像，具体链接如下(不保证长期有效)：</p>
+<p>别问为什么还使用centos7，问就是习惯了centos。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://cloud.centos.org/centos/7/vagrant/x86_64/images/CentOS-7-x86_64-Vagrant-2004_01.VirtualBox.box</span><br></pre></td></tr></table></figure>
+
+<h5 id="自定义项目地址"><a href="#自定义项目地址" class="headerlink" title="自定义项目地址"></a>自定义项目地址</h5><p>通过 Vagrant 创建虚机需要先导入镜像文件，也就是 box，它们默认存储的位置在用户目录下的 .vagrant.d 目录下，对于 Windows 系统来说，就是 C:\Users\用户名.vagrant.d。如果后续可能会用到较多镜像，或者你的 C 盘空间比较紧缺，可以通过设置环境变量 VAGRANT_HOME 来设置该目录。</p>
+<p>window系统</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">setx VAGRANT_HOME "D:\ProgramFiles\vagrant\boxData"</span><br><span class="line">setx VAGRANT_HOME "D:\ProgramFiles\vagrant\boxData" /M</span><br></pre></td></tr></table></figure>
+
+<p>linux 系统</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export VAGRANT_HOME="/path/to/vagrant_home"</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>window系统下使用cmd执行上述命令后，记得重新打开cmd配置才会生效。</p>
+</blockquote>
+<h5 id="添加本地镜像"><a href="#添加本地镜像" class="headerlink" title="添加本地镜像"></a>添加本地镜像</h5><p>我将镜像放在<code>D:\ProgramFiles\vagrant\data</code>目录下，在cmd上执行下面的命令添加镜像：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box add centos/7 ./CentOS-7-x86_64-Vagrant-2004_01.VirtualBox.box</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果提示没有权限则请使用管理员权限启动cmd</p>
+</blockquote>
+<p>执行完毕提示下面的文字则镜像添加成功：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">==&gt; box: Successfully added box 'centos/7' (v0) for 'virtualbox'!</span><br></pre></td></tr></table></figure>
+
+<h5 id="新建虚机"><a href="#新建虚机" class="headerlink" title="新建虚机"></a>新建虚机</h5><p>还是在<code>D:\ProgramFiles\vagrant\data</code>目录下，执行下面的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant init centos/7</span><br></pre></td></tr></table></figure>
+
+<p>出现下面的文字提示则认为初始化成功：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">A `Vagrantfile` has been placed in this directory. You are now</span><br><span class="line">ready to `vagrant up` your first virtual environment! Please read</span><br><span class="line">the comments in the Vagrantfile as well as documentation on</span><br><span class="line">`vagrantup.com` for more information on using Vagrant.</span><br></pre></td></tr></table></figure>
+
+<h5 id="启动虚拟机"><a href="#启动虚拟机" class="headerlink" title="启动虚拟机"></a>启动虚拟机</h5><p>执行下面的命令之前，<strong>记得先启动VirtualBox</strong>。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
+
+<p>出现下面的文字提示则认为虚拟机启动成功：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">D:\ProgramFiles\vagrant\data&gt;vagrant up</span><br><span class="line">Bringing machine 'default' up with 'virtualbox' provider...</span><br><span class="line">==&gt; default: Clearing any previously set forwarded ports...</span><br><span class="line">==&gt; default: Clearing any previously set network interfaces...</span><br><span class="line">==&gt; default: Preparing network interfaces based on configuration...</span><br><span class="line">    default: Adapter 1: nat</span><br><span class="line">    default: Adapter 2: hostonly</span><br><span class="line">==&gt; default: Forwarding ports...</span><br><span class="line">    default: 22 (guest) =&gt; 2222 (host) (adapter 1)</span><br><span class="line">==&gt; default: Booting VM...</span><br><span class="line">==&gt; default: Waiting for machine to boot. This may take a few minutes...</span><br><span class="line">    default: SSH address: 127.0.0.1:2222</span><br><span class="line">    default: SSH username: vagrant</span><br><span class="line">    default: SSH auth method: private key</span><br><span class="line">==&gt; default: Machine booted and ready!</span><br><span class="line">==&gt; default: Checking for guest additions in VM...</span><br><span class="line">    default: No guest additions were detected on the base box for this VM! Guest</span><br><span class="line">    default: additions are required for forwarded ports, shared folders, host only</span><br><span class="line">    default: networking, and more. If SSH fails on this machine, please install</span><br><span class="line">    default: the guest additions and repackage the box to continue.</span><br><span class="line">    default:</span><br><span class="line">    default: This is not an error message; everything may continue to work properly,</span><br><span class="line">    default: in which case you may ignore this message.</span><br><span class="line">==&gt; default: Configuring and enabling network interfaces...</span><br><span class="line">==&gt; default: Rsyncing folder: /cygdrive/d/ProgramFiles/vagrant/data/ =&gt; /vagrant</span><br><span class="line">==&gt; default: Machine already provisioned. Run `vagrant provision` or use the `--provision`</span><br><span class="line">==&gt; default: flag to force provisioning. Provisioners marked to run always will still run.</span><br></pre></td></tr></table></figure>
+
+<p>接下来你就可以在VirtualBox中看到一个已经启动的虚拟机。</p>
+<img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20211128183144.png" style="zoom:50%;" alt="虚拟机启动成功"/>
+
+<p>附上我的Vagrantfile配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> -*- mode: ruby -*-</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> vi: <span class="built_in">set</span> ft=ruby :</span></span><br><span class="line"></span><br><span class="line">Vagrant.configure("2") do |config|</span><br><span class="line"><span class="meta">  #</span><span class="bash"> The most common configuration options are documented and commented below.</span></span><br><span class="line"><span class="meta">  #</span><span class="bash"> For a complete reference, please see the online documentation at</span></span><br><span class="line"><span class="meta">  #</span><span class="bash"> https://docs.vagrantup.com.</span></span><br><span class="line"></span><br><span class="line"><span class="meta">  #</span><span class="bash"> Every Vagrant development environment requires a box. You can search <span class="keyword">for</span></span></span><br><span class="line"><span class="meta">  #</span><span class="bash"> boxes at https://vagrantcloud.com/search.</span></span><br><span class="line">  config.vm.box = "centos/7"</span><br><span class="line">  config.vm.network "private_network", ip: "192.168.33.10"</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h5 id="登录虚拟机"><a href="#登录虚拟机" class="headerlink" title="登录虚拟机"></a>登录虚拟机</h5><p>vagrant默认有两个账户，具体如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">账户：vagrant 密码： vagrant</span><br><span class="line">账户：root    密码： vagrant</span><br></pre></td></tr></table></figure>
+
+<p>其实vagrant默认的是使用密钥登录，直接执行<code>vagrant ssh</code>命令即可登录，但是登录的是<code>vagrant</code>账户，但在虚拟机中安装一些软件，例如docker是需要使用root账户权限的，所以该如何解决呢？<br><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20211128185010.png" alt="vagrant ssh命令登录 虚拟机"></p>
+<p>直接使用 <code>su</code>命令，然后输入密码 <code>vagrant</code>即可。</p>
+<p>可以使用 <code>vagrant ssh-config</code> 查看具体的登录配置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">D:\ProgramFiles\vagrant\data&gt;vagrant ssh-config</span><br><span class="line">  Host default</span><br><span class="line">  HostName 127.0.0.1</span><br><span class="line">  User vagrant</span><br><span class="line">  Port 2222</span><br><span class="line">  UserKnownHostsFile /dev/null</span><br><span class="line">  StrictHostKeyChecking no</span><br><span class="line">  PasswordAuthentication no</span><br><span class="line">  IdentityFile D:/ProgramFiles/vagrant/data/.vagrant/machines/default/virtualbox/private_key</span><br><span class="line">  IdentitiesOnly yes</span><br><span class="line">  LogLevel FATAL</span><br></pre></td></tr></table></figure>
+
+<p>上面说到使用<code>vagrant ssh</code>登录虚拟机，但是有些地方还是不太方便，所以还是需要使用专业的终端软件登录虚拟机，这里我使用的是<code>MobaXterm</code>，以前我都是使用xshell+xftp的，无奈后面没法白*嫖，就换了这个<code>MobaXterm</code>，用起来感觉还行。</p>
+<img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20211128185459.png" alt="配置如下" style="zoom:50%;" />
+
+<p>这个host我尝试使用前面Vagrantfile文件中的IP地址 <code>192.168.33.10</code>,但是无法连接。</p>
+<h4 id="安装jdk8"><a href="#安装jdk8" class="headerlink" title="安装jdk8"></a>安装jdk8</h4><p>接下来我们就登录虚拟机，先安装一下jdk8。下面的步骤都是在虚拟机中操作的。</p>
+<h5 id="下载jdk8安装包"><a href="#下载jdk8安装包" class="headerlink" title="下载jdk8安装包"></a>下载jdk8安装包</h5><p>Oracle的Java8下载页面地址(不保证长期有效)：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.oracle.com/java/technologies/downloads/#java8</span><br></pre></td></tr></table></figure>
+
+<p>我选择的是x64 Compressed Archive版本，具体下载地址如下(这个链接应该也会随时失效的)：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://download.oracle.com/otn/java/jdk/8u311-b11/4d5417147a92418ea8b615e228bb6935/jdk-8u311-linux-x64.tar.gz?AuthParam=1638083601_4ec49a992915eff50f4be9d904997568</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20211128173448.png" style="zoom:50%;" alt="下载地址"/>
+
+<p>可以在window下下载好然后传到Linux里，不过我建议直接在Linux中下载，毕竟就是一个命令的事情：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/src</span><br><span class="line"></span><br><span class="line">wget https://download.oracle.com/otn/java/jdk/8u311-b11/4d5417147a92418ea8b615e228bb6935/jdk-8u311-linux-x64.tar.gz?AuthParam=1638083601_4ec49a992915eff50f4be9d904997568</span><br></pre></td></tr></table></figure>
+
+<p>现在下载需要登录账户了，这里提供一个Oracle登录账户</p>
+<p>账户：<a href="mailto:pigide3064@fxseller.com">pigide3064@fxseller.com</a><br>密码：Azerty1!</p>
+<blockquote>
+<p>账户随时会失效，若是失效自己百度或者直接注册一个账户吧！</p>
+</blockquote>
+<h5 id="安装jdk8-1"><a href="#安装jdk8-1" class="headerlink" title="安装jdk8"></a>安装jdk8</h5><ol>
+<li><p>创建安装目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /usr/local/java</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>将安装包解压至安装目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf /usr/local/src/jdk-8u311-linux-x64.tar.gz\?AuthParam\=1638083601_4ec49a992915eff50f4be9d904997568  -C /usr/local/java/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置环境变量，将Java添加至环境变量中</p>
+<p>打开文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile</span><br></pre></td></tr></table></figure>
+
+<p>在文件的末尾处增加</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">export JAVA_HOME=/usr/local/java/jdk1.8.0_311</span><br><span class="line">export JRE_HOME=$&#123;JAVA_HOME&#125;/jre</span><br><span class="line">export CLASSPATH=.:$&#123;JAVA_HOME&#125;/lib:$&#123;JRE_HOME&#125;/lib</span><br><span class="line">export PATH=$&#123;JAVA_HOME&#125;/bin:$PATH</span><br></pre></td></tr></table></figure>
+<p>执行source命令重载profile文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
+
+<p>添加软连接(这一步不做好像也是可以的)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /usr/local/java/jdk1.8.0_311/bin/java /usr/bin/java</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查效果如何：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure>
+<p>结果出现下面的文字则代表<code>java</code>安装完成。</p>
+<img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20211128174421.png" style="zoom:80%;" alt="检查效果"/>
+
+</li>
+</ol>
+<h4 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h4><p>在安装docker之前记得先切换到root用户。</p>
+<ol>
+<li><p>不管三七二十一先执行下面的命令，卸载系统自带的docker。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开始安装docker，执行的相关命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> step 1: 安装必要的一些系统工具</span></span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"><span class="meta">#</span><span class="bash"> Step 2: 添加软件源信息</span></span><br><span class="line">sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"><span class="meta">#</span><span class="bash"> Step 3: 更新并安装Docker-CE</span></span><br><span class="line">sudo yum makecache fast</span><br><span class="line">sudo yum -y install docker-ce</span><br><span class="line"><span class="meta">#</span><span class="bash"> Step 4: 开启Docker服务</span></span><br><span class="line">sudo service docker start</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 开机启动</span></span><br><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure>
+
+<p>参考资料参见我之前的文章 <a href="https://lyunclesam.github.io/post/ef24ce2b.html" target="_blank" rel="noopener">在CentOS7上使用yum安装Docker</a></p>
+</li>
+</ol>
+<h4 id="安装docker-composer"><a href="#安装docker-composer" class="headerlink" title="安装docker composer"></a>安装docker composer</h4><p>这都是用docker了那容器编排起码也要用一下，这里我就用docker composer了。安装的相关命令如下：</p>
+<ol>
+<li>运行以下命令下载 Docker Compose 的当前稳定版本：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里使用的是官方文档里的示例，安装的是1.29.2版本。链接：<code>https://docs.docker.com/compose/install/</code></p>
+</blockquote>
+<ol start="2">
+<li><p>将可执行权限应用于二进制文件:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>测试安装结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose --version</span><br></pre></td></tr></table></figure>
+
+<p>如果展现下面提示则代表<code>docker-compose</code>安装完成。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost vagrant]# docker-compose --version</span><br><span class="line">docker-compose version 1.29.2, build 5becea4c</span><br><span class="line">[root@localhost vagrant]#</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>这样我们就完成了Vagrant+VirtualBox环境配置，也在虚拟机中配置好了Java环境和docker。</p>
+
+      
+    </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2021-11-28 19:25:29</li>
+    <li><span>最后更新: </span>2021-11-28 19:50:48</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/74299493.html" target="_blank" title="Windows下搭建Vagrant+VirtualBox环境">https://ydstudios.gitee.io/post/74299493.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外, 
+      禁止未经授权转载，违者依法追究相关法律责任!
+    </li>
+  </ul>
+<div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/74299493.html" data-id="ckwj6m8cs004vbksz1njweozg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vagrant/" rel="tag">vagrant</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/virtualbox/" rel="tag">virtualbox</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/post/412410.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older << </strong>
+      <div class="article-nav-title">MySQL常见加锁场景分析一</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
