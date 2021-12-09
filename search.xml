@@ -14,9 +14,9 @@
       
         <tags>
             
-            <tag> java </tag>
-            
             <tag> linux </tag>
+            
+            <tag> java </tag>
             
             <tag> vagrant </tag>
             
@@ -309,9 +309,9 @@
       
         <tags>
             
-            <tag> spring </tag>
-            
             <tag> 设计模式 </tag>
+            
+            <tag> spring </tag>
             
             <tag> 观察者模式 </tag>
             
