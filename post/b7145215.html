@@ -1,18 +1,343 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>巧用二进制表示不同的状态 | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="我们在开发的过程中会遇到这种场景，在系统的权限、选项设置，只有两种状态开启或者关闭。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="巧用二进制表示不同的状态">
+<meta property="og:url" content="https://ydstudios.gitee.io/post/b7145215.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="我们在开发的过程中会遇到这种场景，在系统的权限、选项设置，只有两种状态开启或者关闭。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20210106221129.png">
+<meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20210106223014.png">
+<meta property="article:published_time" content="2021-01-06T21:28:00.000Z">
+<meta property="article:modified_time" content="2021-01-07T15:21:55.000Z">
+<meta property="article:author" content="Sam">
+<meta property="article:tag" content="二进制">
+<meta property="article:tag" content="位运算">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20210106221129.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ydstudios.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-巧用二进制表示不同的状态" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/b7145215.html" class="article-date">
+  <time datetime="2021-01-06T21:28:00.000Z" itemprop="datePublished">2021-01-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      巧用二进制表示不同的状态
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们在开发的过程中会遇到这种场景，在系统的权限、选项设置，只有两种状态开启或者关闭。</p>
+<a id="more"></a>
+
+<p>具体我们以哔哩哔哩的隐私设置为例：<br><img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210106221129.png" alt="隐私设置" style="zoom:50%;" /></p>
+<p>这么几种开关你会怎么设计数据表？按照正常的操作针对一个开关添加字段进行表示。可是后续就会有下面的这样的情况：</p>
+<img src="https://gitee.com/ydstudios/blogImage/raw/master/img/20210106223014.png"  alt="隐私设置"  style="zoom:50%;" />
+
+<p>哈哈，产品需求迭代增加了后续几种开关，你准备怎么做？还是继续增加字段进行保存么？增加字段进行保存也是可以的，但是感觉上会有那么一点点low！新的开关出现增加字段进行保存，既要修改表结构，又要改实体属性，还是比较麻烦的！所以，对于这种类似的需求，我们要有一个良好的设计来应对，那我们如何解决呢？</p>
+<p>用过linux系统的同学会知道这样一个知识点：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chomd 777 something</span><br><span class="line"><span class="meta">#</span><span class="bash"> 可读r=4，可写w=2，可执行x=1，即 二进制的001代表可执行，010代表可写，100代表可读</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的linux命令代表把something的权限修改成所有者、用户组、其他用户都可以进行可读、可写、可执行。</p>
+<table>
+<thead>
+<tr>
+<th>数字</th>
+<th>权限</th>
+<th>rwx</th>
+<th>二进制</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>7</td>
+<td>读 + 写 + 执行</td>
+<td>rwx</td>
+<td>111</td>
+</tr>
+<tr>
+<td>6</td>
+<td>读 + 写</td>
+<td>rw-</td>
+<td>110</td>
+</tr>
+<tr>
+<td>5</td>
+<td>读 + 执行</td>
+<td>r-x</td>
+<td>101</td>
+</tr>
+<tr>
+<td>4</td>
+<td>只读</td>
+<td>r–</td>
+<td>100</td>
+</tr>
+<tr>
+<td>3</td>
+<td>写 + 执行</td>
+<td>-wx</td>
+<td>011</td>
+</tr>
+<tr>
+<td>2</td>
+<td>只写</td>
+<td>-w-</td>
+<td>010</td>
+</tr>
+<tr>
+<td>1</td>
+<td>只执行</td>
+<td>–x</td>
+<td>001</td>
+</tr>
+<tr>
+<td>0</td>
+<td>无</td>
+<td>—</td>
+<td>000</td>
+</tr>
+</tbody></table>
+<p>用的是二进制的001代表可执行，010代表可写，100代表可读，那么只需要3位二进制数即可表示这三种状态的混合搭配。借用这种思想，我们来解决上述的问题，我们用一个int类型字段就可以表示上述所有的状态开关。<strong>使用2的次幂值代表一种状态</strong>，比如我们用</p>
+<ul>
+<li><p>2的零次方 $2^{0}$ = 1 表示打开我的收藏</p>
+</li>
+<li><p>2的一次方 $2^{1}$ = 2 表示打开追番追剧</p>
+</li>
+<li><p>2的二次方 $2^{2}$ = 4 表示打开订阅标签</p>
+</li>
+<li><p>2的三次方 $2^{3}$ = 8 表示打开最近投币的视频</p>
+</li>
+<li><p>2的四次方 $2^{4}$ = 16 表示打开个人资料</p>
+</li>
+<li><p>2的五次方 $2^{5}$ = 32 表示打开最近玩过的游戏</p>
+<blockquote>
+<p>博客使用hexo搭建，采用默认的landscape主题不支持LaTeX 公式，所以上面的次方公式显示的有问题。 </p>
+</blockquote>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>二进制</th>
+<th>数字（十进制）</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>000 000</td>
+<td>0</td>
+<td>全部关闭</td>
+</tr>
+<tr>
+<td>000 001</td>
+<td>1</td>
+<td>开启我的收藏</td>
+</tr>
+<tr>
+<td>000 011</td>
+<td>3</td>
+<td>开启我的收藏、追番追剧</td>
+</tr>
+<tr>
+<td>000 111</td>
+<td>7</td>
+<td>开启我的收藏、追番追剧、订阅标签</td>
+</tr>
+<tr>
+<td>111 111</td>
+<td>63</td>
+<td>全部开启</td>
+</tr>
+</tbody></table>
+<p><strong>其实就是用bit位表示开启或者关闭，如果是1表示开启，0表示关闭。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">或运算：bit位上有1为1。例如：2 | 1 == 0000 0010 | 0000 0001 == 3</span><br><span class="line">与运算：bit位都为1才为1。 例如 5 &amp; 2 == 0000 0101 &amp; 0000 0010 == 0</span><br><span class="line">异或运算：0^0=0；  0^1=1；  1^0=1；   1^1=0；即：参加运算的两个对象，如果两个相应位为“异”（值不同），则该位结果为1，否则为0。</span><br></pre></td></tr></table></figure>
+
+<h6 id="那我们就来编码实现上述功能："><a href="#那我们就来编码实现上述功能：" class="headerlink" title="那我们就来编码实现上述功能："></a>那我们就来编码实现上述功能：</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ydstudio.flashsale.<span class="keyword">module</span>.business.bit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.AllArgsConstructor;</span><br><span class="line"><span class="keyword">import</span> lombok.Getter;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> 刘洋 Sam</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2021/1/7</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.0.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> MemberOption &#123;</span><br><span class="line"></span><br><span class="line">    FAVORITE(<span class="number">1</span>, <span class="string">"我的收藏"</span>, <span class="number">1</span>),</span><br><span class="line">    FOLLOW(<span class="number">2</span>, <span class="string">"追番追剧"</span>, <span class="number">2</span>),</span><br><span class="line">    SUBSCRIBE(<span class="number">3</span>, <span class="string">"订阅标签"</span>, <span class="number">4</span>),</span><br><span class="line">    VIDEO(<span class="number">4</span>, <span class="string">"最近投币视频"</span>, <span class="number">8</span>),</span><br><span class="line">    PROFILE(<span class="number">5</span>, <span class="string">"个人资料"</span>, <span class="number">16</span>),</span><br><span class="line">    GAME(<span class="number">6</span>, <span class="string">"最近玩的游戏"</span>, <span class="number">32</span>),;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 枚举</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Integer code;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 描述</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String desc;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 状态位</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Integer tag;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否有某个tag</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> tags 拥有的tag集合</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasTag</span><span class="params">(<span class="keyword">int</span> tags)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (tags &amp; <span class="keyword">this</span>.tag) == <span class="keyword">this</span>.tag;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> tags = <span class="number">37</span>;</span><br><span class="line">        <span class="comment">// true</span></span><br><span class="line">        System.out.println(MemberOption.FAVORITE.hasTag(tags));</span><br><span class="line">        <span class="comment">// true</span></span><br><span class="line">        System.out.println(MemberOption.SUBSCRIBE.hasTag(tags));</span><br><span class="line">        <span class="comment">// false</span></span><br><span class="line">        System.out.println(MemberOption.VIDEO.hasTag(tags));</span><br><span class="line">        <span class="comment">// true</span></span><br><span class="line">        System.out.println(MemberOption.GAME.hasTag(tags));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="开启我的收藏和最近玩的游戏，其他选项都关闭，则计算过程如下："><a href="#开启我的收藏和最近玩的游戏，其他选项都关闭，则计算过程如下：" class="headerlink" title="开启我的收藏和最近玩的游戏，其他选项都关闭，则计算过程如下："></a>开启我的收藏和最近玩的游戏，其他选项都关闭，则计算过程如下：</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 我的收藏 tag = 1 最近玩的游戏 tag = 32</span><br><span class="line">tags = <span class="number">1</span> + <span class="number">32</span> = <span class="number">33</span> </span><br><span class="line">或者采用位或运算 tags = <span class="number">1</span> | <span class="number">32</span> = <span class="number">33</span></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 计算状态位</span></span><br><span class="line"><span class="comment">  * tags: 已有状态位</span></span><br><span class="line"><span class="comment">  * values: 需要添加的状态值</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">addTag</span><span class="params">(<span class="keyword">int</span> tags, <span class="keyword">int</span>... values)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> value : values) &#123;</span><br><span class="line">    tags |= value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> tags;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="关闭最近玩的游戏，则计算过程如下："><a href="#关闭最近玩的游戏，则计算过程如下：" class="headerlink" title="关闭最近玩的游戏，则计算过程如下："></a>关闭最近玩的游戏，则计算过程如下：</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">上面计算的tags = <span class="number">33</span> ，最近玩的游戏 tag = <span class="number">32</span></span><br><span class="line">关闭最近玩的游戏，</span><br><span class="line">tags = <span class="number">33</span> ^ <span class="number">32</span> = <span class="number">0010</span> <span class="number">0001</span> ^ <span class="number">0010</span> <span class="number">0000</span> = <span class="number">0000</span> <span class="number">0001</span> = <span class="number">1</span></span><br><span class="line">  </span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 移除状态位</span></span><br><span class="line"><span class="comment">   * tags: 已有状态位</span></span><br><span class="line"><span class="comment">   * tag: 需要移除的状态值</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">delTag</span><span class="params">(<span class="keyword">int</span> tags, <span class="keyword">int</span> tag)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// tags和value与运算不等于tag，说明没有开启tag对应的选项，则直接返回tags</span></span><br><span class="line">  <span class="keyword">if</span> ((tags &amp; tag) != tag) <span class="keyword">return</span> tags;</span><br><span class="line">  <span class="keyword">return</span> tags ^ tag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="判断是否开启最近玩的游戏，则计算过程如下："><a href="#判断是否开启最近玩的游戏，则计算过程如下：" class="headerlink" title="判断是否开启最近玩的游戏，则计算过程如下："></a>判断是否开启最近玩的游戏，则计算过程如下：</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">上面计算的tags = <span class="number">33</span> ，最近玩的游戏 tag = <span class="number">32</span></span><br><span class="line"> <span class="number">33</span> &amp; <span class="number">32</span> = <span class="number">0010</span> <span class="number">0001</span> &amp; <span class="number">0010</span> <span class="number">0000</span> = <span class="number">0010</span> <span class="number">0000</span> = <span class="number">32</span> (<span class="number">0010</span> <span class="number">0000</span>)</span><br><span class="line">  </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否有某个tag</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> tags 拥有的tag集合</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> tag 待判断的tag</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasTag</span><span class="params">(<span class="keyword">int</span> tags, <span class="keyword">int</span> tag)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (tags &amp; tag) == tag;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="如何用SQL查询开启最近玩的游戏选项的用户"><a href="#如何用SQL查询开启最近玩的游戏选项的用户" class="headerlink" title="如何用SQL查询开启最近玩的游戏选项的用户"></a>如何用SQL查询开启最近玩的游戏选项的用户</h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># MySQL也是支持位运算的，其他的数据库应该也是支持的</span></span><br><span class="line"><span class="keyword">select</span> member_id <span class="keyword">from</span> table_name <span class="keyword">where</span> member_option &amp; <span class="comment">#&#123;option&#125; = #&#123;option&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>就这样我们就可以用一个int型字段保存4*8 = 32个状态位（无符号的情况下）,看起来还是很不错，运算的效率高，只用一个字段可以保存较多的状态。缺点嘛也是有的，就是可读性差，不能很直观的看出到底有哪些状态。其实这种方法可以用一个字段表示多种状态，例如 订单一般有支付状态：待支付 1 、支付中 2 、支付成功4 、支付失败8和发货状态：待发货16、已发货32、在途64、已收货128，这样的话用一个orderStatus来表示这两种状态：支付成功4 + 待发货16 = 4 | 16 = 20，也是可以的但是如上面所说，优缺点都有，看你的实际情况进行选择了！</p>
+
+      
+    </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2021-01-06 21:28:00</li>
+    <li><span>最后更新: </span>2021-01-07 23:21:55</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/b7145215.html" target="_blank" title="巧用二进制表示不同的状态">https://ydstudios.gitee.io/post/b7145215.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外, 
+      禁止未经授权转载，违者依法追究相关法律责任!
+    </li>
+  </ul>
+<div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/b7145215.html" data-id="ckwz3tepm009jk8sz8gt1gvo7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" rel="tag">二进制</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/" rel="tag">位运算</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/b4e52eb3.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          2020年的年终小结
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/d958d490.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older << </strong>
+      <div class="article-nav-title">Lua脚本在秒杀场景下的使用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
   </div>
 </body>
 </html>

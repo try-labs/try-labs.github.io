@@ -1,18 +1,212 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>隐藏Nginx或Apache以及PHP的版本号 | Sam的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="当你配置完一台服务器后，并不是就可以高枕无忧了，由于软件难免会有漏洞，防止因为漏洞导致一些损失，所以说经常关注安全公告并及时升级服务器也是必要的。一般来说，黑客攻击服务器的首要步骤就是收集信息，比如说你的软件版本，这些将成为下一步有针对性攻击的依据。所以说一定程度的隐藏这些信息就显得非常有必要了，本文将简单介绍如何在网络上隐藏Nginx版本号以及PHP的版本号。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="隐藏Nginx或Apache以及PHP的版本号">
+<meta property="og:url" content="https://ydstudios.gitee.io/post/adb014f8.html">
+<meta property="og:site_name" content="Sam的个人博客">
+<meta property="og:description" content="当你配置完一台服务器后，并不是就可以高枕无忧了，由于软件难免会有漏洞，防止因为漏洞导致一些损失，所以说经常关注安全公告并及时升级服务器也是必要的。一般来说，黑客攻击服务器的首要步骤就是收集信息，比如说你的软件版本，这些将成为下一步有针对性攻击的依据。所以说一定程度的隐藏这些信息就显得非常有必要了，本文将简单介绍如何在网络上隐藏Nginx版本号以及PHP的版本号。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-11-13T22:40:48.000Z">
+<meta property="article:modified_time" content="2019-12-09T15:03:26.000Z">
+<meta property="article:author" content="Sam">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Sam的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
 <body>
   <div id="container">
     <div id="wrap">
-      <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-      <div class="outer">
-        <section id="main"><%- body %></section>
-        <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-        <% } %>
-      </div>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sam的个人博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序员的成长记录</a>
+        </h2>
+      
     </div>
-    <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %>
-    <%- partial('_partial/after-footer') %>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+          <a class="main-nav-link" href="/links">友链</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ydstudios.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-隐藏Nginx或Apache以及PHP的版本号" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/post/adb014f8.html" class="article-date">
+  <time datetime="2017-11-13T22:40:48.000Z" itemprop="datePublished">2017-11-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      隐藏Nginx或Apache以及PHP的版本号
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>  当你配置完一台服务器后，并不是就可以高枕无忧了，由于软件难免会有漏洞，防止因为漏洞导致一些损失，所以说经常关注安全公告并及时升级服务器也是必要的。一般来说，黑客攻击服务器的首要步骤就是收集信息，比如说你的软件版本，这些将成为下一步有针对性攻击的依据。所以说一定程度的隐藏这些信息就显得非常有必要了，本文将简单介绍如何在网络上隐藏Nginx版本号以及PHP的版本号。</p>
+<a id="more"></a>
+<p>我们用命令测试一下，显示服务器上版本信息，命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -I http://127.0.0.1/phpinfo.php</span><br></pre></td></tr></table></figure>
+<p>结果显示了如下内容：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Server: nginx/1.5.0</span><br><span class="line">Date: Thu, 18 Jun 2015 02:39:32 GMT</span><br><span class="line">Content-Type: text/html</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Vary: Accept-Encoding</span><br><span class="line">X-Powered-By: PHP/5.3.1</span><br></pre></td></tr></table></figure>
+<p>可以看到我们的服务器nginx和php版本都暴露了。那该如何隐藏版本号呢？<br>  1.先说隐藏Nginx版本号，Nginx的版本号主要在两个地方会有，一个是HTTP header，有个Server:nginx/1.x.x类似会暴露Web服务器所用软件名称以及版本号，这个也是大多数Web服务器最容易暴露版本号的地方，第二个地方是Nginx出错页面，比如404页面没有找到等，这是如果用户没有指定页面的话，那么Nginx自己的页面会有版本戳记。<br>  在nginx配置文件中http节的配置,加入以下代码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    # ...省略一些配置</span><br><span class="line">    server_tokens off;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>最后别忘了使用命令nginx -s reload刷新当前配置。完成后你可以查看所有页面的响应头或者错误页，看看是不是只看到nginx字样而看不到版本号？什么？你想连nginx也改掉？呵呵，这个恐怕就麻烦了，需要改动Nginx源代码然后重新编译，感兴趣的童鞋可以研究下！<br>在apache配置文件httpd.conf中,加入以下代码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ServerTokens Prod</span><br><span class="line">ServerSignature Off</span><br></pre></td></tr></table></figure>
+<p>记得保存后重启一下apache!</p>
+<p>2.隐藏PHP的版本号，PHP容易暴露的版本号在什么地方呢？其实也是在HTTP头，以类似X-Powered-By: PHP/5.2.11这种形式存在。<br>  其实这个是在PHP的配置文件php.ini里改动，打开php.ini，找到下面叙述：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">; Decides whether PHP may expose the fact that it is installed on the server</span><br><span class="line">; (e.g. by adding its signature to the Web server header).  It is no security</span><br><span class="line">; threat in any way, but it makes it possible to determine whether you use PHP</span><br><span class="line">; on your server or not.</span><br><span class="line">; http://php.net/expose-php</span><br><span class="line">expose_php = On</span><br></pre></td></tr></table></figure>
+<p>  expose_php = On改为expose_php = Off就搞定了，当然，对于apache服务器还有另外一个方法可以直接尝试在.htaccess文件中Header unset X-Powered-By，删除X-Powered-By节，不过我还是建议改动php.ini的expose_php。</p>
+
+      
+    </div>
+         
+            <div>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Sam</a>
+    </li>
+    <li><span>发布时间: </span>2017-11-13 22:40:48</li>
+    <li><span>最后更新: </span>2019-12-09 23:03:26</li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/post/adb014f8.html" target="_blank" title="隐藏Nginx或Apache以及PHP的版本号">https://ydstudios.gitee.io/post/adb014f8.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网所有文章除特别声明外, 
+      禁止未经授权转载，违者依法追究相关法律责任!
+    </li>
+  </ul>
+<div>
+         
+    <footer class="article-footer">
+      <a data-url="https://ydstudios.gitee.io/post/adb014f8.html" data-id="ckwz3teq100awk8sz8m3ib1eo" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/post/8598d574.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer >> </strong>
+      <div class="article-nav-title">
+        
+          解决git默认不区分文件名大小写的问题
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/cf179e51.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older << </strong>
+      <div class="article-nav-title">如何正确的修改Python的pip自带的源</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Sam<br>
+      <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
+      <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+    <a href="/links" class="mobile-nav-link">友链</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
   </div>
 </body>
 </html>
