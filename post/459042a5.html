@@ -7,18 +7,18 @@
   
   <title>Windows下搭建RocketMQ双主双从集群 | Sam的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="RocketMQ是阿里巴巴2016年MQ中间件，使用Java语言开发，在阿里内部，RocketMQ承接了例如“双11”等高并发场景的消息流转，能够处理万亿级别的消息。我们今天就在 windows下搭建RocketMQ多Master多Slave模式（同步）的集群。">
+  <meta name="description" content="RocketMQ 是阿里巴巴在 2012 年开源的消息队列产品，用 Java 语言实现，在设计时参考了 Kafka，并做出了自己的一些改进，后来捐赠给 Apache 软件基金会，2017 正式毕业，成为 Apache 的顶级项目。RocketMQ 在阿里内部被广泛应用在订单，交易，充值，流计算，消息推送，日志流式处理，Binglog 分发等场景。经历过多次双十一考验，它的性能、稳定性和可靠性都是值">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Windows下搭建RocketMQ双主双从集群">
 <meta property="og:url" content="https://ydstudios.gitee.io/post/459042a5.html">
 <meta property="og:site_name" content="Sam的个人博客">
-<meta property="og:description" content="RocketMQ是阿里巴巴2016年MQ中间件，使用Java语言开发，在阿里内部，RocketMQ承接了例如“双11”等高并发场景的消息流转，能够处理万亿级别的消息。我们今天就在 windows下搭建RocketMQ多Master多Slave模式（同步）的集群。">
+<meta property="og:description" content="RocketMQ 是阿里巴巴在 2012 年开源的消息队列产品，用 Java 语言实现，在设计时参考了 Kafka，并做出了自己的一些改进，后来捐赠给 Apache 软件基金会，2017 正式毕业，成为 Apache 的顶级项目。RocketMQ 在阿里内部被广泛应用在订单，交易，充值，流计算，消息推送，日志流式处理，Binglog 分发等场景。经历过多次双十一考验，它的性能、稳定性和可靠性都是值">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20201010215427.png">
 <meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20201010215545.png">
 <meta property="og:image" content="https://gitee.com/ydstudios/blogImage/raw/master/img/20201010215859.png">
 <meta property="article:published_time" content="2020-10-02T11:06:35.000Z">
-<meta property="article:modified_time" content="2020-10-10T14:35:40.000Z">
+<meta property="article:modified_time" content="2021-12-11T14:22:30.254Z">
 <meta property="article:author" content="Sam">
 <meta property="article:tag" content="Windows">
 <meta property="article:tag" content="RocketMQ">
@@ -103,7 +103,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>RocketMQ是阿里巴巴2016年MQ中间件，使用Java语言开发，在阿里内部，RocketMQ承接了例如“双11”等高并发场景的消息流转，能够处理万亿级别的消息。我们今天就在 windows下搭建RocketMQ多Master多Slave模式（同步）的集群。</p>
+        <p>RocketMQ 是阿里巴巴在 2012 年开源的消息队列产品，用 Java 语言实现，在设计时参考了 Kafka，并做出了自己的一些改进，后来捐赠给 Apache 软件基金会，2017 正式毕业，成为 Apache 的顶级项目。RocketMQ 在阿里内部被广泛应用在订单，交易，充值，流计算，消息推送，日志流式处理，Binglog 分发等场景。经历过多次双十一考验，它的性能、稳定性和可靠性都是值得信赖的。我们今天就在 windows下搭建RocketMQ多Master多Slave模式（同步）的集群。</p>
 <a id="more"></a>
 
 <h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1 准备工作"></a>1 准备工作</h2><h3 id="1-1-下载RocketMQ"><a href="#1-1-下载RocketMQ" class="headerlink" title="1.1 下载RocketMQ"></a>1.1 下载RocketMQ</h3><p>RocketMQ版本：4.7.1</p>
@@ -168,10 +168,11 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> broker名字，注意此处不同的配置文件填写的不一样</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> broker<span class="_">-a</span> 的配置</span></span><br><span class="line"></span><br><span class="line">brokerClusterName=DefaultCluster</span><br><span class="line">brokerName=broker-a</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> broker<span class="_">-a</span><span class="_">-s</span> 的配置</span></span><br><span class="line"></span><br><span class="line">brokerClusterName=DefaultCluster</span><br><span class="line">brokerName=broker-a</span><br></pre></td></tr></table></figure>
 
 <h3 id="6-3-消息发送出现-TIMEOUT-CLEAN-QUEUE-broker-busy"><a href="#6-3-消息发送出现-TIMEOUT-CLEAN-QUEUE-broker-busy" class="headerlink" title="6.3 消息发送出现 [TIMEOUT_CLEAN_QUEUE]broker busy"></a>6.3 消息发送出现 [TIMEOUT_CLEAN_QUEUE]broker busy</h3> <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.apache.rocketmq.client.exception.MQBrokerException: CODE: 2  DESC: [TIMEOUT_CLEAN_QUEUE]broker busy, start flow control for a while, period in queue: 205ms, size of queue: 2</span><br></pre></td></tr></table></figure>
-<p> 解决方式就是合理设置waitTimeMillsInSendQueue的值</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 清除发送线程池任务队列的等待时间。如果系统时间减去任务放入队列中的时间小于waitTimeMillsInSendQueue，本次请求任务暂时不移除该任务 默认200ms</span></span><br><span class="line">waitTimeMillsInSendQueue=200</span><br></pre></td></tr></table></figure>
+<p> 解决方式就是合理设置waitTimeMillsInSendQueue的值:<br>清除发送线程池任务队列的等待时间。如果系统时间减去任务放入队列中的时间小于waitTimeMillsInSendQueue，本次请求任务暂时不移除该任务 默认200ms</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">waitTimeMillsInSendQueue=200</span><br></pre></td></tr></table></figure>
 <p>到此RocketMQ双主双从集群就搭建完毕。</p>
-<p><em>参考资料</em><br><a href="https://blog.csdn.net/chenzhong2010/article/details/106749258" target="_blank" rel="noopener">参考1</a><br><a href="https://blog.csdn.net/vucko/article/details/107487675" target="_blank" rel="noopener">参考2</a><br><a href="https://blog.csdn.net/jianghuiyun/article/details/77971583" target="_blank" rel="noopener">参考3</a></p>
+<p><em>参考资料</em></p>
+<p><a href="https://blog.csdn.net/chenzhong2010/article/details/106749258" target="_blank" rel="noopener">https://blog.csdn.net/chenzhong2010/article/details/106749258</a><br><a href="https://blog.csdn.net/vucko/article/details/107487675" target="_blank" rel="noopener">https://blog.csdn.net/vucko/article/details/107487675</a><br><a href="https://blog.csdn.net/jianghuiyun/article/details/77971583" target="_blank" rel="noopener">https://blog.csdn.net/jianghuiyun/article/details/77971583</a></p>
 
       
     </div>
@@ -182,7 +183,7 @@
     <strong>作者:  </strong>Sam</a>
     </li>
     <li><span>发布时间: </span>2020-10-02 11:06:35</li>
-    <li><span>最后更新: </span>2020-10-10 22:35:40</li>
+    <li><span>最后更新: </span>2021-12-11 22:22:30</li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
     <a href="/post/459042a5.html" target="_blank" title="Windows下搭建RocketMQ双主双从集群">https://ydstudios.gitee.io/post/459042a5.html</a>
@@ -196,7 +197,7 @@
 <div>
          
     <footer class="article-footer">
-      <a data-url="https://ydstudios.gitee.io/post/459042a5.html" data-id="ckwz3x2az004ucssz3o8odih0" class="article-share-link">Share</a>
+      <a data-url="https://ydstudios.gitee.io/post/459042a5.html" data-id="cl5zaho37004vbssz19lm1mk1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RocketMQ/" rel="tag">RocketMQ</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8F%8C%E4%B8%BB%E5%8F%8C%E4%BB%8E%E9%9B%86%E7%BE%A4/" rel="tag">双主双从集群</a></li></ul>
@@ -234,7 +235,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2021 Sam<br>
+      &copy; 2022 Sam<br>
       <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>-->
       <p>备案号:<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">苏ICP备17069935号-1</a></p>
     </div>
